@@ -6,4 +6,5 @@
  *
  */
 module RetoSoundBridge {
+	requires java.sql;
 }
