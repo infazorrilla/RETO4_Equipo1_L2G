@@ -1,0 +1,90 @@
+package soundbridge.database.pojos;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
+
+public class ClientPp extends Client {
+
+	private static final long serialVersionUID = -7048604268786892326L;
+
+	private String bankAccount = null;
+	private Date subscriptionDate = null;
+
+	private ArrayList<Playlist> playlists = null;
+	private ArrayList<Review> reviews = null;
+
+	public String getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(String bankAccount) {
+		this.bankAccount = bankAccount;
+	}
+
+	public Date getSubscriptionDate() {
+		return subscriptionDate;
+	}
+
+	public void setSubscriptionDate(Date subscriptionDate) {
+		this.subscriptionDate = subscriptionDate;
+	}
+
+	public ArrayList<Playlist> getPlaylists() {
+		return playlists;
+	}
+
+	public void setPlaylists(ArrayList<Playlist> playlists) {
+		this.playlists = playlists;
+	}
+
+	public ArrayList<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(ArrayList<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(bankAccount, playlists, reviews, subscriptionDate);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ClientPp other = (ClientPp) obj;
+		return Objects.equals(bankAccount, other.bankAccount) && Objects.equals(playlists, other.playlists)
+				&& Objects.equals(reviews, other.reviews) && Objects.equals(subscriptionDate, other.subscriptionDate);
+	}
+
+	@Override
+	public String toString() {
+		return "ClientPp [bankAccount=" + bankAccount + ", subscriptionDate=" + subscriptionDate + ", playlists="
+				+ playlists + ", reviews=" + reviews + ", username=" + username + ", passwd=" + passwd + ", personalId="
+				+ personalId + ", telephone=" + telephone + ", address=" + address + ", email=" + email + ", id=" + id
+				+ ", name=" + name + ", lastName=" + lastName + ", nationality=" + nationality + ", gender=" + gender
+				+ ", birthDate=" + birthDate + ", getBankAccount()=" + getBankAccount() + ", getSubscriptionDate()="
+				+ getSubscriptionDate() + ", getPlaylists()=" + getPlaylists() + ", getReviews()=" + getReviews()
+				+ ", hashCode()=" + hashCode() + ", getUsername()=" + getUsername() + ", getPasswd()=" + getPasswd()
+				+ ", getPersonalId()=" + getPersonalId() + ", getTelephone()=" + getTelephone() + ", getAddress()="
+				+ getAddress() + ", getEmail()=" + getEmail() + ", toString()=" + super.toString() + ", getId()="
+				+ getId() + ", getName()=" + getName() + ", getLastName()=" + getLastName() + ", getNationality()="
+				+ getNationality() + ", getGender()=" + getGender() + ", getBirthDate()=" + getBirthDate()
+				+ ", getClass()=" + getClass() + "]";
+	}
+
+}
