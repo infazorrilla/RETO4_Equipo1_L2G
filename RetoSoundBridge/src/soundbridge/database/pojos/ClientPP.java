@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class ClientPp extends Client {
+public class ClientPP extends Client {
 
 	private static final long serialVersionUID = -7048604268786892326L;
 
@@ -66,7 +66,7 @@ public class ClientPp extends Client {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ClientPp other = (ClientPp) obj;
+		ClientPP other = (ClientPP) obj;
 		return Objects.equals(bankAccount, other.bankAccount) && Objects.equals(playlists, other.playlists)
 				&& Objects.equals(reviews, other.reviews) && Objects.equals(subscriptionDate, other.subscriptionDate);
 	}

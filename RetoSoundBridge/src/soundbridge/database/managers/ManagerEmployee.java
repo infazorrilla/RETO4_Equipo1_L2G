@@ -15,19 +15,19 @@ public class ManagerEmployee extends ManagerAbstract<Employee> {
 	}
 
 	@Override
-	public void insert(Employee t) throws SQLException, Exception {
+	public void insert(Employee employee) throws SQLException, Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void update(Employee t) throws SQLException, Exception {
+	public void update(Employee employee) throws SQLException, Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete(Employee t) throws SQLException, Exception {
+	public void delete(Employee employee) throws SQLException, Exception {
 		// TODO Auto-generated method stub
 		
 	}
