@@ -10,7 +10,7 @@ public class ClientP extends Client {
 	private String bankAccount = null;
 	private Date subscriptionDate = null;
 
-	private PlayList playlist = null;
+	private Playlist playlist = null;
 
 	public String getBankAccount() {
 		return bankAccount;
@@ -28,11 +28,11 @@ public class ClientP extends Client {
 		this.subscriptionDate = subscriptionDate;
 	}
 
-	public PlayList getPlaylist() {
+	public Playlist getPlaylist() {
 		return playlist;
 	}
 
-	public void setPlaylist(PlayList playlist) {
+	public void setPlaylist(Playlist playlist) {
 		this.playlist = playlist;
 	}
 
