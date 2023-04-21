@@ -16,7 +16,7 @@ public class Client extends Person implements Serializable {
 	protected String address = null;
 	protected String email = null;
 
-	protected ArrayList<Plays> plays = null;
+	protected ArrayList<Play> play = null;
 
 	public String getUsername() {
 		return username;
@@ -66,12 +66,12 @@ public class Client extends Person implements Serializable {
 		this.email = email;
 	}
 
-	public ArrayList<Plays> getPlays() {
-		return plays;
+	public ArrayList<Play> getPlays() {
+		return play;
 	}
 
-	public void setPlays(ArrayList<Plays> plays) {
-		this.plays = plays;
+	public void setPlays(ArrayList<Play> plays) {
+		this.play = plays;
 	}
 
 	public static long getSerialversionuid() {
