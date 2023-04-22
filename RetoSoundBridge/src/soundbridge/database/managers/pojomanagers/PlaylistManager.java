@@ -1,9 +1,10 @@
-package soundbridge.database.managers;
+package soundbridge.database.managers.pojomanagers;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
+import soundbridge.database.managers.ManagerAbstract;
 import soundbridge.database.pojos.Playlist;
 
 public class PlaylistManager extends ManagerAbstract<Playlist> {

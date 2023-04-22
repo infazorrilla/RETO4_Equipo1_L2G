@@ -1,12 +1,13 @@
-package soundbridge.database.managers;
+package soundbridge.database.managers.pojomanagers;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
+import soundbridge.database.managers.ManagerAbstract;
 import soundbridge.database.pojos.Employee;
 
-public class ManagerEmployee extends ManagerAbstract<Employee> {
+public class EmployeeManager extends ManagerAbstract<Employee> {
 
 	@Override
 	public List<Employee> selectAll() throws SQLException, NotFoundException, Exception {
