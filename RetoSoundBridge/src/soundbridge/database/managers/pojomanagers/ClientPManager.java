@@ -5,8 +5,9 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.managers.ManagerAbstract;
+import soundbridge.database.pojos.ClientP;
 
-public class ClientP extends ManagerAbstract<ClientP> {
+public class ClientPManager extends ManagerAbstract<ClientP> {
 
 	@Override
 	public List<ClientP> selectAll() throws SQLException, NotFoundException, Exception {

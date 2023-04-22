@@ -9,7 +9,7 @@ public class Play implements Serializable {
 	private static final long serialVersionUID = 3973834720207596222L;
 
 	private int id = 0;
-	private Date reproductionDate = null;
+	private Date playDate = null;
 
 	private Client client = null;
 	private Song song = null;
@@ -22,12 +22,12 @@ public class Play implements Serializable {
 		this.id = id;
 	}
 
-	public Date getReproductionDate() {
-		return reproductionDate;
+	public Date getPlayDate() {
+		return playDate;
 	}
 
-	public void setReproductionDate(Date reproductionDate) {
-		this.reproductionDate = reproductionDate;
+	public void setPlayDate(Date playDate) {
+		this.playDate = playDate;
 	}
 
 	public Client getClient() {
@@ -52,7 +52,7 @@ public class Play implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(client, id, reproductionDate, song);
+		return Objects.hash(client, id, playDate, song);
 	}
 
 	@Override
@@ -64,14 +64,13 @@ public class Play implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Play other = (Play) obj;
-		return Objects.equals(client, other.client) && id == other.id
-				&& Objects.equals(reproductionDate, other.reproductionDate) && Objects.equals(song, other.song);
+		return Objects.equals(client, other.client) && id == other.id && Objects.equals(playDate, other.playDate)
+				&& Objects.equals(song, other.song);
 	}
 
 	@Override
 	public String toString() {
-		return "Play [id=" + id + ", reproductionDate=" + reproductionDate + ", client=" + client + ", song=" + song
-				+ "]";
+		return "Play [id=" + id + ", playDate=" + playDate + ", client=" + client + ", song=" + song + "]";
 	}
 
 }

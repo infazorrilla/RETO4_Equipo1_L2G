@@ -7,9 +7,6 @@ import java.util.Objects;
 
 public class Song implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4944962431162757875L;
 	private int id = 0;
 	private String name = null;

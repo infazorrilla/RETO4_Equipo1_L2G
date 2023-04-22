@@ -1,16 +1,15 @@
 package soundbridge.database.exception;
 
-public class NotFoundException extends Exception {
-	
+public class NotFoundException extends GenericDataBaseExceptionAbstract {
 
-	private static final long serialVersionUID = -2956866611454672829L;
+	private static final long serialVersionUID = 6295731313058703705L;
 
-	public NotFoundException() {
-		
-	}
-	
-	public NotFoundException (String message) {
+	public NotFoundException(String message) {
 		super(message);
+	}
+
+	public NotFoundException(Throwable cause) {
+		super(cause);
 	}
 
 }
