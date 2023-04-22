@@ -1,5 +1,6 @@
 package soundbridge.database.pojos;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class Employee extends Person {
@@ -10,10 +11,11 @@ public class Employee extends Person {
 	private String telephone = null;
 	private String email = null;
 	private String address = null;
-	private String ssNum = null;
-	private int salary = 0;
 	private String username = null;
 	private String passwd = null;
+	private String ssNum = null;
+	private int salary = 0;
+	private Date hireDate = null;
 
 	public String getPersonalId() {
 		return personalId;
@@ -47,22 +49,6 @@ public class Employee extends Person {
 		this.address = address;
 	}
 
-	public String getSsNum() {
-		return ssNum;
-	}
-
-	public void setSsNum(String ssNum) {
-		this.ssNum = ssNum;
-	}
-
-	public int getSalary() {
-		return salary;
-	}
-
-	public void setSalary(int salary) {
-		this.salary = salary;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -79,6 +65,30 @@ public class Employee extends Person {
 		this.passwd = passwd;
 	}
 
+	public String getSsNum() {
+		return ssNum;
+	}
+
+	public void setSsNum(String ssNum) {
+		this.ssNum = ssNum;
+	}
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+
+	public Date getHireDate() {
+		return hireDate;
+	}
+
+	public void setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -87,7 +97,8 @@ public class Employee extends Person {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(address, email, passwd, personalId, salary, ssNum, telephone, username);
+		result = prime * result
+				+ Objects.hash(address, email, hireDate, passwd, personalId, salary, ssNum, telephone, username);
 		return result;
 	}
 
@@ -101,16 +112,18 @@ public class Employee extends Person {
 			return false;
 		Employee other = (Employee) obj;
 		return Objects.equals(address, other.address) && Objects.equals(email, other.email)
-				&& Objects.equals(passwd, other.passwd) && Objects.equals(personalId, other.personalId)
-				&& salary == other.salary && Objects.equals(ssNum, other.ssNum)
-				&& Objects.equals(telephone, other.telephone) && Objects.equals(username, other.username);
+				&& Objects.equals(hireDate, other.hireDate) && Objects.equals(passwd, other.passwd)
+				&& Objects.equals(personalId, other.personalId) && salary == other.salary
+				&& Objects.equals(ssNum, other.ssNum) && Objects.equals(telephone, other.telephone)
+				&& Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
 		return "Employee [personalId=" + personalId + ", telephone=" + telephone + ", email=" + email + ", address="
-				+ address + ", ssNum=" + ssNum + ", salary=" + salary + ", username=" + username + ", passwd=" + passwd
-				+ "]";
+				+ address + ", username=" + username + ", passwd=" + passwd + ", ssNum=" + ssNum + ", salary=" + salary
+				+ ", hireDate=" + hireDate + ", id=" + id + ", name=" + name + ", lastName=" + lastName
+				+ ", nationality=" + nationality + ", gender=" + gender + ", birthDate=" + birthDate + "]";
 	}
 
 }

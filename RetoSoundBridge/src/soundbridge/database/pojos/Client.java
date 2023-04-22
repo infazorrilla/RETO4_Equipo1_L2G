@@ -2,7 +2,6 @@ package soundbridge.database.pojos;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
 
 public class Client extends Person implements Serializable {
@@ -16,7 +15,7 @@ public class Client extends Person implements Serializable {
 	protected String address = null;
 	protected String email = null;
 
-	protected ArrayList<Play> play = null;
+	protected ArrayList<Play> plays = null;
 
 	public String getUsername() {
 		return username;
@@ -67,11 +66,11 @@ public class Client extends Person implements Serializable {
 	}
 
 	public ArrayList<Play> getPlays() {
-		return play;
+		return plays;
 	}
 
 	public void setPlays(ArrayList<Play> plays) {
-		this.play = plays;
+		this.plays = plays;
 	}
 
 	public static long getSerialversionuid() {
@@ -82,7 +81,7 @@ public class Client extends Person implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(address, email, passwd, personalId, telephone, username);
+		result = prime * result + Objects.hash(address, email, passwd, personalId, plays, telephone, username);
 		return result;
 	}
 
@@ -97,20 +96,16 @@ public class Client extends Person implements Serializable {
 		Client other = (Client) obj;
 		return Objects.equals(address, other.address) && Objects.equals(email, other.email)
 				&& Objects.equals(passwd, other.passwd) && Objects.equals(personalId, other.personalId)
-				&& Objects.equals(telephone, other.telephone) && Objects.equals(username, other.username);
+				&& Objects.equals(plays, other.plays) && Objects.equals(telephone, other.telephone)
+				&& Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
 		return "Client [username=" + username + ", passwd=" + passwd + ", personalId=" + personalId + ", telephone="
-				+ telephone + ", address=" + address + ", email=" + email + ", id=" + id + ", name=" + name
-				+ ", lastName=" + lastName + ", nationality=" + nationality + ", gender=" + gender + ", birthDate="
-				+ birthDate + ", getUsername()=" + getUsername() + ", getPasswd()=" + getPasswd() + ", getPersonalId()="
-				+ getPersonalId() + ", getTelephone()=" + getTelephone() + ", getAddress()=" + getAddress()
-				+ ", getEmail()=" + getEmail() + ", hashCode()=" + hashCode() + ", getId()=" + getId() + ", getName()="
-				+ getName() + ", getLastName()=" + getLastName() + ", getNationality()=" + getNationality()
-				+ ", getGender()=" + getGender() + ", getBirthDate()=" + getBirthDate() + ", toString()="
-				+ super.toString() + ", getClass()=" + getClass() + "]";
+				+ telephone + ", address=" + address + ", email=" + email + ", plays=" + plays + ", id=" + id
+				+ ", name=" + name + ", lastName=" + lastName + ", nationality=" + nationality + ", gender=" + gender
+				+ ", birthDate=" + birthDate + "]";
 	}
 
 }

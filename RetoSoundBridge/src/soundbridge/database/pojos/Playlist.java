@@ -12,8 +12,8 @@ public class Playlist implements Serializable {
 	private String description = null;
 	private Date creationDate = null;
 
-	private ClientP clienteP = null;
-	private ClientPp clientePp = null;
+	private ClientP clientP = null;
+	private ClientPP clientPP = null;
 	private ArrayList<Contain> contains = null;
 
 	public int getId() {
@@ -40,20 +40,20 @@ public class Playlist implements Serializable {
 		this.creationDate = creationDate;
 	}
 
-	public ClientP getClienteP() {
-		return clienteP;
+	public ClientP getClientP() {
+		return clientP;
 	}
 
-	public void setClienteP(ClientP clienteP) {
-		this.clienteP = clienteP;
+	public void setClientP(ClientP clientP) {
+		this.clientP = clientP;
 	}
 
-	public ClientPp getClientePp() {
-		return clientePp;
+	public ClientPP getClientPP() {
+		return clientPP;
 	}
 
-	public void setClientePp(ClientPp clientePp) {
-		this.clientePp = clientePp;
+	public void setClientPP(ClientPP clientPP) {
+		this.clientPP = clientPP;
 	}
 
 	public ArrayList<Contain> getContains() {
@@ -70,7 +70,7 @@ public class Playlist implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(clienteP, contains, creationDate, description, id);
+		return Objects.hash(clientP, clientPP, contains, creationDate, description, id);
 	}
 
 	@Override
@@ -82,18 +82,15 @@ public class Playlist implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Playlist other = (Playlist) obj;
-		return Objects.equals(clienteP, other.clienteP) && Objects.equals(contains, other.contains)
-				&& Objects.equals(creationDate, other.creationDate) && Objects.equals(description, other.description)
-				&& id == other.id;
+		return Objects.equals(clientP, other.clientP) && Objects.equals(clientPP, other.clientPP)
+				&& Objects.equals(contains, other.contains) && Objects.equals(creationDate, other.creationDate)
+				&& Objects.equals(description, other.description) && id == other.id;
 	}
 
 	@Override
 	public String toString() {
-		return "Playlist [id=" + id + ", description=" + description + ", creationDate=" + creationDate + ", clienteP="
-				+ clienteP + ", contains=" + contains + ", getId()=" + getId() + ", getDescription()="
-				+ getDescription() + ", getCreationDate()=" + getCreationDate() + ", getClienteP()=" + getClienteP()
-				+ ", getContains()=" + getContains() + ", hashCode()=" + hashCode() + ", getClass()=" + getClass()
-				+ ", toString()=" + super.toString() + "]";
+		return "Playlist [id=" + id + ", description=" + description + ", creationDate=" + creationDate + ", clientP="
+				+ clientP + ", clientPP=" + clientPP + ", contains=" + contains + "]";
 	}
 
 }
