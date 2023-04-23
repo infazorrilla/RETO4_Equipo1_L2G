@@ -8,7 +8,7 @@ public class ClientP extends Client {
 	private static final long serialVersionUID = 4111478646411618913L;
 
 	private String bankAccount = null;
-	private Date subscriptionDate = null;
+	private Date suscriptionDate = null;
 
 	private Playlist playlist = null;
 
@@ -20,12 +20,12 @@ public class ClientP extends Client {
 		this.bankAccount = bankAccount;
 	}
 
-	public Date getSubscriptionDate() {
-		return subscriptionDate;
+	public Date getSuscriptionDate() {
+		return suscriptionDate;
 	}
 
-	public void setSubscriptionDate(Date subscriptionDate) {
-		this.subscriptionDate = subscriptionDate;
+	public void setSuscriptionDate(Date suscriptionDate) {
+		this.suscriptionDate = suscriptionDate;
 	}
 
 	public Playlist getPlaylist() {
@@ -44,7 +44,7 @@ public class ClientP extends Client {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(bankAccount, subscriptionDate);
+		result = prime * result + Objects.hash(bankAccount, suscriptionDate);
 		return result;
 	}
 
@@ -58,16 +58,16 @@ public class ClientP extends Client {
 			return false;
 		ClientP other = (ClientP) obj;
 		return Objects.equals(bankAccount, other.bankAccount)
-				&& Objects.equals(subscriptionDate, other.subscriptionDate);
+				&& Objects.equals(suscriptionDate, other.suscriptionDate);
 	}
 
 	@Override
 	public String toString() {
-		return "ClientP [bankAccount=" + bankAccount + ", subscriptionDate=" + subscriptionDate + ", username="
+		return "ClientP [bankAccount=" + bankAccount + ", subscriptionDate=" + suscriptionDate + ", username="
 				+ username + ", passwd=" + passwd + ", personalId=" + personalId + ", telephone=" + telephone
 				+ ", address=" + address + ", email=" + email + ", id=" + id + ", name=" + name + ", lastName="
 				+ lastName + ", nationality=" + nationality + ", gender=" + gender + ", birthDate=" + birthDate
-				+ ", getBankAccount()=" + getBankAccount() + ", getSubscriptionDate()=" + getSubscriptionDate()
+				+ ", getBankAccount()=" + getBankAccount() + ", getSubscriptionDate()=" + getSuscriptionDate()
 				+ ", hashCode()=" + hashCode() + ", getId()=" + getId() + ", getName()=" + getName()
 				+ ", getLastName()=" + getLastName() + ", getNationality()=" + getNationality() + ", getGender()="
 				+ getGender() + ", getBirthDate()=" + getBirthDate() + ", toString()=" + super.toString()

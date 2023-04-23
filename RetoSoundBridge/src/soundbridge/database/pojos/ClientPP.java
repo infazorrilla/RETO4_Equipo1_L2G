@@ -9,7 +9,7 @@ public class ClientPP extends Client {
 	private static final long serialVersionUID = -7048604268786892326L;
 
 	private String bankAccount = null;
-	private Date subscriptionDate = null;
+	private Date suscriptionDate = null;
 
 	private ArrayList<Playlist> playlists = null;
 	private ArrayList<Review> reviews = null;
@@ -22,12 +22,12 @@ public class ClientPP extends Client {
 		this.bankAccount = bankAccount;
 	}
 
-	public Date getSubscriptionDate() {
-		return subscriptionDate;
+	public Date getSuscriptionDate() {
+		return suscriptionDate;
 	}
 
-	public void setSubscriptionDate(Date subscriptionDate) {
-		this.subscriptionDate = subscriptionDate;
+	public void setSuscriptionDate(Date suscriptionDate) {
+		this.suscriptionDate = suscriptionDate;
 	}
 
 	public ArrayList<Playlist> getPlaylists() {
@@ -54,7 +54,7 @@ public class ClientPP extends Client {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(bankAccount, playlists, reviews, subscriptionDate);
+		result = prime * result + Objects.hash(bankAccount, playlists, reviews, suscriptionDate);
 		return result;
 	}
 
@@ -68,17 +68,17 @@ public class ClientPP extends Client {
 			return false;
 		ClientPP other = (ClientPP) obj;
 		return Objects.equals(bankAccount, other.bankAccount) && Objects.equals(playlists, other.playlists)
-				&& Objects.equals(reviews, other.reviews) && Objects.equals(subscriptionDate, other.subscriptionDate);
+				&& Objects.equals(reviews, other.reviews) && Objects.equals(suscriptionDate, other.suscriptionDate);
 	}
 
 	@Override
 	public String toString() {
-		return "ClientPp [bankAccount=" + bankAccount + ", subscriptionDate=" + subscriptionDate + ", playlists="
+		return "ClientPp [bankAccount=" + bankAccount + ", subscriptionDate=" + suscriptionDate + ", playlists="
 				+ playlists + ", reviews=" + reviews + ", username=" + username + ", passwd=" + passwd + ", personalId="
 				+ personalId + ", telephone=" + telephone + ", address=" + address + ", email=" + email + ", id=" + id
 				+ ", name=" + name + ", lastName=" + lastName + ", nationality=" + nationality + ", gender=" + gender
 				+ ", birthDate=" + birthDate + ", getBankAccount()=" + getBankAccount() + ", getSubscriptionDate()="
-				+ getSubscriptionDate() + ", getPlaylists()=" + getPlaylists() + ", getReviews()=" + getReviews()
+				+ getSuscriptionDate() + ", getPlaylists()=" + getPlaylists() + ", getReviews()=" + getReviews()
 				+ ", hashCode()=" + hashCode() + ", getUsername()=" + getUsername() + ", getPasswd()=" + getPasswd()
 				+ ", getPersonalId()=" + getPersonalId() + ", getTelephone()=" + getTelephone() + ", getAddress()="
 				+ getAddress() + ", getEmail()=" + getEmail() + ", toString()=" + super.toString() + ", getId()="
