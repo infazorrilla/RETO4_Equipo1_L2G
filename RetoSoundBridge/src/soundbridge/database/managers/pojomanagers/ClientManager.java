@@ -66,7 +66,6 @@ public class ClientManager extends ManagerAbstract<Client> {
 				String telephone = resultSet.getString("telephone");
 				String email = resultSet.getString("email");
 				String address = resultSet.getString("address");
-				String type = resultSet.getString("type");
 				String username = resultSet.getString("username");
 				String passwd = resultSet.getString("passwd");
 
@@ -82,11 +81,6 @@ public class ClientManager extends ManagerAbstract<Client> {
 				client.setAddress(address);
 				client.setUsername(username);
 				client.setPasswd(passwd);
-
-				if (type.equalsIgnoreCase("Premium"))
-					client = (ClientP) client;
-				else if (type.equalsIgnoreCase("Premium Plus"))
-					client = (ClientPP) client;
 
 				ret.add(client);
 			}
@@ -254,6 +248,19 @@ public class ClientManager extends ManagerAbstract<Client> {
 			;
 		}
 
+	}
+	
+	public Client getClientById(int idClient) throws NotFoundException, SQLException, Exception {
+		Client ret = null;
+		
+		ArrayList<Client> clients = (ArrayList<Client>) selectAll();
+		
+		for (Client client : clients) {
+			if (client.getId() == idClient)
+				ret = client;
+		}
+		
+		return ret;
 	}
 
 }

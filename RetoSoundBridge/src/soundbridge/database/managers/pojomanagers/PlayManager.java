@@ -11,7 +11,9 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.managers.ManagerAbstract;
+import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Play;
+import soundbridge.database.pojos.Song;
 import soundbridge.database.utils.DBUtils;
 
 public class PlayManager extends ManagerAbstract<Play> {
@@ -53,11 +55,18 @@ public class PlayManager extends ManagerAbstract<Play> {
 
 				int id = resultSet.getInt("id");
 
-				java.sql.Date sqlPlayDate = resultSet.getDate("playDate");
+				java.sql.Timestamp sqlPlayDate = resultSet.getTimestamp("playDate");
 				java.util.Date playDate = new java.util.Date(sqlPlayDate.getTime());
+				
+				int idClient = resultSet.getInt("idClient");				
+				int idSong = resultSet.getInt("idSong");
 				
 				play.setId(id);
 				play.setPlayDate(playDate);
+				play.setClient(new Client());
+				play.getClient().setId(idClient);
+				play.setSong(new Song());
+				play.getSong().setId(idSong);
 
 				ret.add(play);
 			}
@@ -102,8 +111,8 @@ public class PlayManager extends ManagerAbstract<Play> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO Play (idClient, idSong) VALUES ('"
-					+ play.getClient().getId() + "', '" + play.getSong().getId() + "')";
+			String sql = "INSERT INTO Play (idClient, idSong) VALUES ("
+					+ play.getClient().getId() + ", " + play.getSong().getId() + ")";
 
 			statement.executeUpdate(sql);
 
@@ -138,14 +147,14 @@ public class PlayManager extends ManagerAbstract<Play> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE Play SET idCliente = ?, idSong = ?, playDate = ? where id = ?";
+			String sql = "UPDATE Play SET idClient = ?, idSong = ?, playDate = ? where id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setInt(1, play.getClient().getId());
 			preparedStatement.setInt(2, play.getSong().getId());
-			preparedStatement.setDate(5, new java.sql.Date((play.getPlayDate()).getTime()));
-			preparedStatement.setInt(13, play.getId());
+			preparedStatement.setDate(3, new java.sql.Date((play.getPlayDate()).getTime()));
+			preparedStatement.setInt(4, play.getId());
 
 			preparedStatement.executeUpdate();
 
