@@ -9,6 +9,7 @@ public class Playlist implements Serializable {
 
 	private static final long serialVersionUID = 4521317969846887938L;
 	private int id = 0;
+	private String name = null;
 	private String description = null;
 	private Date creationDate = null;
 
@@ -22,6 +23,14 @@ public class Playlist implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescription() {
@@ -70,7 +79,7 @@ public class Playlist implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(clientP, clientPP, contains, creationDate, description, id);
+		return Objects.hash(clientP, clientPP, contains, creationDate, description, id, name);
 	}
 
 	@Override
@@ -84,13 +93,13 @@ public class Playlist implements Serializable {
 		Playlist other = (Playlist) obj;
 		return Objects.equals(clientP, other.clientP) && Objects.equals(clientPP, other.clientPP)
 				&& Objects.equals(contains, other.contains) && Objects.equals(creationDate, other.creationDate)
-				&& Objects.equals(description, other.description) && id == other.id;
+				&& Objects.equals(description, other.description) && id == other.id && Objects.equals(name, other.name);
 	}
 
 	@Override
 	public String toString() {
-		return "Playlist [id=" + id + ", description=" + description + ", creationDate=" + creationDate + ", clientP="
-				+ clientP + ", clientPP=" + clientPP + ", contains=" + contains + "]";
+		return "Playlist [id=" + id + ", name=" + name + ", description=" + description + ", creationDate="
+				+ creationDate + ", clientP=" + clientP + ", clientPP=" + clientPP + ", contains=" + contains + "]";
 	}
 
 }

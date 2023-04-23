@@ -11,6 +11,7 @@ public class ArtGroup implements Serializable {
 	private int id = 0;
 	private String name = null;
 	private String description = null;
+	private String image = null;
 
 	private ArrayList<Artist> artists = null;
 	private ArrayList<Song> songs = null;
@@ -39,6 +40,14 @@ public class ArtGroup implements Serializable {
 		this.description = description;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public ArrayList<Artist> getArtists() {
 		return artists;
 	}
@@ -61,7 +70,7 @@ public class ArtGroup implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(artists, description, id, name, songs);
+		return Objects.hash(artists, description, id, image, name, songs);
 	}
 
 	@Override
@@ -74,13 +83,14 @@ public class ArtGroup implements Serializable {
 			return false;
 		ArtGroup other = (ArtGroup) obj;
 		return Objects.equals(artists, other.artists) && Objects.equals(description, other.description)
-				&& id == other.id && Objects.equals(name, other.name) && Objects.equals(songs, other.songs);
+				&& id == other.id && Objects.equals(image, other.image) && Objects.equals(name, other.name)
+				&& Objects.equals(songs, other.songs);
 	}
 
 	@Override
 	public String toString() {
-		return "ArtGroup [id=" + id + ", name=" + name + ", description=" + description + ", artists=" + artists
-				+ ", songs=" + songs + "]";
+		return "ArtGroup [id=" + id + ", name=" + name + ", description=" + description + ", image=" + image
+				+ ", artists=" + artists + ", songs=" + songs + "]";
 	}
 
 }
