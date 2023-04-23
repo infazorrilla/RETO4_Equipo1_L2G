@@ -249,18 +249,5 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 
 	}
-	
-	public Client getClientById(int idClient) throws NotFoundException, SQLException, Exception {
-		Client ret = null;
-		
-		ArrayList<Client> clients = (ArrayList<Client>) selectAll();
-		
-		for (Client client : clients) {
-			if (client.getId() == idClient)
-				ret = client;
-		}
-		
-		return ret;
-	}
 
 }
