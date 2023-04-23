@@ -39,7 +39,7 @@ public class ReviewManagerTest {
 	@Test
 	public void testAInsertAndSelectAllReview() {
 		boolean thrown = false;
-		boolean inserted = false;
+		boolean isInserted = false;
 
 		Review review = new Review();
 
@@ -72,7 +72,7 @@ public class ReviewManagerTest {
 			arraySizeAfter = reviews.size();
 
 			if (arraySizeAfter > arraySizeBefore)
-				inserted = true;
+				isInserted = true;
 
 		} catch (NotFoundException nfe) {
 			thrown = true;
@@ -87,7 +87,7 @@ public class ReviewManagerTest {
 
 		assertFalse(thrown);
 		assertNotNull(reviews);
-		assertTrue(inserted);
+		assertTrue(isInserted);
 	}
 
 	/**

@@ -39,7 +39,7 @@ public class PlayManagerTest {
 	@Test
 	public void testAInsertAndSelectAllPlay() {
 		boolean thrown = false;
-		boolean inserted = false;
+		boolean isInserted = false;
 
 		Play play = new Play();
 
@@ -68,7 +68,7 @@ public class PlayManagerTest {
 			arraySizeAfter = plays.size();
 
 			if (arraySizeAfter > arraySizeBefore)
-				inserted = true;
+				isInserted = true;
 
 		} catch (NotFoundException nfe) {
 			thrown = true;
@@ -80,7 +80,7 @@ public class PlayManagerTest {
 
 		assertFalse(thrown);
 		assertNotNull(plays);
-		assertTrue(inserted);
+		assertTrue(isInserted);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class PlayManagerTest {
 	@Test
 	public void testBUpdatePlay() {
 		boolean thrown = false;
-		boolean updated = true;
+		boolean isUpdated = true;
 		
 		ArrayList<Play> plays = null;
 		Play insertedPlay = null;
@@ -106,7 +106,7 @@ public class PlayManagerTest {
 			for (Play play : plays) {
 				if (play.getId() == insertedPlay.getId()) {
 					if (play.getClient().getId() == 2)
-						updated = true;
+						isUpdated = true;
 				}
 			}
 
@@ -122,7 +122,7 @@ public class PlayManagerTest {
 
 		assertFalse(thrown);
 		assertNotNull(plays);
-		assertTrue(updated);
+		assertTrue(isUpdated);
 	}
 
 	/**

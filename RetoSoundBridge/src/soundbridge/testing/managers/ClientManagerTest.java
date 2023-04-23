@@ -72,7 +72,7 @@ public class ClientManagerTest {
 	@Test
 	public void testBSelectAllClients() {
 		boolean thrown = false;
-		boolean inserted = false;
+		boolean isInserted = false;
 
 		ArrayList<Client> clients = null;
 
@@ -81,7 +81,7 @@ public class ClientManagerTest {
 
 			for (Client client : clients) {
 				if (client.getUsername().equalsIgnoreCase("pedrolopez"))
-					inserted = true;
+					isInserted = true;
 			}
 
 		} catch (NotFoundException nfe) {
@@ -94,7 +94,7 @@ public class ClientManagerTest {
 
 		assertNotNull(clients);
 		assertFalse(thrown);
-		assertTrue(inserted);
+		assertTrue(isInserted);
 	}
 
 	/**

@@ -76,7 +76,7 @@ public class EmployeeManagerTest {
 	@Test
 	public void testBSelectAllEmployees() {
 		boolean thrown = false;
-		boolean inserted = false;
+		boolean isInserted = false;
 
 		ArrayList<Employee> employees = null;
 
@@ -85,7 +85,7 @@ public class EmployeeManagerTest {
 
 			for (Employee employee : employees) {
 				if (employee.getUsername().equalsIgnoreCase("anagarcia"))
-					inserted = true;
+					isInserted = true;
 			}
 
 		} catch (NotFoundException nfe) {
@@ -98,7 +98,7 @@ public class EmployeeManagerTest {
 
 		assertNotNull(employees);
 		assertFalse(thrown);
-		assertTrue(inserted);
+		assertTrue(isInserted);
 
 	}
 
