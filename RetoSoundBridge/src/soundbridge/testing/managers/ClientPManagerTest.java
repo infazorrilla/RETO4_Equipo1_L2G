@@ -3,18 +3,18 @@ package soundbridge.testing.managers;
 import static org.junit.Assert.*;
 
 
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.pojomanagers.ClientManager;
+
 import soundbridge.database.managers.pojomanagers.ClientPManager;
-import soundbridge.database.pojos.Client;
+
 import soundbridge.database.pojos.ClientP;
 
 
@@ -44,13 +44,20 @@ public class ClientPManagerTest {
 	public void testAInsertClient() {
 		boolean thrown = false;
 		ClientP clientp = new ClientP();
-		//Client client = new ClientP();
-		//client.setId(3);
-		
-		//clientp.setId(client.getId());
+
 		clientp.setBankAccount("1234567Abc");
 		clientp.setSuscriptionDate(new java.util.Date(85, 3, 29));
-
+		clientp.setName("Pedro");
+		clientp.setLastName("López");
+		clientp.setNationality("España");
+		clientp.setGender("Hombre");
+		clientp.setPersonalId("16178402X");
+		clientp.setTelephone("+34689234430");
+		clientp.setEmail("pedro_lopez@gmail.com");
+		clientp.setAddress("Calle del Licienciado Poza 10, 4C, 48008 Bilbao, Bizkaia, España");
+		clientp.setUsername("pedrolopez");
+		clientp.setPasswd("pedrolopez85");
+		clientp.setBirthDate(new java.util.Date(85, 3, 29));
 		try {
 			clientpManager.insert(clientp);
 		} catch (SQLException sqle) {

@@ -119,7 +119,7 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 			String sql = "INSERT INTO Playlist (name, description,creationDate,idClienteP,idClientePp) VALUES ("
 					+  playlist.getClientPP().getId() + ", " + playlist.getClientP().getId() + ", " + playlist.getId() + ", '"
-					+ playlist.getName() + "', '" + playlist.getDescription() + "' + ' " playlist.getCreationDate() + "')";
+					+ playlist.getName() + "', '" + playlist.getDescription() +"','" + playlist.getCreationDate() + "')";
 
 			statement.executeUpdate(sql);
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.managers.ManagerAbstract;
-
+import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 
 import soundbridge.database.pojos.Playlist;
@@ -62,10 +62,9 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 				clientp.setId(idClient);
 				clientp.setPlaylist(new Playlist());
-				clientp.getPlaylist().setId(idPlaylist);	
+				clientp.getPlaylist().setId(idPlaylist);
 				clientp.setBankAccount(bankAccount);
 				clientp.setSuscriptionDate(suscriptionDate);
-				
 
 				ret.add(clientp);
 			}
@@ -110,14 +109,28 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO ClientP (bankAccount, suscriptionDate) VALUES ( '"
-					+ clientp.getBankAccount() + "', '" + clientp.getSuscriptionDate() + "')";
+			ClientManager clientManager = new ClientManager();
+			clientManager.insert(clientp);
+			ArrayList<Client> clients = (ArrayList<Client>) clientManager.selectAll();
+
+			int idClient = 0;
+
+			for (Client client : clients) {
+				if (client.getPersonalId().equalsIgnoreCase(clientp.getPersonalId()))
+					idClient = client.getId();
+			}
+
+			String sql = "INSERT INTO ClientP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
+					+ new java.sql.Date((clientp.getSuscriptionDate()).getTime()) + "','" + clientp.getBankAccount()
+					+ "')";
 
 			statement.executeUpdate(sql);
 
 		} catch (SQLException sqle) {
+
 			throw sqle;
 		} catch (Exception e) {
+
 			throw e;
 		} finally {
 			try {
@@ -152,7 +165,6 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 			preparedStatement.setString(1, clientp.getBankAccount());
 			preparedStatement.setDate(2, new java.sql.Date((clientp.getSuscriptionDate()).getTime()));
-			
 
 			preparedStatement.executeUpdate();
 

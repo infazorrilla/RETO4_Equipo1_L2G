@@ -11,7 +11,8 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.managers.ManagerAbstract;
-
+import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
 
 import soundbridge.database.utils.DBUtils;
@@ -105,14 +106,28 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO ClientPP (bankAccount, suscriptionDate) VALUES ( '"
-					+ clientpp.getBankAccount() + "', '" + clientpp.getSuscriptionDate() + "')";
+			ClientManager clientManager = new ClientManager();
+			clientManager.insert(clientpp);
+			ArrayList<Client> clients = (ArrayList<Client>) clientManager.selectAll();
+
+			int idClient = 0;
+
+			for (Client client : clients) {
+				if (client.getPersonalId().equalsIgnoreCase(clientpp.getPersonalId()))
+					idClient = client.getId();
+			}
+
+			String sql = "INSERT INTO ClientP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
+					+ new java.sql.Date((clientpp.getSuscriptionDate()).getTime()) + "','" + clientpp.getBankAccount()
+					+ "')";
 
 			statement.executeUpdate(sql);
 
 		} catch (SQLException sqle) {
+
 			throw sqle;
 		} catch (Exception e) {
+
 			throw e;
 		} finally {
 			try {

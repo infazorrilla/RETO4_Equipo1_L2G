@@ -8,6 +8,7 @@ import java.util.Objects;
 public class Playlist implements Serializable {
 
 	private static final long serialVersionUID = 4521317969846887938L;
+	
 	private int id = 0;
 	private String name = null;
 	private String description = null;
