@@ -14,6 +14,7 @@ public class Song implements Serializable {
 	private int duration = 0;
 	private String cover = null;
 	private String lang = null;
+	private String source = null;
 
 	private ArrayList<Play> plays = null;
 	private ArrayList<Contain> contains = null;
@@ -70,6 +71,14 @@ public class Song implements Serializable {
 		this.lang = lang;
 	}
 
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	public ArrayList<Play> getPlays() {
 		return plays;
 	}
@@ -116,7 +125,8 @@ public class Song implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(album, artGroup, artist, contains, cover, cretaion, duration, id, lang, name, plays);
+		return Objects.hash(album, artGroup, artist, contains, cover, cretaion, duration, id, lang, name, plays,
+				source);
 	}
 
 	@Override
@@ -132,14 +142,15 @@ public class Song implements Serializable {
 				&& Objects.equals(artist, other.artist) && Objects.equals(contains, other.contains)
 				&& Objects.equals(cover, other.cover) && Objects.equals(cretaion, other.cretaion)
 				&& duration == other.duration && id == other.id && Objects.equals(lang, other.lang)
-				&& Objects.equals(name, other.name) && Objects.equals(plays, other.plays);
+				&& Objects.equals(name, other.name) && Objects.equals(plays, other.plays)
+				&& Objects.equals(source, other.source);
 	}
 
 	@Override
 	public String toString() {
 		return "Song [id=" + id + ", name=" + name + ", cretaion=" + cretaion + ", duration=" + duration + ", cover="
-				+ cover + ", lang=" + lang + ", plays=" + plays + ", contains=" + contains + ", album=" + album
-				+ ", artist=" + artist + ", artGroup=" + artGroup + "]";
+				+ cover + ", lang=" + lang + ", source=" + source + ", plays=" + plays + ", contains=" + contains
+				+ ", album=" + album + ", artist=" + artist + ", artGroup=" + artGroup + "]";
 	}
 
 }
