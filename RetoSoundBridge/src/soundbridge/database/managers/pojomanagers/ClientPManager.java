@@ -54,7 +54,7 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 				ClientP clientp = new ClientP();
 
-				int idPlaylist = resultSet.getInt("idPlaylist");
+				
 				int idClient = resultSet.getInt("idClient");
 				String bankAccount = resultSet.getString("bankAccount");
 				java.sql.Date sqlsuscriptionDate = resultSet.getDate("suscriptionDate");
@@ -62,7 +62,6 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 				clientp.setId(idClient);
 				clientp.setPlaylist(new Playlist());
-				clientp.getPlaylist().setId(idPlaylist);
 				clientp.setBankAccount(bankAccount);
 				clientp.setSuscriptionDate(suscriptionDate);
 
@@ -159,12 +158,12 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE ClientP SET bankAccount = ?, subscriptionDate = ?";
+			String sql = "UPDATE ClientP SET bankAccount = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setString(1, clientp.getBankAccount());
-			preparedStatement.setDate(2, new java.sql.Date((clientp.getSuscriptionDate()).getTime()));
+
 
 			preparedStatement.executeUpdate();
 
@@ -199,9 +198,9 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ClientP WHERE id = ?";
+			String sql = "DELETE FROM ClientP WHERE bankAccount = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, clientp.getId());
+			preparedStatement.setString(1, clientp.getBankAccount());
 
 			preparedStatement.executeUpdate();
 

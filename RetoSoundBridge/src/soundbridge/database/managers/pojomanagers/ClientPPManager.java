@@ -12,7 +12,6 @@ import java.util.List;
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.managers.ManagerAbstract;
 import soundbridge.database.pojos.Client;
-import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
 
 import soundbridge.database.utils.DBUtils;
@@ -55,13 +54,14 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 				ClientPP clientpp = new ClientPP();
 
 				
+				int idClient = resultSet.getInt("idClient");
 				String bankAccount = resultSet.getString("bankAccount");
 				java.sql.Date sqlsuscriptionDate = resultSet.getDate("suscriptionDate");
 				java.util.Date suscriptionDate = new java.util.Date(sqlsuscriptionDate.getTime());
-	
+
+				clientpp.setId(idClient);
 				clientpp.setBankAccount(bankAccount);
 				clientpp.setSuscriptionDate(suscriptionDate);
-				
 
 				ret.add(clientpp);
 			}
@@ -117,7 +117,7 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 					idClient = client.getId();
 			}
 
-			String sql = "INSERT INTO ClientP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
+			String sql = "INSERT INTO ClientPP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
 					+ new java.sql.Date((clientpp.getSuscriptionDate()).getTime()) + "','" + clientpp.getBankAccount()
 					+ "')";
 
@@ -156,13 +156,12 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE ClientPP SET bankAccount = ?, subscriptionDate = ?";
+			String sql = "UPDATE ClientPP SET bankAccount = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setString(1, clientpp.getBankAccount());
-			preparedStatement.setDate(2, new java.sql.Date((clientpp.getSuscriptionDate()).getTime()));
-			
+
 
 			preparedStatement.executeUpdate();
 
@@ -197,9 +196,9 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ClientPP WHERE id = ?";
+			String sql = "DELETE FROM ClientPP WHERE bankAccount = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, clientpp.getId());
+			preparedStatement.setString(1, clientpp.getBankAccount());
 
 			preparedStatement.executeUpdate();
 
