@@ -248,9 +248,9 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 
 	}
-	public boolean askForClientUsingIdAndPasswd(String personalId, String passwd) {
+	public boolean askForClientUsingIdAndPasswd(String username, String passwd) {
 
-		String sql = "select * from client where personalId=? and passwd=?";
+		String sql = "select * from client where username=? and passwd=?";
 
 		Connection connection = null;
 
@@ -264,7 +264,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, personalId);
+			preparedStatement.setString(1, username);
 			preparedStatement.setString(2, passwd);
 			resultSet = preparedStatement.executeQuery();
 
@@ -303,5 +303,5 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 		return false;
 	}
-
+	
 }

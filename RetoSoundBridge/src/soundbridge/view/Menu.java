@@ -60,7 +60,7 @@ public class Menu {
 			public void actionPerformed(ActionEvent e) {
 				Controller controller = new Controller();
 				
-				controller.checkLoginCliente(textFieldUserLogIn, passwordFieldLogIn);
+				controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
 				
 			}
 		});
