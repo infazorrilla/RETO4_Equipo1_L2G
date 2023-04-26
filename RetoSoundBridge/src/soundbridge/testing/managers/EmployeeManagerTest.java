@@ -11,7 +11,7 @@ import org.junit.runners.MethodSorters;
 import org.junit.Test;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.pojomanagers.EmployeeManager;
+import soundbridge.database.managers.EmployeeManager;
 import soundbridge.database.pojos.Employee;
 
 /**

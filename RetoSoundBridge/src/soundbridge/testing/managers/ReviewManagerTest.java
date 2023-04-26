@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.pojomanagers.ReviewManager;
+import soundbridge.database.managers.ReviewManager;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Review;
