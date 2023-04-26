@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 
 
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.pojomanagers.ClientPManager;
+import soundbridge.database.managers.ClientPManager;
 
 import soundbridge.database.pojos.ClientP;
 
