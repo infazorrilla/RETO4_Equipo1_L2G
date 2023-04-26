@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,30 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
-import soundbridge.database.pojos.Album;
-import soundbridge.database.pojos.ClientP;
-import soundbridge.database.pojos.ClientPP;
-import soundbridge.database.pojos.Playlist;
-
+import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.Play;
+import soundbridge.database.pojos.Song;
 import soundbridge.database.utils.DBUtils;
 
-public class PlaylistManager extends ManagerAbstract<Playlist> {
+public class PlayManager extends ManagerAbstract<Play> {
 
 	@Override
-	public List<Playlist> selectAll() throws SQLException, NotFoundException, Exception {
-		ArrayList<Playlist> ret = (ArrayList<Playlist>) doSelectAll();
+	public List<Play> selectAll() throws SQLException, NotFoundException, Exception {
+		ArrayList<Play> ret = (ArrayList<Play>) doSelectAll();
 
 		if (null == ret) {
-			throw new NotFoundException("There are no Playlists");
+			throw new NotFoundException("There are no Plays");
 		}
 
 		return ret;
 	}
-
-	public List<Playlist> doSelectAll() throws SQLException, Exception {
-		ArrayList<Playlist> ret = null;
-		String sql = "SELECT * FROM Playlist";
+	
+	public List<Play> doSelectAll() throws SQLException, Exception {
+		ArrayList<Play> ret = null;
+		String sql = "SELECT * FROM Play";
 
 		Connection connection = null;
 
@@ -51,30 +48,26 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 			while (resultSet.next()) {
 
 				if (null == ret)
-					ret = new ArrayList<Playlist>();
+					ret = new ArrayList<Play>();
 
-				Playlist playlist = new Playlist();
+				Play play = new Play();
 
 				int id = resultSet.getInt("id");
-				int idClientP = resultSet.getInt("idClientP");
-				int idClientPp = resultSet.getInt("idClientPp");
-				String name = resultSet.getString("name");
-				String description = resultSet.getString("description");
-				
-				java.sql.Date sqlCreationDate = resultSet.getDate("creationDate");
-				java.util.Date creationDate = new java.util.Date(sqlCreationDate.getTime());
-				
-				playlist.setId(id);
-				playlist.setClientPP(new ClientPP());
-				playlist.getClientPP().setId(idClientPp);
-				playlist.setClientP(new ClientP());
-				playlist.getClientP().setId(idClientP);
-				playlist.setName(name);
-				playlist.setDescription(description);
-				playlist.setCreationDate(creationDate);
-				
 
-				ret.add(playlist);
+				java.sql.Timestamp sqlPlayDate = resultSet.getTimestamp("playDate");
+				java.util.Date playDate = new java.util.Date(sqlPlayDate.getTime());
+				
+				int idClient = resultSet.getInt("idClient");				
+				int idSong = resultSet.getInt("idSong");
+				
+				play.setId(id);
+				play.setPlayDate(playDate);
+				play.setClient(new Client());
+				play.getClient().setId(idClient);
+				play.setSong(new Song());
+				play.getSong().setId(idSong);
+
+				ret.add(play);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -108,7 +101,7 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 	}
 
 	@Override
-	public void insert(Playlist playlist) throws SQLException, Exception {
+	public void insert(Play play) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -117,9 +110,8 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO Playlist (name, description,creationDate,idClienteP,idClientePp) VALUES ("
-					+  playlist.getClientPP().getId() + ", " + playlist.getClientP().getId() + ", " + playlist.getId() + ", '"
-					+ playlist.getName() + "', '" + playlist.getDescription() +"','" + playlist.getCreationDate() + "')";
+			String sql = "INSERT INTO Play (idClient, idSong) VALUES ("
+					+ play.getClient().getId() + ", " + play.getSong().getId() + ")";
 
 			statement.executeUpdate(sql);
 
@@ -141,11 +133,11 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 			}
 			;
 		}
-
+		
 	}
 
 	@Override
-	public void update(Playlist playlist) throws SQLException, Exception {
+	public void update(Play play) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -154,16 +146,14 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE Playlist SET id = ?, name = ?,creationDate = ?, idClienteP = ?, idClientePp = ?";
+			String sql = "UPDATE Play SET idClient = ?, idSong = ?, playDate = ? where id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setInt(1, playlist.getId());
-			preparedStatement.setString(2, playlist.getName());
-			preparedStatement.setDate(3, new java.sql.Date((playlist.getCreationDate()).getTime()));
-			preparedStatement.setInt(4, playlist.getClientP().getId());
-			preparedStatement.setInt(5, playlist.getClientPP().getId());
-			
+			preparedStatement.setInt(1, play.getClient().getId());
+			preparedStatement.setInt(2, play.getSong().getId());
+			preparedStatement.setDate(3, new java.sql.Date((play.getPlayDate()).getTime()));
+			preparedStatement.setInt(4, play.getId());
 
 			preparedStatement.executeUpdate();
 
@@ -186,10 +176,11 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 			;
 		}
 
+		
 	}
 
 	@Override
-	public void delete(Playlist playlist) throws SQLException, Exception {
+	public void delete(Play play) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -198,9 +189,9 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM Playlist WHERE id = ?";
+			String sql = "DELETE FROM Play WHERE id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, playlist.getId());
+			preparedStatement.setInt(1, play.getId());
 
 			preparedStatement.executeUpdate();
 

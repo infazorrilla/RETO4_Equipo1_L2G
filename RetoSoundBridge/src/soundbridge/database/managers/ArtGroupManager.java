@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,28 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
-import soundbridge.database.pojos.Client;
-import soundbridge.database.pojos.ClientPP;
-
+import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.utils.DBUtils;
 
-public class ClientPPManager extends ManagerAbstract<ClientPP> {
+public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 	@Override
-	public List<ClientPP> selectAll() throws SQLException, NotFoundException, Exception {
-		ArrayList<ClientPP> ret = (ArrayList<ClientPP>) doSelectAll();
+	public List<ArtGroup> selectAll() throws SQLException, NotFoundException, Exception {
+
+		ArrayList<ArtGroup> ret = (ArrayList<ArtGroup>) doSelectAll();
 
 		if (null == ret) {
-			throw new NotFoundException("There are no ClientPPs");
+			throw new NotFoundException("There are no Group of artists");
 		}
 
 		return ret;
 	}
 
-	public List<ClientPP> doSelectAll() throws SQLException, Exception {
-		ArrayList<ClientPP> ret = null;
-		String sql = "SELECT * FROM ClientPP";
+	public List<ArtGroup> doSelectAll() throws SQLException, Exception {
+		ArrayList<ArtGroup> ret = null;
+		String sql = "SELECT * FROM ArtGroup";
 
 		Connection connection = null;
 
@@ -49,21 +47,21 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 			while (resultSet.next()) {
 
 				if (null == ret)
-					ret = new ArrayList<ClientPP>();
+					ret = new ArrayList<ArtGroup>();
 
-				ClientPP clientpp = new ClientPP();
+				ArtGroup artGroup = new ArtGroup();
 
-				
-				int idClient = resultSet.getInt("idClient");
-				String bankAccount = resultSet.getString("bankAccount");
-				java.sql.Date sqlsuscriptionDate = resultSet.getDate("suscriptionDate");
-				java.util.Date suscriptionDate = new java.util.Date(sqlsuscriptionDate.getTime());
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String description = resultSet.getString("description");
+				String image = resultSet.getString("image");
 
-				clientpp.setId(idClient);
-				clientpp.setBankAccount(bankAccount);
-				clientpp.setSuscriptionDate(suscriptionDate);
+				artGroup.setId(id);
+				artGroup.setName(name);
+				artGroup.setDescription(description);
+				artGroup.setImage(image);
 
-				ret.add(clientpp);
+				ret.add(artGroup);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -97,7 +95,7 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 	}
 
 	@Override
-	public void insert(ClientPP clientpp) throws SQLException, Exception {
+	public void insert(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -106,28 +104,14 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			ClientManager clientManager = new ClientManager();
-			clientManager.insert(clientpp);
-			ArrayList<Client> clients = (ArrayList<Client>) clientManager.selectAll();
-
-			int idClient = 0;
-
-			for (Client client : clients) {
-				if (client.getPersonalId().equalsIgnoreCase(clientpp.getPersonalId()))
-					idClient = client.getId();
-			}
-
-			String sql = "INSERT INTO ClientPP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
-					+ new java.sql.Date((clientpp.getSuscriptionDate()).getTime()) + "','" + clientpp.getBankAccount()
-					+ "')";
+			String sql = "INSERT INTO ArtGroup (id, name, description, image) VALUES ('" + artGroup.getId() + "', '"
+					+ artGroup.getName() + "', '" + artGroup.getDescription() + "', '" + artGroup.getImage() + "')";
 
 			statement.executeUpdate(sql);
 
 		} catch (SQLException sqle) {
-
 			throw sqle;
 		} catch (Exception e) {
-
 			throw e;
 		} finally {
 			try {
@@ -147,7 +131,7 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 	}
 
 	@Override
-	public void update(ClientPP clientpp) throws SQLException, Exception {
+	public void update(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -156,12 +140,14 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE ClientPP SET bankAccount = ?";
+			String sql = "UPDATE ArtGroup SET name = ?, description = ?, image = ? where id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setString(1, clientpp.getBankAccount());
-
+			preparedStatement.setInt(1, artGroup.getId());
+			preparedStatement.setString(2, artGroup.getName());
+			preparedStatement.setString(13, artGroup.getDescription());
+			preparedStatement.setString(13, artGroup.getImage());
 
 			preparedStatement.executeUpdate();
 
@@ -187,7 +173,7 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 	}
 
 	@Override
-	public void delete(ClientPP clientpp) throws SQLException, Exception {
+	public void delete(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -196,9 +182,9 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ClientPP WHERE bankAccount = ?";
+			String sql = "DELETE FROM ArtGroup WHERE id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, clientpp.getBankAccount());
+			preparedStatement.setInt(1, artGroup.getId());
 
 			preparedStatement.executeUpdate();
 

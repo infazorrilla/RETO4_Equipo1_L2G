@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,29 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
 import soundbridge.database.pojos.Client;
-import soundbridge.database.pojos.ClientP;
+import soundbridge.database.pojos.ClientPP;
 
-import soundbridge.database.pojos.Playlist;
 import soundbridge.database.utils.DBUtils;
 
-public class ClientPManager extends ManagerAbstract<ClientP> {
+public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 	@Override
-	public List<ClientP> selectAll() throws SQLException, NotFoundException, Exception {
-		ArrayList<ClientP> ret = (ArrayList<ClientP>) doSelectAll();
+	public List<ClientPP> selectAll() throws SQLException, NotFoundException, Exception {
+		ArrayList<ClientPP> ret = (ArrayList<ClientPP>) doSelectAll();
 
 		if (null == ret) {
-			throw new NotFoundException("There are no ClientPs");
+			throw new NotFoundException("There are no ClientPPs");
 		}
 
 		return ret;
 	}
 
-	public List<ClientP> doSelectAll() throws SQLException, Exception {
-		ArrayList<ClientP> ret = null;
-		String sql = "SELECT * FROM ClientP";
+	public List<ClientPP> doSelectAll() throws SQLException, Exception {
+		ArrayList<ClientPP> ret = null;
+		String sql = "SELECT * FROM ClientPP";
 
 		Connection connection = null;
 
@@ -50,9 +48,9 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 			while (resultSet.next()) {
 
 				if (null == ret)
-					ret = new ArrayList<ClientP>();
+					ret = new ArrayList<ClientPP>();
 
-				ClientP clientp = new ClientP();
+				ClientPP clientpp = new ClientPP();
 
 				
 				int idClient = resultSet.getInt("idClient");
@@ -60,12 +58,11 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 				java.sql.Date sqlsuscriptionDate = resultSet.getDate("suscriptionDate");
 				java.util.Date suscriptionDate = new java.util.Date(sqlsuscriptionDate.getTime());
 
-				clientp.setId(idClient);
-				clientp.setPlaylist(new Playlist());
-				clientp.setBankAccount(bankAccount);
-				clientp.setSuscriptionDate(suscriptionDate);
+				clientpp.setId(idClient);
+				clientpp.setBankAccount(bankAccount);
+				clientpp.setSuscriptionDate(suscriptionDate);
 
-				ret.add(clientp);
+				ret.add(clientpp);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -99,7 +96,7 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 	}
 
 	@Override
-	public void insert(ClientP clientp) throws SQLException, Exception {
+	public void insert(ClientPP clientpp) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -109,18 +106,18 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 			statement = connection.createStatement();
 
 			ClientManager clientManager = new ClientManager();
-			clientManager.insert(clientp);
+			clientManager.insert(clientpp);
 			ArrayList<Client> clients = (ArrayList<Client>) clientManager.selectAll();
 
 			int idClient = 0;
 
 			for (Client client : clients) {
-				if (client.getPersonalId().equalsIgnoreCase(clientp.getPersonalId()))
+				if (client.getPersonalId().equalsIgnoreCase(clientpp.getPersonalId()))
 					idClient = client.getId();
 			}
 
-			String sql = "INSERT INTO ClientP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
-					+ new java.sql.Date((clientp.getSuscriptionDate()).getTime()) + "','" + clientp.getBankAccount()
+			String sql = "INSERT INTO ClientPP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
+					+ new java.sql.Date((clientpp.getSuscriptionDate()).getTime()) + "','" + clientpp.getBankAccount()
 					+ "')";
 
 			statement.executeUpdate(sql);
@@ -149,7 +146,7 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 	}
 
 	@Override
-	public void update(ClientP clientp) throws SQLException, Exception {
+	public void update(ClientPP clientpp) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -158,11 +155,11 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE ClientP SET bankAccount = ?";
+			String sql = "UPDATE ClientPP SET bankAccount = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setString(1, clientp.getBankAccount());
+			preparedStatement.setString(1, clientpp.getBankAccount());
 
 
 			preparedStatement.executeUpdate();
@@ -189,7 +186,7 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 	}
 
 	@Override
-	public void delete(ClientP clientp) throws SQLException, Exception {
+	public void delete(ClientPP clientpp) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -198,9 +195,9 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ClientP WHERE bankAccount = ?";
+			String sql = "DELETE FROM ClientPP WHERE bankAccount = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, clientp.getBankAccount());
+			preparedStatement.setString(1, clientpp.getBankAccount());
 
 			preparedStatement.executeUpdate();
 

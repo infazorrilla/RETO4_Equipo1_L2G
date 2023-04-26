@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,27 +10,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
-import soundbridge.database.pojos.ArtGroup;
+import soundbridge.database.pojos.ClientP;
+import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Playlist;
+
 import soundbridge.database.utils.DBUtils;
 
-public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
+public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 	@Override
-	public List<ArtGroup> selectAll() throws SQLException, NotFoundException, Exception {
-
-		ArrayList<ArtGroup> ret = (ArrayList<ArtGroup>) doSelectAll();
+	public List<Playlist> selectAll() throws SQLException, NotFoundException, Exception {
+		ArrayList<Playlist> ret = (ArrayList<Playlist>) doSelectAll();
 
 		if (null == ret) {
-			throw new NotFoundException("There are no Group of artists");
+			throw new NotFoundException("There are no Playlists");
 		}
 
 		return ret;
 	}
 
-	public List<ArtGroup> doSelectAll() throws SQLException, Exception {
-		ArrayList<ArtGroup> ret = null;
-		String sql = "SELECT * FROM ArtGroup";
+	public List<Playlist> doSelectAll() throws SQLException, Exception {
+		ArrayList<Playlist> ret = null;
+		String sql = "SELECT * FROM Playlist";
 
 		Connection connection = null;
 
@@ -48,21 +49,30 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 			while (resultSet.next()) {
 
 				if (null == ret)
-					ret = new ArrayList<ArtGroup>();
+					ret = new ArrayList<Playlist>();
 
-				ArtGroup artGroup = new ArtGroup();
+				Playlist playlist = new Playlist();
 
 				int id = resultSet.getInt("id");
+				int idClientP = resultSet.getInt("idClientP");
+				int idClientPp = resultSet.getInt("idClientPp");
 				String name = resultSet.getString("name");
 				String description = resultSet.getString("description");
-				String image = resultSet.getString("image");
+				
+				java.sql.Date sqlCreationDate = resultSet.getDate("creationDate");
+				java.util.Date creationDate = new java.util.Date(sqlCreationDate.getTime());
+				
+				playlist.setId(id);
+				playlist.setClientPP(new ClientPP());
+				playlist.getClientPP().setId(idClientPp);
+				playlist.setClientP(new ClientP());
+				playlist.getClientP().setId(idClientP);
+				playlist.setName(name);
+				playlist.setDescription(description);
+				playlist.setCreationDate(creationDate);
+				
 
-				artGroup.setId(id);
-				artGroup.setName(name);
-				artGroup.setDescription(description);
-				artGroup.setImage(image);
-
-				ret.add(artGroup);
+				ret.add(playlist);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -96,7 +106,7 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 	}
 
 	@Override
-	public void insert(ArtGroup artGroup) throws SQLException, Exception {
+	public void insert(Playlist playlist) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -105,8 +115,9 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO ArtGroup (id, name, description, image) VALUES ('" + artGroup.getId() + "', '"
-					+ artGroup.getName() + "', '" + artGroup.getDescription() + "', '" + artGroup.getImage() + "')";
+			String sql = "INSERT INTO Playlist (name, description,creationDate,idClienteP,idClientePp) VALUES ("
+					+  playlist.getClientPP().getId() + ", " + playlist.getClientP().getId() + ", " + playlist.getId() + ", '"
+					+ playlist.getName() + "', '" + playlist.getDescription() +"','" + playlist.getCreationDate() + "')";
 
 			statement.executeUpdate(sql);
 
@@ -132,7 +143,7 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 	}
 
 	@Override
-	public void update(ArtGroup artGroup) throws SQLException, Exception {
+	public void update(Playlist playlist) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -141,14 +152,16 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE ArtGroup SET name = ?, description = ?, image = ? where id = ?";
+			String sql = "UPDATE Playlist SET id = ?, name = ?,creationDate = ?, idClienteP = ?, idClientePp = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setInt(1, artGroup.getId());
-			preparedStatement.setString(2, artGroup.getName());
-			preparedStatement.setString(13, artGroup.getDescription());
-			preparedStatement.setString(13, artGroup.getImage());
+			preparedStatement.setInt(1, playlist.getId());
+			preparedStatement.setString(2, playlist.getName());
+			preparedStatement.setDate(3, new java.sql.Date((playlist.getCreationDate()).getTime()));
+			preparedStatement.setInt(4, playlist.getClientP().getId());
+			preparedStatement.setInt(5, playlist.getClientPP().getId());
+			
 
 			preparedStatement.executeUpdate();
 
@@ -174,7 +187,7 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 	}
 
 	@Override
-	public void delete(ArtGroup artGroup) throws SQLException, Exception {
+	public void delete(Playlist playlist) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -183,9 +196,9 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ArtGroup WHERE id = ?";
+			String sql = "DELETE FROM Playlist WHERE id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, artGroup.getId());
+			preparedStatement.setInt(1, playlist.getId());
 
 			preparedStatement.executeUpdate();
 

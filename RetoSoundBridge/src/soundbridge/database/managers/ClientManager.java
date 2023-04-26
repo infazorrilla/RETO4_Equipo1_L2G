@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;

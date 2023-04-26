@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,64 +8,52 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
-import soundbridge.database.pojos.Album;
-import soundbridge.database.pojos.ClientPP;
-import soundbridge.database.pojos.Contain;
-import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.utils.DBUtils;
 
-public class ContainManager extends ManagerAbstract<Contain> {
-
+public class SongManager extends ManagerAbstract<Song> {
 	@Override
-	public List<Contain> selectAll() throws SQLException, NotFoundException, Exception {
-		ArrayList<Contain> ret = (ArrayList<Contain>) doSelectAll();
-
+	public List<Song> selectAll() throws SQLException, NotFoundException, Exception {
+		ArrayList<Song> ret = (ArrayList<Song>) doSelectAll();
 		if (null == ret) {
-			throw new NotFoundException("There are no Contains");
+			throw new NotFoundException("There are no Songs");
 		}
-
 		return ret;
 	}
 
-	public List<Contain> doSelectAll() throws SQLException, Exception {
-		ArrayList<Contain> ret = null;
-		String sql = "SELECT * FROM Contain";
-
+	public List<Song> doSelectAll() throws SQLException, Exception {
+		ArrayList<Song> ret = null;
+		String sql = "SELECT * FROM Song";
 		Connection connection = null;
-
 		Statement statement = null;
 		ResultSet resultSet = null;
-
 		try {
 			Class.forName(DBUtils.DRIVER);
-
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
-
 			while (resultSet.next()) {
-
 				if (null == ret)
-					ret = new ArrayList<Contain>();
+					ret = new ArrayList<Song>();
+				Song song = new Song();
+				int id = resultSet.getInt("id");
+				String name = null;
 
-				Contain contain = new Contain();
+				java.sql.Date sqlCreation = resultSet.getDate("releaseYear");
+				java.util.Date creation = new java.util.Date(sqlCreation.getTime());
 
-				int idPlaylist = resultSet.getInt("playlistId");
-				int idSong = resultSet.getInt("songId");
+				int duration = 0;
+				String cover = null;
+				String lang = null;
 				
-
-				contain.setPlaylist(new Playlist());
-				contain.getPlaylist().setId(idPlaylist);	
-				contain.setSong(new Song());
-				contain.getSong().setId(idSong);	
-				
-
-				ret.add(contain);
+				song.setId(id);
+				song.setName(name);
+				song.setReleaseYear(creation);
+				song.setDuration(duration);
+				song.setCover(cover);
+				song.setLang(lang);
+				ret.add(song);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -76,43 +64,36 @@ public class ContainManager extends ManagerAbstract<Contain> {
 				if (resultSet != null)
 					resultSet.close();
 			} catch (Exception e) {
-
 			}
 			;
 			try {
 				if (statement != null)
 					statement.close();
 			} catch (Exception e) {
-
 			}
 			;
 			try {
 				if (connection != null)
 					connection.close();
 			} catch (Exception e) {
-
 			}
 			;
 		}
-
 		return ret;
 	}
 
 	@Override
-	public void insert(Contain contain) throws SQLException, Exception {
+	public void insert(Song song) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
-
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
-
-			String sql = "INSERT INTO Contain (playlistId, songId) VALUES ("
-					+ contain.getPlaylist().getId() + ", " +  contain.getSong().getId() + "')";
-
+			String sql = "INSERT INTO Song (id, name, creation, duration, cover, lang) VALUES ('" + song.getId()
+					+ "', '" + song.getName() + "', '" + new java.sql.Date((song.getReleaseYear()).getTime()) + "', '" + song.getDuration() + "', '"
+					+ song.getCover() + "', '" + song.getLang() + "')";
 			statement.executeUpdate(sql);
-
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -135,25 +116,23 @@ public class ContainManager extends ManagerAbstract<Contain> {
 	}
 
 	@Override
-	public void update(Contain contain) throws SQLException, Exception {
+	public void update(Song song) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
 		try {
 			Class.forName(DBUtils.DRIVER);
-
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			String sql = "UPDATE Contain SET playlistId = ?, songId = ?";
-
+			String sql = "UPDATE Song SET  name = ?, releaseYear = ?, duration = ?, cover = ?, lang = ? where id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-
-			preparedStatement.setInt(1, contain.getPlaylist().getId());
-			preparedStatement.setInt(2, contain.getSong().getId());
-	
-
+			
+			preparedStatement.setString(1, song.getName());
+			preparedStatement.setDate(2, new java.sql.Date((song.getReleaseYear()).getTime()));
+			preparedStatement.setInt(3, song.getDuration());
+			preparedStatement.setString(4, song.getCover());
+			preparedStatement.setString(5, song.getLang());
+			preparedStatement.setInt(6, song.getId());
+			
 			preparedStatement.executeUpdate();
-
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -172,26 +151,19 @@ public class ContainManager extends ManagerAbstract<Contain> {
 			}
 			;
 		}
-
 	}
 
 	@Override
-	public void delete(Contain contain) throws SQLException, Exception {
+	public void delete(Song song) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
 		try {
 			Class.forName(DBUtils.DRIVER);
-
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			String sql = "DELETE FROM Contain WHERE playlistId = ? AND songId = ?";
+			String sql = "DELETE FROM Song WHERE id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, contain.getPlaylist().getId());
-			preparedStatement.setInt(2, contain.getSong().getId());
-
+			preparedStatement.setInt(1, song.getId());
 			preparedStatement.executeUpdate();
-
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -210,7 +182,5 @@ public class ContainManager extends ManagerAbstract<Contain> {
 			}
 			;
 		}
-
 	}
-
 }

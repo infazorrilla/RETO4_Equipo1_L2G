@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,46 +8,69 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
 import soundbridge.database.pojos.Album;
+import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Review;
 import soundbridge.database.utils.DBUtils;
 
-public class AlbumManager extends ManagerAbstract<Album> {
-	public List<Album> selectAll() throws SQLException, NotFoundException, Exception {
-		ArrayList<Album> ret = (ArrayList<Album>) doSelectAll();
+public class ReviewManager extends ManagerAbstract<Review> {
+
+	@Override
+	public List<Review> selectAll() throws SQLException, NotFoundException, Exception {
+		ArrayList<Review> ret = (ArrayList<Review>) doSelectAll();
+
 		if (null == ret) {
-			throw new NotFoundException("There are no Albums");
+			throw new NotFoundException("There are no Reviews");
 		}
+
 		return ret;
 	}
 
-	public List<Album> doSelectAll() throws SQLException, Exception {
-		ArrayList<Album> ret = null;
-		String sql = "SELECT * FROM Album";
+	public List<Review> doSelectAll() throws SQLException, Exception {
+		ArrayList<Review> ret = null;
+		String sql = "SELECT * FROM Review";
+
 		Connection connection = null;
+
 		Statement statement = null;
 		ResultSet resultSet = null;
+
 		try {
 			Class.forName(DBUtils.DRIVER);
+
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
-			while (resultSet.next()) {
-				if (null == ret)
-					ret = new ArrayList<Album>();
-				Album album = new Album();
-				int id = resultSet.getInt("id");
-				String name = resultSet.getString("name");
-				String cover = resultSet.getString("cover");
-				java.sql.Date sqlreleaseYear = resultSet.getDate("releaseYear");
-				java.util.Date releaseYear = new java.util.Date(sqlreleaseYear.getTime());
 
-				album.setId(id);
-				album.setName(name);
-				album.setCover(cover);
-				album.setReleaseYear(releaseYear);
-				ret.add(album);
+			while (resultSet.next()) {
+
+				if (null == ret)
+					ret = new ArrayList<Review>();
+
+				Review review = new Review();
+
+				int idClientPP = resultSet.getInt("idClientPP");
+				int idAlbum = resultSet.getInt("idAlbum");
+				int stars = resultSet.getInt("stars");
+				String title = resultSet.getString("title");
+				String opinion = resultSet.getString("opinion");
+
+				java.sql.Timestamp sqlReviewDate = resultSet.getTimestamp("reviewDate");
+				java.util.Date reviewDate = new java.util.Date(sqlReviewDate.getTime());
+
+				review.setClientPP(new ClientPP());
+				review.getClientPP().setId(idClientPP);
+				review.setAlbum(new Album());
+				review.getAlbum().setId(idAlbum);
+				review.setStars(stars);
+				review.setTitle(title);
+				review.setOpinion(opinion);
+				review.setReviewDate(reviewDate);
+
+				ret.add(review);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -58,36 +81,44 @@ public class AlbumManager extends ManagerAbstract<Album> {
 				if (resultSet != null)
 					resultSet.close();
 			} catch (Exception e) {
+
 			}
 			;
 			try {
 				if (statement != null)
 					statement.close();
 			} catch (Exception e) {
+
 			}
 			;
 			try {
 				if (connection != null)
 					connection.close();
 			} catch (Exception e) {
+
 			}
 			;
 		}
+
 		return ret;
 	}
 
 	@Override
-	public void insert(Album album) throws SQLException, Exception {
-
+	public void insert(Review review) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
+
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
-			String sql = "INSERT INTO Album (id, name, cover, releaseYear) VALUES ('" + album.getId() + "', '"
-					+ album.getName() + "', '" + album.getCover() + "', '" + album.getReleaseYear() + "')";
+
+			String sql = "INSERT INTO Review (idClientPP, idAlbum, stars, title, opinion) VALUES ("
+					+ review.getClientPP().getId() + ", " + review.getAlbum().getId() + ", " + review.getStars() + ", '"
+					+ review.getTitle() + "', '" + review.getOpinion() + "')";
+
 			statement.executeUpdate(sql);
+
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -106,24 +137,33 @@ public class AlbumManager extends ManagerAbstract<Album> {
 			}
 			;
 		}
+
 	}
 
 	@Override
-	public void update(Album album) throws SQLException, Exception {
-
+	public void update(Review review) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+
 		try {
 			Class.forName(DBUtils.DRIVER);
+
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			String sql = "UPDATE Album SET id = ?, name = ?, cover = ?,  releaseYear = ? where id = ?";
+
+			String sql = "UPDATE Review SET stars = ?, title = ?, opinion = ?, reviewDate = ? "
+					+ "where idClientPP = ? AND idAlbum = ?";
+
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, album.getId());
-			preparedStatement.setString(2, album.getName());
-			preparedStatement.setString(13, album.getCover());
-			preparedStatement.setDate(5, new java.sql.Date((album.getReleaseYear()).getTime()));
+
+			preparedStatement.setInt(1, review.getStars());
+			preparedStatement.setString(2, review.getTitle());
+			preparedStatement.setString(3, review.getOpinion());
+			preparedStatement.setDate(4, new java.sql.Date((review.getReviewDate()).getTime()));
+			preparedStatement.setInt(5, review.getClientPP().getId());
+			preparedStatement.setInt(6, review.getAlbum().getId());
 
 			preparedStatement.executeUpdate();
+
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -142,20 +182,26 @@ public class AlbumManager extends ManagerAbstract<Album> {
 			}
 			;
 		}
+
 	}
 
 	@Override
-	public void delete(Album album) throws SQLException, Exception {
-
+	public void delete(Review review) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+
 		try {
 			Class.forName(DBUtils.DRIVER);
+
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			String sql = "DELETE FROM Album WHERE id = ?";
+
+			String sql = "DELETE FROM Review WHERE idClientPP = ? AND idAlbum = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, album.getId());
+			preparedStatement.setInt(1, review.getClientPP().getId());
+			preparedStatement.setInt(2, review.getAlbum().getId());
+
 			preparedStatement.executeUpdate();
+
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -174,5 +220,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 			}
 			;
 		}
+
 	}
+
 }

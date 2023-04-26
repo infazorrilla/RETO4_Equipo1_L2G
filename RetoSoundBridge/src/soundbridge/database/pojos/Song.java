@@ -10,7 +10,7 @@ public class Song implements Serializable {
 	private static final long serialVersionUID = 4944962431162757875L;
 	private int id = 0;
 	private String name = null;
-	private Date cretaion = null;
+	private Date releaseYear = null;
 	private int duration = 0;
 	private String cover = null;
 	private String lang = null;
@@ -39,12 +39,12 @@ public class Song implements Serializable {
 		this.name = name;
 	}
 
-	public Date getCretaion() {
-		return cretaion;
+	public Date getReleaseYear() {
+		return releaseYear;
 	}
 
-	public void setCretaion(Date cretaion) {
-		this.cretaion = cretaion;
+	public void setReleaseYear(Date releaseYear) {
+		this.releaseYear = releaseYear;
 	}
 
 	public int getDuration() {
@@ -125,7 +125,7 @@ public class Song implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(album, artGroup, artist, contains, cover, cretaion, duration, id, lang, name, plays,
+		return Objects.hash(album, artGroup, artist, contains, cover, duration, id, lang, name, plays, releaseYear,
 				source);
 	}
 
@@ -140,17 +140,17 @@ public class Song implements Serializable {
 		Song other = (Song) obj;
 		return Objects.equals(album, other.album) && Objects.equals(artGroup, other.artGroup)
 				&& Objects.equals(artist, other.artist) && Objects.equals(contains, other.contains)
-				&& Objects.equals(cover, other.cover) && Objects.equals(cretaion, other.cretaion)
-				&& duration == other.duration && id == other.id && Objects.equals(lang, other.lang)
-				&& Objects.equals(name, other.name) && Objects.equals(plays, other.plays)
+				&& Objects.equals(cover, other.cover) && duration == other.duration && id == other.id
+				&& Objects.equals(lang, other.lang) && Objects.equals(name, other.name)
+				&& Objects.equals(plays, other.plays) && Objects.equals(releaseYear, other.releaseYear)
 				&& Objects.equals(source, other.source);
 	}
 
 	@Override
 	public String toString() {
-		return "Song [id=" + id + ", name=" + name + ", cretaion=" + cretaion + ", duration=" + duration + ", cover="
-				+ cover + ", lang=" + lang + ", source=" + source + ", plays=" + plays + ", contains=" + contains
-				+ ", album=" + album + ", artist=" + artist + ", artGroup=" + artGroup + "]";
+		return "Song [id=" + id + ", name=" + name + ", releaseYear=" + releaseYear + ", duration=" + duration
+				+ ", cover=" + cover + ", lang=" + lang + ", source=" + source + ", plays=" + plays + ", contains="
+				+ contains + ", album=" + album + ", artist=" + artist + ", artGroup=" + artGroup + "]";
 	}
 
 }

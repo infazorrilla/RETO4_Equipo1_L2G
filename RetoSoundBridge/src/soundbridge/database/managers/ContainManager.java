@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,28 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
-import soundbridge.database.pojos.Album;
-import soundbridge.database.pojos.ClientPP;
-import soundbridge.database.pojos.Review;
+import soundbridge.database.pojos.Contain;
+import soundbridge.database.pojos.Playlist;
+import soundbridge.database.pojos.Song;
 import soundbridge.database.utils.DBUtils;
 
-public class ReviewManager extends ManagerAbstract<Review> {
+public class ContainManager extends ManagerAbstract<Contain> {
 
 	@Override
-	public List<Review> selectAll() throws SQLException, NotFoundException, Exception {
-		ArrayList<Review> ret = (ArrayList<Review>) doSelectAll();
+	public List<Contain> selectAll() throws SQLException, NotFoundException, Exception {
+		ArrayList<Contain> ret = (ArrayList<Contain>) doSelectAll();
 
 		if (null == ret) {
-			throw new NotFoundException("There are no Reviews");
+			throw new NotFoundException("There are no Contains");
 		}
 
 		return ret;
 	}
 
-	public List<Review> doSelectAll() throws SQLException, Exception {
-		ArrayList<Review> ret = null;
-		String sql = "SELECT * FROM Review";
+	public List<Contain> doSelectAll() throws SQLException, Exception {
+		ArrayList<Contain> ret = null;
+		String sql = "SELECT * FROM Contain";
 
 		Connection connection = null;
 
@@ -49,29 +48,21 @@ public class ReviewManager extends ManagerAbstract<Review> {
 			while (resultSet.next()) {
 
 				if (null == ret)
-					ret = new ArrayList<Review>();
+					ret = new ArrayList<Contain>();
 
-				Review review = new Review();
+				Contain contain = new Contain();
 
-				int idClientPP = resultSet.getInt("idClientPP");
-				int idAlbum = resultSet.getInt("idAlbum");
-				int stars = resultSet.getInt("stars");
-				String title = resultSet.getString("title");
-				String opinion = resultSet.getString("opinion");
+				int idPlaylist = resultSet.getInt("playlistId");
+				int idSong = resultSet.getInt("songId");
+				
 
-				java.sql.Timestamp sqlReviewDate = resultSet.getTimestamp("reviewDate");
-				java.util.Date reviewDate = new java.util.Date(sqlReviewDate.getTime());
+				contain.setPlaylist(new Playlist());
+				contain.getPlaylist().setId(idPlaylist);	
+				contain.setSong(new Song());
+				contain.getSong().setId(idSong);	
+				
 
-				review.setClientPP(new ClientPP());
-				review.getClientPP().setId(idClientPP);
-				review.setAlbum(new Album());
-				review.getAlbum().setId(idAlbum);
-				review.setStars(stars);
-				review.setTitle(title);
-				review.setOpinion(opinion);
-				review.setReviewDate(reviewDate);
-
-				ret.add(review);
+				ret.add(contain);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -105,7 +96,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 	}
 
 	@Override
-	public void insert(Review review) throws SQLException, Exception {
+	public void insert(Contain contain) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -114,9 +105,8 @@ public class ReviewManager extends ManagerAbstract<Review> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO Review (idClientPP, idAlbum, stars, title, opinion) VALUES ("
-					+ review.getClientPP().getId() + ", " + review.getAlbum().getId() + ", " + review.getStars() + ", '"
-					+ review.getTitle() + "', '" + review.getOpinion() + "')";
+			String sql = "INSERT INTO Contain (playlistId, songId) VALUES ("
+					+ contain.getPlaylist().getId() + ", " +  contain.getSong().getId() + "')";
 
 			statement.executeUpdate(sql);
 
@@ -142,7 +132,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 	}
 
 	@Override
-	public void update(Review review) throws SQLException, Exception {
+	public void update(Contain contain) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -151,17 +141,13 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE Review SET stars = ?, title = ?, opinion = ?, reviewDate = ? "
-					+ "where idClientPP = ? AND idAlbum = ?";
+			String sql = "UPDATE Contain SET playlistId = ?, songId = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setInt(1, review.getStars());
-			preparedStatement.setString(2, review.getTitle());
-			preparedStatement.setString(3, review.getOpinion());
-			preparedStatement.setDate(4, new java.sql.Date((review.getReviewDate()).getTime()));
-			preparedStatement.setInt(5, review.getClientPP().getId());
-			preparedStatement.setInt(6, review.getAlbum().getId());
+			preparedStatement.setInt(1, contain.getPlaylist().getId());
+			preparedStatement.setInt(2, contain.getSong().getId());
+	
 
 			preparedStatement.executeUpdate();
 
@@ -187,7 +173,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 	}
 
 	@Override
-	public void delete(Review review) throws SQLException, Exception {
+	public void delete(Contain contain) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -196,10 +182,10 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM Review WHERE idClientPP = ? AND idAlbum = ?";
+			String sql = "DELETE FROM Contain WHERE playlistId = ? AND songId = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, review.getClientPP().getId());
-			preparedStatement.setInt(2, review.getAlbum().getId());
+			preparedStatement.setInt(1, contain.getPlaylist().getId());
+			preparedStatement.setInt(2, contain.getSong().getId());
 
 			preparedStatement.executeUpdate();
 

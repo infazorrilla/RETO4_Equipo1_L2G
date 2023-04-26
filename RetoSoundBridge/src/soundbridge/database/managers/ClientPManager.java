@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,55 +7,64 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
-import soundbridge.database.pojos.Song;
+import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientP;
+
+import soundbridge.database.pojos.Playlist;
 import soundbridge.database.utils.DBUtils;
 
-public class SongManager extends ManagerAbstract<Song> {
+public class ClientPManager extends ManagerAbstract<ClientP> {
+
 	@Override
-	public List<Song> selectAll() throws SQLException, NotFoundException, Exception {
-		ArrayList<Song> ret = (ArrayList<Song>) doSelectAll();
+	public List<ClientP> selectAll() throws SQLException, NotFoundException, Exception {
+		ArrayList<ClientP> ret = (ArrayList<ClientP>) doSelectAll();
+
 		if (null == ret) {
-			throw new NotFoundException("There are no Songs");
+			throw new NotFoundException("There are no ClientPs");
 		}
+
 		return ret;
 	}
 
-	public List<Song> doSelectAll() throws SQLException, Exception {
-		ArrayList<Song> ret = null;
-		String sql = "SELECT * FROM Song";
+	public List<ClientP> doSelectAll() throws SQLException, Exception {
+		ArrayList<ClientP> ret = null;
+		String sql = "SELECT * FROM ClientP";
+
 		Connection connection = null;
+
 		Statement statement = null;
 		ResultSet resultSet = null;
+
 		try {
 			Class.forName(DBUtils.DRIVER);
+
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
+
 			while (resultSet.next()) {
+
 				if (null == ret)
-					ret = new ArrayList<Song>();
-				Song song = new Song();
-				int id = resultSet.getInt("id");
-				String name = null;
+					ret = new ArrayList<ClientP>();
 
-				java.sql.Date sqlCreation = resultSet.getDate("creation");
-				java.util.Date creation = new java.util.Date(sqlCreation.getTime());
+				ClientP clientp = new ClientP();
 
-				int duration = 0;
-				String cover = null;
-				String lang = null;
 				
-				song.setId(id);
-				song.setName(name);
-				song.setCreation(creation);
-				song.setDuration(duration);
-				song.setCover(cover);
-				song.setLang(lang);
-				ret.add(song);
+				int idClient = resultSet.getInt("idClient");
+				String bankAccount = resultSet.getString("bankAccount");
+				java.sql.Date sqlsuscriptionDate = resultSet.getDate("suscriptionDate");
+				java.util.Date suscriptionDate = new java.util.Date(sqlsuscriptionDate.getTime());
+
+				clientp.setId(idClient);
+				clientp.setPlaylist(new Playlist());
+				clientp.setBankAccount(bankAccount);
+				clientp.setSuscriptionDate(suscriptionDate);
+
+				ret.add(clientp);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -66,39 +75,60 @@ public class SongManager extends ManagerAbstract<Song> {
 				if (resultSet != null)
 					resultSet.close();
 			} catch (Exception e) {
+
 			}
 			;
 			try {
 				if (statement != null)
 					statement.close();
 			} catch (Exception e) {
+
 			}
 			;
 			try {
 				if (connection != null)
 					connection.close();
 			} catch (Exception e) {
+
 			}
 			;
 		}
+
 		return ret;
 	}
 
 	@Override
-	public void insert(Song song) throws SQLException, Exception {
+	public void insert(ClientP clientp) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
+
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
-			String sql = "INSERT INTO Song (id, name, creation, duration, cover, lang) VALUES ('" + song.getId()
-					+ "', '" + song.getName() + "', '" + song.getCreation + "', '" + song.getDuration() + "', '"
-					+ song.getCover() + "', '" + song.getLang() + "')";
+
+			ClientManager clientManager = new ClientManager();
+			clientManager.insert(clientp);
+			ArrayList<Client> clients = (ArrayList<Client>) clientManager.selectAll();
+
+			int idClient = 0;
+
+			for (Client client : clients) {
+				if (client.getPersonalId().equalsIgnoreCase(clientp.getPersonalId()))
+					idClient = client.getId();
+			}
+
+			String sql = "INSERT INTO ClientP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
+					+ new java.sql.Date((clientp.getSuscriptionDate()).getTime()) + "','" + clientp.getBankAccount()
+					+ "')";
+
 			statement.executeUpdate(sql);
+
 		} catch (SQLException sqle) {
+
 			throw sqle;
 		} catch (Exception e) {
+
 			throw e;
 		} finally {
 			try {
@@ -118,21 +148,24 @@ public class SongManager extends ManagerAbstract<Song> {
 	}
 
 	@Override
-	public void update(Song song) throws SQLException, Exception {
+	public void update(ClientP clientp) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+
 		try {
 			Class.forName(DBUtils.DRIVER);
+
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			String sql = "UPDATE Song SET  name = ?, creation = ?, duration = ?, cover = ?, lang = ? where id = ?";
+
+			String sql = "UPDATE ClientP SET bankAccount = ?";
+
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, song.getId());
-			preparedStatement.setString(2, song.getName());
-			preparedStatement.setDate(5, new java.sql.Date((song.getCreation()).getTime()));
-			preparedStatement.setInt(13, song.getDuration);
-			preparedStatement.setString(13, song.getCover);
-			preparedStatement.setString(13, song.getLang);
+
+			preparedStatement.setString(1, clientp.getBankAccount());
+
+
 			preparedStatement.executeUpdate();
+
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -151,19 +184,25 @@ public class SongManager extends ManagerAbstract<Song> {
 			}
 			;
 		}
+
 	}
 
 	@Override
-	public void delete(Song song) throws SQLException, Exception {
+	public void delete(ClientP clientp) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+
 		try {
 			Class.forName(DBUtils.DRIVER);
+
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			String sql = "DELETE FROM Song WHERE id = ?";
+
+			String sql = "DELETE FROM ClientP WHERE bankAccount = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, song.getId());
+			preparedStatement.setString(1, clientp.getBankAccount());
+
 			preparedStatement.executeUpdate();
+
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -182,5 +221,7 @@ public class SongManager extends ManagerAbstract<Song> {
 			}
 			;
 		}
+
 	}
+
 }

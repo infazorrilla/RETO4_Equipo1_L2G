@@ -1,4 +1,4 @@
-package soundbridge.database.managers.pojomanagers;
+package soundbridge.database.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,67 +8,45 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.managers.ManagerAbstract;
-import soundbridge.database.pojos.Client;
-import soundbridge.database.pojos.Play;
-import soundbridge.database.pojos.Song;
+import soundbridge.database.pojos.Album;
 import soundbridge.database.utils.DBUtils;
 
-public class PlayManager extends ManagerAbstract<Play> {
-
-	@Override
-	public List<Play> selectAll() throws SQLException, NotFoundException, Exception {
-		ArrayList<Play> ret = (ArrayList<Play>) doSelectAll();
-
+public class AlbumManager extends ManagerAbstract<Album> {
+	public List<Album> selectAll() throws SQLException, NotFoundException, Exception {
+		ArrayList<Album> ret = (ArrayList<Album>) doSelectAll();
 		if (null == ret) {
-			throw new NotFoundException("There are no Plays");
+			throw new NotFoundException("There are no Albums");
 		}
-
 		return ret;
 	}
-	
-	public List<Play> doSelectAll() throws SQLException, Exception {
-		ArrayList<Play> ret = null;
-		String sql = "SELECT * FROM Play";
 
+	public List<Album> doSelectAll() throws SQLException, Exception {
+		ArrayList<Album> ret = null;
+		String sql = "SELECT * FROM Album";
 		Connection connection = null;
-
 		Statement statement = null;
 		ResultSet resultSet = null;
-
 		try {
 			Class.forName(DBUtils.DRIVER);
-
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
-
 			while (resultSet.next()) {
-
 				if (null == ret)
-					ret = new ArrayList<Play>();
-
-				Play play = new Play();
-
+					ret = new ArrayList<Album>();
+				Album album = new Album();
 				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String cover = resultSet.getString("cover");
+				java.sql.Date sqlreleaseYear = resultSet.getDate("releaseYear");
+				java.util.Date releaseYear = new java.util.Date(sqlreleaseYear.getTime());
 
-				java.sql.Timestamp sqlPlayDate = resultSet.getTimestamp("playDate");
-				java.util.Date playDate = new java.util.Date(sqlPlayDate.getTime());
-				
-				int idClient = resultSet.getInt("idClient");				
-				int idSong = resultSet.getInt("idSong");
-				
-				play.setId(id);
-				play.setPlayDate(playDate);
-				play.setClient(new Client());
-				play.getClient().setId(idClient);
-				play.setSong(new Song());
-				play.getSong().setId(idSong);
-
-				ret.add(play);
+				album.setId(id);
+				album.setName(name);
+				album.setCover(cover);
+				album.setReleaseYear(releaseYear);
+				ret.add(album);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -79,43 +57,36 @@ public class PlayManager extends ManagerAbstract<Play> {
 				if (resultSet != null)
 					resultSet.close();
 			} catch (Exception e) {
-
 			}
 			;
 			try {
 				if (statement != null)
 					statement.close();
 			} catch (Exception e) {
-
 			}
 			;
 			try {
 				if (connection != null)
 					connection.close();
 			} catch (Exception e) {
-
 			}
 			;
 		}
-
 		return ret;
 	}
 
 	@Override
-	public void insert(Play play) throws SQLException, Exception {
+	public void insert(Album album) throws SQLException, Exception {
+
 		Connection connection = null;
 		Statement statement = null;
-
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
-
-			String sql = "INSERT INTO Play (idClient, idSong) VALUES ("
-					+ play.getClient().getId() + ", " + play.getSong().getId() + ")";
-
+			String sql = "INSERT INTO Album (id, name, cover, releaseYear) VALUES ('" + album.getId() + "', '"
+					+ album.getName() + "', '" + album.getCover() + "', '" + album.getReleaseYear() + "')";
 			statement.executeUpdate(sql);
-
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -134,30 +105,24 @@ public class PlayManager extends ManagerAbstract<Play> {
 			}
 			;
 		}
-		
 	}
 
 	@Override
-	public void update(Play play) throws SQLException, Exception {
+	public void update(Album album) throws SQLException, Exception {
+
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
 		try {
 			Class.forName(DBUtils.DRIVER);
-
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			String sql = "UPDATE Play SET idClient = ?, idSong = ?, playDate = ? where id = ?";
-
+			String sql = "UPDATE Album SET id = ?, name = ?, cover = ?,  releaseYear = ? where id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-
-			preparedStatement.setInt(1, play.getClient().getId());
-			preparedStatement.setInt(2, play.getSong().getId());
-			preparedStatement.setDate(3, new java.sql.Date((play.getPlayDate()).getTime()));
-			preparedStatement.setInt(4, play.getId());
+			preparedStatement.setInt(1, album.getId());
+			preparedStatement.setString(2, album.getName());
+			preparedStatement.setString(13, album.getCover());
+			preparedStatement.setDate(5, new java.sql.Date((album.getReleaseYear()).getTime()));
 
 			preparedStatement.executeUpdate();
-
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -176,26 +141,20 @@ public class PlayManager extends ManagerAbstract<Play> {
 			}
 			;
 		}
-
-		
 	}
 
 	@Override
-	public void delete(Play play) throws SQLException, Exception {
+	public void delete(Album album) throws SQLException, Exception {
+
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
 		try {
 			Class.forName(DBUtils.DRIVER);
-
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			String sql = "DELETE FROM Play WHERE id = ?";
+			String sql = "DELETE FROM Album WHERE id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, play.getId());
-
+			preparedStatement.setInt(1, album.getId());
 			preparedStatement.executeUpdate();
-
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
@@ -214,7 +173,5 @@ public class PlayManager extends ManagerAbstract<Play> {
 			}
 			;
 		}
-
 	}
-
 }
