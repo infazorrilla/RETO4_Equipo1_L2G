@@ -57,6 +57,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 				int stars = resultSet.getInt("stars");
 				String title = resultSet.getString("title");
 				String opinion = resultSet.getString("opinion");
+				boolean isValidated = resultSet.getBoolean("isValidated");
 
 				java.sql.Timestamp sqlReviewDate = resultSet.getTimestamp("reviewDate");
 				java.util.Date reviewDate = new java.util.Date(sqlReviewDate.getTime());
@@ -69,6 +70,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 				review.setTitle(title);
 				review.setOpinion(opinion);
 				review.setReviewDate(reviewDate);
+				review.setValidated(isValidated);
 
 				ret.add(review);
 			}
@@ -150,7 +152,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE Review SET stars = ?, title = ?, opinion = ?, reviewDate = ? "
+			String sql = "UPDATE Review SET stars = ?, title = ?, opinion = ?, reviewDate = ?, isValidaded = ? "
 					+ "where idClientPP = ? AND idAlbum = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
@@ -160,7 +162,8 @@ public class ReviewManager extends ManagerAbstract<Review> {
 			preparedStatement.setString(3, review.getOpinion());
 			preparedStatement.setDate(4, new java.sql.Date((review.getReviewDate()).getTime()));
 			preparedStatement.setInt(5, review.getClientPP().getId());
-			preparedStatement.setInt(6, review.getAlbum().getId());
+			preparedStatement.setBoolean(6, review.isValidated());
+			preparedStatement.setInt(7, review.getAlbum().getId());
 
 			preparedStatement.executeUpdate();
 
