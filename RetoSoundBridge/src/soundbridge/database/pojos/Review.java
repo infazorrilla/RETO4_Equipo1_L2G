@@ -12,6 +12,7 @@ public class Review implements Serializable {
 	private String title = null;
 	private String opinion = null;
 	private Date reviewDate = null;
+	private boolean isValidated = false;
 
 	private ClientPP clientPP = null;
 	private Album album = null;
@@ -48,6 +49,14 @@ public class Review implements Serializable {
 		this.reviewDate = reviewDate;
 	}
 
+	public boolean isValidated() {
+		return isValidated;
+	}
+
+	public void setValidated(boolean isValidated) {
+		this.isValidated = isValidated;
+	}
+
 	public ClientPP getClientPP() {
 		return clientPP;
 	}
@@ -70,7 +79,7 @@ public class Review implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(opinion, reviewDate, stars, title);
+		return Objects.hash(album, clientPP, isValidated, opinion, reviewDate, stars, title);
 	}
 
 	@Override
@@ -82,14 +91,16 @@ public class Review implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Review other = (Review) obj;
-		return Objects.equals(opinion, other.opinion) && Objects.equals(reviewDate, other.reviewDate)
-				&& stars == other.stars && Objects.equals(title, other.title);
+		return Objects.equals(album, other.album) && Objects.equals(clientPP, other.clientPP)
+				&& isValidated == other.isValidated && Objects.equals(opinion, other.opinion)
+				&& Objects.equals(reviewDate, other.reviewDate) && stars == other.stars
+				&& Objects.equals(title, other.title);
 	}
 
 	@Override
 	public String toString() {
 		return "Review [stars=" + stars + ", title=" + title + ", opinion=" + opinion + ", reviewDate=" + reviewDate
-				+ "]";
+				+ ", isValidated=" + isValidated + ", clientPP=" + clientPP + ", album=" + album + "]";
 	}
 
 }

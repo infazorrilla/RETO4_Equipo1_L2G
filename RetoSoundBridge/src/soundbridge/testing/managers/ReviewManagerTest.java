@@ -133,7 +133,7 @@ public class ReviewManagerTest {
 	 * Comprobación de que una valoración se elimina de la base de datos.
 	 */
 	@Test
-	public void testDeletePlay() {
+	public void testCDeletePlay() {
 		boolean thrown = false;
 		boolean isDeleted = true;
 
