@@ -57,21 +57,16 @@ public class ClientP extends Client {
 		if (getClass() != obj.getClass())
 			return false;
 		ClientP other = (ClientP) obj;
-		return Objects.equals(bankAccount, other.bankAccount)
-				&& Objects.equals(suscriptionDate, other.suscriptionDate);
+		return Objects.equals(bankAccount, other.bankAccount) && Objects.equals(suscriptionDate, other.suscriptionDate);
 	}
 
 	@Override
 	public String toString() {
-		return "ClientP [bankAccount=" + bankAccount + ", subscriptionDate=" + suscriptionDate + ", username="
-				+ username + ", passwd=" + passwd + ", personalId=" + personalId + ", telephone=" + telephone
-				+ ", address=" + address + ", email=" + email + ", id=" + id + ", name=" + name + ", lastName="
-				+ lastName + ", nationality=" + nationality + ", gender=" + gender + ", birthDate=" + birthDate
-				+ ", getBankAccount()=" + getBankAccount() + ", getSubscriptionDate()=" + getSuscriptionDate()
-				+ ", hashCode()=" + hashCode() + ", getId()=" + getId() + ", getName()=" + getName()
-				+ ", getLastName()=" + getLastName() + ", getNationality()=" + getNationality() + ", getGender()="
-				+ getGender() + ", getBirthDate()=" + getBirthDate() + ", toString()=" + super.toString()
-				+ ", getClass()=" + getClass() + "]";
+		return "ClientP [bankAccount=" + bankAccount + ", suscriptionDate=" + suscriptionDate + ", playlist=" + playlist
+				+ ", username=" + username + ", passwd=" + passwd + ", personalId=" + personalId + ", telephone="
+				+ telephone + ", address=" + address + ", email=" + email + ", plays=" + plays + ", id=" + id
+				+ ", name=" + name + ", lastName=" + lastName + ", nationality=" + nationality + ", gender=" + gender
+				+ ", birthDate=" + birthDate + "]";
 	}
 
 }

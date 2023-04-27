@@ -73,18 +73,11 @@ public class ClientPP extends Client {
 
 	@Override
 	public String toString() {
-		return "ClientPp [bankAccount=" + bankAccount + ", subscriptionDate=" + suscriptionDate + ", playlists="
+		return "ClientPP [bankAccount=" + bankAccount + ", suscriptionDate=" + suscriptionDate + ", playlists="
 				+ playlists + ", reviews=" + reviews + ", username=" + username + ", passwd=" + passwd + ", personalId="
-				+ personalId + ", telephone=" + telephone + ", address=" + address + ", email=" + email + ", id=" + id
-				+ ", name=" + name + ", lastName=" + lastName + ", nationality=" + nationality + ", gender=" + gender
-				+ ", birthDate=" + birthDate + ", getBankAccount()=" + getBankAccount() + ", getSubscriptionDate()="
-				+ getSuscriptionDate() + ", getPlaylists()=" + getPlaylists() + ", getReviews()=" + getReviews()
-				+ ", hashCode()=" + hashCode() + ", getUsername()=" + getUsername() + ", getPasswd()=" + getPasswd()
-				+ ", getPersonalId()=" + getPersonalId() + ", getTelephone()=" + getTelephone() + ", getAddress()="
-				+ getAddress() + ", getEmail()=" + getEmail() + ", toString()=" + super.toString() + ", getId()="
-				+ getId() + ", getName()=" + getName() + ", getLastName()=" + getLastName() + ", getNationality()="
-				+ getNationality() + ", getGender()=" + getGender() + ", getBirthDate()=" + getBirthDate()
-				+ ", getClass()=" + getClass() + "]";
+				+ personalId + ", telephone=" + telephone + ", address=" + address + ", email=" + email + ", plays="
+				+ plays + ", id=" + id + ", name=" + name + ", lastName=" + lastName + ", nationality=" + nationality
+				+ ", gender=" + gender + ", birthDate=" + birthDate + "]";
 	}
 
 }

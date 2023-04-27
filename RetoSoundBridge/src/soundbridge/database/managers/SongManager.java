@@ -36,23 +36,27 @@ public class SongManager extends ManagerAbstract<Song> {
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new ArrayList<Song>();
+				
 				Song song = new Song();
+				
 				int id = resultSet.getInt("id");
-				String name = null;
+				String name = resultSet.getString("name");
 
-				java.sql.Date sqlCreation = resultSet.getDate("releaseYear");
-				java.util.Date creation = new java.util.Date(sqlCreation.getTime());
+				java.sql.Date sqlReleaseYear = resultSet.getDate("releaseYear");
+				java.util.Date releaseYear = new java.util.Date(sqlReleaseYear.getTime());
 
-				int duration = 0;
-				String cover = null;
-				String lang = null;
+				int duration = resultSet.getInt("duration");
+				String cover = resultSet.getString("cover");
+				String lang = resultSet.getString("lang");
+				String source = resultSet.getString("source");
 				
 				song.setId(id);
 				song.setName(name);
-				song.setReleaseYear(creation);
+				song.setReleaseYear(releaseYear);
 				song.setDuration(duration);
 				song.setCover(cover);
 				song.setLang(lang);
+				song.setSource(source);
 				ret.add(song);
 			}
 		} catch (SQLException sqle) {
@@ -182,5 +186,18 @@ public class SongManager extends ManagerAbstract<Song> {
 			}
 			;
 		}
+	}
+	
+	public Song getSongById(int idSong) throws SQLException, Exception {
+		Song ret = null;
+	
+		ArrayList<Song> songs = (ArrayList<Song>) doSelectAll();
+		
+		for (Song song : songs) {
+			if (song.getId() == idSong)
+				ret = song;
+		}
+		
+		return ret;
 	}
 }

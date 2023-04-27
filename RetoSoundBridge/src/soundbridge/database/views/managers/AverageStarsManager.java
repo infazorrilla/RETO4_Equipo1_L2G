@@ -1,4 +1,4 @@
-package soundbridge.database.views.viewManager;
+package soundbridge.database.views.managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,13 +8,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import soundbridge.database.utils.DBUtils;
-import soundbridge.database.views.pojos.Top20;
+import soundbridge.database.views.pojos.AverageStars;
 
-public class Top20ViewManager {
+public class AverageStarsManager {
 	
-	public ArrayList<Top20> selectView() throws SQLException, Exception {
-		ArrayList<Top20> ret = null;
-		String sql = "SELECT * FROM soundBridge.top20";
+	public ArrayList<AverageStars> selectView() throws SQLException, Exception {
+		ArrayList<AverageStars> ret = null;
+		String sql = "SELECT * FROM soundBridge.averagestars";
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -25,19 +25,19 @@ public class Top20ViewManager {
 			resultSet = preparedStatement.executeQuery(sql);
 			while (resultSet.next()) {
 				if (null == ret)
-					ret = new ArrayList<Top20>();
+					ret = new ArrayList<AverageStars>();
 				
-				Top20 top = new Top20();
+				AverageStars averageStars = new AverageStars();
 					
-				int id = resultSet.getInt("id");
+				int idAlbum = resultSet.getInt("idAlbum");
 				String name = resultSet.getString("name");
-				int plays = resultSet.getInt("plays");
+				double average = resultSet.getDouble("average");
 				
-				top.setId(id);
-				top.setName(name);
-				top.setPlays(plays);
+				averageStars.setIdAlbum(idAlbum);
+				averageStars.setName(name);
+				averageStars.setAverage(average);
 				
-				ret.add(top);
+				ret.add(averageStars);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;

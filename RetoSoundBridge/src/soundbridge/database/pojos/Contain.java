@@ -49,8 +49,7 @@ public class Contain implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Contain [playlist=" + playlist + ", getPlaylist()=" + getPlaylist() + ", hashCode()=" + hashCode()
-				+ ", getClass()=" + getClass() + ", toString()=" + super.toString() + "]";
+		return "Contain [playlist=" + playlist + ", song=" + song + "]";
 	}
 
 }

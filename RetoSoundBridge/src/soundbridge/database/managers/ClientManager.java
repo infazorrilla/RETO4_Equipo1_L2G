@@ -49,8 +49,17 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 				if (null == ret)
 					ret = new ArrayList<Client>();
-
+				
 				Client client = new Client();
+				
+				String type = resultSet.getString("type");
+				if (type.equalsIgnoreCase("basic")) {
+					client = new Client();
+				} else if (type.equalsIgnoreCase("premium")) {
+					client = new ClientP();
+				} else if (type.equalsIgnoreCase("premium plus")) {
+					client = new ClientPP();
+				}
 
 				int id = resultSet.getInt("id");
 				String name = resultSet.getString("name");
