@@ -1,6 +1,7 @@
 package soundbridge.view;
 
 import java.awt.EventQueue;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ import soundbridge.database.views.pojos.Top20;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.GridLayout;
+
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.BorderLayout;

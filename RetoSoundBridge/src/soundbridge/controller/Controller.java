@@ -1,6 +1,8 @@
 package soundbridge.controller;
 
 
+
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -8,6 +10,7 @@ import javax.swing.JTextField;
 
 import soundbridge.database.managers.ClientManager;
 import soundbridge.database.managers.EmployeeManager;
+import soundbridge.database.pojos.Client;
 
 public class Controller {
 
@@ -22,6 +25,8 @@ public class Controller {
 	public void checkLogin(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn, JPanel panelMain, JPanel panelLogin) {
 		String username = textFieldUserLogIn.getText();
 		String passwd = passwordFieldLogIn.getText();
+		Client client = new Client();
+		
 
 		boolean logInUser = clientManager.askForClientUsingIdAndPasswd(username, passwd);
 		boolean logInAdmin = employeeManager.askForEmployeeUsingIdAndPasswd(username, passwd);
@@ -36,9 +41,16 @@ public class Controller {
 			JOptionPane.showMessageDialog(jFrame, "Eres cliente");
 			textFieldUserLogIn.setText("");
 			passwordFieldLogIn.setText("");
+			client.setUsername(textFieldUserLogIn.getText());
+			try {
+				 client = clientManager.doSelectAllUsingUsername(username);
+				System.out.println(client.toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			panelMain.setVisible(true);
-			panelLogin.setVisible(false);
+			
 		} else {
 			JFrame jFrame = new JFrame();
 			JOptionPane.showMessageDialog(jFrame, "Incorrecto");
