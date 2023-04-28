@@ -9,16 +9,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import soundbridge.database.managers.ClientManager;
+import soundbridge.database.managers.ClientPManager;
+import soundbridge.database.managers.ClientPPManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -111,6 +116,21 @@ public class Profile extends JPanel {
 		
 		JLabel lblSubscriptionIcon = new JLabel("");
 		panelSubscriptionIcon.add(lblSubscriptionIcon, BorderLayout.CENTER);
+		
+		JButton btnAcceptLogIn = new JButton("Eliminar cuenta");
+		btnAcceptLogIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteAccount(frame, client);
+			}
+		});
+		btnAcceptLogIn.setBounds(50, 520, 200, 50);
+		add(btnAcceptLogIn);
+		btnAcceptLogIn.setForeground(Color.white);
+		btnAcceptLogIn.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		btnAcceptLogIn.setBackground(new Color(244, 135, 244, 20));
+		btnAcceptLogIn.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+		btnAcceptLogIn.setOpaque(false);
+		btnAcceptLogIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JPanel panelEditInfoIcon = new JPanel();
 		panelEditInfoIcon.setBounds(310, 200, 25, 25);
@@ -247,6 +267,38 @@ public class Profile extends JPanel {
 			addImage(panel, lbl, "img/icon/sbp.png");
 		} else {
 			addImage(panel, lbl, "img/icon/sbbasic.png");
+		}
+	}
+	
+	private void deleteAccount(JFrame frame, Client client) {
+		ClientManager clientManager = new ClientManager();
+		ClientPManager clientPManager = new ClientPManager();
+		ClientPPManager clientPPManager = new ClientPPManager();
+		
+		try {
+			
+			if (client instanceof ClientP) {
+				clientPManager.delete((ClientP) client);
+			} else if (client instanceof ClientPP) {
+				clientPPManager.delete((ClientPP) client);
+			}
+			
+			clientManager.delete(client);
+			
+			JOptionPane.showMessageDialog(null, "Su cuenta ha sido eliminada.", "Confirmación",
+					JOptionPane.INFORMATION_MESSAGE);
+			
+			frame.getContentPane().removeAll();
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
+			frame.revalidate();
+			frame.repaint();
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "No se ha podido eliminar su cuenta.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error general.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
