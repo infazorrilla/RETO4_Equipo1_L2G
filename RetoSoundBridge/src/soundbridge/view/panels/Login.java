@@ -120,8 +120,10 @@ public class Login extends JPanel {
 		JButton btnRegister = new JButton("REGISTRARME");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				goToSignUp(frame);
 			}
+
+			
 		});
 		btnRegister.setBounds(700, 450, 200, 50);
 		add(btnRegister);
@@ -153,16 +155,16 @@ public class Login extends JPanel {
 
 	private void logIn(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
 		String username = textFieldUserLogIn.getText();
-		
+
 		String typeOfUser = controller.checkTypeOfUser(textFieldUserLogIn, passwordFieldLogIn);
 		controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
-		
+
 		if (typeOfUser != null) {
 			if (typeOfUser.equals("client")) {
 				if (client == null) {
 					client = new Client();
 				}
-				
+
 				if (client != null) {
 					setClient(controller.returnLoggedClient(username));
 					frame.getContentPane().removeAll();
@@ -177,6 +179,12 @@ public class Login extends JPanel {
 				}
 			}
 		}
+	}
+	private void goToSignUp(JFrame frame) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	public Client getClient() {
