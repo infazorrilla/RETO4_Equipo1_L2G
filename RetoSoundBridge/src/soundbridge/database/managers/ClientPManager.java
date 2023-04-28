@@ -223,5 +223,19 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 		}
 
 	}
+	
+	public ClientP getClientPById(int idClient) throws SQLException, Exception {
+		ClientP ret = null;
+		
+		ArrayList<ClientP> clientPs = (ArrayList<ClientP>) doSelectAll();
+		for (ClientP clientP : clientPs) {
+			if (clientP.getId() == idClient) {
+				ret = clientP;
+				break;
+			}
+		}
+		
+		return ret;
+	}
 
 }
