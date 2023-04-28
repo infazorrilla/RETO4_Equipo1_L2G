@@ -29,6 +29,7 @@ public class Controller {
 					JOptionPane.ERROR_MESSAGE);
 			textFieldUserLogIn.setText("");
 			passwordFieldLogIn.setText("");
+			textFieldUserLogIn.requestFocus();
 		} else {
 			if (typeOfUser.equals("employee")) {
 				JOptionPane.showMessageDialog(null, "¡Bienvenid@ " + username + "!", "Empleado de SoundBridge",

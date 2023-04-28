@@ -50,7 +50,6 @@ public class Login extends JPanel {
 		textFieldUserLogIn.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		textFieldUserLogIn.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldUserLogIn.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldUserLogIn.setCaretColor(Color.WHITE);
 		textFieldUserLogIn.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -70,7 +69,6 @@ public class Login extends JPanel {
 		passwordFieldLogIn.setForeground(Color.white);
 		passwordFieldLogIn.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		passwordFieldLogIn.setBorder(new LineBorder(Color.WHITE, 2));
-		passwordFieldLogIn.setCaretColor(Color.WHITE);
 		add(passwordFieldLogIn);
 		passwordFieldLogIn.addFocusListener(new FocusAdapter() {
 			@Override
