@@ -64,7 +64,7 @@ public class Library extends JPanel {
 		
 		AutoCompleteTextField searchBar = new AutoCompleteTextField();
 		searchBar.setBounds(110, 52, 600, 30);
-		searchBar.setBackground(new Color(126, 126, 126, 0));
+		searchBar.setOpaque(false);
 		searchBar.setForeground(Color.white);
 		searchBar.setCaretColor(Color.WHITE);
 		searchBar.setBorder(new LineBorder(Color.WHITE, 0));
