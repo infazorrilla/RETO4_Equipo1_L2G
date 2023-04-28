@@ -147,6 +147,16 @@ public class Profile extends JPanel {
 		add(panelEditInfoIcon);
 		panelEditInfoIcon.setLayout(new BorderLayout(0, 0));
 		panelEditInfoIcon.setOpaque(false);
+		panelEditInfoIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client));
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		panelEditInfoIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JLabel lblEditInfoIcon = new JLabel("");
 		panelEditInfoIcon.add(lblEditInfoIcon, BorderLayout.CENTER);

@@ -175,7 +175,7 @@ public class ChangeSubscription extends JPanel {
 		JButton btnConfirm = new JButton("Confirmar selección");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doCheckSubscription(client);
+				//doCheckSubscription(client);
 			}
 		});
 		btnConfirm.setBounds(400, 575, 200, 50);
@@ -278,6 +278,7 @@ public class ChangeSubscription extends JPanel {
 						clientPP.setBankAccount(clientP.getBankAccount());
 						clientPP.setSuscriptionDate(new Date());
 						clientPPManager.insert(clientPP);
+						
 					}
 					clientPManager.delete((ClientP) client);
 				} else if (actualSubscription.equalsIgnoreCase("premium plus")) {
