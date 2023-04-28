@@ -1,7 +1,6 @@
 package soundbridge.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
@@ -11,22 +10,6 @@ public class MainFrame {
 
 	public JFrame frame;
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame window = new MainFrame();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
 	public MainFrame() {
 		initialize();
 	}

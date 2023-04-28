@@ -1,4 +1,4 @@
-package soundbridge.view;
+package soundbridge.view.pruebas;
 
 import java.awt.Color;
 import java.awt.Font;

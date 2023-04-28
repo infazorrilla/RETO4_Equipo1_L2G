@@ -122,6 +122,48 @@ public class Profile extends JPanel {
 		lblInfo.setForeground(Color.white);
 		add(lblInfo);
 		
+		JLabel lblDni = new JLabel("DNI:");
+		lblDni.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblDni.setBounds(440, 250, 301, 20);
+		lblDni.setForeground(Color.white);
+		add(lblDni);
+		
+		JLabel lblGender = new JLabel("Género:");
+		lblGender.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblGender.setBounds(440, 280, 301, 20);
+		lblGender.setForeground(Color.white);
+		add(lblGender);
+		
+		JLabel lblNationality = new JLabel("Nacionalidad:");
+		lblNationality.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblNationality.setBounds(440, 310, 301, 20);
+		lblNationality.setForeground(Color.white);
+		add(lblNationality);
+		
+		JLabel lblBirthDate = new JLabel("Fecha de nacimiento:");
+		lblBirthDate.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblBirthDate.setBounds(440, 340, 301, 20);
+		lblBirthDate.setForeground(Color.white);
+		add(lblBirthDate);
+		
+		JLabel lblAddress = new JLabel("Dirección:");
+		lblAddress.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblAddress.setBounds(440, 370, 301, 20);
+		lblAddress.setForeground(Color.white);
+		add(lblAddress);
+		
+		JLabel lblTelephone = new JLabel("Teléfono:");
+		lblTelephone.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblTelephone.setBounds(440, 400, 301, 20);
+		lblTelephone.setForeground(Color.white);
+		add(lblTelephone);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblEmail.setBounds(440, 430, 350, 20);
+		lblEmail.setForeground(Color.white);
+		add(lblEmail);
+		
 		addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 		addImage(panelEditSubscriptionIcon, lblEditSubscriptionIcon, "img/icon/pen.png");

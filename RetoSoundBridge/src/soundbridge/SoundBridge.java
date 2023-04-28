@@ -2,7 +2,7 @@ package soundbridge;
 
 import java.awt.EventQueue;
 
-import soundbridge.view.Menu;
+import soundbridge.view.MainFrame;
 
 public class SoundBridge {
 
@@ -10,7 +10,7 @@ public class SoundBridge {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Menu window = new Menu();
+					MainFrame window = new MainFrame();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
