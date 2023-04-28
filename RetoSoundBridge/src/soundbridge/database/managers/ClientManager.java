@@ -9,6 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
@@ -93,6 +96,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 				ret.add(client);
 			}
 		} catch (SQLException sqle) {
+			
 			throw sqle;
 		} catch (Exception e) {
 			throw e;
@@ -142,14 +146,17 @@ public class ClientManager extends ManagerAbstract<Client> {
 			statement.executeUpdate(sql);
 
 		} catch (SQLException sqle) {
+			
 			throw sqle;
 		} catch (Exception e) {
+		
 			throw e;
 		} finally {
 			try {
 				if (statement != null)
 					statement.close();
 			} catch (Exception e) {
+
 			}
 			;
 			try {
