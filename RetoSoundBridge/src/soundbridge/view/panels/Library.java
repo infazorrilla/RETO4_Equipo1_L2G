@@ -14,24 +14,28 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import soundbridge.database.managers.ArtGroupManager;
 import soundbridge.database.managers.ArtistManager;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
+import soundbridge.database.pojos.Client;
 import soundbridge.view.components.AutoCompleteTextField;
+import soundbridge.view.components.TextPrompt;
 
 public class Library extends JPanel {
 
 	private static final long serialVersionUID = -2776809426213236020L;
 
-	public Library(JFrame frame) {
+	public Library(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
 		
 		JPanel panelProfileIcon = new JPanel();
-		panelProfileIcon.setBounds(903, 30, 70, 70);
+		panelProfileIcon.setBounds(903, 45, 50, 50);
 		add(panelProfileIcon);
 		panelProfileIcon.setLayout(new BorderLayout(0, 0));
 		panelProfileIcon.setOpaque(false);
@@ -45,14 +49,26 @@ public class Library extends JPanel {
 		JLabel lblProfileIcon = new JLabel("");
 		panelProfileIcon.add(lblProfileIcon, BorderLayout.CENTER);
 		
+		JLabel lblUsername = new JLabel("@" + client.getUsername());
+		lblUsername.setBounds(875, 100, 100, 30);
+		lblUsername.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblUsername.setForeground(Color.white);
+		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblUsername);
+		
 		AutoCompleteTextField searchBar = new AutoCompleteTextField();
-		searchBar.setBounds(100, 55, 600, 30);
-		searchBar.setBackground(Color.white);
-		searchBar.setForeground(Color.black);
+		searchBar.setBounds(110, 52, 600, 30);
+		searchBar.setBackground(new Color(126, 126, 126, 0));
+		searchBar.setForeground(Color.white);
 		searchBar.setCaretColor(Color.WHITE);
-		searchBar.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-		searchBar.setOpaque(false);
+		searchBar.setBorder(new LineBorder(Color.WHITE, 0));
+		searchBar.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		add(searchBar);
+		
+		TextPrompt placeholderSearch = new TextPrompt("Búsqueda de artistas", searchBar);
+		placeholderSearch.changeAlpha(0.8f);
+		placeholderSearch.changeStyle(Font.ITALIC);
+		placeholderSearch.setHorizontalAlignment(SwingConstants.LEFT);
 
 		JLabel lblPlaylists = new JLabel("Mis listas de reproducción:");
 		lblPlaylists.setFont(new Font("Lucida Grande", Font.PLAIN, 20));

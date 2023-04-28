@@ -1,5 +1,6 @@
 package soundbridge.view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -40,8 +41,9 @@ public class MainFrame {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setBackground(Color.black);
 		
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
 		frame.revalidate();
 		frame.repaint();
 	}

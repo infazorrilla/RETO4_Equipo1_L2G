@@ -49,9 +49,9 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 				if (null == ret)
 					ret = new ArrayList<Client>();
-				
+
 				Client client = new Client();
-				
+
 				String type = resultSet.getString("type");
 				if (type.equalsIgnoreCase("basic")) {
 					client = new Client();
@@ -257,6 +257,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 
 	}
+
 	public boolean askForClientUsingIdAndPasswd(String username, String passwd) {
 
 		String sql = "select * from client where username=? and passwd=?";
@@ -312,100 +313,17 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 		return false;
 	}
+
 	public Client doSelectAllUsingUsername(String username) throws SQLException, Exception {
 		Client ret = null;
-		String sql = "select * from client where username=?";
-
-		Connection connection = null;
-
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		try {
-			Class.forName(DBUtils.DRIVER);
-
-			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, username);
-			resultSet = preparedStatement.executeQuery();
-
-			while (resultSet.next()) {
-
-				if (null == ret)
-					ret = new Client();
-				
-				Client client = new Client();
-				
-				String type = resultSet.getString("type");
-				if (type.equalsIgnoreCase("basic")) {
-					client = new Client();
-				} else if (type.equalsIgnoreCase("premium")) {
-					client = new ClientP();
-				} else if (type.equalsIgnoreCase("premium plus")) {
-					client = new ClientPP();
-				}
-
-				int id = resultSet.getInt("id");
-				String name = resultSet.getString("name");
-				String lastName = resultSet.getString("lastName");
-				String nationality = resultSet.getString("nationality");
-				String gender = resultSet.getString("gender");
-
-				java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
-				java.util.Date birthDate = new java.util.Date(sqlBirthDate.getTime());
-
-				String personalId = resultSet.getString("personalId");
-				String telephone = resultSet.getString("telephone");
-				String email = resultSet.getString("email");
-				String address = resultSet.getString("address");
-				String passwd = resultSet.getString("passwd");
-
-				client.setId(id);
-				client.setName(name);
-				client.setLastName(lastName);
-				client.setNationality(nationality);
-				client.setGender(gender);
-				client.setBirthDate(birthDate);
-				client.setPersonalId(personalId);
-				client.setTelephone(telephone);
-				client.setEmail(email);
-				client.setAddress(address);
-				client.setUsername(username);
-				client.setPasswd(passwd);
-
-				ret=client;
+		ArrayList<Client> clients = (ArrayList<Client>) doSelectAll();
+		for (Client client : clients) {
+			if (client.getUsername().equalsIgnoreCase(username)) {
+				ret = client;
+				break;
 			}
-		} catch (SQLException sqle) {
-
-			throw sqle;
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-			} catch (Exception e) {
-
-			}
-			;
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} catch (Exception e) {
-				
-			}
-			;
-			try {
-				if (connection != null)
-					connection.close();
-			} catch (Exception e) {
-				
-			}
-			;
 		}
-
 		return ret;
 	}
-	
+
 }

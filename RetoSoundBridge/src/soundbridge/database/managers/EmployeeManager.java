@@ -307,6 +307,18 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 		}
 		return false;
 	}
+	
+	public Employee doSelectAllUsingUsername(String username) throws SQLException, Exception {
+		Employee ret = null;
+		ArrayList<Employee> employees = (ArrayList<Employee>) doSelectAll();
+		for (Employee employee : employees) {
+			if (employee.getUsername().equalsIgnoreCase(username)) {
+				ret = employee;
+				break;
+			}
+		}
+		return ret;
+	}
 
 
 }
