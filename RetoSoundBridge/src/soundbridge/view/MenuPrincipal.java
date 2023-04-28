@@ -155,6 +155,8 @@ public class MenuPrincipal {
 		lblPlaylistName1.setForeground(Color.WHITE);
 		lblPlaylistName1.setBounds(58, 472, 114, 27);
 		frame.getContentPane().add(lblPlaylistName1);
+		
+		
 
 	}
 

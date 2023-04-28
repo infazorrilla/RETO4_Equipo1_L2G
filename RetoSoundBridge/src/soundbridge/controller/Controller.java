@@ -22,7 +22,7 @@ public class Controller {
 		employeeManager = new EmployeeManager();
 	}
 
-	public void checkLogin(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn, JPanel panelMain, JPanel panelLogin) {
+	public void checkLogin(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn) {
 		String username = textFieldUserLogIn.getText();
 		String passwd = passwordFieldLogIn.getText();
 		Client client = new Client();

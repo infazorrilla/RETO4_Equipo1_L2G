@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import soundbridge.view.components.TextPrompt;
 
 public class Menu {
 
@@ -78,7 +79,7 @@ public class Menu {
 		botonAcceptLogIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn, panelMainMenu, panelLogin);
+				controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
 				
 			}
 		});
