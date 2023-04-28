@@ -53,7 +53,6 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 				ClientP clientp = new ClientP();
 
-				
 				int idClient = resultSet.getInt("idClient");
 				String bankAccount = resultSet.getString("bankAccount");
 				java.sql.Date sqlsuscriptionDate = resultSet.getDate("suscriptionDate");
@@ -118,9 +117,8 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 					idClient = client.getId();
 			}
 
-			String sql = "INSERT INTO ClientP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
-					+ new java.sql.Date((clientp.getSuscriptionDate()).getTime()) + "','" + clientp.getBankAccount()
-					+ "')";
+			String sql = "INSERT INTO ClientP (idClient,bankAccount) VALUES ( " + idClient + ",'"
+					+ clientp.getBankAccount() + "')";
 
 			statement.executeUpdate(sql);
 
@@ -162,7 +160,6 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setString(1, clientp.getBankAccount());
-
 
 			preparedStatement.executeUpdate();
 
@@ -223,10 +220,10 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 		}
 
 	}
-	
+
 	public ClientP getClientPById(int idClient) throws SQLException, Exception {
 		ClientP ret = null;
-		
+
 		ArrayList<ClientP> clientPs = (ArrayList<ClientP>) doSelectAll();
 		for (ClientP clientP : clientPs) {
 			if (clientP.getId() == idClient) {
@@ -234,7 +231,7 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 				break;
 			}
 		}
-		
+
 		return ret;
 	}
 

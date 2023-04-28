@@ -1,6 +1,7 @@
 package soundbridge.view.panels;
 
 import java.awt.Color;
+
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
@@ -10,23 +11,47 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import soundbridge.database.managers.ClientManager;
+import soundbridge.database.managers.ClientPManager;
+import soundbridge.database.managers.ClientPPManager;
+import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientP;
+import soundbridge.database.pojos.ClientPP;
 import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
 
 import java.awt.BorderLayout;
 
 public class SignUp extends JPanel {
-
+	JTextField textFildNameSignUp = null;
+	JTextField textFildLastNameSignUp = null;
+	JTextField textFildUsernameSignUp = null;
+	JTextField textFieldPasswdSignUp = null;
+	JTextField textFieldPersonalIdSignUp = null;
+	JTextField textFildGenderSignUp = null;
+	JTextField textFieldNationalitySignUp = null;
+	JTextField textFieldBirthDateSignUp = null;
+	JTextField textFieldAdressSignUp = null;
+	JTextField textFieldPhoneNumberSignUp = null;
+	JTextField textFieldEmailSignUp = null;
+	JTextField textFildBankAccount = null;
+	int suscription = 0;
 	private static final long serialVersionUID = -2586474039198890631L;
 
 	public SignUp(JFrame frame) {
@@ -44,7 +69,7 @@ public class SignUp extends JPanel {
 		JLabel lblProfileIcon = new JLabel("");
 		panelProfileIcon.add(lblProfileIcon, BorderLayout.CENTER);
 
-		JTextField textFildNameSignUp = new JTextField();
+		textFildNameSignUp = new JTextField();
 		textFildNameSignUp.setBounds(190, 49, 200, 40);
 		add(textFildNameSignUp);
 		textFildNameSignUp.setColumns(10);
@@ -66,7 +91,7 @@ public class SignUp extends JPanel {
 			}
 		});
 
-		JTextField textFildLastNameSignUp = new JTextField();
+		textFildLastNameSignUp = new JTextField();
 		textFildLastNameSignUp.setBounds(190, 112, 200, 40);
 		add(textFildLastNameSignUp);
 		textFildLastNameSignUp.setColumns(10);
@@ -158,7 +183,7 @@ public class SignUp extends JPanel {
 		lblMail.setBounds(203, 590, 66, 23);
 		add(lblMail);
 
-		JTextField textFildUsernameSignUp = new JTextField();
+		textFildUsernameSignUp = new JTextField();
 		textFildUsernameSignUp.setBounds(256, 264, 200, 35);
 		add(textFildUsernameSignUp);
 		textFildUsernameSignUp.setColumns(10);
@@ -180,7 +205,7 @@ public class SignUp extends JPanel {
 			}
 		});
 
-		JTextField textFieldPasswdSignUp = new JTextField();
+		textFieldPasswdSignUp = new JTextField();
 		textFieldPasswdSignUp.setOpaque(false);
 		textFieldPasswdSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPasswdSignUp.setForeground(Color.WHITE);
@@ -202,7 +227,7 @@ public class SignUp extends JPanel {
 			}
 		});
 
-		JTextField textFieldPersonalIdSignUp = new JTextField();
+		textFieldPersonalIdSignUp = new JTextField();
 		textFieldPersonalIdSignUp.setOpaque(false);
 		textFieldPersonalIdSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPersonalIdSignUp.setForeground(Color.WHITE);
@@ -224,7 +249,7 @@ public class SignUp extends JPanel {
 			}
 		});
 
-		JTextField textFildGenderSignUp = new JTextField();
+		textFildGenderSignUp = new JTextField();
 		textFildGenderSignUp.setOpaque(false);
 		textFildGenderSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFildGenderSignUp.setForeground(Color.WHITE);
@@ -246,7 +271,7 @@ public class SignUp extends JPanel {
 			}
 		});
 
-		JTextField textFieldNationalitySignUp = new JTextField();
+		textFieldNationalitySignUp = new JTextField();
 		textFieldNationalitySignUp.setOpaque(false);
 		textFieldNationalitySignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldNationalitySignUp.setForeground(Color.WHITE);
@@ -267,7 +292,7 @@ public class SignUp extends JPanel {
 				textFieldNationalitySignUp.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		JTextField textFieldBirthDateSignUp = new JTextField();
+		textFieldBirthDateSignUp = new JTextField();
 		textFieldBirthDateSignUp.setOpaque(false);
 		textFieldBirthDateSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldBirthDateSignUp.setForeground(Color.WHITE);
@@ -288,7 +313,7 @@ public class SignUp extends JPanel {
 				textFieldBirthDateSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		JTextField textFieldAdressSignUp = new JTextField();
+		textFieldAdressSignUp = new JTextField();
 		textFieldAdressSignUp.setOpaque(false);
 		textFieldAdressSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldAdressSignUp.setForeground(Color.WHITE);
@@ -309,7 +334,7 @@ public class SignUp extends JPanel {
 				textFieldAdressSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		JTextField textFieldPhoneNumberSignUp = new JTextField();
+		textFieldPhoneNumberSignUp = new JTextField();
 		textFieldPhoneNumberSignUp.setOpaque(false);
 		textFieldPhoneNumberSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPhoneNumberSignUp.setForeground(Color.WHITE);
@@ -330,7 +355,7 @@ public class SignUp extends JPanel {
 				textFieldPhoneNumberSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		JTextField textFieldEmailSignUp = new JTextField();
+		textFieldEmailSignUp = new JTextField();
 		textFieldEmailSignUp.setOpaque(false);
 		textFieldEmailSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldEmailSignUp.setForeground(Color.WHITE);
@@ -381,7 +406,7 @@ public class SignUp extends JPanel {
 		panelSuscriptionP.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				suscription = 1;
 			}
 		});
 		panelSuscriptionP.setBounds(550, 169, 150, 150);
@@ -392,6 +417,12 @@ public class SignUp extends JPanel {
 		panelSuscriptionP.add(lblSuscription);
 
 		JPanel panelSuscriptionPP = new JPanel();
+		panelSuscriptionPP.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				suscription = 2;
+			}
+		});
 		panelSuscriptionPP.setOpaque(false);
 		panelSuscriptionPP.setBounds(745, 169, 150, 150);
 		add(panelSuscriptionPP);
@@ -413,6 +444,12 @@ public class SignUp extends JPanel {
 		add(lblPriceSuscriptionPP);
 
 		JPanel panelSuscriptionBasic = new JPanel();
+		panelSuscriptionBasic.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				suscription = 3;
+			}
+		});
 		panelSuscriptionBasic.setOpaque(false);
 		panelSuscriptionBasic.setBounds(655, 364, 150, 150);
 		add(panelSuscriptionBasic);
@@ -433,7 +470,6 @@ public class SignUp extends JPanel {
 				registerUser();
 			}
 
-			
 		});
 		btnRegister.setBounds(639, 575, 200, 50);
 		add(btnRegister);
@@ -447,14 +483,100 @@ public class SignUp extends JPanel {
 		addImage(panelSuscriptionBasic, lblSuscriptionBasic, "img/icon/sbbasic.png");
 		addImage(panelSuscriptionPP, lblSuscriptionPP, "img/icon/sbpp.png");
 		addImage(panelSuscriptionP, lblSuscription, "img/icon/sbp.png");
-		addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
+		addImage(panelHomeIcon, lblHomeIcon, "img/icon/arrow.png");
 		addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 
 	}
+
 	private void registerUser() {
-		
+		Client client = new Client();
+		ClientManager clientManager = new ClientManager();
+
+		client.setName(textFildNameSignUp.getText());
+		client.setLastName(textFildLastNameSignUp.getText());
+		client.setUsername(textFildUsernameSignUp.getText());
+		client.setPasswd(textFieldPasswdSignUp.getText());
+		client.setPersonalId(textFieldPersonalIdSignUp.getText());
+		client.setGender(textFildGenderSignUp.getText());
+		client.setNationality(textFieldNationalitySignUp.getText());
+		String birthDate = textFieldBirthDateSignUp.getText();
+		client.setBirthDate(stringToDate(birthDate));
+		client.setAddress(textFieldAdressSignUp.getText());
+		client.setTelephone(textFieldPhoneNumberSignUp.getText());
+		client.setEmail(textFieldEmailSignUp.getText());
+
+		try {
+			
+			if (suscription == 1) {
+				textFildBankAccount = new JTextField();
+				clientManager.insert(client);
+				Object[] message = { "Cuenta bancaria: ", textFildBankAccount };
+				JOptionPane.showMessageDialog(null, message, "Has elegido un plan de pago", JOptionPane.PLAIN_MESSAGE);
+				registerUserP();
+			} else if (suscription == 2) {
+				clientManager.insert(client);
+				JTextField textFildBankAccount = new JTextField();
+
+				Object[] message = { "Cuenta bancaria: ", textFildBankAccount };
+				JOptionPane.showMessageDialog(null, message, "Has elegido un plan de pago", JOptionPane.PLAIN_MESSAGE);
+				registerUserPP();
+			} else if (suscription == 3) {
+				clientManager.insert(client);
+				JFrame jFrame = new JFrame();
+				JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
+			}
+		} catch (Exception e) {
+			JFrame jFrame = new JFrame();
+			JOptionPane.showMessageDialog(jFrame, "ERROR EN EL REGISTRO");
+			e.printStackTrace();
+		}
+
 	}
 
+	private void registerUserP() {
+		
+		ClientPManager clientpmanager = new ClientPManager();
+		ClientManager clientManager = new ClientManager();
+		try {
+			Client client = clientManager.doSelectAllUsingUsername(textFildUsernameSignUp.getText());
+			System.out.println(client.toString());
+			ClientP clientp = new ClientP();
+			clientp.setId(client.getId());
+			clientp.setBankAccount(textFildBankAccount.getText());
+			clientp.setAddress(client.getAddress());
+			clientp.setBirthDate(client.getBirthDate());
+			clientp.setEmail(client.getEmail());
+			clientp.setGender(client.getEmail());
+			clientp.setLastName(client.getLastName());
+			clientp.setName(client.getName());
+			clientp.setNationality(client.getNationality());
+			clientp.setPasswd(client.getPasswd());
+			clientp.setPersonalId(client.getPersonalId());
+			clientp.setUsername(client.getUsername());
+			clientp.setTelephone(client.getTelephone());
+			System.out.println(clientp.toString());
+			clientpmanager.insert(clientp);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+		
+
+	private void registerUserPP() {
+		ClientPP clientpp = new ClientPP();
+		ClientPPManager clientppmanager = new ClientPPManager();
+		clientpp.setBankAccount(textFildBankAccount.getText());
+		clientpp.setSuscriptionDate(new Date());
+		try {
+			clientppmanager.insert(clientpp);
+		} catch (Exception e) {
+			JFrame jFrame = new JFrame();
+			JOptionPane.showMessageDialog(jFrame, "ERROR EN EL REGISTRO");
+			e.printStackTrace();
+		}
+	}
 
 	private void addImage(JPanel panel, JLabel label, String path) {
 		ImageIcon icon = new ImageIcon(path);
@@ -462,5 +584,18 @@ public class SignUp extends JPanel {
 		Image resizedImg = img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
 		icon.setImage(resizedImg);
 		label.setIcon(icon);
+	}
+
+	private Date stringToDate(String fecha) {
+		Date ret = null;
+		try {
+			String pattern = "yyyy/MM/dd";
+			SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.ENGLISH);
+			ret = formatter.parse(fecha);
+		} catch (Exception e) {
+			// Algo ha ido mal, devolvemos la fecha del sistema
+			ret = new Date();
+		}
+		return ret;
 	}
 }
