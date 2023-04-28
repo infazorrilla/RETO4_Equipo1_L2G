@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import soundbridge.controller.Controller;
-import soundbridge.view.TextPrompt;
+import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
 
 public class Login extends JPanel {

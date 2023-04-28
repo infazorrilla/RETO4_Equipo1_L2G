@@ -1,4 +1,4 @@
-package soundbridge.view;
+package soundbridge.view.components;
 
 import java.awt.*;
 import java.awt.event.*;

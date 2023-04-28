@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
+import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.utils.DBUtils;
 
@@ -21,7 +22,7 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 			ArrayList<Artist> ret = (ArrayList<Artist>) doSelectAll();
 
 			if (null == ret) {
-				throw new NotFoundException("There are no Plays");
+				throw new NotFoundException("There are no Artists");
 			}
 
 			return ret;
@@ -56,6 +57,10 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 					String lastName = resultSet.getString("lastName");
 					String nationality = resultSet.getString("nationality");
 					String gender = resultSet.getString("gender");
+					int idGroup = resultSet.getInt("idGroup");
+					String description = resultSet.getString("description");
+					String image = resultSet.getString("image");
+					String role = resultSet.getString("role");
 
 					java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
 					java.util.Date birthDate = new java.util.Date(sqlBirthDate.getTime());
@@ -66,7 +71,11 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 					artist.setNationality(nationality);
 					artist.setGender(gender);
 					artist.setBirthDate(birthDate);
-					
+					artist.setArtGroup(new ArtGroup());
+					artist.getArtGroup().setId(idGroup);
+					artist.setDescription(description);
+					artist.setImage(image);
+					artist.setRole(role);
 
 					ret.add(artist);
 				}

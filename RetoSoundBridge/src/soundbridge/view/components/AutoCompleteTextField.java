@@ -188,7 +188,7 @@ public class AutoCompleteTextField extends JTextField implements KeyListener, Do
 			int centeredY = ((getHeight() / 2) + (int) (subGuessBounds.getHeight() / 2));
 
 			g.setColor(this.incompleteColor);
-			g.drawString(subGuess + "   press ENTER to send or \u2192 to fill", (int) (enteredBounds.getWidth()) + 2,
+			g.drawString(subGuess + "   presiona ENTER (enviar) o \u2192 (completar)", (int) (enteredBounds.getWidth()) + 2,
 					centeredY - 2);
 		}
 	}
