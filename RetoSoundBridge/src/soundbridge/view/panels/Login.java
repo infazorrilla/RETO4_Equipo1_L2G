@@ -2,6 +2,7 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -114,6 +115,7 @@ public class Login extends JPanel {
 		btnAcceptLogIn.setBackground(new Color(244, 135, 244, 20));
 		btnAcceptLogIn.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnAcceptLogIn.setOpaque(false);
+		btnAcceptLogIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JButton btnRegister = new JButton("REGISTRARME");
 		btnRegister.addActionListener(new ActionListener() {
@@ -128,6 +130,7 @@ public class Login extends JPanel {
 		btnRegister.setBackground(new Color(244, 135, 244));
 		btnRegister.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnRegister.setOpaque(true);
+		btnRegister.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);

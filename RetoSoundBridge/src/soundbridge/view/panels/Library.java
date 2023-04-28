@@ -2,6 +2,7 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -51,6 +52,7 @@ public class Library extends JPanel {
 				frame.repaint();
 			}
 		});
+		panelProfileIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JLabel lblProfileIcon = new JLabel("");
 		panelProfileIcon.add(lblProfileIcon, BorderLayout.CENTER);
