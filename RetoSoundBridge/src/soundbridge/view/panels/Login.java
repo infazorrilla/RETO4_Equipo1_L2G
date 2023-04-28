@@ -49,7 +49,8 @@ public class Login extends JPanel {
 		textFieldUserLogIn.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		textFieldUserLogIn.setBorder(new LineBorder(Color.WHITE, 2));
 		textFieldUserLogIn.setCaretColor(Color.WHITE);
-		textFieldUserLogIn.setOpaque(true);
+		textFieldUserLogIn.setOpaque(false);
+		textFieldUserLogIn.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldUserLogIn.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -69,7 +70,8 @@ public class Login extends JPanel {
 		passwordFieldLogIn.setBorder(new LineBorder(Color.WHITE, 2));
 		passwordFieldLogIn.setCaretColor(Color.WHITE);
 		add(passwordFieldLogIn);
-		passwordFieldLogIn.setOpaque(true);
+		passwordFieldLogIn.setOpaque(false);
+		passwordFieldLogIn.setHorizontalAlignment(SwingConstants.CENTER);
 		passwordFieldLogIn.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -111,7 +113,7 @@ public class Login extends JPanel {
 		btnAcceptLogIn.setFont(new Font("Lucida Grande", Font.BOLD, 17));
 		btnAcceptLogIn.setBackground(new Color(244, 135, 244, 20));
 		btnAcceptLogIn.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-		btnAcceptLogIn.setOpaque(true);
+		btnAcceptLogIn.setOpaque(false);
 
 		JButton btnRegister = new JButton("REGISTRARME");
 		btnRegister.addActionListener(new ActionListener() {
