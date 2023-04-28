@@ -22,8 +22,11 @@ import soundbridge.database.managers.ArtistManager;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientP;
+import soundbridge.database.pojos.ClientPP;
 import soundbridge.view.components.AutoCompleteTextField;
 import soundbridge.view.components.TextPrompt;
+import soundbridge.view.factory.PanelFactory;
 
 public class Library extends JPanel {
 
@@ -42,7 +45,10 @@ public class Library extends JPanel {
 		panelProfileIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
+				frame.revalidate();
+				frame.repaint();
 			}
 		});
 		
@@ -76,6 +82,43 @@ public class Library extends JPanel {
 		lblPlaylists.setForeground(Color.white);
 		add(lblPlaylists);
 		
+		JPanel panelTop20 = new JPanel();
+		panelTop20.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		panelTop20.setBounds(90, 170, 115, 115);
+		add(panelTop20);
+		panelTop20.setLayout(new BorderLayout(0, 0));
+		panelTop20.setOpaque(false);
+		
+		JLabel lblTop20Img = new JLabel("");
+		panelTop20.add(lblTop20Img, BorderLayout.CENTER);
+		
+		JLabel lblTop20 = new JLabel("Top20");
+		lblTop20.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTop20.setForeground(Color.white);
+		lblTop20.setBounds(90, 295, 115, 27);
+		add(lblTop20);
+		
+		JPanel panelFavourites = new JPanel();
+		panelFavourites.setBounds(230, 170, 115, 115);
+		add(panelFavourites);
+		panelFavourites.setLayout(new BorderLayout(0, 0));
+		panelFavourites.setOpaque(false);
+		panelFavourites.setVisible(false);
+		
+		JLabel lblFavouritesImg = new JLabel("");
+		panelFavourites.add(lblFavouritesImg, BorderLayout.CENTER);
+		
+		JLabel lblFavourites = new JLabel("");
+		lblFavourites.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFavourites.setForeground(Color.white);
+		lblFavourites.setBounds(230, 295, 115, 27);
+		add(lblFavourites);
+		
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
@@ -86,7 +129,10 @@ public class Library extends JPanel {
 		
 		addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
+		addImage(panelTop20, lblTop20Img, "img/icon/top_icon.png");
+		addImage(panelFavourites, lblFavouritesImg, "img/icon/fav_icon.png");
 		addPosibilitiesToSearchBar(searchBar);
+		showFavourites(client, panelFavourites, lblFavourites);
 	}
 	
 	private void addImage(JPanel panel, JLabel label, String path) {
@@ -121,6 +167,13 @@ public class Library extends JPanel {
 			JOptionPane.showMessageDialog(null, sqle, "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void showFavourites(Client client, JPanel favourites, JLabel favLbl) {
+		if (client instanceof ClientPP || client instanceof ClientP) {
+			favourites.setVisible(true);
+			favLbl.setText("Favoritos");
 		}
 	}
 }

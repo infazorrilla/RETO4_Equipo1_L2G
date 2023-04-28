@@ -123,9 +123,9 @@ public class Login extends JPanel {
 		});
 		btnRegister.setBounds(700, 450, 200, 50);
 		add(btnRegister);
-		btnRegister.setForeground(Color.white);
+		btnRegister.setForeground(Color.black);
 		btnRegister.setFont(new Font("Lucida Grande", Font.BOLD, 17));
-		btnRegister.setBackground(new Color(244, 135, 244, 20));
+		btnRegister.setBackground(new Color(244, 135, 244));
 		btnRegister.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnRegister.setOpaque(true);
 
