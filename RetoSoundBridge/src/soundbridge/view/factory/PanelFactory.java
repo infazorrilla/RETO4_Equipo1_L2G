@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import soundbridge.database.pojos.Client;
+import soundbridge.view.panels.ChangeSubscription;
 import soundbridge.view.panels.Library;
 import soundbridge.view.panels.Login;
 import soundbridge.view.panels.Profile;
@@ -17,6 +18,7 @@ public class PanelFactory {
 	public static final String LIBRARY = "LIBRARY";
 	public static final String PROFILE = "PROFILE";
 	public static final String SIGNUP = "SIGNUP";
+	public static final String CHANGE_SUBSCRIPTION = "CHANGE_SUBSCRIPTION";
 
 	public static JPanel getJPanel(String panelName, JFrame frame, Client client) {
 		switch (panelName) {
@@ -28,6 +30,8 @@ public class PanelFactory {
 			return new Profile(frame, client);
 		case SIGNUP:
 			return new SignUp(frame);
+		case CHANGE_SUBSCRIPTION:
+			return new ChangeSubscription(frame, client);
 		default:
 			return null;
 		}

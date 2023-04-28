@@ -98,6 +98,16 @@ public class Profile extends JPanel {
 		add(panelEditSubscriptionIcon);
 		panelEditSubscriptionIcon.setLayout(new BorderLayout(0, 0));
 		panelEditSubscriptionIcon.setOpaque(false);
+		panelEditSubscriptionIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client));
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		panelEditSubscriptionIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JLabel lblEditSubscriptionIcon = new JLabel("");
 		panelEditSubscriptionIcon.add(lblEditSubscriptionIcon, BorderLayout.CENTER);
@@ -268,6 +278,22 @@ public class Profile extends JPanel {
 		} else {
 			addImage(panel, lbl, "img/icon/sbbasic.png");
 		}
+	}
+	
+	public int askToConfirmDeletion() {
+		JFrame frame = new JFrame();
+		String[] options = new String[2];
+		options[0] = "Cancelar";
+		options[1] = "Confirmar";
+
+		String titulo = "Eliminar Selección";
+
+		String msg = "¿Desea eliminar la sesión?";
+
+		int ret = JOptionPane.showOptionDialog(frame.getContentPane(), msg, titulo, 0, JOptionPane.INFORMATION_MESSAGE,
+				null, options, null);
+
+		return ret;
 	}
 	
 	private void deleteAccount(JFrame frame, Client client) {
