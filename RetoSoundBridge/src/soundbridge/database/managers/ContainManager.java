@@ -13,7 +13,7 @@ import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
 public class ContainManager extends ManagerAbstract<Contain> {
 

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,11 +20,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import soundbridge.database.managers.ClientManager;
-import soundbridge.database.managers.ClientPManager;
-import soundbridge.database.managers.ClientPPManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
 public class Profile extends JPanel {
@@ -258,19 +255,11 @@ public class Profile extends JPanel {
 		lblEmailValue.setForeground(Color.white);
 		add(lblEmailValue);
 
-		addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
-		addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
-		addImage(panelEditSubscriptionIcon, lblEditSubscriptionIcon, "img/icon/pen.png");
-		addImage(panelEditInfoIcon, lblEditInfoIcon, "img/icon/pen.png");
+		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
+		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
+		WindowUtils.addImage(panelEditSubscriptionIcon, lblEditSubscriptionIcon, "img/icon/pen.png");
+		WindowUtils.addImage(panelEditInfoIcon, lblEditInfoIcon, "img/icon/pen.png");
 		addSubscriptionImage(client, panelSubscriptionIcon, lblSubscriptionIcon);
-	}
-
-	private void addImage(JPanel panel, JLabel label, String path) {
-		ImageIcon icon = new ImageIcon(path);
-		Image img = icon.getImage();
-		Image resizedImg = img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
-		icon.setImage(resizedImg);
-		label.setIcon(icon);
 	}
 
 	private void logOut(JFrame frame) {
@@ -282,11 +271,11 @@ public class Profile extends JPanel {
 
 	private void addSubscriptionImage(Client client, JPanel panel, JLabel lbl) {
 		if (client instanceof ClientPP) {
-			addImage(panel, lbl, "img/icon/sbpp.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbpp.png");
 		} else if (client instanceof ClientP) {
-			addImage(panel, lbl, "img/icon/sbp.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbp.png");
 		} else {
-			addImage(panel, lbl, "img/icon/sbbasic.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbbasic.png");
 		}
 	}
 

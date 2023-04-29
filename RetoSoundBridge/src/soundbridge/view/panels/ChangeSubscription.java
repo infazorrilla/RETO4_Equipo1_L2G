@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,11 +23,11 @@ import soundbridge.database.managers.ClientPPManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
 public class ChangeSubscription extends JPanel {
 
@@ -194,7 +192,7 @@ public class ChangeSubscription extends JPanel {
 		btnConfirm.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnConfirm.setOpaque(false);
 		btnConfirm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		JPanel panelIconTick1 = new JPanel();
 		panelIconTick1.setBounds(75, 175, 25, 25);
 		add(panelIconTick1);
@@ -203,7 +201,7 @@ public class ChangeSubscription extends JPanel {
 
 		JLabel lblIconTick1 = new JLabel("");
 		panelIconTick1.add(lblIconTick1, BorderLayout.CENTER);
-		
+
 		JPanel panelIconTick2 = new JPanel();
 		panelIconTick2.setBounds(75, 210, 25, 25);
 		add(panelIconTick2);
@@ -212,7 +210,7 @@ public class ChangeSubscription extends JPanel {
 
 		JLabel lblIconTick2 = new JLabel("");
 		panelIconTick2.add(lblIconTick2, BorderLayout.CENTER);
-		
+
 		JPanel panelIconTick3 = new JPanel();
 		panelIconTick3.setBounds(75, 245, 25, 25);
 		add(panelIconTick3);
@@ -221,51 +219,50 @@ public class ChangeSubscription extends JPanel {
 
 		JLabel lblIconTick3 = new JLabel("");
 		panelIconTick3.add(lblIconTick3, BorderLayout.CENTER);
-		
+
 		JLabel lblPremiumPlus1 = new JLabel("Listas personalizadas");
 		lblPremiumPlus1.setForeground(Color.white);
 		lblPremiumPlus1.setBounds(112, 175, 163, 25);
 		add(lblPremiumPlus1);
-		
+
 		JLabel lblPremiumPlus2 = new JLabel("Lista de Favoritos");
 		lblPremiumPlus2.setForeground(Color.WHITE);
 		lblPremiumPlus2.setBounds(112, 210, 163, 25);
 		add(lblPremiumPlus2);
-		
+
 		JLabel lblPremiumPlus3 = new JLabel("Valoración de álbumes");
 		lblPremiumPlus3.setForeground(Color.WHITE);
 		lblPremiumPlus3.setBounds(112, 245, 163, 25);
 		add(lblPremiumPlus3);
-		
+
 		JPanel panelIconTick4 = new JPanel();
 		panelIconTick4.setOpaque(false);
 		panelIconTick4.setBounds(400, 175, 25, 25);
 		add(panelIconTick4);
 		panelIconTick4.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblIconTick4 = new JLabel("");
 		panelIconTick4.add(lblIconTick4, BorderLayout.CENTER);
-		
+
 		JLabel lblPremium1 = new JLabel("Lista de Favoritos");
 		lblPremium1.setForeground(Color.WHITE);
 		lblPremium1.setBounds(437, 175, 163, 25);
 		add(lblPremium1);
-		
+
 		JPanel panelIconCross = new JPanel();
 		panelIconCross.setOpaque(false);
 		panelIconCross.setBounds(725, 175, 25, 25);
 		add(panelIconCross);
 		panelIconCross.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblIconCross = new JLabel("");
 		panelIconCross.add(lblIconCross, BorderLayout.CENTER);
-		
+
 		JLabel lblBasic1 = new JLabel("Sin privilegios");
 		lblBasic1.setForeground(Color.WHITE);
 		lblBasic1.setBounds(762, 175, 163, 25);
 		add(lblBasic1);
-		
-		
+
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
@@ -274,58 +271,49 @@ public class ChangeSubscription extends JPanel {
 		JLabel lblBackground = new JLabel("");
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
 
-		addImage(panelBackground, lblBackground, "img/panel/change_sub_bg.jpeg");
-		addImage(panelIconCross, lblIconCross, "img/icon/cross.png");
-		addImage(panelIconTick1, lblIconTick1, "img/icon/tick.png");
-		addImage(panelIconTick2, lblIconTick2, "img/icon/tick.png");
-		addImage(panelIconTick3, lblIconTick3, "img/icon/tick.png");
-		addImage(panelIconTick4, lblIconTick4, "img/icon/tick.png");
+		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/change_sub_bg.jpeg");
+		WindowUtils.addImage(panelIconCross, lblIconCross, "img/icon/cross.png");
+		WindowUtils.addImage(panelIconTick1, lblIconTick1, "img/icon/tick.png");
+		WindowUtils.addImage(panelIconTick2, lblIconTick2, "img/icon/tick.png");
+		WindowUtils.addImage(panelIconTick3, lblIconTick3, "img/icon/tick.png");
+		WindowUtils.addImage(panelIconTick4, lblIconTick4, "img/icon/tick.png");
 
 		addSubscriptionImages(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
 				panelBasicIcon, lblBasicIcon);
-		addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-		
-		
-	}
+		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 
-	private void addImage(JPanel panel, JLabel label, String path) {
-		ImageIcon icon = new ImageIcon(path);
-		Image img = icon.getImage();
-		Image resizedImg = img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
-		icon.setImage(resizedImg);
-		label.setIcon(icon);
 	}
 
 	private void addImagePremiumPlus(Client client, JPanel panel, JLabel lbl) {
 		if (client instanceof ClientPP) {
-			addImage(panel, lbl, "img/icon/sbpp.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbpp.png");
 			actualSubscription = "premium plus";
 			rbtnPP.setSelected(true);
 			newSubscription = "premium plus";
 		} else {
-			addImage(panel, lbl, "img/icon/sbpp_grey.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbpp_grey.png");
 		}
 	}
 
 	private void addImagePremium(Client client, JPanel panel, JLabel lbl) {
 		if (client instanceof ClientP) {
-			addImage(panel, lbl, "img/icon/sbp.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbp.png");
 			actualSubscription = "premium";
 			newSubscription = "premium";
 			rbtnP.setSelected(true);
 		} else {
-			addImage(panel, lbl, "img/icon/sbp_grey.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbp_grey.png");
 		}
 	}
 
 	private void addImageBasic(Client client, JPanel panel, JLabel lbl) {
 		if (!(client instanceof ClientPP) && !(client instanceof ClientP)) {
-			addImage(panel, lbl, "img/icon/sbbasic.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbbasic.png");
 			actualSubscription = "basic";
 			newSubscription = "basic";
 			rbtnB.setSelected(true);
 		} else {
-			addImage(panel, lbl, "img/icon/sbbasic_grey.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbbasic_grey.png");
 		}
 	}
 
@@ -337,17 +325,18 @@ public class ChangeSubscription extends JPanel {
 	}
 
 	public int askToConfirmChange() {
-		JFrame frame = new JFrame();
-		String[] options = new String[2];
-		options[0] = "Sí";
-		options[1] = "No";
+		String iconPath = null;
 
-		String titulo = "Cambio de Suscripción";
+		if (newSubscription.equalsIgnoreCase("basic")) {
+			iconPath = "img/icon/sbbasic.png";
+		} else if (newSubscription.equalsIgnoreCase("premium")) {
+			iconPath = "img/icon/sbp.png";
+		} else {
+			iconPath = "img/icon/sbpp.png";
+		}
 
-		String msg = "¿Desea cambiar su suscripción?";
-
-		int ret = JOptionPane.showOptionDialog(frame.getContentPane(), msg, titulo, 0, JOptionPane.INFORMATION_MESSAGE,
-				null, options, null);
+		int ret = WindowUtils.yesOrNoPaneWithIcon("¿Desea cambiar su suscripción a " + newSubscription + "?",
+				"Cambio de Suscripción", iconPath);
 
 		return ret;
 	}
@@ -360,19 +349,13 @@ public class ChangeSubscription extends JPanel {
 		ClientPPManager clientPPManager = new ClientPPManager();
 
 		if (actualSubscription.equalsIgnoreCase(newSubscription)) {
-			JOptionPane.showMessageDialog(null, "Ya posee ese nivel de suscripción.", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			WindowUtils.messagePaneWithIcon("Ya posee ese nivel de suscripción.", "Error", "img/icon/cross_100.png");
 		} else {
 			int confirm = askToConfirmChange();
 			if (confirm == 0) {
 				if (actualSubscription.equalsIgnoreCase("basic")) {
-					String bankNumber = null;
-					JTextField textFildBankAccount = new JTextField();
-					Object[] message = { "Cuenta bancaria: ", textFildBankAccount };
-					JOptionPane.showMessageDialog(null, message, "Has elegido un plan de pago",
-							JOptionPane.PLAIN_MESSAGE);
-
-					bankNumber = textFildBankAccount.getText();
+					String bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
+							"img/icon/money.png");
 
 					clientManager.changeSubscription(client.getId(), bankNumber, actualSubscription, newSubscription);
 				} else if (actualSubscription.equalsIgnoreCase("premium")) {
@@ -385,8 +368,8 @@ public class ChangeSubscription extends JPanel {
 							newSubscription);
 				}
 
-				JOptionPane.showMessageDialog(null, "Su suscripción a cambiado a " + newSubscription, "Actualización",
-						JOptionPane.INFORMATION_MESSAGE);
+				WindowUtils.messagePaneWithIcon("Su suscripción a cambiado a " + newSubscription + ".", "Actualización",
+						"img/icon/tick_100.png");
 
 				changedClient = clientManager.getClientByUsername(client.getUsername());
 

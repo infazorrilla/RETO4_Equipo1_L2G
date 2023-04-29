@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -17,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +31,7 @@ import soundbridge.database.managers.ClientPPManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
 
@@ -480,11 +479,11 @@ public class SignUp extends JPanel {
 		btnRegister.setOpaque(true);
 		btnRegister.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		addImage(panelSuscriptionBasic, lblSuscriptionBasic, "img/icon/sbbasic.png");
-		addImage(panelSuscriptionPP, lblSuscriptionPP, "img/icon/sbpp.png");
-		addImage(panelSuscriptionP, lblSuscription, "img/icon/sbp.png");
-		addImage(panelHomeIcon, lblHomeIcon, "img/icon/arrow.png");
-		addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
+		WindowUtils.addImage(panelSuscriptionBasic, lblSuscriptionBasic, "img/icon/sbbasic.png");
+		WindowUtils.addImage(panelSuscriptionPP, lblSuscriptionPP, "img/icon/sbpp.png");
+		WindowUtils.addImage(panelSuscriptionP, lblSuscription, "img/icon/sbp.png");
+		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/arrow.png");
+		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 
 	}
 
@@ -576,14 +575,6 @@ public class SignUp extends JPanel {
 			JOptionPane.showMessageDialog(jFrame, "ERROR EN EL REGISTRO");
 			e.printStackTrace();
 		}
-	}
-
-	private void addImage(JPanel panel, JLabel label, String path) {
-		ImageIcon icon = new ImageIcon(path);
-		Image img = icon.getImage();
-		Image resizedImg = img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
-		icon.setImage(resizedImg);
-		label.setIcon(icon);
 	}
 
 	private Date stringToDate(String fecha) {

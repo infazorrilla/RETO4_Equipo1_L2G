@@ -13,7 +13,7 @@ import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
 public class ClientManager extends ManagerAbstract<Client> {
 

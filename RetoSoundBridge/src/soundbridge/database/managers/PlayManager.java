@@ -13,7 +13,7 @@ import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
 public class PlayManager extends ManagerAbstract<Play> {
 

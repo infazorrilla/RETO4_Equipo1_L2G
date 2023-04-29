@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Song;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
 public class SongManager extends ManagerAbstract<Song> {
 	@Override

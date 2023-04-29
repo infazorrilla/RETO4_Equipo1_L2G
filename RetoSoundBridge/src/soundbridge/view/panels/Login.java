@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -12,7 +11,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,6 +23,7 @@ import javax.swing.border.LineBorder;
 import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Employee;
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
 
@@ -142,15 +141,7 @@ public class Login extends JPanel {
 		JLabel lblBackground = new JLabel("");
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
 
-		addImage(panelBackground, lblBackground, "img/panel/login_bg.jpeg");
-	}
-
-	private void addImage(JPanel panel, JLabel label, String path) {
-		ImageIcon icon = new ImageIcon(path);
-		Image img = icon.getImage();
-		Image resizedImg = img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
-		icon.setImage(resizedImg);
-		label.setIcon(icon);
+		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/login_bg.jpeg");
 	}
 
 	private void logIn(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {

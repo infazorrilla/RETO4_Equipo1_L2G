@@ -11,7 +11,7 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.ArtGroup;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
 public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 

@@ -16,7 +16,7 @@ import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
 public class PlaylistManager extends ManagerAbstract<Playlist> {
 

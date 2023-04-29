@@ -1,4 +1,4 @@
-package soundbridge.database.utils;
+package soundbridge.utils;
 
 public class DBUtils {
 

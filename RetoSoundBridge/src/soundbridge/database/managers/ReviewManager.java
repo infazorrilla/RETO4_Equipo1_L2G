@@ -13,7 +13,7 @@ import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Review;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
 public class ReviewManager extends ManagerAbstract<Review> {
 
