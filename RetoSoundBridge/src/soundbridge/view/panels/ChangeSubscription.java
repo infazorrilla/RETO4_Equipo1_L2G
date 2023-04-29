@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.util.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -20,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import soundbridge.database.managers.ClientManager;
 import soundbridge.database.managers.ClientPManager;
 import soundbridge.database.managers.ClientPPManager;
 import soundbridge.database.pojos.Client;
@@ -29,12 +29,17 @@ import soundbridge.view.factory.PanelFactory;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 public class ChangeSubscription extends JPanel {
 
 	private static final long serialVersionUID = -8063689617197980268L;
 	private String actualSubscription = null;
 	private String newSubscription = null;
+	private Client changedClient = null;
+	private JRadioButton rbtnPP;
+	private JRadioButton rbtnP;
+	private JRadioButton rbtnB;
 
 	public ChangeSubscription(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
@@ -104,7 +109,11 @@ public class ChangeSubscription extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
+				if (changedClient == null) {
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
+				} else {
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient));
+				}
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -113,11 +122,6 @@ public class ChangeSubscription extends JPanel {
 
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
-
-		addImagePremiumPlus(client, panelPremiumPlusIcon, lblPremiumPlusIcon);
-		addImagePremium(client, panelPremiumIcon, lblPremiumIcon);
-		addImageBasic(client, panelBasicIcon, lblBasicIcon);
-		addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 
 		JLabel lblPricePP = new JLabel("9.99 €");
 		lblPricePP.setHorizontalAlignment(SwingConstants.CENTER);
@@ -140,28 +144,28 @@ public class ChangeSubscription extends JPanel {
 		lblPriceB.setBounds(700, 475, 200, 27);
 		add(lblPriceB);
 
-		JRadioButton rbtnPP = new JRadioButton("");
+		rbtnPP = new JRadioButton("");
 		rbtnPP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newSubscription = "premium plus";
+				newSubscription = "Premium Plus";
 			}
 		});
 		rbtnPP.setBounds(100, 475, 23, 23);
 		add(rbtnPP);
 
-		JRadioButton rbtnP = new JRadioButton("");
+		rbtnP = new JRadioButton("");
 		rbtnP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newSubscription = "premium";
+				newSubscription = "Premium";
 			}
 		});
 		rbtnP.setBounds(400, 475, 23, 23);
 		add(rbtnP);
 
-		JRadioButton rbtnB = new JRadioButton("");
+		rbtnB = new JRadioButton("");
 		rbtnB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newSubscription = "basic";
+				newSubscription = "Basic";
 			}
 		});
 		rbtnB.setBounds(700, 475, 23, 23);
@@ -175,7 +179,8 @@ public class ChangeSubscription extends JPanel {
 		JButton btnConfirm = new JButton("Confirmar selección");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//doCheckSubscription(client);
+				doCheckSubscription(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
+						panelBasicIcon, lblBasicIcon);
 			}
 		});
 		btnConfirm.setBounds(400, 575, 200, 50);
@@ -186,6 +191,10 @@ public class ChangeSubscription extends JPanel {
 		btnConfirm.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnConfirm.setOpaque(false);
 		btnConfirm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		addSubscriptionImages(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
+				panelBasicIcon, lblBasicIcon);
+		addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 	}
 
 	private void addImage(JPanel panel, JLabel label, String path) {
@@ -200,6 +209,8 @@ public class ChangeSubscription extends JPanel {
 		if (client instanceof ClientPP) {
 			addImage(panel, lbl, "img/icon/sbpp.png");
 			actualSubscription = "premium plus";
+			rbtnPP.setSelected(true);
+			newSubscription = "premium plus";
 		} else {
 			addImage(panel, lbl, "img/icon/sbpp_grey.png");
 		}
@@ -209,6 +220,8 @@ public class ChangeSubscription extends JPanel {
 		if (client instanceof ClientP) {
 			addImage(panel, lbl, "img/icon/sbp.png");
 			actualSubscription = "premium";
+			newSubscription = "premium";
+			rbtnP.setSelected(true);
 		} else {
 			addImage(panel, lbl, "img/icon/sbp_grey.png");
 		}
@@ -218,14 +231,21 @@ public class ChangeSubscription extends JPanel {
 		if (!(client instanceof ClientPP) && !(client instanceof ClientP)) {
 			addImage(panel, lbl, "img/icon/sbbasic.png");
 			actualSubscription = "basic";
+			newSubscription = "basic";
+			rbtnB.setSelected(true);
 		} else {
 			addImage(panel, lbl, "img/icon/sbbasic_grey.png");
 		}
 	}
 
+	private void addSubscriptionImages(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
+			JPanel panelPremiumIcon, JLabel lblPremiumIcon, JPanel panelBasicIcon, JLabel lblBasicIcon) {
+		addImagePremiumPlus(client, panelPremiumPlusIcon, lblPremiumPlusIcon);
+		addImagePremium(client, panelPremiumIcon, lblPremiumIcon);
+		addImageBasic(client, panelBasicIcon, lblBasicIcon);
+	}
+
 	public int askToConfirmChange() {
-		System.out.println("1." + actualSubscription);
-		System.out.println("2." + newSubscription);
 		JFrame frame = new JFrame();
 		String[] options = new String[2];
 		options[0] = "Sí";
@@ -241,7 +261,10 @@ public class ChangeSubscription extends JPanel {
 		return ret;
 	}
 
-	private void checkNewSubscription(Client client) throws SQLException, Exception {
+	private void checkNewSubscription(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
+			JPanel panelPremiumIcon, JLabel lblPremiumIcon, JPanel panelBasicIcon, JLabel lblBasicIcon)
+			throws SQLException, Exception {
+		ClientManager clientManager = new ClientManager();
 		ClientPManager clientPManager = new ClientPManager();
 		ClientPPManager clientPPManager = new ClientPPManager();
 
@@ -251,56 +274,44 @@ public class ChangeSubscription extends JPanel {
 		} else {
 			int confirm = askToConfirmChange();
 			if (confirm == 0) {
-
 				if (actualSubscription.equalsIgnoreCase("basic")) {
-					String reply = JOptionPane.showInputDialog(null, "Introduzca su número de cuenta:",
-							"Número de cuenta", JOptionPane.PLAIN_MESSAGE);
+					String bankNumber = null;
+					JTextField textFildBankAccount = new JTextField();
+					Object[] message = { "Cuenta bancaria: ", textFildBankAccount };
+					JOptionPane.showMessageDialog(null, message, "Has elegido un plan de pago",
+							JOptionPane.PLAIN_MESSAGE);
 
-					if ((reply != null) && (reply.length() > 0)) {
-						if (newSubscription.equals("premium")) {
-							ClientP clientP = new ClientP();
-							clientP.setId(client.getId());
-							clientP.setBankAccount(reply);
-							clientP.setSuscriptionDate(new Date());
-							clientPManager.insert(clientP);
-						} else {
-							ClientPP clientPP = new ClientPP();
-							clientPP.setId(client.getId());
-							clientPP.setBankAccount(reply);
-							clientPP.setSuscriptionDate(new Date());
-							clientPPManager.insert(clientPP);
-						}
-					}
+					bankNumber = textFildBankAccount.getText();
+
+					clientManager.changeSubscription(client.getId(), bankNumber, actualSubscription, newSubscription);
 				} else if (actualSubscription.equalsIgnoreCase("premium")) {
-					if (newSubscription.equalsIgnoreCase("premium plus")) {
-						ClientPP clientPP = (ClientPP) client;
-						ClientP clientP = clientPManager.getClientPById(client.getId());
-						clientPP.setBankAccount(clientP.getBankAccount());
-						clientPP.setSuscriptionDate(new Date());
-						clientPPManager.insert(clientPP);
-						
-					}
-					clientPManager.delete((ClientP) client);
+					ClientP clientP = clientPManager.getClientPById(client.getId());
+					clientManager.changeSubscription(client.getId(), clientP.getBankAccount(), actualSubscription,
+							newSubscription);
 				} else if (actualSubscription.equalsIgnoreCase("premium plus")) {
-					if (newSubscription.equalsIgnoreCase("premium")) {
-						ClientP clientP = (ClientP) client;
-						ClientPP clientPP = clientPPManager.getClientPPById(client.getId());
-						clientP.setBankAccount(clientPP.getBankAccount());
-						clientP.setSuscriptionDate(new Date());
-						clientPManager.insert(clientP);
-					}
-					clientPPManager.delete((ClientPP) client);
+					ClientPP clientPP = clientPPManager.getClientPPById(client.getId());
+					clientManager.changeSubscription(client.getId(), clientPP.getBankAccount(), actualSubscription,
+							newSubscription);
 				}
+
+				JOptionPane.showMessageDialog(null, "Su suscripción a cambiado a " + newSubscription, "Actualización",
+						JOptionPane.INFORMATION_MESSAGE);
+
+				changedClient = clientManager.getClientByUsername(client.getUsername());
+
+				addSubscriptionImages(changedClient, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon,
+						lblPremiumIcon, panelBasicIcon, lblBasicIcon);
 			}
 		}
 	}
-	
-	private void doCheckSubscription(Client client) {
+
+	private void doCheckSubscription(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
+			JPanel panelPremiumIcon, JLabel lblPremiumIcon, JPanel panelBasicIcon, JLabel lblBasicIcon) {
 		try {
-			checkNewSubscription(client);
+			checkNewSubscription(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
+					panelBasicIcon, lblBasicIcon);
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "No se ha podido cambiar su suscripción.", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error general.", "Error", JOptionPane.ERROR_MESSAGE);
 		}

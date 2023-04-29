@@ -67,7 +67,7 @@ public class Controller {
 		Client client = null;
 
 		try {
-			client = clientManager.doSelectAllUsingUsername(username);
+			client = clientManager.getClientByUsername(username);
 		} catch (SQLException sqle) {
 			JOptionPane.showMessageDialog(null, sqle, "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (Exception e) {

@@ -311,17 +311,9 @@ public class Profile extends JPanel {
 		if (reply == 0) {
 
 			ClientManager clientManager = new ClientManager();
-			ClientPManager clientPManager = new ClientPManager();
-			ClientPPManager clientPPManager = new ClientPPManager();
 
 			try {
-
-				if (client instanceof ClientP) {
-					clientPManager.delete((ClientP) client);
-				} else if (client instanceof ClientPP) {
-					clientPPManager.delete((ClientPP) client);
-				}
-
+				
 				clientManager.delete(client);
 
 				JOptionPane.showMessageDialog(null, "Su cuenta ha sido eliminada.", "Confirmación",

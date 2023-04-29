@@ -538,7 +538,7 @@ public class SignUp extends JPanel {
 		ClientPManager clientpmanager = new ClientPManager();
 		ClientManager clientManager = new ClientManager();
 		try {
-			Client client = clientManager.doSelectAllUsingUsername(textFildUsernameSignUp.getText());
+			Client client = clientManager.getClientByUsername(textFildUsernameSignUp.getText());
 			System.out.println(client.toString());
 			ClientP clientp = new ClientP();
 			clientp.setId(client.getId());

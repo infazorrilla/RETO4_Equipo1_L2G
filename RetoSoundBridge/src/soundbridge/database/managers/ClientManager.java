@@ -9,9 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
@@ -96,7 +93,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 				ret.add(client);
 			}
 		} catch (SQLException sqle) {
-			
+
 			throw sqle;
 		} catch (Exception e) {
 			throw e;
@@ -146,10 +143,10 @@ public class ClientManager extends ManagerAbstract<Client> {
 			statement.executeUpdate(sql);
 
 		} catch (SQLException sqle) {
-			
+
 			throw sqle;
 		} catch (Exception e) {
-		
+
 			throw e;
 		} finally {
 			try {
@@ -321,7 +318,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return false;
 	}
 
-	public Client doSelectAllUsingUsername(String username) throws SQLException, Exception {
+	public Client getClientByUsername(String username) throws SQLException, Exception {
 		Client ret = null;
 		ArrayList<Client> clients = (ArrayList<Client>) doSelectAll();
 		for (Client client : clients) {
@@ -330,7 +327,50 @@ public class ClientManager extends ManagerAbstract<Client> {
 				break;
 			}
 		}
+
 		return ret;
+	}
+
+	public void changeSubscription(int clientId, String bankNumber, String actualSubscription, String newSubscription)
+			throws SQLException, Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			String sql = "CALL changeSubscription(?, ?, ?, ?)";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1, clientId);
+			preparedStatement.setString(2, bankNumber);
+			preparedStatement.setString(3, actualSubscription);
+			preparedStatement.setString(4, newSubscription);
+
+			preparedStatement.execute();
+
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
 	}
 
 }

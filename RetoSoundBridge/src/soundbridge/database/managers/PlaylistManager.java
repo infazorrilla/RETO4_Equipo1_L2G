@@ -225,31 +225,34 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 	}
 
 	public ArrayList<Playlist> getPlaylistsOfClientPPById(Client client) throws SQLException, Exception {
-		ArrayList<Playlist> ret = new ArrayList<Playlist>();
+		ArrayList<Playlist> ret = null;
 		ArrayList<Playlist> playlists = (ArrayList<Playlist>) doSelectAll();
 		ArrayList<Contain> playlistContains = new ArrayList<Contain>();
 
 		ContainManager containManager = new ContainManager();
 		SongManager songManager = new SongManager();
 
-		for (Playlist playlist : playlists) {
-			if (playlist.getClientPP().getId() == client.getId()) {
+		if (playlists != null) {
+			ret = new ArrayList<Playlist>();
+			for (Playlist playlist : playlists) {
+				if (playlist.getClientPP().getId() == client.getId()) {
 
-				ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
-				ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
+					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
+					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
 
-				for (Contain contain : contains) {
-					if (playlist.getId() == contain.getPlaylist().getId()) {
-						for (Song song : songs) {
-							if (song.getId() == contain.getSong().getId()) {
-								contain.setSong(song);
+					for (Contain contain : contains) {
+						if (playlist.getId() == contain.getPlaylist().getId()) {
+							for (Song song : songs) {
+								if (song.getId() == contain.getSong().getId()) {
+									contain.setSong(song);
+								}
 							}
+							playlistContains.add(contain);
 						}
-						playlistContains.add(contain);
 					}
+					playlist.setContains(playlistContains);
+					ret.add(playlist);
 				}
-				playlist.setContains(playlistContains);
-				ret.add(playlist);
 			}
 		}
 
