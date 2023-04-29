@@ -48,19 +48,19 @@ public class ChangeSubscription extends JPanel {
 
 		JLabel lblTitle = new JLabel("Seleccione la suscripción que desee:");
 		lblTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-		lblTitle.setBounds(90, 89, 510, 38);
+		lblTitle.setBounds(75, 40, 510, 38);
 		lblTitle.setForeground(Color.white);
 		add(lblTitle);
 
 		JLabel lblPremiumPlus = new JLabel("PREMIUM PLUS");
 		lblPremiumPlus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPremiumPlus.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		lblPremiumPlus.setBounds(100, 200, 200, 27);
+		lblPremiumPlus.setBounds(75, 135, 200, 27);
 		lblPremiumPlus.setForeground(Color.white);
 		add(lblPremiumPlus);
 
 		JPanel panelPremiumPlusIcon = new JPanel();
-		panelPremiumPlusIcon.setBounds(100, 250, 200, 200);
+		panelPremiumPlusIcon.setBounds(75, 300, 200, 200);
 		add(panelPremiumPlusIcon);
 		panelPremiumPlusIcon.setLayout(new BorderLayout(0, 0));
 		panelPremiumPlusIcon.setOpaque(false);
@@ -71,12 +71,12 @@ public class ChangeSubscription extends JPanel {
 		JLabel lblPremium = new JLabel("PREMIUM");
 		lblPremium.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPremium.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		lblPremium.setBounds(400, 200, 200, 27);
+		lblPremium.setBounds(400, 135, 200, 27);
 		lblPremium.setForeground(Color.white);
 		add(lblPremium);
 
 		JPanel panelPremiumIcon = new JPanel();
-		panelPremiumIcon.setBounds(400, 250, 200, 200);
+		panelPremiumIcon.setBounds(400, 300, 200, 200);
 		add(panelPremiumIcon);
 		panelPremiumIcon.setLayout(new BorderLayout(0, 0));
 		panelPremiumIcon.setOpaque(false);
@@ -87,12 +87,12 @@ public class ChangeSubscription extends JPanel {
 		JLabel lblBasic = new JLabel("BASIC");
 		lblBasic.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBasic.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		lblBasic.setBounds(700, 200, 200, 27);
+		lblBasic.setBounds(725, 135, 200, 27);
 		lblBasic.setForeground(Color.white);
 		add(lblBasic);
 
 		JPanel panelBasicIcon = new JPanel();
-		panelBasicIcon.setBounds(700, 250, 200, 200);
+		panelBasicIcon.setBounds(725, 300, 200, 200);
 		add(panelBasicIcon);
 		panelBasicIcon.setLayout(new BorderLayout(0, 0));
 		panelBasicIcon.setOpaque(false);
@@ -123,25 +123,25 @@ public class ChangeSubscription extends JPanel {
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
-		JLabel lblPricePP = new JLabel("9.99 €");
+		JLabel lblPricePP = new JLabel("9.99 €/mes");
 		lblPricePP.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPricePP.setForeground(Color.WHITE);
 		lblPricePP.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		lblPricePP.setBounds(100, 475, 200, 27);
+		lblPricePP.setBounds(75, 515, 200, 27);
 		add(lblPricePP);
 
-		JLabel lblPriceP = new JLabel("1.99 €");
+		JLabel lblPriceP = new JLabel("1.99 €/mes");
 		lblPriceP.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPriceP.setForeground(Color.WHITE);
 		lblPriceP.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		lblPriceP.setBounds(400, 475, 200, 27);
+		lblPriceP.setBounds(400, 515, 200, 27);
 		add(lblPriceP);
 
 		JLabel lblPriceB = new JLabel("Gratis");
 		lblPriceB.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPriceB.setForeground(Color.WHITE);
 		lblPriceB.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		lblPriceB.setBounds(700, 475, 200, 27);
+		lblPriceB.setBounds(725, 515, 200, 27);
 		add(lblPriceB);
 
 		rbtnPP = new JRadioButton("");
@@ -150,7 +150,8 @@ public class ChangeSubscription extends JPanel {
 				newSubscription = "Premium Plus";
 			}
 		});
-		rbtnPP.setBounds(100, 475, 23, 23);
+		rbtnPP.setBounds(75, 515, 23, 23);
+		rbtnPP.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		add(rbtnPP);
 
 		rbtnP = new JRadioButton("");
@@ -159,7 +160,8 @@ public class ChangeSubscription extends JPanel {
 				newSubscription = "Premium";
 			}
 		});
-		rbtnP.setBounds(400, 475, 23, 23);
+		rbtnP.setBounds(400, 515, 23, 23);
+		rbtnP.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		add(rbtnP);
 
 		rbtnB = new JRadioButton("");
@@ -168,7 +170,8 @@ public class ChangeSubscription extends JPanel {
 				newSubscription = "Basic";
 			}
 		});
-		rbtnB.setBounds(700, 475, 23, 23);
+		rbtnB.setBounds(725, 515, 23, 23);
+		rbtnB.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		add(rbtnB);
 
 		ButtonGroup btnGroup = new ButtonGroup();
@@ -183,7 +186,7 @@ public class ChangeSubscription extends JPanel {
 						panelBasicIcon, lblBasicIcon);
 			}
 		});
-		btnConfirm.setBounds(400, 575, 200, 50);
+		btnConfirm.setBounds(400, 600, 200, 50);
 		add(btnConfirm);
 		btnConfirm.setForeground(Color.white);
 		btnConfirm.setFont(new Font("Lucida Grande", Font.BOLD, 17));
@@ -191,10 +194,98 @@ public class ChangeSubscription extends JPanel {
 		btnConfirm.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnConfirm.setOpaque(false);
 		btnConfirm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		JPanel panelIconTick1 = new JPanel();
+		panelIconTick1.setBounds(75, 175, 25, 25);
+		add(panelIconTick1);
+		panelIconTick1.setLayout(new BorderLayout(0, 0));
+		panelIconTick1.setOpaque(false);
+
+		JLabel lblIconTick1 = new JLabel("");
+		panelIconTick1.add(lblIconTick1, BorderLayout.CENTER);
+		
+		JPanel panelIconTick2 = new JPanel();
+		panelIconTick2.setBounds(75, 210, 25, 25);
+		add(panelIconTick2);
+		panelIconTick2.setLayout(new BorderLayout(0, 0));
+		panelIconTick2.setOpaque(false);
+
+		JLabel lblIconTick2 = new JLabel("");
+		panelIconTick2.add(lblIconTick2, BorderLayout.CENTER);
+		
+		JPanel panelIconTick3 = new JPanel();
+		panelIconTick3.setBounds(75, 245, 25, 25);
+		add(panelIconTick3);
+		panelIconTick3.setLayout(new BorderLayout(0, 0));
+		panelIconTick3.setOpaque(false);
+
+		JLabel lblIconTick3 = new JLabel("");
+		panelIconTick3.add(lblIconTick3, BorderLayout.CENTER);
+		
+		JLabel lblPremiumPlus1 = new JLabel("Listas personalizadas");
+		lblPremiumPlus1.setForeground(Color.white);
+		lblPremiumPlus1.setBounds(112, 175, 163, 25);
+		add(lblPremiumPlus1);
+		
+		JLabel lblPremiumPlus2 = new JLabel("Lista de Favoritos");
+		lblPremiumPlus2.setForeground(Color.WHITE);
+		lblPremiumPlus2.setBounds(112, 210, 163, 25);
+		add(lblPremiumPlus2);
+		
+		JLabel lblPremiumPlus3 = new JLabel("Valoración de álbumes");
+		lblPremiumPlus3.setForeground(Color.WHITE);
+		lblPremiumPlus3.setBounds(112, 245, 163, 25);
+		add(lblPremiumPlus3);
+		
+		JPanel panelIconTick4 = new JPanel();
+		panelIconTick4.setOpaque(false);
+		panelIconTick4.setBounds(400, 175, 25, 25);
+		add(panelIconTick4);
+		panelIconTick4.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblIconTick4 = new JLabel("");
+		panelIconTick4.add(lblIconTick4, BorderLayout.CENTER);
+		
+		JLabel lblPremium1 = new JLabel("Lista de Favoritos");
+		lblPremium1.setForeground(Color.WHITE);
+		lblPremium1.setBounds(437, 175, 163, 25);
+		add(lblPremium1);
+		
+		JPanel panelIconCross = new JPanel();
+		panelIconCross.setOpaque(false);
+		panelIconCross.setBounds(725, 175, 25, 25);
+		add(panelIconCross);
+		panelIconCross.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblIconCross = new JLabel("");
+		panelIconCross.add(lblIconCross, BorderLayout.CENTER);
+		
+		JLabel lblBasic1 = new JLabel("Sin privilegios");
+		lblBasic1.setForeground(Color.WHITE);
+		lblBasic1.setBounds(762, 175, 163, 25);
+		add(lblBasic1);
+		
+		
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBounds(0, 0, 1000, 672);
+		add(panelBackground);
+		panelBackground.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblBackground = new JLabel("");
+		panelBackground.add(lblBackground, BorderLayout.CENTER);
+
+		addImage(panelBackground, lblBackground, "img/panel/change_sub_bg.jpeg");
+		addImage(panelIconCross, lblIconCross, "img/icon/cross.png");
+		addImage(panelIconTick1, lblIconTick1, "img/icon/tick.png");
+		addImage(panelIconTick2, lblIconTick2, "img/icon/tick.png");
+		addImage(panelIconTick3, lblIconTick3, "img/icon/tick.png");
+		addImage(panelIconTick4, lblIconTick4, "img/icon/tick.png");
 
 		addSubscriptionImages(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
 				panelBasicIcon, lblBasicIcon);
 		addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
+		
+		
 	}
 
 	private void addImage(JPanel panel, JLabel label, String path) {

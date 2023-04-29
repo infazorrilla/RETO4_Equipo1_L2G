@@ -144,7 +144,6 @@ public class Profile extends JPanel {
 
 		JPanel panelEditInfoIcon = new JPanel();
 		panelEditInfoIcon.setBounds(310, 200, 25, 25);
-		add(panelEditInfoIcon);
 		panelEditInfoIcon.setLayout(new BorderLayout(0, 0));
 		panelEditInfoIcon.setOpaque(false);
 		panelEditInfoIcon.addMouseListener(new MouseAdapter() {
@@ -157,6 +156,7 @@ public class Profile extends JPanel {
 			}
 		});
 		panelEditInfoIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		add(panelEditInfoIcon);
 
 		JLabel lblEditInfoIcon = new JLabel("");
 		panelEditInfoIcon.add(lblEditInfoIcon, BorderLayout.CENTER);

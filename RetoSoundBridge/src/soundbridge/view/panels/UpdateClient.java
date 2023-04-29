@@ -1,11 +1,17 @@
 package soundbridge.view.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,15 +20,40 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import soundbridge.database.pojos.Client;
+import soundbridge.view.factory.PanelFactory;
 
 public class UpdateClient extends JPanel {
 
 	private static final long serialVersionUID = 2091925243705072798L;
+	private Client changedClient = null;
 	
 	public UpdateClient(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
+		
+		JPanel panelBackIcon = new JPanel();
+		panelBackIcon.setBounds(900, 45, 50, 50);
+		add(panelBackIcon);
+		panelBackIcon.setLayout(new BorderLayout(0, 0));
+		panelBackIcon.setOpaque(false);
+		panelBackIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				if (changedClient == null) {
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
+				} else {
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient));
+				}
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		JLabel lblBackIcon = new JLabel("");
+		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 		
 		JLabel lblTitle = new JLabel("Actualice sus datos:");
 		lblTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
@@ -286,6 +317,16 @@ public class UpdateClient extends JPanel {
 				textFieldEmailSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
+		
+		addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
+	}
+	
+	private void addImage(JPanel panel, JLabel label, String path) {
+		ImageIcon icon = new ImageIcon(path);
+		Image img = icon.getImage();
+		Image resizedImg = img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
+		icon.setImage(resizedImg);
+		label.setIcon(icon);
 	}
 
 }
