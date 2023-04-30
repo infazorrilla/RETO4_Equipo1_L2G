@@ -74,5 +74,10 @@ public class WindowUtils {
 		icon.setImage(resizedImg);
 		label.setIcon(icon);
 	}
+	
+	public static void addGif(JLabel label, String path) {
+		ImageIcon icon = new ImageIcon(path);
+		label.setIcon(icon);
+	}
 
 }

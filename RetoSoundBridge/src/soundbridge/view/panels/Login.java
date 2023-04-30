@@ -33,9 +33,18 @@ public class Login extends JPanel {
 	private Controller controller;
 	private Client client;
 	private Employee employee;
+	private JLabel lblBackground;
 
 	public Login(JFrame frame) {
 		controller = new Controller();
+		
+		initialize(frame);
+
+		//WindowUtils.addGif(lblBackground, "img/panel/smoke_login.gif");
+		
+	}
+	
+	private void initialize(JFrame frame) {
 
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -132,16 +141,28 @@ public class Login extends JPanel {
 		btnRegister.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnRegister.setOpaque(true);
 		btnRegister.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	
 
+		JPanel panelLogo = new JPanel();
+		panelLogo.setBounds(0, 0, 672, 672);
+		add(panelLogo);
+		panelLogo.setLayout(new BorderLayout(0, 0));
+		panelLogo.setOpaque(false);
+
+		JLabel lblLogo = new JLabel("");
+		panelLogo.add(lblLogo, BorderLayout.CENTER);
+		
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
 		panelBackground.setLayout(new BorderLayout(0, 0));
+		panelBackground.setOpaque(false);
 
-		JLabel lblBackground = new JLabel("");
+		lblBackground = new JLabel("");
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
-
-		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/login_bg.jpeg");
+		
+		WindowUtils.addImage(panelLogo, lblLogo, "img/panel/logo_login.png");
+		
 	}
 
 	private void logIn(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
