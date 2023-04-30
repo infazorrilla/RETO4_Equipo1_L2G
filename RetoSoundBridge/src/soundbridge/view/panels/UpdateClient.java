@@ -4,22 +4,26 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 
-import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import soundbridge.database.pojos.Client;
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
 public class UpdateClient extends JPanel {
@@ -57,276 +61,317 @@ public class UpdateClient extends JPanel {
 		
 		JLabel lblTitle = new JLabel("Actualice sus datos:");
 		lblTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-		lblTitle.setBounds(90, 89, 510, 38);
+		lblTitle.setBounds(87, 75, 349, 38);
 		lblTitle.setForeground(Color.white);
 		add(lblTitle);
+		
+		JLabel lblTitle2 = new JLabel("Cambie su contraseña:");
+		lblTitle2.setForeground(Color.WHITE);
+		lblTitle2.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		lblTitle2.setBounds(509, 75, 349, 38);
+		add(lblTitle2);
 		
 		JLabel lblPasswd1 = new JLabel("Contraseña:");
 		lblPasswd1.setForeground(Color.WHITE);
 		lblPasswd1.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblPasswd1.setBounds(90, 188, 200, 23);
+		lblPasswd1.setBounds(517, 142, 200, 35);
 		lblPasswd1.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblPasswd1);
 		
-		JLabel lblPasswd2 = new JLabel("Repite la contraseña:");
+		JLabel lblPasswd2 = new JLabel("Repita la contraseña:");
 		lblPasswd2.setForeground(Color.WHITE);
 		lblPasswd2.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblPasswd2.setBounds(90, 228, 200, 23);
+		lblPasswd2.setBounds(517, 202, 200, 35);
 		lblPasswd2.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblPasswd2);
 
 		JLabel lblPersonalId = new JLabel("DNI:");
 		lblPersonalId.setForeground(Color.WHITE);
 		lblPersonalId.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblPersonalId.setBounds(90, 268, 200, 23);
+		lblPersonalId.setBounds(29, 142, 200, 35);
 		lblPersonalId.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblPersonalId);
 
 		JLabel lblGender = new JLabel("Género:");
 		lblGender.setForeground(Color.WHITE);
 		lblGender.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblGender.setBounds(90, 308, 200, 23);
+		lblGender.setBounds(29, 202, 200, 35);
 		lblGender.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblGender);
 
 		JLabel lblNacionalidad = new JLabel("Nacionalidad:");
 		lblNacionalidad.setForeground(Color.WHITE);
 		lblNacionalidad.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblNacionalidad.setBounds(90, 348, 200, 23);
+		lblNacionalidad.setBounds(29, 262, 200, 35);
 		lblNacionalidad.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblNacionalidad);
 
 		JLabel lblBirthDate = new JLabel("Fecha de nacimiento:");
 		lblBirthDate.setForeground(Color.WHITE);
 		lblBirthDate.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblBirthDate.setBounds(90, 388, 200, 23);
+		lblBirthDate.setBounds(29, 322, 200, 35);
 		lblBirthDate.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblBirthDate);
 
 		JLabel lblAdress = new JLabel("Dirección:");
 		lblAdress.setForeground(Color.WHITE);
 		lblAdress.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblAdress.setBounds(90, 428, 200, 23);
+		lblAdress.setBounds(29, 382, 200, 35);
 		lblAdress.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblAdress);
 
 		JLabel lblPhoneNumber = new JLabel("Teléfono:");
 		lblPhoneNumber.setForeground(Color.WHITE);
 		lblPhoneNumber.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblPhoneNumber.setBounds(90, 468, 200, 23);
+		lblPhoneNumber.setBounds(29, 477, 200, 35);
 		lblPhoneNumber.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblPhoneNumber);
 
 		JLabel lblMail = new JLabel("E-mail:");
 		lblMail.setForeground(Color.WHITE);
 		lblMail.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblMail.setBounds(90, 508, 200, 23);
+		lblMail.setBounds(29, 537, 200, 35);
 		lblMail.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblMail);
 		
-		JTextField textFieldPasswd1SignUp = new JTextField();
-		textFieldPasswd1SignUp.setOpaque(false);
-		textFieldPasswd1SignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldPasswd1SignUp.setForeground(Color.WHITE);
-		textFieldPasswd1SignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldPasswd1SignUp.setColumns(10);
-		textFieldPasswd1SignUp.setCaretColor(Color.WHITE);
-		textFieldPasswd1SignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldPasswd1SignUp.setBounds(296, 182, 200, 35);
-		add(textFieldPasswd1SignUp);
-		textFieldPasswd1SignUp.addFocusListener(new FocusAdapter() {
+		JPasswordField passwdField1 = new JPasswordField();
+		passwdField1.setOpaque(false);
+		passwdField1.setHorizontalAlignment(SwingConstants.CENTER);
+		passwdField1.setForeground(Color.WHITE);
+		passwdField1.setFont(new Font("Dialog", Font.PLAIN, 15));
+		passwdField1.setColumns(10);
+		passwdField1.setCaretColor(Color.WHITE);
+		passwdField1.setBorder(new LineBorder(Color.WHITE, 2));
+		passwdField1.setBounds(723, 142, 200, 35);
+		add(passwdField1);
+		passwdField1.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textFieldPasswd1SignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				passwdField1.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textFieldPasswd1SignUp.setBorder(new LineBorder(Color.WHITE, 2));
+				passwdField1.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
 
-		JTextField textFieldPasswd2SignUp = new JTextField();
-		textFieldPasswd2SignUp.setOpaque(false);
-		textFieldPasswd2SignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldPasswd2SignUp.setForeground(Color.WHITE);
-		textFieldPasswd2SignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldPasswd2SignUp.setColumns(10);
-		textFieldPasswd2SignUp.setCaretColor(Color.WHITE);
-		textFieldPasswd2SignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldPasswd2SignUp.setBounds(296, 222, 200, 35);
-		add(textFieldPasswd2SignUp);
-		textFieldPasswd2SignUp.addFocusListener(new FocusAdapter() {
+		JPasswordField passwdField2 = new JPasswordField();
+		passwdField2.setOpaque(false);
+		passwdField2.setHorizontalAlignment(SwingConstants.CENTER);
+		passwdField2.setForeground(Color.WHITE);
+		passwdField2.setFont(new Font("Dialog", Font.PLAIN, 15));
+		passwdField2.setColumns(10);
+		passwdField2.setCaretColor(Color.WHITE);
+		passwdField2.setBorder(new LineBorder(Color.WHITE, 2));
+		passwdField2.setBounds(723, 202, 200, 35);
+		add(passwdField2);
+		passwdField2.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textFieldPasswd2SignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				passwdField2.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textFieldPasswd2SignUp.setBorder(new LineBorder(Color.WHITE, 2));
+				passwdField2.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
 
-		JTextField textFieldPersonalIdSignUp = new JTextField(client.getPersonalId());
-		textFieldPersonalIdSignUp.setOpaque(false);
-		textFieldPersonalIdSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldPersonalIdSignUp.setForeground(Color.WHITE);
-		textFieldPersonalIdSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldPersonalIdSignUp.setColumns(10);
-		textFieldPersonalIdSignUp.setCaretColor(Color.WHITE);
-		textFieldPersonalIdSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldPersonalIdSignUp.setBounds(296, 262, 200, 35);
-		add(textFieldPersonalIdSignUp);
-		textFieldPersonalIdSignUp.addFocusListener(new FocusAdapter() {
+		JTextField textPersonalId = new JTextField(client.getPersonalId());
+		textPersonalId.setOpaque(false);
+		textPersonalId.setHorizontalAlignment(SwingConstants.CENTER);
+		textPersonalId.setForeground(Color.WHITE);
+		textPersonalId.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textPersonalId.setColumns(10);
+		textPersonalId.setCaretColor(Color.WHITE);
+		textPersonalId.setBorder(new LineBorder(Color.WHITE, 2));
+		textPersonalId.setBounds(235, 142, 200, 35);
+		add(textPersonalId);
+		textPersonalId.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textFieldPersonalIdSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				textPersonalId.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textFieldPersonalIdSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+				textPersonalId.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
 
-		JTextField textFildGenderSignUp = new JTextField(client.getGender());
-		textFildGenderSignUp.setOpaque(false);
-		textFildGenderSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFildGenderSignUp.setForeground(Color.WHITE);
-		textFildGenderSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFildGenderSignUp.setColumns(10);
-		textFildGenderSignUp.setCaretColor(Color.WHITE);
-		textFildGenderSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFildGenderSignUp.setBounds(296, 302, 200, 35);
-		add(textFildGenderSignUp);
-		textFildGenderSignUp.addFocusListener(new FocusAdapter() {
+		JTextField textGender = new JTextField(client.getGender());
+		textGender.setOpaque(false);
+		textGender.setHorizontalAlignment(SwingConstants.CENTER);
+		textGender.setForeground(Color.WHITE);
+		textGender.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textGender.setColumns(10);
+		textGender.setCaretColor(Color.WHITE);
+		textGender.setBorder(new LineBorder(Color.WHITE, 2));
+		textGender.setBounds(235, 202, 200, 35);
+		add(textGender);
+		textGender.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textFildGenderSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				textGender.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textFildGenderSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+				textGender.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
 
-		JTextField textFieldNationalitySignUp = new JTextField(client.getNationality());
-		textFieldNationalitySignUp.setOpaque(false);
-		textFieldNationalitySignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldNationalitySignUp.setForeground(Color.WHITE);
-		textFieldNationalitySignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldNationalitySignUp.setColumns(10);
-		textFieldNationalitySignUp.setCaretColor(Color.WHITE);
-		textFieldNationalitySignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldNationalitySignUp.setBounds(296, 342, 200, 35);
-		add(textFieldNationalitySignUp);
-		textFieldNationalitySignUp.addFocusListener(new FocusAdapter() {
+		JTextField textNationality = new JTextField(client.getNationality());
+		textNationality.setOpaque(false);
+		textNationality.setHorizontalAlignment(SwingConstants.CENTER);
+		textNationality.setForeground(Color.WHITE);
+		textNationality.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textNationality.setColumns(10);
+		textNationality.setCaretColor(Color.WHITE);
+		textNationality.setBorder(new LineBorder(Color.WHITE, 2));
+		textNationality.setBounds(235, 262, 200, 35);
+		add(textNationality);
+		textNationality.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textFieldNationalitySignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				textNationality.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textFieldNationalitySignUp.setBorder(new LineBorder(Color.WHITE, 2));
+				textNationality.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		JTextField textFieldBirthDateSignUp = new JTextField((new SimpleDateFormat("dd-MM-yyyy")).format(client.getBirthDate()));
-		textFieldBirthDateSignUp.setOpaque(false);
-		textFieldBirthDateSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldBirthDateSignUp.setForeground(Color.WHITE);
-		textFieldBirthDateSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldBirthDateSignUp.setColumns(10);
-		textFieldBirthDateSignUp.setCaretColor(Color.WHITE);
-		textFieldBirthDateSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldBirthDateSignUp.setBounds(296, 382, 200, 35);
-		add(textFieldBirthDateSignUp);
-		textFieldBirthDateSignUp.addFocusListener(new FocusAdapter() {
+		JTextField textBirthDate = new JTextField((new SimpleDateFormat("dd-MM-yyyy")).format(client.getBirthDate()));
+		textBirthDate.setOpaque(false);
+		textBirthDate.setHorizontalAlignment(SwingConstants.CENTER);
+		textBirthDate.setForeground(Color.WHITE);
+		textBirthDate.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textBirthDate.setColumns(10);
+		textBirthDate.setCaretColor(Color.WHITE);
+		textBirthDate.setBorder(new LineBorder(Color.WHITE, 2));
+		textBirthDate.setBounds(235, 322, 200, 35);
+		add(textBirthDate);
+		textBirthDate.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textFieldBirthDateSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				textBirthDate.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textFieldBirthDateSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-			}
-		});
-		JTextField textFieldAdressSignUp = new JTextField(client.getAddress());
-		textFieldAdressSignUp.setOpaque(false);
-		textFieldAdressSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldAdressSignUp.setForeground(Color.WHITE);
-		textFieldAdressSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldAdressSignUp.setColumns(10);
-		textFieldAdressSignUp.setCaretColor(Color.WHITE);
-		textFieldAdressSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldAdressSignUp.setBounds(296, 422, 200, 35);
-		add(textFieldAdressSignUp);
-		textFieldAdressSignUp.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldAdressSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldAdressSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-			}
-		});
-		JTextField textFieldPhoneNumberSignUp = new JTextField(client.getTelephone());
-		textFieldPhoneNumberSignUp.setOpaque(false);
-		textFieldPhoneNumberSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldPhoneNumberSignUp.setForeground(Color.WHITE);
-		textFieldPhoneNumberSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldPhoneNumberSignUp.setColumns(10);
-		textFieldPhoneNumberSignUp.setCaretColor(Color.WHITE);
-		textFieldPhoneNumberSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldPhoneNumberSignUp.setBounds(296, 462, 200, 35);
-		add(textFieldPhoneNumberSignUp);
-		textFieldPhoneNumberSignUp.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldPhoneNumberSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldPhoneNumberSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-			}
-		});
-		JTextField textFieldEmailSignUp = new JTextField(client.getEmail());
-		textFieldEmailSignUp.setOpaque(false);
-		textFieldEmailSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldEmailSignUp.setForeground(Color.WHITE);
-		textFieldEmailSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldEmailSignUp.setColumns(10);
-		textFieldEmailSignUp.setCaretColor(Color.WHITE);
-		textFieldEmailSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldEmailSignUp.setBounds(296, 502, 200, 35);
-		add(textFieldEmailSignUp);
-		textFieldEmailSignUp.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldEmailSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldEmailSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+				textBirthDate.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
 		
-		addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-	}
-	
-	private void addImage(JPanel panel, JLabel label, String path) {
-		ImageIcon icon = new ImageIcon(path);
-		Image img = icon.getImage();
-		Image resizedImg = img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
-		icon.setImage(resizedImg);
-		label.setIcon(icon);
-	}
+		JTextArea textAreaAddress = new JTextArea(client.getAddress());
+		textAreaAddress.setOpaque(false);
+		textAreaAddress.setForeground(Color.WHITE);
+		textAreaAddress.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textAreaAddress.setColumns(10);
+		textAreaAddress.setCaretColor(Color.WHITE);
+		textAreaAddress.setBorder(new LineBorder(Color.WHITE, 2));
+		textAreaAddress.setBounds(235, 382, 200, 70);
+		add(textAreaAddress);
+		textAreaAddress.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				textAreaAddress.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+			}
 
+			@Override
+			public void focusLost(FocusEvent e) {
+				textAreaAddress.setBorder(new LineBorder(Color.WHITE, 2));
+			}
+		});
+		textAreaAddress.setLineWrap(true);
+		textAreaAddress.setWrapStyleWord(true);
+		
+		JTextField textPhone = new JTextField(client.getTelephone());
+		textPhone.setOpaque(false);
+		textPhone.setHorizontalAlignment(SwingConstants.CENTER);
+		textPhone.setForeground(Color.WHITE);
+		textPhone.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textPhone.setColumns(10);
+		textPhone.setCaretColor(Color.WHITE);
+		textPhone.setBorder(new LineBorder(Color.WHITE, 2));
+		textPhone.setBounds(235, 477, 200, 35);
+		add(textPhone);
+		textPhone.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				textPhone.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				textPhone.setBorder(new LineBorder(Color.WHITE, 2));
+			}
+		});
+		JTextField textEmail = new JTextField(client.getEmail());
+		textEmail.setOpaque(false);
+		textEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		textEmail.setForeground(Color.WHITE);
+		textEmail.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textEmail.setColumns(10);
+		textEmail.setCaretColor(Color.WHITE);
+		textEmail.setBorder(new LineBorder(Color.WHITE, 2));
+		textEmail.setBounds(235, 537, 200, 35);
+		add(textEmail);
+		textEmail.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				textEmail.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				textEmail.setBorder(new LineBorder(Color.WHITE, 2));
+			}
+		});
+		
+		JButton btnUpdateInfo = new JButton("Actualizar");
+		btnUpdateInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnUpdateInfo.setBounds(235, 597, 200, 40);
+		add(btnUpdateInfo);
+		btnUpdateInfo.setForeground(Color.black);
+		btnUpdateInfo.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		btnUpdateInfo.setBackground(new Color(244, 135, 244));
+		btnUpdateInfo.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+		btnUpdateInfo.setOpaque(true);
+		btnUpdateInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		JButton btnChangePasswd = new JButton("Confirmar");
+		btnChangePasswd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnChangePasswd.setBounds(723, 262, 200, 40);
+		add(btnChangePasswd);
+		btnChangePasswd.setForeground(Color.black);
+		btnChangePasswd.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		btnChangePasswd.setBackground(new Color(244, 135, 244));
+		btnChangePasswd.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+		btnChangePasswd.setOpaque(true);
+		btnChangePasswd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBounds(0, 0, 1000, 672);
+		add(panelBackground);
+		panelBackground.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblBackground = new JLabel("");
+		panelBackground.add(lblBackground, BorderLayout.CENTER);
+
+		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/update_client_bg.jpeg");
+		
+		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
+		
+	}
 }
