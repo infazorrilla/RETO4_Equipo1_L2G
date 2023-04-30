@@ -40,7 +40,7 @@ public class Login extends JPanel {
 		
 		initialize(frame);
 
-		//WindowUtils.addGif(lblBackground, "img/panel/smoke_login.gif");
+		WindowUtils.addGif(lblBackground, "img/panel/new_smoke.gif");
 		
 	}
 	
