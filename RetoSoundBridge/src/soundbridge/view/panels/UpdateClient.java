@@ -10,7 +10,10 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,20 +25,26 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import soundbridge.database.managers.ClientManager;
+import soundbridge.database.managers.ClientPManager;
+import soundbridge.database.managers.ClientPPManager;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientP;
+import soundbridge.database.pojos.ClientPP;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
+import javax.swing.JComboBox;
 
 public class UpdateClient extends JPanel {
 
 	private static final long serialVersionUID = 2091925243705072798L;
-	private Client changedClient = null;
-	
+	private JTextField textBankAccount;
+
 	public UpdateClient(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -45,39 +54,35 @@ public class UpdateClient extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				if (changedClient == null) {
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
-				} else {
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient));
-				}
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
 				frame.revalidate();
 				frame.repaint();
 			}
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
-		
+
 		JLabel lblTitle = new JLabel("Actualice sus datos:");
 		lblTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		lblTitle.setBounds(87, 75, 349, 38);
 		lblTitle.setForeground(Color.white);
 		add(lblTitle);
-		
+
 		JLabel lblTitle2 = new JLabel("Cambie su contraseña:");
 		lblTitle2.setForeground(Color.WHITE);
 		lblTitle2.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		lblTitle2.setBounds(509, 75, 349, 38);
 		add(lblTitle2);
-		
+
 		JLabel lblPasswd1 = new JLabel("Contraseña:");
 		lblPasswd1.setForeground(Color.WHITE);
 		lblPasswd1.setFont(new Font("Dialog", Font.PLAIN, 15));
 		lblPasswd1.setBounds(517, 142, 200, 35);
 		lblPasswd1.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblPasswd1);
-		
+
 		JLabel lblPasswd2 = new JLabel("Repita la contraseña:");
 		lblPasswd2.setForeground(Color.WHITE);
 		lblPasswd2.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -85,12 +90,12 @@ public class UpdateClient extends JPanel {
 		lblPasswd2.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblPasswd2);
 
-		JLabel lblPersonalId = new JLabel("DNI:");
-		lblPersonalId.setForeground(Color.WHITE);
-		lblPersonalId.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblPersonalId.setBounds(29, 142, 200, 35);
-		lblPersonalId.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblPersonalId);
+		JLabel lblBankAccount = new JLabel("Cuenta Bancaria:");
+		lblBankAccount.setForeground(Color.WHITE);
+		lblBankAccount.setFont(new Font("Dialog", Font.PLAIN, 15));
+		lblBankAccount.setBounds(29, 142, 200, 35);
+		lblBankAccount.setHorizontalAlignment(SwingConstants.RIGHT);
+		add(lblBankAccount);
 
 		JLabel lblGender = new JLabel("Género:");
 		lblGender.setForeground(Color.WHITE);
@@ -133,7 +138,7 @@ public class UpdateClient extends JPanel {
 		lblMail.setBounds(29, 537, 200, 35);
 		lblMail.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblMail);
-		
+
 		JPasswordField passwdField1 = new JPasswordField();
 		passwdField1.setOpaque(false);
 		passwdField1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -178,49 +183,50 @@ public class UpdateClient extends JPanel {
 			}
 		});
 
-		JTextField textPersonalId = new JTextField(client.getPersonalId());
-		textPersonalId.setOpaque(false);
-		textPersonalId.setHorizontalAlignment(SwingConstants.CENTER);
-		textPersonalId.setForeground(Color.WHITE);
-		textPersonalId.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textPersonalId.setColumns(10);
-		textPersonalId.setCaretColor(Color.WHITE);
-		textPersonalId.setBorder(new LineBorder(Color.WHITE, 2));
-		textPersonalId.setBounds(235, 142, 200, 35);
-		add(textPersonalId);
-		textPersonalId.addFocusListener(new FocusAdapter() {
+		textBankAccount = new JTextField("");
+		textBankAccount.setOpaque(false);
+		textBankAccount.setHorizontalAlignment(SwingConstants.CENTER);
+		textBankAccount.setForeground(Color.WHITE);
+		textBankAccount.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textBankAccount.setColumns(10);
+		textBankAccount.setCaretColor(Color.WHITE);
+		textBankAccount.setBorder(new LineBorder(Color.WHITE, 2));
+		textBankAccount.setBounds(235, 142, 200, 35);
+		add(textBankAccount);
+		textBankAccount.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textPersonalId.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				textBankAccount.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textPersonalId.setBorder(new LineBorder(Color.WHITE, 2));
+				textBankAccount.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
 
-		JTextField textGender = new JTextField(client.getGender());
-		textGender.setOpaque(false);
-		textGender.setHorizontalAlignment(SwingConstants.CENTER);
-		textGender.setForeground(Color.WHITE);
-		textGender.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textGender.setColumns(10);
-		textGender.setCaretColor(Color.WHITE);
-		textGender.setBorder(new LineBorder(Color.WHITE, 2));
-		textGender.setBounds(235, 202, 200, 35);
-		add(textGender);
-		textGender.addFocusListener(new FocusAdapter() {
+		JComboBox<String> comboBoxGender = new JComboBox<String>();
+		comboBoxGender.setBounds(235, 202, 200, 35);
+		comboBoxGender.setForeground(Color.WHITE);
+		comboBoxGender.setFont(new Font("Dialog", Font.PLAIN, 15));
+		comboBoxGender.setBorder(new LineBorder(Color.WHITE, 2));
+		comboBoxGender.setBackground(Color.black);
+		add(comboBoxGender);
+		comboBoxGender.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textGender.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				comboBoxGender.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textGender.setBorder(new LineBorder(Color.WHITE, 2));
+				comboBoxGender.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
+		comboBoxGender.addItem("Hombre");
+		comboBoxGender.addItem("Mujer");
+		comboBoxGender.addItem("Otro");
+		comboBoxGender.setSelectedItem(client.getGender());
 
 		JTextField textNationality = new JTextField(client.getNationality());
 		textNationality.setOpaque(false);
@@ -264,7 +270,7 @@ public class UpdateClient extends JPanel {
 				textBirthDate.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		
+
 		JTextArea textAreaAddress = new JTextArea(client.getAddress());
 		textAreaAddress.setOpaque(false);
 		textAreaAddress.setForeground(Color.WHITE);
@@ -287,7 +293,7 @@ public class UpdateClient extends JPanel {
 		});
 		textAreaAddress.setLineWrap(true);
 		textAreaAddress.setWrapStyleWord(true);
-		
+
 		JTextField textPhone = new JTextField(client.getTelephone());
 		textPhone.setOpaque(false);
 		textPhone.setHorizontalAlignment(SwingConstants.CENTER);
@@ -330,11 +336,12 @@ public class UpdateClient extends JPanel {
 				textEmail.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		
+
 		JButton btnUpdateInfo = new JButton("Actualizar");
 		btnUpdateInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				doUpdateClient(client, comboBoxGender, textNationality, textBirthDate, textAreaAddress, textPhone,
+						textEmail, textBankAccount);
 			}
 		});
 		btnUpdateInfo.setBounds(235, 597, 200, 40);
@@ -345,11 +352,11 @@ public class UpdateClient extends JPanel {
 		btnUpdateInfo.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnUpdateInfo.setOpaque(true);
 		btnUpdateInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		JButton btnChangePasswd = new JButton("Confirmar");
 		btnChangePasswd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		btnChangePasswd.setBounds(723, 262, 200, 40);
@@ -360,7 +367,7 @@ public class UpdateClient extends JPanel {
 		btnChangePasswd.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnChangePasswd.setOpaque(true);
 		btnChangePasswd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
@@ -370,8 +377,69 @@ public class UpdateClient extends JPanel {
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
 
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/update_client_bg.jpeg");
-		
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-		
+
+		enableBankAccount(client);
+
+	}
+
+	private void enableBankAccount(Client client) {
+		if (client instanceof ClientP || client instanceof ClientPP) {
+			textBankAccount.setEnabled(true);
+			if (client instanceof ClientP)
+				textBankAccount.setText(((ClientP) client).getBankAccount());
+			else
+				textBankAccount.setText(((ClientPP) client).getBankAccount());
+		} else {
+			textBankAccount.setEnabled(false);
+			textBankAccount.setText("Cuenta gratuita");
+			textBankAccount.setFont(new Font("Dialog", Font.ITALIC, 15));
+		}
+	}
+
+	private void updateClient(Client client, JComboBox<String> combo, JTextField textNation, JTextField textBirth,
+			JTextArea textAddr, JTextField textPhone, JTextField textEmail, JTextField textBank)
+			throws SQLException, Exception {
+		client.setGender(combo.getSelectedItem().toString());
+		client.setNationality(textNation.getText());
+
+		String birthDate = textBirth.getText();
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("dd-MM-yyyy").parse(birthDate);
+		} catch (ParseException e) {
+			WindowUtils.errorPane("Formato de fecha incorrecto.", "Error");
+		}
+
+		client.setBirthDate(date);
+		client.setAddress(textAddr.getText());
+		client.setTelephone(textPhone.getText());
+		client.setEmail(textEmail.getText());
+
+		ClientManager clientManager = new ClientManager();
+		ClientPManager clientPManager = new ClientPManager();
+		ClientPPManager clientPPManager = new ClientPPManager();
+
+		clientManager.update(client);
+
+		if (client instanceof ClientP) {
+			((ClientP) client).setBankAccount(textBank.getText());
+			clientPManager.update((ClientP) client);
+		} else if (client instanceof ClientPP) {
+			((ClientPP) client).setBankAccount(textBank.getText());
+			clientPPManager.update((ClientPP) client);
+		}
+	}
+
+	private void doUpdateClient(Client client, JComboBox<String> combo, JTextField textNation, JTextField textBirth,
+			JTextArea textAddr, JTextField textPhone, JTextField textEmail, JTextField textBank) {
+		try {
+			updateClient(client, combo, textNation, textBirth, textAddr, textPhone, textEmail, textBank);
+			WindowUtils.confirmationPane("Sus datos han sido actalizados.", "Confirmación");
+		} catch (SQLException e) {
+			WindowUtils.errorPane("No se ha podido realizar la actualización.", "Error");
+		} catch (Exception e) {
+			WindowUtils.errorPane("No se ha podido realizar la actualización.", "Error");
+		}
 	}
 }

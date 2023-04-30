@@ -91,6 +91,18 @@ public class ClientManager extends ManagerAbstract<Client> {
 				client.setUsername(username);
 				client.setPasswd(passwd);
 				client.setBlocked(isBlocked);
+				
+				if (client instanceof ClientP) {
+					ClientPManager clientPManager = new ClientPManager();
+					ClientP clientP = clientPManager.getClientPById(id);
+					((ClientP) client).setBankAccount(clientP.getBankAccount());
+					((ClientP) client).setSuscriptionDate(clientP.getSuscriptionDate());
+				} else if (client instanceof ClientPP) {
+					ClientPPManager clientPPManager = new ClientPPManager();
+					ClientPP clientPP = clientPPManager.getClientPPById(id);
+					((ClientPP) client).setBankAccount(clientPP.getBankAccount());
+					((ClientPP) client).setSuscriptionDate(clientPP.getSuscriptionDate());
+				}
 
 				ret.add(client);
 			}
