@@ -37,8 +37,13 @@ public class ChangeSubscription extends JPanel {
 	private JRadioButton rbtnPP;
 	private JRadioButton rbtnP;
 	private JRadioButton rbtnB;
-
+	private JLabel lblBackground;
+	
 	public ChangeSubscription(JFrame frame, Client client) {
+		initialize(frame, client);
+	}
+	
+	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
@@ -263,15 +268,6 @@ public class ChangeSubscription extends JPanel {
 		lblBasic1.setBounds(762, 175, 163, 25);
 		add(lblBasic1);
 
-		JPanel panelBackground = new JPanel();
-		panelBackground.setBounds(0, 0, 1000, 672);
-		add(panelBackground);
-		panelBackground.setLayout(new BorderLayout(0, 0));
-
-		JLabel lblBackground = new JLabel("");
-		panelBackground.add(lblBackground, BorderLayout.CENTER);
-
-		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/change_sub_bg.jpeg");
 		WindowUtils.addImage(panelIconCross, lblIconCross, "img/icon/cross.png");
 		WindowUtils.addImage(panelIconTick1, lblIconTick1, "img/icon/tick.png");
 		WindowUtils.addImage(panelIconTick2, lblIconTick2, "img/icon/tick.png");
@@ -281,7 +277,13 @@ public class ChangeSubscription extends JPanel {
 		addSubscriptionImages(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
 				panelBasicIcon, lblBasicIcon);
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
+		
+		setLayout(new BorderLayout(0, 0));
 
+		lblBackground = new JLabel("");
+		add(lblBackground, BorderLayout.CENTER);
+		
+		WindowUtils.addImage(this, lblBackground, "img/panel/change_sub_bg.jpeg");
 	}
 
 	private void addImagePremiumPlus(Client client, JPanel panel, JLabel lbl) {
