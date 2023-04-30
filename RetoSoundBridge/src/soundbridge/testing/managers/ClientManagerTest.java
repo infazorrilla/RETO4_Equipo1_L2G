@@ -52,6 +52,7 @@ public class ClientManagerTest {
 		client.setAddress("Calle del Licienciado Poza 10, 4C, 48008 Bilbao, Bizkaia, España");
 		client.setUsername("pedrolopez");
 		client.setPasswd("pedrolopez85");
+		client.setBlocked(false);
 		client.setBirthDate(new java.util.Date(85, 3, 29));
 
 		try {
@@ -86,10 +87,13 @@ public class ClientManagerTest {
 
 		} catch (NotFoundException nfe) {
 			thrown = true;
+			System.out.println(nfe);
 		} catch (SQLException sqle) {
 			thrown = true;
+			System.out.println(sqle);
 		} catch (Exception e) {
 			thrown = true;
+			System.out.println(e);
 		}
 
 		assertNotNull(clients);

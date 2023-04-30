@@ -76,6 +76,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 				String address = resultSet.getString("address");
 				String username = resultSet.getString("username");
 				String passwd = resultSet.getString("passwd");
+				boolean isBlocked = resultSet.getBoolean("isBlocked");
 
 				client.setId(id);
 				client.setName(name);
@@ -89,6 +90,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 				client.setAddress(address);
 				client.setUsername(username);
 				client.setPasswd(passwd);
+				client.setBlocked(isBlocked);
 
 				ret.add(client);
 			}
@@ -178,7 +180,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 			String sql = "UPDATE Client SET name = ?, lastName = ?, nationality = ?, gender = ?, birthDate = ?, "
 					+ "personalId = ?, telephone = ?, email = ?, address = ?, "
-					+ "username = ?, passwd = ?, type = ? where id = ?";
+					+ "username = ?, passwd = ?, type = ?, isBlocked = ? where id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -193,7 +195,8 @@ public class ClientManager extends ManagerAbstract<Client> {
 			preparedStatement.setString(9, client.getAddress());
 			preparedStatement.setString(10, client.getUsername());
 			preparedStatement.setString(11, client.getPasswd());
-			preparedStatement.setInt(13, client.getId());
+			preparedStatement.setBoolean(13, client.isBlocked());
+			preparedStatement.setInt(14, client.getId());
 
 			if (client instanceof ClientP)
 				preparedStatement.setString(12, "Premium");
