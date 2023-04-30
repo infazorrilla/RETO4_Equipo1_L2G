@@ -58,6 +58,7 @@ public class Profile extends JPanel {
 			}
 		});
 		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelHomeIcon.setToolTipText("Volver a mi biblioteca.");
 
 		JLabel lblHomeIcon = new JLabel("");
 		panelHomeIcon.add(lblHomeIcon, BorderLayout.CENTER);
@@ -104,6 +105,7 @@ public class Profile extends JPanel {
 			}
 		});
 		panelEditSubscriptionIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelEditSubscriptionIcon.setToolTipText("Cambiar mi suscripción.");
 
 		JLabel lblEditSubscriptionIcon = new JLabel("");
 		panelEditSubscriptionIcon.add(lblEditSubscriptionIcon, BorderLayout.CENTER);
@@ -153,6 +155,7 @@ public class Profile extends JPanel {
 		});
 		panelEditInfoIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		add(panelEditInfoIcon);
+		panelEditInfoIcon.setToolTipText("Editar datos de mi cuenta.");
 
 		JLabel lblEditInfoIcon = new JLabel("");
 		panelEditInfoIcon.add(lblEditInfoIcon, BorderLayout.CENTER);

@@ -60,6 +60,7 @@ public class UpdateClient extends JPanel {
 			}
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelBackIcon.setToolTipText("Volver a mi perfil.");
 
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);

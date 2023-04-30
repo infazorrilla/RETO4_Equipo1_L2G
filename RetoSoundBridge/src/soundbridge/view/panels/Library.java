@@ -52,6 +52,7 @@ public class Library extends JPanel {
 			}
 		});
 		panelProfileIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelProfileIcon.setToolTipText("Ir a mi perfil.");
 		
 		JLabel lblProfileIcon = new JLabel("");
 		panelProfileIcon.add(lblProfileIcon, BorderLayout.CENTER);
