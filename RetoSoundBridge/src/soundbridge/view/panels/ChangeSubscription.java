@@ -14,7 +14,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import soundbridge.database.managers.ClientManager;
@@ -349,7 +348,7 @@ public class ChangeSubscription extends JPanel {
 		ClientPPManager clientPPManager = new ClientPPManager();
 
 		if (actualSubscription.equalsIgnoreCase(newSubscription)) {
-			WindowUtils.messagePaneWithIcon("Ya posee ese nivel de suscripción.", "Error", "img/icon/cross_100.png");
+			WindowUtils.errorPane("Ya posee ese nivel de suscripción.", "Error");
 		} else {
 			int confirm = askToConfirmChange();
 			if (confirm == 0) {
@@ -368,8 +367,7 @@ public class ChangeSubscription extends JPanel {
 							newSubscription);
 				}
 
-				WindowUtils.messagePaneWithIcon("Su suscripción a cambiado a " + newSubscription + ".", "Actualización",
-						"img/icon/tick_100.png");
+				WindowUtils.confirmationPane("Su suscripción a cambiado a " + newSubscription + ".", "Actualización");
 
 				changedClient = clientManager.getClientByUsername(client.getUsername());
 
@@ -385,9 +383,9 @@ public class ChangeSubscription extends JPanel {
 			checkNewSubscription(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
 					panelBasicIcon, lblBasicIcon);
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("No se ha podido realizar el cambio de suscripción.", "Error");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error general.", "Error", JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("No se ha podido realizar el cambio de suscripción.", "Error");
 		}
 	}
 }

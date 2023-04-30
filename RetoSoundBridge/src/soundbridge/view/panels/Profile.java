@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -279,34 +278,18 @@ public class Profile extends JPanel {
 		}
 	}
 
-	public int askToConfirmDeletion() {
-		JFrame frame = new JFrame();
-		String[] options = new String[2];
-		options[0] = "Sí";
-		options[1] = "No";
-
-		String titulo = "Eliminar Cuenta";
-
-		String msg = "¿Desea eliminar la cuenta?";
-
-		int ret = JOptionPane.showOptionDialog(frame.getContentPane(), msg, titulo, 0, JOptionPane.INFORMATION_MESSAGE,
-				null, options, null);
-
-		return ret;
-	}
-
 	private void deleteAccount(JFrame frame, Client client) {
-		int reply = askToConfirmDeletion();
+		int reply = WindowUtils.yesOrNoPaneWithIcon("¿Desea eliminar la cuenta?", "Eliminar Cuenta",
+				"img/icon/alert.png");
 		if (reply == 0) {
 
 			ClientManager clientManager = new ClientManager();
 
 			try {
-				
+
 				clientManager.delete(client);
 
-				JOptionPane.showMessageDialog(null, "Su cuenta ha sido eliminada.", "Confirmación",
-						JOptionPane.INFORMATION_MESSAGE);
+				WindowUtils.messagePaneWithIcon("Su cuenta ha sido eliminada.", "Confirmación", "img/icon/bye.png");
 
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
@@ -314,10 +297,9 @@ public class Profile extends JPanel {
 				frame.repaint();
 
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "No se ha podido eliminar su cuenta.", "Error",
-						JOptionPane.ERROR_MESSAGE);
+				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error");
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Error general.", "Error", JOptionPane.ERROR_MESSAGE);
+				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error");
 			}
 		}
 	}
