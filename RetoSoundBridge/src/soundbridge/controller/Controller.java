@@ -2,13 +2,13 @@ package soundbridge.controller;
 
 import java.sql.SQLException;
 
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import soundbridge.database.managers.ClientManager;
 import soundbridge.database.managers.EmployeeManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Employee;
+import soundbridge.utils.WindowUtils;
 
 public class Controller {
 
@@ -25,20 +25,17 @@ public class Controller {
 		String typeOfUser = checkTypeOfUser(textFieldUserLogIn, passwordFieldLogIn);
 
 		if (typeOfUser == null) {
-			JOptionPane.showMessageDialog(null, "Login incorrecto.", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("Login incorrecto.", "Error");
 			textFieldUserLogIn.setText("");
 			passwordFieldLogIn.setText("");
 			textFieldUserLogIn.requestFocus();
 		} else {
 			if (typeOfUser.equals("employee")) {
-				JOptionPane.showMessageDialog(null, "¡Bienvenid@ " + username + "!", "Empleado de SoundBridge",
-						JOptionPane.INFORMATION_MESSAGE);
+				WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Empleado de SoundBridge");
 				textFieldUserLogIn.setText("");
 				passwordFieldLogIn.setText("");
 			} else if (typeOfUser.equals("client")) {
-				JOptionPane.showMessageDialog(null, "¡Bienvenid@ " + username + "!", "Cliente de SoundBridge",
-						JOptionPane.INFORMATION_MESSAGE);
+				WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Cliente de SoundBridge");
 				textFieldUserLogIn.setText("");
 				passwordFieldLogIn.setText("");
 			}
@@ -69,9 +66,9 @@ public class Controller {
 		try {
 			client = clientManager.getClientByUsername(username);
 		} catch (SQLException sqle) {
-			JOptionPane.showMessageDialog(null, sqle, "Error", JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("No se ha encontrado el usuario.", "Error Cliente");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("No se ha encontrado el usuario.", "Error Cliente");
 		}
 
 		return client;
@@ -83,9 +80,9 @@ public class Controller {
 		try {
 			employee = employeeManager.doSelectAllUsingUsername(username);
 		} catch (SQLException sqle) {
-			JOptionPane.showMessageDialog(null, sqle, "Error", JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("No se ha encontrado el usuario.", "Error Empleado");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("No se ha encontrado el usuario.", "Error Empleado");
 		}
 
 		return employee;
