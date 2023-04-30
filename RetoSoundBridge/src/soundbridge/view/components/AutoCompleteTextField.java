@@ -74,6 +74,7 @@ public class AutoCompleteTextField extends JTextField implements KeyListener, Do
 		this.caseSensitive = caseSensitive;
 		this.addKeyListener(this);
 		this.getDocument().addDocumentListener(this);
+		this.setFocusTraversalKeysEnabled(false);
 	}
 
 	/**
@@ -188,7 +189,7 @@ public class AutoCompleteTextField extends JTextField implements KeyListener, Do
 			int centeredY = ((getHeight() / 2) + (int) (subGuessBounds.getHeight() / 2));
 
 			g.setColor(this.incompleteColor);
-			g.drawString(subGuess + "   presiona ENTER (enviar) o \u2192 (completar)", (int) (enteredBounds.getWidth()) + 2,
+			g.drawString(subGuess + "   presiona ENTER (enviar) o TAB (completar)", (int) (enteredBounds.getWidth()) + 2,
 					centeredY - 2);
 		}
 	}
@@ -204,7 +205,7 @@ public class AutoCompleteTextField extends JTextField implements KeyListener, Do
 			}
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_TAB) {
 			if (this.areGuessing) {
 				this.setText(this.getCurrentGuess());
 				this.areGuessing = false;
