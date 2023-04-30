@@ -76,7 +76,7 @@ public class UpdateClient extends JPanel {
 		lblTitle2.setBounds(509, 75, 349, 38);
 		add(lblTitle2);
 
-		JLabel lblPasswd1 = new JLabel("Contraseña:");
+		JLabel lblPasswd1 = new JLabel("Nueva contraseña:");
 		lblPasswd1.setForeground(Color.WHITE);
 		lblPasswd1.setFont(new Font("Dialog", Font.PLAIN, 15));
 		lblPasswd1.setBounds(517, 142, 200, 35);
@@ -356,7 +356,7 @@ public class UpdateClient extends JPanel {
 		JButton btnChangePasswd = new JButton("Confirmar");
 		btnChangePasswd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				changePasswd(client, passwdField1, passwdField2);
 			}
 		});
 		btnChangePasswd.setBounds(723, 262, 200, 40);
@@ -399,17 +399,12 @@ public class UpdateClient extends JPanel {
 
 	private void updateClient(Client client, JComboBox<String> combo, JTextField textNation, JTextField textBirth,
 			JTextArea textAddr, JTextField textPhone, JTextField textEmail, JTextField textBank)
-			throws SQLException, Exception {
+			throws ParseException, SQLException, Exception {
 		client.setGender(combo.getSelectedItem().toString());
 		client.setNationality(textNation.getText());
 
 		String birthDate = textBirth.getText();
-		Date date = null;
-		try {
-			date = new SimpleDateFormat("dd-MM-yyyy").parse(birthDate);
-		} catch (ParseException e) {
-			WindowUtils.errorPane("Formato de fecha incorrecto.", "Error");
-		}
+		Date date = new SimpleDateFormat("dd-MM-yyyy").parse(birthDate);
 
 		client.setBirthDate(date);
 		client.setAddress(textAddr.getText());
@@ -436,10 +431,44 @@ public class UpdateClient extends JPanel {
 		try {
 			updateClient(client, combo, textNation, textBirth, textAddr, textPhone, textEmail, textBank);
 			WindowUtils.confirmationPane("Sus datos han sido actalizados.", "Confirmación");
+		} catch (ParseException e) {
+			WindowUtils.errorPane("El formato de la fecha es incorrecto.", "Error");
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se ha podido realizar la actualización.", "Error");
 		} catch (Exception e) {
 			WindowUtils.errorPane("No se ha podido realizar la actualización.", "Error");
 		}
+	}
+	
+	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
+		boolean ret = false;
+		String pass1 = String.valueOf(passwd1.getPassword());
+		String pass2 = String.valueOf(passwd2.getPassword());
+		
+		if (pass1.equals(pass2) && (pass1.length() >= 9)) {
+			ret = true;
+		}
+		
+		return ret;
+	}
+	
+	private void changePasswd(Client client, JPasswordField passwd1, JPasswordField passwd2) {
+		if (isPasswdOk(passwd1, passwd2)) {
+			ClientManager clientManager = new ClientManager();
+			client.setPasswd(String.valueOf(passwd1.getPassword()));
+			try {
+				clientManager.update(client);
+				WindowUtils.confirmationPane("Su contraseña se ha cambiado.", "Confirmación");
+			} catch (SQLException e) {
+				WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error");
+			} catch (Exception e) {
+				WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error");
+			}
+		} else {
+			WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error");
+		}
+		
+		passwd1.setText("");
+		passwd2.setText("");
 	}
 }
