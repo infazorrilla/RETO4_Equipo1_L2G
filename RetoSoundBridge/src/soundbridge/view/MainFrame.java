@@ -9,7 +9,7 @@ import soundbridge.view.factory.PanelFactory;
 public class MainFrame {
 
 	public JFrame frame;
-	
+
 	public MainFrame() {
 		initialize();
 	}
@@ -22,8 +22,8 @@ public class MainFrame {
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(Color.black);
-		
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
+
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

@@ -58,7 +58,7 @@ public class SignUp extends JPanel {
 		initialize(frame);
 
 	}
-	
+
 	private void initialize(JFrame frame) {
 		setBounds(0, 0, 1000, 672);
 		setBackground(Color.black);
@@ -230,7 +230,7 @@ public class SignUp extends JPanel {
 				textFieldPasswdSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		
+
 		TextPrompt placeholderPasswdSignUp = new TextPrompt("Min 10 caracteres", textFieldPasswdSignUp);
 		placeholderPasswdSignUp.changeAlpha(0.8f);
 		placeholderPasswdSignUp.changeStyle(Font.ITALIC);
@@ -279,7 +279,7 @@ public class SignUp extends JPanel {
 				textFildGenderSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		
+
 		TextPrompt placeholderGenderSignUp = new TextPrompt("Hombre/Mujer/Otro", textFildGenderSignUp);
 		placeholderGenderSignUp.changeAlpha(0.8f);
 		placeholderGenderSignUp.changeStyle(Font.ITALIC);
@@ -327,13 +327,12 @@ public class SignUp extends JPanel {
 				textFieldBirthDateSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		
+
 		TextPrompt placeholderBirthDateSignUp = new TextPrompt("YYYY/MM/dd", textFieldBirthDateSignUp);
 		placeholderBirthDateSignUp.changeAlpha(0.8f);
 		placeholderBirthDateSignUp.changeStyle(Font.ITALIC);
 		placeholderBirthDateSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		
+
 		textFieldAdressSignUp = new JTextField();
 		textFieldAdressSignUp.setOpaque(false);
 		textFieldAdressSignUp.setHorizontalAlignment(SwingConstants.CENTER);
@@ -407,7 +406,7 @@ public class SignUp extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -526,7 +525,7 @@ public class SignUp extends JPanel {
 		client.setEmail(textFieldEmailSignUp.getText());
 
 		try {
-			
+
 			if (suscription == 1) {
 				textFildBankAccount = new JTextField();
 				clientManager.insert(client);
@@ -545,7 +544,7 @@ public class SignUp extends JPanel {
 				JFrame jFrame = new JFrame();
 				JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -558,7 +557,7 @@ public class SignUp extends JPanel {
 	}
 
 	private void registerUserP(JFrame frame) {
-		
+
 		ClientPManager clientpmanager = new ClientPManager();
 		ClientManager clientManager = new ClientManager();
 		try {
@@ -570,7 +569,7 @@ public class SignUp extends JPanel {
 			JFrame jFrame = new JFrame();
 			JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (SQLException e1) {
@@ -579,7 +578,6 @@ public class SignUp extends JPanel {
 			e1.printStackTrace();
 		}
 	}
-		
 
 	private void registerUserPP(JFrame frame) {
 		ClientPP clientpp = new ClientPP();
@@ -593,7 +591,7 @@ public class SignUp extends JPanel {
 			JFrame jFrame = new JFrame();
 			JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (Exception e) {

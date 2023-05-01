@@ -37,12 +37,12 @@ public class ChangeSubscription extends JPanel {
 	private JRadioButton rbtnPP;
 	private JRadioButton rbtnP;
 	private JRadioButton rbtnB;
-	
+
 	public ChangeSubscription(JFrame frame, Client client) {
 		initialize(frame, client);
 		addBackgroundGif();
 	}
-	
+
 	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -112,9 +112,10 @@ public class ChangeSubscription extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				if (changedClient == null) {
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null));
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null));
 				} else {
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient, null));
+					frame.getContentPane()
+							.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient, null, null));
 				}
 				frame.revalidate();
 				frame.repaint();
@@ -277,7 +278,7 @@ public class ChangeSubscription extends JPanel {
 		addSubscriptionImages(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
 				panelBasicIcon, lblBasicIcon);
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-		
+
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
@@ -289,13 +290,13 @@ public class ChangeSubscription extends JPanel {
 
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/sub_bg.png");
 	}
-	
+
 	private void addBackgroundGif() {
 		setLayout(new BorderLayout(0, 0));
 
 		JLabel lblBackground = new JLabel("");
 		add(lblBackground, BorderLayout.CENTER);
-		
+
 		WindowUtils.addGif(lblBackground, "img/panel/sub_bg.gif");
 	}
 

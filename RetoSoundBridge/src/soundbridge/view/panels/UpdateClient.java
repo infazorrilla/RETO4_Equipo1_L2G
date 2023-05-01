@@ -57,7 +57,7 @@ public class UpdateClient extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -446,9 +446,11 @@ public class UpdateClient extends JPanel {
 				WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error general");
 			}
 		} else {
-			WindowUtils.errorPane("<html>Sus contraseñas no coinciden o tienen<br>una longitud menor de 10 caracteres.</html>", "Error");
+			WindowUtils.errorPane(
+					"<html>Sus contraseñas no coinciden o tienen<br>una longitud menor de 10 caracteres.</html>",
+					"Error");
 		}
-		
+
 		passwd1.setText("");
 		passwd2.setText("");
 	}

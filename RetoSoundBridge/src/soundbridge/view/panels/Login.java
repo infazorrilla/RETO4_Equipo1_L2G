@@ -37,13 +37,13 @@ public class Login extends JPanel {
 
 	public Login(JFrame frame) {
 		controller = new Controller();
-		
+
 		initialize(frame);
 
 		WindowUtils.addGif(lblBackground, "img/panel/new_smoke.gif");
-		
+
 	}
-	
+
 	private void initialize(JFrame frame) {
 
 		setBounds(0, 0, 1000, 672);
@@ -131,7 +131,6 @@ public class Login extends JPanel {
 				goToSignUp(frame);
 			}
 
-			
 		});
 		btnRegister.setBounds(700, 450, 200, 50);
 		add(btnRegister);
@@ -141,7 +140,6 @@ public class Login extends JPanel {
 		btnRegister.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnRegister.setOpaque(true);
 		btnRegister.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	
 
 		JPanel panelLogo = new JPanel();
 		panelLogo.setBounds(0, 0, 672, 672);
@@ -151,7 +149,7 @@ public class Login extends JPanel {
 
 		JLabel lblLogo = new JLabel("");
 		panelLogo.add(lblLogo, BorderLayout.CENTER);
-		
+
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
@@ -160,9 +158,9 @@ public class Login extends JPanel {
 
 		lblBackground = new JLabel("");
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
-		
+
 		WindowUtils.addImage(panelLogo, lblLogo, "img/panel/logo_login.png");
-		
+
 	}
 
 	private void logIn(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
@@ -180,22 +178,23 @@ public class Login extends JPanel {
 				if (client != null) {
 					setClient(controller.returnLoggedClient(username));
 					frame.getContentPane().removeAll();
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null));
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null));
 					frame.revalidate();
 					frame.repaint();
 				}
 			} else if (typeOfUser.equals("employee")) {
 				setEmployee(controller.returnLoggedEmployee(textFieldUserLogIn.getText()));
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
 		}
 	}
+
 	private void goToSignUp(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

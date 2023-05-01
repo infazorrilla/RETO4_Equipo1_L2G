@@ -28,25 +28,26 @@ public class Employee extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setBackground(Color.black);
 		setLayout(null);
-		
+
 		JLabel lblTitle = new JLabel("¿Qué desea gestionar?");
 		lblTitle.setForeground(Color.WHITE);
 		lblTitle.setFont(new Font("Dialog", Font.PLAIN, 22));
 		lblTitle.setBounds(380, 44, 250, 36);
 		add(lblTitle);
-		
+
 		JButton btnManagerClients = new JButton("New button");
 		btnManagerClients.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEEMANAGESCLIENTS, frame, null, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEEMANAGESCLIENTS, frame, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
 		});
 		btnManagerClients.setBounds(108, 134, 96, 73);
 		add(btnManagerClients);
-		
+
 		JLabel lblClientes = new JLabel("Clientes");
 		lblClientes.setForeground(Color.WHITE);
 		lblClientes.setFont(new Font("Dialog", Font.PLAIN, 17));

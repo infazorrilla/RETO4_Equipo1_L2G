@@ -11,20 +11,20 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import soundbridge.database.pojos.Artist;
+import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Client;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
-public class ArtistProfile extends JPanel {
+public class GroupProfile extends JPanel {
 
 	private static final long serialVersionUID = -5060067084701215720L;
 	
-	public ArtistProfile(JFrame frame, Client client, Artist artist) {
-		initialize(frame, client, artist);
+	public GroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
+		initialize(frame, client, artGroup);
 	}
 	
-	private void initialize(JFrame frame, Client client, Artist artist) {
+	private void initialize(JFrame frame, Client client, ArtGroup artGroup) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
@@ -58,7 +58,7 @@ public class ArtistProfile extends JPanel {
 		JLabel lblHomeIcon = new JLabel("");
 		panelHomeIcon.add(lblHomeIcon, BorderLayout.CENTER);
 		
-		JLabel lblName = new JLabel(artist.getName());
+		JLabel lblName = new JLabel(artGroup.getName());
 		lblName.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		lblName.setBounds(90, 120, 301, 27);
 		lblName.setForeground(Color.white);

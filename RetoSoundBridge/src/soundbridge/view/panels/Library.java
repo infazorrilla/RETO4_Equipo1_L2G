@@ -47,7 +47,7 @@ public class Library extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -212,14 +212,21 @@ public class Library extends JPanel {
 		if (null != searchedArtist && null == searchedArtGroup)
 			goToArtistProfile(frame, client, searchedArtist);
 		else if (null != searchedArtGroup)
-			goToArtistProfile(frame, client, searchedArtist);
+			goToGroupProfile(frame, client, searchedArtGroup);
 		else
 			WindowUtils.messagePaneWithIcon("No hay resultados.", "Sin resultados", "img/icon/no_results.png");
 	}
 
 	private void goToArtistProfile(JFrame frame, Client client, Artist artist) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+	
+	private void goToGroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup));
 		frame.revalidate();
 		frame.repaint();
 	}

@@ -32,7 +32,7 @@ public class Profile extends JPanel {
 	public Profile(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
-	
+
 	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -56,7 +56,7 @@ public class Profile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -103,7 +103,8 @@ public class Profile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -152,7 +153,8 @@ public class Profile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -270,7 +272,7 @@ public class Profile extends JPanel {
 
 	private void logOut(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -284,13 +286,13 @@ public class Profile extends JPanel {
 			WindowUtils.addImage(panel, lbl, "img/icon/sbbasic.png");
 		}
 	}
-	
+
 	private int askToConfirmDeletion() {
 		int reply = WindowUtils.yesOrNoPaneWithIcon("¿Desea eliminar la cuenta?", "Eliminar Cuenta",
 				"img/icon/alert.png");
 		return reply;
 	}
-	
+
 	private void doDeleteAccount(JFrame frame, Client client) {
 		Controller controller = new Controller();
 		try {
@@ -298,17 +300,17 @@ public class Profile extends JPanel {
 			WindowUtils.messagePaneWithIcon("Su cuenta ha sido eliminada.", "Confirmación", "img/icon/bye.png");
 
 			goToLogin(frame);
-			
+
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error en la base de datos");
 		} catch (Exception e) {
 			WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error general");
 		}
 	}
-	
+
 	private void goToLogin(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

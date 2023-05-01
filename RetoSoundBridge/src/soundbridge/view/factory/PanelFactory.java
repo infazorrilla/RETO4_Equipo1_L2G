@@ -3,12 +3,14 @@ package soundbridge.view.factory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.view.panels.ArtistProfile;
 import soundbridge.view.panels.ChangeSubscription;
 import soundbridge.view.panels.Employee;
 import soundbridge.view.panels.EmployeeManagesClients;
+import soundbridge.view.panels.GroupProfile;
 import soundbridge.view.panels.Library;
 import soundbridge.view.panels.Login;
 import soundbridge.view.panels.Profile;
@@ -28,8 +30,9 @@ public class PanelFactory {
 	public static final String EMPLOYEE = "EMPLOYEE";
 	public static final String EMPLOYEEMANAGESCLIENTS = "EMPLOYEEMANAGESCLIENTS";
 	public static final String ARTIST_PROFILE = "ARTIST_PROFILE";
+	public static final String GROUP_PROFILE = "GROUP_PROFILE";
 
-	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Artist artist) {
+	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Artist artist, ArtGroup artGroup) {
 		switch (panelName) {
 		case LOGIN:
 			return new Login(frame);
@@ -49,6 +52,8 @@ public class PanelFactory {
 			return new EmployeeManagesClients(frame);
 		case ARTIST_PROFILE:
 			return new ArtistProfile(frame, client, artist);
+		case GROUP_PROFILE:
+			return new GroupProfile(frame, client, artGroup);
 		default:
 			return null;
 		}
