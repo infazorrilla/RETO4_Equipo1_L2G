@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,9 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import soundbridge.database.managers.ClientManager;
-import soundbridge.database.managers.ClientPManager;
-import soundbridge.database.managers.ClientPPManager;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -39,8 +36,14 @@ public class UpdateClient extends JPanel {
 
 	private static final long serialVersionUID = 2091925243705072798L;
 	private JTextField textBankAccount;
+	private Controller controller = null;
 
 	public UpdateClient(JFrame frame, Client client) {
+		initialize(frame, client);
+
+	}
+
+	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
@@ -357,7 +360,7 @@ public class UpdateClient extends JPanel {
 		JButton btnChangePasswd = new JButton("Confirmar");
 		btnChangePasswd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				changePasswd(client, passwdField1, passwdField2);
+				doChangePasswd(client, passwdField1, passwdField2);
 			}
 		});
 		btnChangePasswd.setBounds(723, 262, 200, 40);
@@ -381,7 +384,6 @@ public class UpdateClient extends JPanel {
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 
 		enableBankAccount(client);
-
 	}
 
 	private void enableBankAccount(Client client) {
@@ -398,39 +400,15 @@ public class UpdateClient extends JPanel {
 		}
 	}
 
-	private void updateClient(Client client, JComboBox<String> combo, JTextField textNation, JTextField textBirth,
-			JTextArea textAddr, JTextField textPhone, JTextField textEmail, JTextField textBank)
-			throws ParseException, SQLException, Exception {
-		client.setGender(combo.getSelectedItem().toString());
-		client.setNationality(textNation.getText());
-
-		String birthDate = textBirth.getText();
-		Date date = new SimpleDateFormat("dd-MM-yyyy").parse(birthDate);
-
-		client.setBirthDate(date);
-		client.setAddress(textAddr.getText());
-		client.setTelephone(textPhone.getText());
-		client.setEmail(textEmail.getText());
-
-		ClientManager clientManager = new ClientManager();
-		ClientPManager clientPManager = new ClientPManager();
-		ClientPPManager clientPPManager = new ClientPPManager();
-
-		clientManager.update(client);
-
-		if (client instanceof ClientP) {
-			((ClientP) client).setBankAccount(textBank.getText());
-			clientPManager.update((ClientP) client);
-		} else if (client instanceof ClientPP) {
-			((ClientPP) client).setBankAccount(textBank.getText());
-			clientPPManager.update((ClientPP) client);
-		}
-	}
-
 	private void doUpdateClient(Client client, JComboBox<String> combo, JTextField textNation, JTextField textBirth,
 			JTextArea textAddr, JTextField textPhone, JTextField textEmail, JTextField textBank) {
+
+		if (null == controller) {
+			controller = new Controller();
+		}
+
 		try {
-			updateClient(client, combo, textNation, textBirth, textAddr, textPhone, textEmail, textBank);
+			controller.updateClient(client, combo, textNation, textBirth, textAddr, textPhone, textEmail, textBank);
 			WindowUtils.confirmationPane("Sus datos han sido actalizados.", "Confirmación");
 		} catch (ParseException e) {
 			WindowUtils.errorPane("El formato de la fecha es incorrecto.", "Error");
@@ -440,33 +418,35 @@ public class UpdateClient extends JPanel {
 			WindowUtils.errorPane("No se ha podido realizar la actualización.", "Error");
 		}
 	}
-	
+
 	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
 		boolean ret = false;
 		String pass1 = String.valueOf(passwd1.getPassword());
 		String pass2 = String.valueOf(passwd2.getPassword());
-		
+
 		if (pass1.equals(pass2) && (pass1.length() >= 9)) {
 			ret = true;
 		}
-		
+
 		return ret;
 	}
-	
-	private void changePasswd(Client client, JPasswordField passwd1, JPasswordField passwd2) {
+
+	private void doChangePasswd(Client client, JPasswordField passwd1, JPasswordField passwd2) {
+		if (null == controller) {
+			controller = new Controller();
+		}
+
 		if (isPasswdOk(passwd1, passwd2)) {
-			ClientManager clientManager = new ClientManager();
-			client.setPasswd(String.valueOf(passwd1.getPassword()));
 			try {
-				clientManager.update(client);
+				controller.changePasswd(client, passwd1, passwd2);
 				WindowUtils.confirmationPane("Su contraseña se ha cambiado.", "Confirmación");
 			} catch (SQLException e) {
-				WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error");
+				WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error en la base de datos");
 			} catch (Exception e) {
-				WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error");
+				WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error general");
 			}
 		} else {
-			WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error");
+			WindowUtils.errorPane("<html>Sus contraseñas no coinciden o tienen<br>una longitud menor de 10 caracteres.</html>", "Error");
 		}
 		
 		passwd1.setText("");

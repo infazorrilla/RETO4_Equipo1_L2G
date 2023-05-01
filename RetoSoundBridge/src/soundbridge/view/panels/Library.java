@@ -7,19 +7,14 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import soundbridge.database.managers.ArtGroupManager;
-import soundbridge.database.managers.ArtistManager;
-import soundbridge.database.pojos.ArtGroup;
-import soundbridge.database.pojos.Artist;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -36,7 +31,7 @@ public class Library extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(903, 45, 50, 50);
 		add(panelProfileIcon);
@@ -53,17 +48,17 @@ public class Library extends JPanel {
 		});
 		panelProfileIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelProfileIcon.setToolTipText("Ir a mi perfil.");
-		
+
 		JLabel lblProfileIcon = new JLabel("");
 		panelProfileIcon.add(lblProfileIcon, BorderLayout.CENTER);
-		
+
 		JLabel lblUsername = new JLabel("@" + client.getUsername());
 		lblUsername.setBounds(875, 100, 100, 30);
 		lblUsername.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		lblUsername.setForeground(Color.white);
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblUsername);
-		
+
 		AutoCompleteTextField searchBar = new AutoCompleteTextField();
 		searchBar.setBounds(110, 52, 600, 30);
 		searchBar.setOpaque(false);
@@ -72,7 +67,7 @@ public class Library extends JPanel {
 		searchBar.setBorder(new LineBorder(Color.WHITE, 0));
 		searchBar.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		add(searchBar);
-		
+
 		TextPrompt placeholderSearch = new TextPrompt("Búsqueda de artistas", searchBar);
 		placeholderSearch.changeAlpha(0.8f);
 		placeholderSearch.changeStyle(Font.ITALIC);
@@ -83,87 +78,71 @@ public class Library extends JPanel {
 		lblPlaylists.setBounds(90, 120, 301, 27);
 		lblPlaylists.setForeground(Color.white);
 		add(lblPlaylists);
-		
+
 		JPanel panelTop20 = new JPanel();
 		panelTop20.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 			}
 		});
 		panelTop20.setBounds(90, 170, 115, 115);
 		add(panelTop20);
 		panelTop20.setLayout(new BorderLayout(0, 0));
 		panelTop20.setOpaque(false);
-		
+
 		JLabel lblTop20Img = new JLabel("");
 		panelTop20.add(lblTop20Img, BorderLayout.CENTER);
-		
+
 		JLabel lblTop20 = new JLabel("Top20");
 		lblTop20.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTop20.setForeground(Color.white);
 		lblTop20.setBounds(90, 295, 115, 27);
 		add(lblTop20);
-		
+
 		JPanel panelFavourites = new JPanel();
 		panelFavourites.setBounds(230, 170, 115, 115);
 		add(panelFavourites);
 		panelFavourites.setLayout(new BorderLayout(0, 0));
 		panelFavourites.setOpaque(false);
 		panelFavourites.setVisible(false);
-		
+
 		JLabel lblFavouritesImg = new JLabel("");
 		panelFavourites.add(lblFavouritesImg, BorderLayout.CENTER);
-		
+
 		JLabel lblFavourites = new JLabel("");
 		lblFavourites.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFavourites.setForeground(Color.white);
 		lblFavourites.setBounds(230, 295, 115, 27);
 		add(lblFavourites);
-		
+
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
 		panelBackground.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblBackground = new JLabel("");
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
-		
+
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
 		WindowUtils.addImage(panelTop20, lblTop20Img, "img/icon/top_icon.png");
 		WindowUtils.addImage(panelFavourites, lblFavouritesImg, "img/icon/fav_icon.png");
-		addPosibilitiesToSearchBar(searchBar);
+		doAddPossibilitiesToSearchBar(searchBar);
 		showFavourites(client, panelFavourites, lblFavourites);
 	}
-	
-	private void addPosibilitiesToSearchBar(AutoCompleteTextField text) {
-		ArtistManager artistManager = new ArtistManager();
-		ArtGroupManager artGroupManager = new ArtGroupManager();
-		
-		ArrayList<Artist> artists = null;
-		ArrayList<ArtGroup> groups = null;
-		
+
+	private void doAddPossibilitiesToSearchBar(AutoCompleteTextField text) {
+		Controller controller = new Controller();
 		try {
-			artists = (ArrayList<Artist>) artistManager.selectAll();
-			for (Artist artist : artists) {
-				if (artist.getArtGroup().getId() == 0) {
-					text.addPossibility(artist.getName());
-				}
-			}
-			
-			groups = (ArrayList<ArtGroup>) artGroupManager.selectAll();
-			for (ArtGroup group : groups) {
-				text.addPossibility(group.getName());
-			}
-			
+			controller.addPossibilitiesToSearchBar(text);
 		} catch (SQLException sqle) {
-			JOptionPane.showMessageDialog(null, sqle, "Error", JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("No se han podido añadir opciones de búsqueda.", "Error en la base de datos");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+			WindowUtils.errorPane("No se han podido añadir opciones de búsqueda.", "Error general");
 		}
 	}
-	
+
 	private void showFavourites(Client client, JPanel favourites, JLabel favLbl) {
 		if (client instanceof ClientPP || client instanceof ClientP) {
 			favourites.setVisible(true);

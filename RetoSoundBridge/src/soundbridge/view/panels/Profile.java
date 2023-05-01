@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import soundbridge.database.managers.ClientManager;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -30,6 +30,10 @@ public class Profile extends JPanel {
 	private static final long serialVersionUID = -6645561962016339329L;
 
 	public Profile(JFrame frame, Client client) {
+		initialize(frame, client);
+	}
+	
+	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
@@ -128,7 +132,7 @@ public class Profile extends JPanel {
 		JButton btnAcceptLogIn = new JButton("Eliminar cuenta");
 		btnAcceptLogIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteAccount(frame, client);
+				doDeleteAccount(frame, client);
 			}
 		});
 		btnAcceptLogIn.setBounds(50, 520, 200, 50);
@@ -280,31 +284,33 @@ public class Profile extends JPanel {
 			WindowUtils.addImage(panel, lbl, "img/icon/sbbasic.png");
 		}
 	}
-
-	private void deleteAccount(JFrame frame, Client client) {
+	
+	private int askToConfirmDeletion() {
 		int reply = WindowUtils.yesOrNoPaneWithIcon("¿Desea eliminar la cuenta?", "Eliminar Cuenta",
 				"img/icon/alert.png");
-		if (reply == 0) {
+		return reply;
+	}
+	
+	private void doDeleteAccount(JFrame frame, Client client) {
+		Controller controller = new Controller();
+		try {
+			controller.deleteAccount(client, askToConfirmDeletion());
+			WindowUtils.messagePaneWithIcon("Su cuenta ha sido eliminada.", "Confirmación", "img/icon/bye.png");
 
-			ClientManager clientManager = new ClientManager();
-
-			try {
-
-				clientManager.delete(client);
-
-				WindowUtils.messagePaneWithIcon("Su cuenta ha sido eliminada.", "Confirmación", "img/icon/bye.png");
-
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
-				frame.revalidate();
-				frame.repaint();
-
-			} catch (SQLException e) {
-				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error");
-			} catch (Exception e) {
-				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error");
-			}
+			goToLogin(frame);
+			
+		} catch (SQLException e) {
+			WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error en la base de datos");
+		} catch (Exception e) {
+			WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error general");
 		}
+	}
+	
+	private void goToLogin(JFrame frame) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 
 }
