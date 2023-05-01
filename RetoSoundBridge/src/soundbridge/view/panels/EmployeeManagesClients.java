@@ -51,27 +51,10 @@ public class EmployeeManagesClients extends JPanel {
 		JButton btnSelectAllClients = new JButton("Lista de clientes");
 		btnSelectAllClients.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ClientManager clientmanager = new ClientManager();
-				try {
-					 ArrayList<Client> allClients=(ArrayList<Client>) clientmanager.doSelectAll();
-					for (int i = 0; i < allClients.size(); i++) {
-						Client client = allClients.get(i);
-						String nombre= client.getName();
-						String apellido=client.getLastName();
-						String genero=client.getGender();
-						String dNI =client.getPersonalId();
-						String username=client.getUsername();
-						String contrasena=client.getPasswd();
-						modelClients.addRow(new String[] { nombre, apellido, genero, dNI, username, contrasena });
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				showClients();
 			}
+
+			
 		});
 		btnSelectAllClients.setBounds(139, 123, 126, 23);
 		add(btnSelectAllClients);
@@ -86,7 +69,7 @@ public class EmployeeManagesClients extends JPanel {
 		scrollPaneResumenCompra.setViewportView(tableClients);
 		tableClients.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
 		scrollPaneResumenCompra.setViewportView(tableClients);
-		Object[] columnsManagesClients = { "Nombre", "Apellido", "Género", "DNI", "Username", "Contraseña"  };
+		Object[] columnsManagesClients = { "Nombre", "Apellido", "Género", "DNI", "Username", "Contraseña", "Bloqueado"  };
 
 		 modelClients= new DefaultTableModel();
 		modelClients.setColumnIdentifiers(columnsManagesClients);
@@ -103,6 +86,7 @@ public class EmployeeManagesClients extends JPanel {
 					Client selectedClient =clientmanager.getClientByUsername(username);
 					selectedClient.setBlocked(true);
 					clientmanager.update(selectedClient);
+					showClients();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -127,6 +111,7 @@ public class EmployeeManagesClients extends JPanel {
 					selectedClient = clientmanager.getClientByUsername(username);
 					selectedClient.setBlocked(false);
 					clientmanager.update(selectedClient);
+					showClients();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -138,4 +123,33 @@ public class EmployeeManagesClients extends JPanel {
 		add(btnDesBloqClient);
 		
 	}
+	private void showClients() {
+		ClientManager clientmanager = new ClientManager();
+		try {
+			tableClients.removeAll();
+			modelClients.setRowCount(0);
+			 ArrayList<Client> allClients=(ArrayList<Client>) clientmanager.doSelectAll();
+			for (int i = 0; i < allClients.size(); i++) {
+				Client client = allClients.get(i);
+				String nombre= client.getName();
+				String apellido=client.getLastName();
+				String genero=client.getGender();
+				String dNI =client.getPersonalId();
+				String username=client.getUsername();
+				String contrasena=client.getPasswd();
+				Boolean bloqueado=client.isBlocked();
+				modelClients.addRow(new String[] { nombre, apellido, genero, dNI, username, contrasena,bloqueado.toString() });
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 }
