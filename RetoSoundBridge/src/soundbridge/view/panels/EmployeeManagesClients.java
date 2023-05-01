@@ -56,7 +56,7 @@ public class EmployeeManagesClients extends JPanel {
 
 			
 		});
-		btnSelectAllClients.setBounds(139, 123, 126, 23);
+		btnSelectAllClients.setBounds(139, 123, 156, 23);
 		add(btnSelectAllClients);
 		
 		JScrollPane scrollPaneResumenCompra = new JScrollPane();
@@ -96,7 +96,7 @@ public class EmployeeManagesClients extends JPanel {
 				}
 			}
 		});
-		btnBloqClient.setBounds(139, 600, 126, 23);
+		btnBloqClient.setBounds(139, 600, 143, 23);
 		add(btnBloqClient);
 		
 		JButton btnDesBloqClient = new JButton("Desbloquear cliente");
@@ -108,6 +108,7 @@ public class EmployeeManagesClients extends JPanel {
 				client.setUsername(username);
 				Client selectedClient;
 				try {
+					
 					selectedClient = clientmanager.getClientByUsername(username);
 					selectedClient.setBlocked(false);
 					clientmanager.update(selectedClient);
@@ -119,8 +120,41 @@ public class EmployeeManagesClients extends JPanel {
 				
 			}
 		});
-		btnDesBloqClient.setBounds(474, 600, 126, 23);
+		btnDesBloqClient.setBounds(474, 600, 156, 23);
 		add(btnDesBloqClient);
+		
+		JButton btnSelectBloqClients = new JButton("Lista de clientes bloqueados");
+		btnSelectBloqClients.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ClientManager clientmanager = new ClientManager();
+				 try {
+					 tableClients.removeAll();
+						modelClients.setRowCount(0);
+					ArrayList<Client> allClients=(ArrayList<Client>) clientmanager.doSelectAll();
+					for (int i = 0; i < allClients.size(); i++) {
+						Client client = allClients.get(i);
+						if(client.isBlocked()==true) {
+						String nombre= client.getName();
+						String apellido=client.getLastName();
+						String genero=client.getGender();
+						String dNI =client.getPersonalId();
+						String username=client.getUsername();
+						String contrasena=client.getPasswd();
+						Boolean bloqueado=client.isBlocked();
+						modelClients.addRow(new String[] { nombre, apellido, genero, dNI, username, contrasena,bloqueado.toString() });
+						}
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnSelectBloqClients.setBounds(423, 123, 207, 23);
+		add(btnSelectBloqClients);
 		
 	}
 	private void showClients() {
