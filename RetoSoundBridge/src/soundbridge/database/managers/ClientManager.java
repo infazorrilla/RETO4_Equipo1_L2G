@@ -387,5 +387,5 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 
 	}
-
+	
 }
