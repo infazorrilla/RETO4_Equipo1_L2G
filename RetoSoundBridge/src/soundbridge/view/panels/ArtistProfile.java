@@ -21,7 +21,6 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 import javax.swing.JTextArea;
 import java.awt.GridLayout;
-import java.awt.FlowLayout;
 
 public class ArtistProfile extends JPanel {
 
