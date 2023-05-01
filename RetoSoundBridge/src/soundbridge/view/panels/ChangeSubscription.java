@@ -37,10 +37,10 @@ public class ChangeSubscription extends JPanel {
 	private JRadioButton rbtnPP;
 	private JRadioButton rbtnP;
 	private JRadioButton rbtnB;
-	private JLabel lblBackground;
 	
 	public ChangeSubscription(JFrame frame, Client client) {
 		initialize(frame, client);
+		addBackgroundGif();
 	}
 	
 	private void initialize(JFrame frame, Client client) {
@@ -193,9 +193,9 @@ public class ChangeSubscription extends JPanel {
 		add(btnConfirm);
 		btnConfirm.setForeground(Color.white);
 		btnConfirm.setFont(new Font("Lucida Grande", Font.BOLD, 17));
-		btnConfirm.setBackground(new Color(244, 135, 244, 20));
+		btnConfirm.setBackground(Color.black);
+		btnConfirm.setOpaque(true);
 		btnConfirm.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-		btnConfirm.setOpaque(false);
 		btnConfirm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JPanel panelIconTick1 = new JPanel();
@@ -278,12 +278,25 @@ public class ChangeSubscription extends JPanel {
 				panelBasicIcon, lblBasicIcon);
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 		
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBounds(0, 0, 1000, 672);
+		add(panelBackground);
+		panelBackground.setLayout(new BorderLayout(0, 0));
+		panelBackground.setOpaque(false);
+
+		JLabel lblBackground = new JLabel("");
+		panelBackground.add(lblBackground, BorderLayout.CENTER);
+
+		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/sub_bg.png");
+	}
+	
+	private void addBackgroundGif() {
 		setLayout(new BorderLayout(0, 0));
 
-		lblBackground = new JLabel("");
+		JLabel lblBackground = new JLabel("");
 		add(lblBackground, BorderLayout.CENTER);
 		
-		WindowUtils.addImage(this, lblBackground, "img/panel/change_sub_bg.jpeg");
+		WindowUtils.addGif(lblBackground, "img/panel/sub_bg.gif");
 	}
 
 	private void addImagePremiumPlus(Client client, JPanel panel, JLabel lbl) {
