@@ -11,6 +11,7 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
 
 import soundbridge.utils.DBUtils;
@@ -234,6 +235,45 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 		}
 		
 		return ret;
+	}
+	
+	public void insertReal(ClientPP clientpp) throws SQLException, Exception {
+		Connection connection = null;
+		Statement statement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			statement = connection.createStatement();
+
+		
+
+			String sql = "INSERT INTO ClientPP (idClient,bankAccount) VALUES ( " + clientpp.getId() + ",'"
+					+ clientpp.getBankAccount() + "')";
+
+			statement.executeUpdate(sql);
+
+		} catch (SQLException sqle) {
+
+			throw sqle;
+		} catch (Exception e) {
+
+			throw e;
+		} finally {
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
 	}
 
 }

@@ -234,5 +234,45 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 		return ret;
 	}
+	
+
+	public void insertReal(ClientP clientp) throws SQLException, Exception {
+		Connection connection = null;
+		Statement statement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			statement = connection.createStatement();
+
+		
+
+			String sql = "INSERT INTO ClientP (idClient,bankAccount) VALUES ( " + clientp.getId() + ",'"
+					+ clientp.getBankAccount() + "')";
+
+			statement.executeUpdate(sql);
+
+		} catch (SQLException sqle) {
+
+			throw sqle;
+		} catch (Exception e) {
+
+			throw e;
+		} finally {
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+	}
 
 }
