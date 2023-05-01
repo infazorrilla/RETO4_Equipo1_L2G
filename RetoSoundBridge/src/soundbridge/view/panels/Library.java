@@ -15,6 +15,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import soundbridge.controller.Controller;
+import soundbridge.database.managers.ArtGroupManager;
+import soundbridge.database.managers.ArtistManager;
+import soundbridge.database.pojos.ArtGroup;
+import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -22,6 +26,8 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.AutoCompleteTextField;
 import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Library extends JPanel {
 
@@ -41,7 +47,7 @@ public class Library extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -60,6 +66,15 @@ public class Library extends JPanel {
 		add(lblUsername);
 
 		AutoCompleteTextField searchBar = new AutoCompleteTextField();
+		searchBar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent evt) {
+				if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+					String search = searchBar.getText();
+					executeSearch(frame, client, search);
+				}
+			}
+		});
 		searchBar.setBounds(110, 52, 600, 30);
 		searchBar.setOpaque(false);
 		searchBar.setForeground(Color.white);
@@ -148,5 +163,64 @@ public class Library extends JPanel {
 			favourites.setVisible(true);
 			favLbl.setText("Favoritos");
 		}
+	}
+
+	private Artist searchedArtist(String search) throws SQLException, Exception {
+		Artist ret = null;
+		ArtistManager artistManager = new ArtistManager();
+		ret = artistManager.getArtistByName(search);
+		return ret;
+	}
+
+	private Artist doSearchedArtist(String search) {
+		Artist artist = null;
+		try {
+			artist = searchedArtist(search);
+		} catch (SQLException e) {
+			WindowUtils.errorPane("No se ha podido realizar la búsqueda.", "Error en la base de datos");
+		} catch (Exception e) {
+			WindowUtils.errorPane("No se ha podido realizar la búsqueda.", "Error general");
+		}
+
+		return artist;
+	}
+
+	private ArtGroup searchedGroup(String search) throws SQLException, Exception {
+		ArtGroup ret = null;
+		ArtGroupManager artGroupManager = new ArtGroupManager();
+		ret = artGroupManager.getArtGroupByName(search);
+		return ret;
+	}
+
+	private ArtGroup doSearchedGroup(String search) {
+		ArtGroup group = null;
+		try {
+			group = searchedGroup(search);
+		} catch (SQLException e) {
+			WindowUtils.errorPane("No se ha podido realizar la búsqueda.", "Error en la base de datos");
+		} catch (Exception e) {
+			WindowUtils.errorPane("No se ha podido realizar la búsqueda.", "Error general");
+		}
+
+		return group;
+	}
+
+	private void executeSearch(JFrame frame, Client client, String search) {
+		Artist searchedArtist = doSearchedArtist(search);
+		ArtGroup searchedArtGroup = doSearchedGroup(search);
+
+		if (null != searchedArtist && null == searchedArtGroup)
+			goToArtistProfile(frame, client, searchedArtist);
+		else if (null != searchedArtGroup)
+			goToArtistProfile(frame, client, searchedArtist);
+		else
+			WindowUtils.messagePaneWithIcon("No hay resultados.", "Sin resultados", "img/icon/no_results.png");
+	}
+
+	private void goToArtistProfile(JFrame frame, Client client, Artist artist) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist));
+		frame.revalidate();
+		frame.repaint();
 	}
 }

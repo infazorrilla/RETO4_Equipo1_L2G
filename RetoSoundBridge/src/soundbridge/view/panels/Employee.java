@@ -39,7 +39,7 @@ public class Employee extends JPanel {
 		btnManagerClients.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEEMANAGESCLIENTS, frame, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEEMANAGESCLIENTS, frame, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}

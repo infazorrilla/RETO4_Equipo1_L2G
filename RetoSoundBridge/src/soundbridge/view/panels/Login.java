@@ -180,14 +180,14 @@ public class Login extends JPanel {
 				if (client != null) {
 					setClient(controller.returnLoggedClient(username));
 					frame.getContentPane().removeAll();
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client));
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null));
 					frame.revalidate();
 					frame.repaint();
 				}
 			} else if (typeOfUser.equals("employee")) {
 				setEmployee(controller.returnLoggedEmployee(textFieldUserLogIn.getText()));
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -195,7 +195,7 @@ public class Login extends JPanel {
 	}
 	private void goToSignUp(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

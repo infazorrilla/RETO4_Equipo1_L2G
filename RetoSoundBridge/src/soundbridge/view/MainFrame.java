@@ -14,9 +14,6 @@ public class MainFrame {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 700);
@@ -26,7 +23,7 @@ public class MainFrame {
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(Color.black);
 		
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

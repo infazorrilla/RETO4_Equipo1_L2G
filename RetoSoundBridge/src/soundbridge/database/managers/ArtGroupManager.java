@@ -208,5 +208,22 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 		}
 
 	}
+	
+	public ArtGroup getArtGroupByName(String nameOfGroup) throws SQLException, Exception {
+		ArtGroup ret = null;
+
+		ArrayList<ArtGroup> groups = (ArrayList<ArtGroup>) doSelectAll();
+
+		if (groups != null) {
+			for (ArtGroup group : groups) {
+				if (group.getName().equalsIgnoreCase(nameOfGroup)) {
+					ret = group;
+					break;
+				}
+			}
+		}
+
+		return ret;
+	}
 
 }

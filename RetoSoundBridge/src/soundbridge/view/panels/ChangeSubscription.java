@@ -112,9 +112,9 @@ public class ChangeSubscription extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				if (changedClient == null) {
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null));
 				} else {
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient));
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient, null));
 				}
 				frame.revalidate();
 				frame.repaint();

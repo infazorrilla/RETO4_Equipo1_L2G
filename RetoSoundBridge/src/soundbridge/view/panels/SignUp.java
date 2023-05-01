@@ -55,6 +55,11 @@ public class SignUp extends JPanel {
 
 	public SignUp(JFrame frame) {
 
+		initialize(frame);
+
+	}
+	
+	private void initialize(JFrame frame) {
 		setBounds(0, 0, 1000, 672);
 		setBackground(Color.black);
 		setLayout(null);
@@ -402,7 +407,7 @@ public class SignUp extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -501,7 +506,6 @@ public class SignUp extends JPanel {
 		WindowUtils.addImage(panelSuscriptionP, lblSuscription, "img/icon/sbp.png");
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/arrow.png");
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
-
 	}
 
 	private void registerUser(JFrame frame) {
@@ -541,7 +545,7 @@ public class SignUp extends JPanel {
 				JFrame jFrame = new JFrame();
 				JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -566,7 +570,7 @@ public class SignUp extends JPanel {
 			JFrame jFrame = new JFrame();
 			JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (SQLException e1) {
@@ -589,7 +593,7 @@ public class SignUp extends JPanel {
 			JFrame jFrame = new JFrame();
 			JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (Exception e) {

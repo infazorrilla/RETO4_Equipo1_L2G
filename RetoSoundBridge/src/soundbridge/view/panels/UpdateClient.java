@@ -57,7 +57,7 @@ public class UpdateClient extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null));
 				frame.revalidate();
 				frame.repaint();
 			}

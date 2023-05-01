@@ -136,7 +136,7 @@ public class Controller {
 		artists = (ArrayList<Artist>) artistManager.doSelectAll();
 		if (artists != null) {
 			for (Artist artist : artists) {
-				if (artist.getArtGroup().getId() == 0) {
+				if (artist.getArtGroup() == null) {
 					text.addPossibility(artist.getName());
 				}
 			}

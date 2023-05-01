@@ -18,96 +18,99 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 	@Override
 	public List<Artist> selectAll() throws SQLException, NotFoundException, Exception {
-		
-			ArrayList<Artist> ret = (ArrayList<Artist>) doSelectAll();
 
-			if (null == ret) {
-				throw new NotFoundException("There are no Artists");
-			}
+		ArrayList<Artist> ret = (ArrayList<Artist>) doSelectAll();
 
-			return ret;
+		if (null == ret) {
+			throw new NotFoundException("There are no Artists");
 		}
-		
-		public List<Artist> doSelectAll() throws SQLException, Exception {
-			ArrayList<Artist> ret = null;
-			String sql = "SELECT * FROM Artist";
 
-			Connection connection = null;
+		return ret;
+	}
 
-			Statement statement = null;
-			ResultSet resultSet = null;
+	public List<Artist> doSelectAll() throws SQLException, Exception {
+		ArrayList<Artist> ret = null;
+		String sql = "SELECT * FROM Artist";
 
-			try {
-				Class.forName(DBUtils.DRIVER);
+		Connection connection = null;
 
-				connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		Statement statement = null;
+		ResultSet resultSet = null;
 
-				statement = connection.createStatement();
-				resultSet = statement.executeQuery(sql);
+		try {
+			Class.forName(DBUtils.DRIVER);
 
-				while (resultSet.next()) {
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-					if (null == ret)
-						ret = new ArrayList<Artist>();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
 
-					Artist artist = new Artist();
+			while (resultSet.next()) {
 
-					int id = resultSet.getInt("id");
-					String name = resultSet.getString("name");
-					String lastName = resultSet.getString("lastName");
-					String nationality = resultSet.getString("nationality");
-					String gender = resultSet.getString("gender");
-					int idGroup = resultSet.getInt("idGroup");
-					String description = resultSet.getString("description");
-					String image = resultSet.getString("image");
-					String role = resultSet.getString("role");
+				if (null == ret)
+					ret = new ArrayList<Artist>();
 
-					java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
-					java.util.Date birthDate = new java.util.Date(sqlBirthDate.getTime());
+				Artist artist = new Artist();
 
-					artist.setId(id);
-					artist.setName(name);
-					artist.setLastName(lastName);
-					artist.setNationality(nationality);
-					artist.setGender(gender);
-					artist.setBirthDate(birthDate);
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String lastName = resultSet.getString("lastName");
+				String nationality = resultSet.getString("nationality");
+				String gender = resultSet.getString("gender");
+				int idGroup = resultSet.getInt("idGroup");
+				String description = resultSet.getString("description");
+				String image = resultSet.getString("image");
+				String role = resultSet.getString("role");
+
+				java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
+				java.util.Date birthDate = new java.util.Date(sqlBirthDate.getTime());
+
+				artist.setId(id);
+				artist.setName(name);
+				artist.setLastName(lastName);
+				artist.setNationality(nationality);
+				artist.setGender(gender);
+				artist.setBirthDate(birthDate);
+				artist.setDescription(description);
+				artist.setImage(image);
+				artist.setRole(role);
+				
+				if (idGroup != 0) {
 					artist.setArtGroup(new ArtGroup());
 					artist.getArtGroup().setId(idGroup);
-					artist.setDescription(description);
-					artist.setImage(image);
-					artist.setRole(role);
-
-					ret.add(artist);
 				}
-			} catch (SQLException sqle) {
-				throw sqle;
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				try {
-					if (resultSet != null)
-						resultSet.close();
-				} catch (Exception e) {
 
-				}
-				;
-				try {
-					if (statement != null)
-						statement.close();
-				} catch (Exception e) {
-
-				}
-				;
-				try {
-					if (connection != null)
-						connection.close();
-				} catch (Exception e) {
-
-				}
-				;
+				ret.add(artist);
 			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
 
-			return ret;
+			}
+			;
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+
+			}
+			;
+		}
+
+		return ret;
 	}
 
 	@Override
@@ -144,7 +147,7 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 			}
 			;
 		}
-		
+
 	}
 
 	@Override
@@ -157,8 +160,7 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE Artist SET name = ?, lastName = ?, nationality = ?, gender = ?, birthDate = ? where id = ? "
-					;
+			String sql = "UPDATE Artist SET name = ?, lastName = ?, nationality = ?, gender = ?, birthDate = ? where id = ? ";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -167,7 +169,6 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 			preparedStatement.setString(3, artist.getNationality());
 			preparedStatement.setString(4, artist.getGender());
 			preparedStatement.setDate(5, new java.sql.Date((artist.getBirthDate()).getTime()));
-			
 
 			preparedStatement.executeUpdate();
 
@@ -190,7 +191,6 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 			;
 		}
 
-		
 	}
 
 	@Override
@@ -229,5 +229,22 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 		}
 
 	}
-		
+
+	public Artist getArtistByName(String nameOfArtist) throws SQLException, Exception {
+		Artist ret = null;
+
+		ArrayList<Artist> artists = (ArrayList<Artist>) doSelectAll();
+
+		if (artists != null) {
+			for (Artist artist : artists) {
+				if (artist.getName().equalsIgnoreCase(nameOfArtist) && (artist.getArtGroup() == null)) {
+					ret = artist;
+					break;
+				}
+			}
+		}
+
+		return ret;
 	}
+
+}
