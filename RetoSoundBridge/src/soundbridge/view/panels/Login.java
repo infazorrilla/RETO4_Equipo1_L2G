@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -167,7 +168,7 @@ public class Login extends JPanel {
 		String username = textFieldUserLogIn.getText();
 
 		String typeOfUser = controller.checkTypeOfUser(textFieldUserLogIn, passwordFieldLogIn);
-		controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
+		
 
 		if (typeOfUser != null) {
 			if (typeOfUser.equals("client")) {
@@ -177,12 +178,21 @@ public class Login extends JPanel {
 
 				if (client != null) {
 					setClient(controller.returnLoggedClient(username));
-					frame.getContentPane().removeAll();
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null));
-					frame.revalidate();
-					frame.repaint();
+					if (client.isBlocked() == true) {
+						JFrame jFrame = new JFrame();
+						JOptionPane.showMessageDialog(jFrame, "USUARIO BLOQUEADO");
+					} else {
+
+						controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
+						frame.getContentPane().removeAll();
+						frame.getContentPane()
+								.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null));
+						frame.revalidate();
+						frame.repaint();
+					}
 				}
 			} else if (typeOfUser.equals("employee")) {
+				controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
 				setEmployee(controller.returnLoggedEmployee(textFieldUserLogIn.getText()));
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null, null));
