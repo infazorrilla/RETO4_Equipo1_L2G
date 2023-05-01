@@ -115,5 +115,27 @@ public class EmployeeManagesClients extends JPanel {
 		btnBloqClient.setBounds(139, 600, 126, 23);
 		add(btnBloqClient);
 		
+		JButton btnDesBloqClient = new JButton("Desbloquear cliente");
+		btnDesBloqClient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ClientManager clientmanager = new ClientManager();
+				Client client = new Client();
+				String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
+				client.setUsername(username);
+				Client selectedClient;
+				try {
+					selectedClient = clientmanager.getClientByUsername(username);
+					selectedClient.setBlocked(false);
+					clientmanager.update(selectedClient);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		btnDesBloqClient.setBounds(474, 600, 126, 23);
+		add(btnDesBloqClient);
+		
 	}
 }
