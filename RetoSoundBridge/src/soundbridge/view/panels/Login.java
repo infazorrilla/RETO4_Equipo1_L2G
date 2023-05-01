@@ -186,9 +186,10 @@ public class Login extends JPanel {
 				}
 			} else if (typeOfUser.equals("employee")) {
 				setEmployee(controller.returnLoggedEmployee(textFieldUserLogIn.getText()));
-				if (employee != null) {
-
-				}
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null));
+				frame.revalidate();
+				frame.repaint();
 			}
 		}
 	}
