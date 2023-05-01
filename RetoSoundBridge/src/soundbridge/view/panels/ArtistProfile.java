@@ -15,29 +15,30 @@ import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
+import javax.swing.JTextArea;
 
 public class ArtistProfile extends JPanel {
 
 	private static final long serialVersionUID = -5060067084701215720L;
-	
+
 	public ArtistProfile(JFrame frame, Client client, Artist artist) {
 		initialize(frame, client, artist);
 	}
-	
+
 	private void initialize(JFrame frame, Client client, Artist artist) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
-		JPanel panelProfileIcon = new JPanel();
-		panelProfileIcon.setBounds(30, 30, 150, 150);
-		add(panelProfileIcon);
-		panelProfileIcon.setLayout(new BorderLayout(0, 0));
-		panelProfileIcon.setOpaque(false);
 
-		JLabel lblProfileIcon = new JLabel("");
-		panelProfileIcon.add(lblProfileIcon, BorderLayout.CENTER);
-		
+		JPanel panelArtistImage = new JPanel();
+		panelArtistImage.setBounds(40, 40, 250, 250);
+		add(panelArtistImage);
+		panelArtistImage.setLayout(new BorderLayout(0, 0));
+		panelArtistImage.setOpaque(false);
+
+		JLabel lblArtistImage = new JLabel("");
+		panelArtistImage.add(lblArtistImage, BorderLayout.CENTER);
+
 		JPanel panelHomeIcon = new JPanel();
 		panelHomeIcon.setBounds(900, 45, 50, 50);
 		add(panelHomeIcon);
@@ -54,17 +55,27 @@ public class ArtistProfile extends JPanel {
 		});
 		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelHomeIcon.setToolTipText("Volver a mi biblioteca.");
-		
+
 		JLabel lblHomeIcon = new JLabel("");
 		panelHomeIcon.add(lblHomeIcon, BorderLayout.CENTER);
-		
+
 		JLabel lblName = new JLabel(artist.getName());
 		lblName.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-		lblName.setBounds(90, 120, 301, 27);
+		lblName.setBounds(324, 103, 400, 35);
 		lblName.setForeground(Color.white);
 		add(lblName);
-		
-		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
-	}
 
+		JTextArea textBio = new JTextArea(artist.getDescription());
+		textBio.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		textBio.setEditable(false);
+		textBio.setOpaque(false);
+		textBio.setForeground(Color.white);
+		textBio.setBounds(324, 172, 487, 128);
+		add(textBio);
+		textBio.setLineWrap(true);
+		textBio.setWrapStyleWord(true);
+
+		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
+		WindowUtils.addImage(panelArtistImage, lblArtistImage, artist.getImage());
+	}
 }

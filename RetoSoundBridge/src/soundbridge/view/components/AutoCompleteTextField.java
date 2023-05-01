@@ -198,12 +198,6 @@ public class AutoCompleteTextField extends JTextField implements KeyListener, Do
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (this.areGuessing) {
-				this.setText(this.getCurrentGuess());
-				this.areGuessing = false;
-			}
-		}
 
 		if (e.getKeyCode() == KeyEvent.VK_TAB) {
 			if (this.areGuessing) {
