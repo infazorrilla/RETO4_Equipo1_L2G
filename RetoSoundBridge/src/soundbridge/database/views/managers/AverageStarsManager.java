@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 import soundbridge.database.views.pojos.AverageStars;
 
 public class AverageStarsManager {

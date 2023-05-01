@@ -225,5 +225,24 @@ public class ReviewManager extends ManagerAbstract<Review> {
 		}
 
 	}
+	
+	public ArrayList<Review> getReviewsByClientPP(ClientPP clientPP) throws SQLException, Exception{
+		ArrayList<Review> ret = null;
+		ArrayList<Review> reviews = (ArrayList<Review>) doSelectAll();
+		
+		if (reviews != null) {
+			for (Review review : reviews) {
+				if (review.getClientPP().getId() == clientPP.getId()) {
+					if (ret == null) {
+						ret = new ArrayList<Review>();
+					}
+					
+					ret.add(review);
+				}
+			}
+		}
+		
+		return ret;
+	}
 
 }
