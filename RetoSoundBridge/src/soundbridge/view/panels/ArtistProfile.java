@@ -145,7 +145,7 @@ public class ArtistProfile extends JPanel {
 	private void addImagesToAlbums(Artist artist) {
 		AlbumManager albumManager = new AlbumManager();
 		try {
-			albums = (ArrayList<Album>) albumManager.albumsWithSongsByArtist(artist);
+			albums = (ArrayList<Album>) albumManager.albumsByArtist(artist);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

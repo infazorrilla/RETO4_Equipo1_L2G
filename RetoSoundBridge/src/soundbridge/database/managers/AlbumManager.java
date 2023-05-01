@@ -176,7 +176,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		}
 	}
 	
-	public List<Album> albumsWithSongsByArtist(Artist artist) throws SQLException, Exception {
+	public List<Album> albumsByArtist(Artist artist) throws SQLException, Exception {
 		ArrayList<Album> ret = null;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
