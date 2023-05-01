@@ -9,6 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import soundbridge.database.exception.NotFoundException;
+import soundbridge.database.pojos.Album;
+import soundbridge.database.pojos.ArtGroup;
+import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.DBUtils;
 
@@ -49,6 +52,9 @@ public class SongManager extends ManagerAbstract<Song> {
 				String cover = resultSet.getString("cover");
 				String lang = resultSet.getString("lang");
 				String source = resultSet.getString("source");
+				int idAlbum = resultSet.getInt("idAlbum");
+				int idArtist = resultSet.getInt("idArtist");
+				int idGroup = resultSet.getInt("idGroup");
 				
 				song.setId(id);
 				song.setName(name);
@@ -57,6 +63,18 @@ public class SongManager extends ManagerAbstract<Song> {
 				song.setCover(cover);
 				song.setLang(lang);
 				song.setSource(source);
+				if (idAlbum != 0) {
+					song.setAlbum(new Album());
+					song.getAlbum().setId(idAlbum);
+				}
+				if (idArtist != 0) {
+					song.setArtist(new Artist());
+					song.getArtist().setId(idArtist);
+				}
+				if (idGroup != 0) {
+					song.setArtGroup(new ArtGroup());
+					song.getArtGroup().setId(idGroup);
+				}
 				ret.add(song);
 			}
 		} catch (SQLException sqle) {
