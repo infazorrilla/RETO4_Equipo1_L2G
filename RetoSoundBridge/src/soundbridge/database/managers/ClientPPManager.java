@@ -11,7 +11,6 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Client;
-import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
 
 import soundbridge.utils.DBUtils;
@@ -53,7 +52,6 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 				ClientPP clientpp = new ClientPP();
 
-				
 				int idClient = resultSet.getInt("idClient");
 				String bankAccount = resultSet.getString("bankAccount");
 				java.sql.Date sqlsuscriptionDate = resultSet.getDate("suscriptionDate");
@@ -117,9 +115,8 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 					idClient = client.getId();
 			}
 
-			String sql = "INSERT INTO ClientPP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
-					+ new java.sql.Date((clientpp.getSuscriptionDate()).getTime()) + "','" + clientpp.getBankAccount()
-					+ "')";
+			String sql = "INSERT INTO ClientPP (idClient,bankAccount) VALUES ( " + idClient + ", '"
+					+ clientpp.getBankAccount() + "')";
 
 			statement.executeUpdate(sql);
 
@@ -161,7 +158,6 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setString(1, clientpp.getBankAccount());
-
 
 			preparedStatement.executeUpdate();
 
@@ -222,10 +218,10 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 		}
 
 	}
-	
+
 	public ClientPP getClientPPById(int idClient) throws SQLException, Exception {
 		ClientPP ret = null;
-		
+
 		ArrayList<ClientPP> clientPPs = (ArrayList<ClientPP>) doSelectAll();
 		for (ClientPP clientPP : clientPPs) {
 			if (clientPP.getId() == idClient) {
@@ -233,10 +229,10 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 				break;
 			}
 		}
-		
+
 		return ret;
 	}
-	
+
 	public void insertReal(ClientPP clientpp) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
@@ -245,8 +241,6 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
-
-		
 
 			String sql = "INSERT INTO ClientPP (idClient,bankAccount) VALUES ( " + clientpp.getId() + ",'"
 					+ clientpp.getBankAccount() + "')";

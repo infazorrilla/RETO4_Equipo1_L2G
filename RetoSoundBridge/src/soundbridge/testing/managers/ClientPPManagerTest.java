@@ -59,13 +59,16 @@ public class ClientPPManagerTest {
 		clientpp.setAddress("Calle del Licienciado Poza 10, 4C, 48008 Bilbao, Bizkaia, España");
 		clientpp.setUsername("pedrolopez");
 		clientpp.setPasswd("pedrolopez85");
+		clientpp.setBlocked(false);
 		clientpp.setBirthDate(new java.util.Date(85, 3, 29));
 		try {
 			clientppManager.insert(clientpp);
 		} catch (SQLException sqle) {
 			thrown = true;
+			System.out.println(sqle);
 		} catch (Exception e) {
 			thrown = true;
+			System.out.println(e);
 		}
 
 		assertFalse(thrown);

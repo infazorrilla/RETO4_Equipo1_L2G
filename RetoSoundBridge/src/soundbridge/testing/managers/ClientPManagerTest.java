@@ -59,6 +59,7 @@ public class ClientPManagerTest {
 		clientp.setAddress("Calle del Licienciado Poza 10, 4C, 48008 Bilbao, Bizkaia, España");
 		clientp.setUsername("pedrolopez");
 		clientp.setPasswd("pedrolopez85");
+		clientp.setBlocked(false);
 		clientp.setBirthDate(new java.util.Date(85, 3, 29));
 		try {
 			clientpManager.insert(clientp);
