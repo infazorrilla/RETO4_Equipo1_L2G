@@ -111,7 +111,7 @@ public class ClientPManagerTest {
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			for (ClientP clientp : clientps) {
-				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
+				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567891"))
 					insertedClientp = clientp;
 			}
 
@@ -157,13 +157,13 @@ public class ClientPManagerTest {
 					insertedClientp = clientp;
 			}
 
-			insertedClientp.setBankAccount("12345678901234567890");
+			insertedClientp.setBankAccount("12345678901234567891");
 			clientpManager.update(insertedClientp);
 
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			for (ClientP clientp : clientps) {
-				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
+				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567891"))
 					insertedClientp = clientp;
 			}
 
@@ -177,7 +177,7 @@ public class ClientPManagerTest {
 
 		assertNotNull(clientps);
 		assertFalse(thrown);
-		assertTrue(("12345678901234567890").equals(insertedClientp.getBankAccount()));
+		assertTrue(("12345678901234567891").equals(insertedClientp.getBankAccount()));
 	}
 
 }
