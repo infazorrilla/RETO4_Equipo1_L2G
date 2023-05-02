@@ -115,7 +115,6 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 					idClient = client.getId();
 			}
 
-
 			String sql = "INSERT INTO ClientPP (idClient,bankAccount) VALUES ( " + idClient + ", '"
 					+ clientpp.getBankAccount() + "')";
 
@@ -193,9 +192,9 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ClientPP WHERE bankAccount = ?";
+			String sql = "DELETE FROM ClientPP WHERE idClient = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, clientpp.getBankAccount());
+			preparedStatement.setInt(1, clientpp.getId());
 
 			preparedStatement.executeUpdate();
 
@@ -224,10 +223,12 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 		ClientPP ret = null;
 
 		ArrayList<ClientPP> clientPPs = (ArrayList<ClientPP>) doSelectAll();
-		for (ClientPP clientPP : clientPPs) {
-			if (clientPP.getId() == idClient) {
-				ret = clientPP;
-				break;
+		if (clientPPs != null) {
+			for (ClientPP clientPP : clientPPs) {
+				if (clientPP.getId() == idClient) {
+					ret = clientPP;
+					break;
+				}
 			}
 		}
 

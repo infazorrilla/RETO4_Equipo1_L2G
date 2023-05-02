@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import soundbridge.database.exception.NotFoundException;
+import soundbridge.database.managers.ClientManager;
 import soundbridge.database.managers.ClientPPManager;
 
 import soundbridge.database.pojos.ClientPP;
@@ -117,12 +118,14 @@ public class ClientPPManagerTest {
 			}
 
 			clientppManager.delete(insertedClientpp);
+			ClientManager clientManager = new ClientManager();
+			clientManager.delete(insertedClientpp);
 
 			clientpps = (ArrayList<ClientPP>) clientppManager.selectAll();
 
 			if (clientpps != null) {
 				for (ClientPP clientpp : clientpps) {
-					if ((clientpp.getBankAccount().equalsIgnoreCase("12345678901234567890")))
+					if ((clientpp.getId() == insertedClientpp.getId()))
 						isDeleted = false;
 				}
 			} else {
@@ -146,24 +149,24 @@ public class ClientPPManagerTest {
 		boolean thrown = false;
 
 		ArrayList<ClientPP> clientpps = null;
-		ClientPP insertedClientp = null;
+		ClientPP insertedClientpp = null;
 
 		try {
 			clientpps = (ArrayList<ClientPP>) clientppManager.selectAll();
 
 			for (ClientPP clientpp : clientpps) {
 				if (clientpp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
-					insertedClientp = clientpp;
+					insertedClientpp = clientpp;
 			}
 
-			insertedClientp.setBankAccount("12345678901234567890");
-			clientppManager.update(insertedClientp);
+			insertedClientpp.setBankAccount("12345678901234567890");
+			clientppManager.update(insertedClientpp);
 
 			clientpps = (ArrayList<ClientPP>) clientppManager.selectAll();
 
 			for (ClientPP clientpp : clientpps) {
-				if (clientpp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
-					insertedClientp = clientpp;
+				if (clientpp.getId() == insertedClientpp.getId())
+					insertedClientpp = clientpp;
 			}
 
 		} catch (NotFoundException nfe) {
@@ -176,7 +179,7 @@ public class ClientPPManagerTest {
 
 		assertNotNull(clientpps);
 		assertFalse(thrown);
-		assertTrue(("12345678901234567890").equals(insertedClientp.getBankAccount()));
+		assertTrue(("12345678901234567890").equals(insertedClientpp.getBankAccount()));
 	}
 
 }

@@ -91,17 +91,21 @@ public class ClientManager extends ManagerAbstract<Client> {
 				client.setUsername(username);
 				client.setPasswd(passwd);
 				client.setBlocked(isBlocked);
-				
+
 				if (client instanceof ClientP) {
 					ClientPManager clientPManager = new ClientPManager();
 					ClientP clientP = clientPManager.getClientPById(id);
-					((ClientP) client).setBankAccount(clientP.getBankAccount());
-					((ClientP) client).setSuscriptionDate(clientP.getSuscriptionDate());
+					if (clientP != null) {
+						((ClientP) client).setBankAccount(clientP.getBankAccount());
+						((ClientP) client).setSuscriptionDate(clientP.getSuscriptionDate());
+					}
 				} else if (client instanceof ClientPP) {
 					ClientPPManager clientPPManager = new ClientPPManager();
 					ClientPP clientPP = clientPPManager.getClientPPById(id);
-					((ClientPP) client).setBankAccount(clientPP.getBankAccount());
-					((ClientPP) client).setSuscriptionDate(clientPP.getSuscriptionDate());
+					if (clientPP != null) {
+						((ClientPP) client).setBankAccount(clientPP.getBankAccount());
+						((ClientPP) client).setSuscriptionDate(clientPP.getSuscriptionDate());
+					}
 				}
 
 				ret.add(client);
@@ -147,12 +151,22 @@ public class ClientManager extends ManagerAbstract<Client> {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
+			
+			String type = null;
+			
+			if (client instanceof ClientP) {
+				type = "Premium";
+			} else if (client instanceof ClientPP) {
+				type = "Premium Plus";
+			} else {
+				type = "Basic";
+			}
 
-			String sql = "INSERT INTO Client (name, lastName, nationality, gender, birthDate, personalId, telephone, email, address, username, passwd) VALUES ('"
+			String sql = "INSERT INTO Client (name, lastName, nationality, gender, birthDate, personalId, telephone, email, address, username, passwd, type) VALUES ('"
 					+ client.getName() + "', '" + client.getLastName() + "', '" + client.getNationality() + "', '"
 					+ client.getGender() + "', '" + new java.sql.Date((client.getBirthDate()).getTime()) + "', '"
 					+ client.getPersonalId() + "', '" + client.getTelephone() + "', '" + client.getEmail() + "', '"
-					+ client.getAddress() + "', '" + client.getUsername() + "', '" + client.getPasswd() + "')";
+					+ client.getAddress() + "', '" + client.getUsername() + "', '" + client.getPasswd() + "', '" + type + "')";
 
 			statement.executeUpdate(sql);
 
@@ -387,5 +401,5 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 
 	}
-	
+
 }

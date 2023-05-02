@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import soundbridge.database.exception.NotFoundException;
+import soundbridge.database.managers.ClientManager;
 import soundbridge.database.managers.ClientPManager;
 
 import soundbridge.database.pojos.ClientP;
@@ -115,12 +116,14 @@ public class ClientPManagerTest {
 			}
 
 			clientpManager.delete(insertedClientp);
+			ClientManager clientManager = new ClientManager();
+			clientManager.delete(insertedClientp);
 
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			if (clientps != null) {
 				for (ClientP client : clientps) {
-					if ((client.getUsername().equalsIgnoreCase("pedritolopez")))
+					if ((client.getId() == insertedClientp.getId()))
 						isDeleted = true;
 				}
 			} else {

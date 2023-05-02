@@ -113,8 +113,9 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 			int idClient = 0;
 
 			for (Client client : clients) {
-				if (client.getPersonalId().equalsIgnoreCase(clientp.getPersonalId()))
+				if ((client instanceof ClientP) && (client.getPersonalId().equalsIgnoreCase(clientp.getPersonalId()))) {
 					idClient = client.getId();
+				}
 			}
 
 			String sql = "INSERT INTO ClientP (idClient,bankAccount) VALUES ( " + idClient + ",'"
@@ -123,7 +124,6 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 			statement.executeUpdate(sql);
 
 		} catch (SQLException sqle) {
-
 			throw sqle;
 		} catch (Exception e) {
 
@@ -194,9 +194,9 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ClientP WHERE bankAccount = ?";
+			String sql = "DELETE FROM ClientP WHERE idClient = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, clientp.getBankAccount());
+			preparedStatement.setInt(1, clientp.getId());
 
 			preparedStatement.executeUpdate();
 
@@ -225,16 +225,17 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 		ClientP ret = null;
 
 		ArrayList<ClientP> clientPs = (ArrayList<ClientP>) doSelectAll();
-		for (ClientP clientP : clientPs) {
-			if (clientP.getId() == idClient) {
-				ret = clientP;
-				break;
+		if (clientPs != null) {
+			for (ClientP clientP : clientPs) {
+				if (clientP.getId() == idClient) {
+					ret = clientP;
+					break;
+				}
 			}
 		}
 
 		return ret;
 	}
-	
 
 	public void insertReal(ClientP clientp) throws SQLException, Exception {
 		Connection connection = null;
@@ -244,8 +245,6 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
-
-		
 
 			String sql = "INSERT INTO ClientP (idClient,bankAccount) VALUES ( " + clientp.getId() + ",'"
 					+ clientp.getBankAccount() + "')";
