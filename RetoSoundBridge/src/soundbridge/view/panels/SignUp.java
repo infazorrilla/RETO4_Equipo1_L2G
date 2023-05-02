@@ -518,8 +518,7 @@ public class SignUp extends JPanel {
 		client.setPersonalId(textFieldPersonalIdSignUp.getText());
 		client.setGender(textFildGenderSignUp.getText());
 		client.setNationality(textFieldNationalitySignUp.getText());
-		String birthDate = textFieldBirthDateSignUp.getText();
-		client.setBirthDate(stringToDate(birthDate));
+		client.setBirthDate(stringToDate(textFieldBirthDateSignUp.getText()));
 		client.setAddress(textFieldAdressSignUp.getText());
 		client.setTelephone(textFieldPhoneNumberSignUp.getText());
 		client.setEmail(textFieldEmailSignUp.getText());
