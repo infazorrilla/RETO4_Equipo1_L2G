@@ -295,16 +295,19 @@ public class Profile extends JPanel {
 
 	private void doDeleteAccount(JFrame frame, Client client) {
 		Controller controller = new Controller();
-		try {
-			controller.deleteAccount(client, askToConfirmDeletion());
-			WindowUtils.messagePaneWithIcon("Su cuenta ha sido eliminada.", "Confirmación", "img/icon/bye.png");
+		int reply = askToConfirmDeletion();
+		if (reply == 0) {
+			try {
+				controller.deleteAccount(client);
+				WindowUtils.messagePaneWithIcon("Su cuenta ha sido eliminada.", "Confirmación", "img/icon/bye.png");
 
-			goToLogin(frame);
+				goToLogin(frame);
 
-		} catch (SQLException e) {
-			WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error en la base de datos");
-		} catch (Exception e) {
-			WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error general");
+			} catch (SQLException e) {
+				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error en la base de datos");
+			} catch (Exception e) {
+				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error general");
+			}
 		}
 	}
 

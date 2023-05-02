@@ -58,11 +58,11 @@ public class Controller {
 		String ret = null;
 		String username = textFieldUserLogIn.getText();
 		String passwd = passwordFieldLogIn.getText();
-		
+
 		if (null == clientManager) {
 			clientManager = new ClientManager();
 		}
-		
+
 		if (null == employeeManager) {
 			employeeManager = new EmployeeManager();
 		}
@@ -81,7 +81,7 @@ public class Controller {
 
 	public Client returnLoggedClient(String username) {
 		Client client = null;
-		
+
 		if (null == clientManager) {
 			clientManager = new ClientManager();
 		}
@@ -99,7 +99,7 @@ public class Controller {
 
 	public Employee returnLoggedEmployee(String username) {
 		Employee employee = null;
-		
+
 		if (null == employeeManager) {
 			employeeManager = new EmployeeManager();
 		}
@@ -115,15 +115,11 @@ public class Controller {
 		return employee;
 	}
 
-	public void deleteAccount(Client client, int reply) throws SQLException, Exception {
+	public void deleteAccount(Client client) throws SQLException, Exception {
 		if (null == clientManager) {
 			clientManager = new ClientManager();
 		}
-		
-		if (reply == 0) {
-
-			clientManager.delete(client);
-		}
+		clientManager.delete(client);
 	}
 
 	public void addPossibilitiesToSearchBar(AutoCompleteTextField text) throws SQLException, Exception {
@@ -168,7 +164,7 @@ public class Controller {
 		if (null == clientManager) {
 			clientManager = new ClientManager();
 		}
-		
+
 		ClientPManager clientPManager = new ClientPManager();
 		ClientPPManager clientPPManager = new ClientPPManager();
 
@@ -188,12 +184,10 @@ public class Controller {
 		if (null == clientManager) {
 			clientManager = new ClientManager();
 		}
-		
+
 		client.setPasswd(String.valueOf(passwd1.getPassword()));
 
 		clientManager.update(client);
 	}
-	
-	
 
 }

@@ -17,6 +17,8 @@ public class WindowUtils {
 		UIManager.put("OptionPane.background", Color.BLACK);
 		UIManager.put("OptionPane.messagebackground", Color.BLACK);
 		UIManager.put("Panel.background", Color.BLACK);
+		UIManager.put("Button.background", Color.WHITE);
+		UIManager.put("Button.foreground", Color.BLACK);
 
 		ImageIcon icon = new ImageIcon(path);
 		Image img = icon.getImage();
@@ -26,11 +28,13 @@ public class WindowUtils {
 		JOptionPane.showMessageDialog(null, "<html><font color='white'>" + message + "</font></html>", title,
 				JOptionPane.INFORMATION_MESSAGE, icon);
 	}
-	
+
 	public static void errorPane(String message, String title) {
 		UIManager.put("OptionPane.background", Color.BLACK);
 		UIManager.put("OptionPane.messagebackground", Color.BLACK);
 		UIManager.put("Panel.background", Color.BLACK);
+		UIManager.put("Button.background", Color.WHITE);
+		UIManager.put("Button.foreground", Color.BLACK);
 
 		ImageIcon icon = new ImageIcon("img/icon/cross.png");
 		Image img = icon.getImage();
@@ -40,11 +44,13 @@ public class WindowUtils {
 		JOptionPane.showMessageDialog(null, "<html><font color='white'>" + message + "</font></html>", title,
 				JOptionPane.INFORMATION_MESSAGE, icon);
 	}
-	
+
 	public static void confirmationPane(String message, String title) {
 		UIManager.put("OptionPane.background", Color.BLACK);
 		UIManager.put("OptionPane.messagebackground", Color.BLACK);
 		UIManager.put("Panel.background", Color.BLACK);
+		UIManager.put("Button.background", Color.WHITE);
+		UIManager.put("Button.foreground", Color.BLACK);
 
 		ImageIcon icon = new ImageIcon("img/icon/tick.png");
 		Image img = icon.getImage();
@@ -59,6 +65,8 @@ public class WindowUtils {
 		UIManager.put("OptionPane.background", Color.BLACK);
 		UIManager.put("OptionPane.messagebackground", Color.BLACK);
 		UIManager.put("Panel.background", Color.BLACK);
+		UIManager.put("Button.background", Color.WHITE);
+		UIManager.put("Button.foreground", Color.BLACK);
 
 		JFrame frame = new JFrame();
 		String[] options = new String[2];
@@ -71,8 +79,8 @@ public class WindowUtils {
 		icon.setImage(resizedImg);
 
 		int ret = JOptionPane.showOptionDialog(frame.getContentPane(),
-				"<html><font color='white'>" + message + "</font></html>", title, 0, JOptionPane.INFORMATION_MESSAGE,
-				icon, options, null);
+				"<html><font color='white'>" + message + "</font></html>", title, JOptionPane.YES_NO_OPTION,
+				JOptionPane.YES_NO_OPTION, icon, options, null);
 
 		return ret;
 	}
@@ -81,6 +89,8 @@ public class WindowUtils {
 		UIManager.put("OptionPane.background", Color.BLACK);
 		UIManager.put("OptionPane.messagebackground", Color.BLACK);
 		UIManager.put("Panel.background", Color.BLACK);
+		UIManager.put("Button.background", Color.WHITE);
+		UIManager.put("Button.foreground", Color.BLACK);
 
 		ImageIcon icon = new ImageIcon(path);
 		Image img = icon.getImage();
@@ -102,7 +112,7 @@ public class WindowUtils {
 		icon.setImage(resizedImg);
 		label.setIcon(icon);
 	}
-	
+
 	public static void addGif(JLabel label, String path) {
 		ImageIcon icon = new ImageIcon(path);
 		label.setIcon(icon);
