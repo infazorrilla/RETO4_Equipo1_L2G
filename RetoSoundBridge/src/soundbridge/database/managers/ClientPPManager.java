@@ -117,8 +117,7 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 					idClient = client.getId();
 			}
 
-			String sql = "INSERT INTO ClientPP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
-					+ new java.sql.Date((clientpp.getSuscriptionDate()).getTime()) + "','" + clientpp.getBankAccount()
+			String sql = "INSERT INTO ClientPP (idClient,bankAccount) VALUES ( " + idClient + ", '" + clientpp.getBankAccount()
 					+ "')";
 
 			statement.executeUpdate(sql);
@@ -196,9 +195,9 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ClientPP WHERE id = ?";
+			String sql = "DELETE FROM ClientPP WHERE bankAccount = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, clientpp.getId());
+			preparedStatement.setString(1, clientpp.getBankAccount());
 
 			preparedStatement.executeUpdate();
 
