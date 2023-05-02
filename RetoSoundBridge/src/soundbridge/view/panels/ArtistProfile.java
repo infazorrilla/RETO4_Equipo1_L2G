@@ -65,7 +65,7 @@ public class ArtistProfile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -119,11 +119,11 @@ public class ArtistProfile extends JPanel {
 		panelGridSingles.setLayout(new GridLayout(1, 5, 69, 0));
 		panelGridSingles.setOpaque(false);
 
-		addImagesToAlbums(artist);
+		addImagesToAlbums(frame, client, artist);
 		addImagesToSingles(artist);
 	}
 
-	private void addImagesToAlbums(Artist artist) {
+	private void addImagesToAlbums(JFrame frame, Client client, Artist artist) {
 		AlbumManager albumManager = new AlbumManager();
 		try {
 			albums = (ArrayList<Album>) albumManager.albumsByArtist(artist);
@@ -162,6 +162,18 @@ public class ArtistProfile extends JPanel {
 					albumLabels.add(lblAlbum);
 
 					WindowUtils.addImage(albumPanels.get(i), albumLabels.get(i), image);
+					
+					panelAlbum.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							frame.getContentPane().removeAll();
+							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, album));
+							frame.revalidate();
+							frame.repaint();
+						}
+					});
+					
+					panelAlbum.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 				} else {
 					JPanel panelToFitGrid = new JPanel();

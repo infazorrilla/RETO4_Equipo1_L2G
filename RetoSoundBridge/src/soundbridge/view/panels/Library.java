@@ -47,7 +47,7 @@ public class Library extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -219,14 +219,14 @@ public class Library extends JPanel {
 
 	private void goToArtistProfile(JFrame frame, Client client, Artist artist) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
 	
 	private void goToGroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null));
 		frame.revalidate();
 		frame.repaint();
 	}

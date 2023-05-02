@@ -186,7 +186,7 @@ public class Login extends JPanel {
 						controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
 						frame.getContentPane().removeAll();
 						frame.getContentPane()
-								.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null));
+								.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
 						frame.revalidate();
 						frame.repaint();
 					}
@@ -195,7 +195,7 @@ public class Login extends JPanel {
 				controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
 				setEmployee(controller.returnLoggedEmployee(textFieldUserLogIn.getText()));
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -204,7 +204,7 @@ public class Login extends JPanel {
 
 	private void goToSignUp(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

@@ -406,7 +406,7 @@ public class SignUp extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -543,7 +543,7 @@ public class SignUp extends JPanel {
 				JFrame jFrame = new JFrame();
 				JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -568,7 +568,7 @@ public class SignUp extends JPanel {
 			JFrame jFrame = new JFrame();
 			JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (SQLException e1) {
@@ -590,7 +590,7 @@ public class SignUp extends JPanel {
 			JFrame jFrame = new JFrame();
 			JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (Exception e) {

@@ -56,7 +56,7 @@ public class Profile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -80,18 +80,18 @@ public class Profile extends JPanel {
 		add(lblUsername);
 
 		JButton btnLogOut = new JButton("Cerrar Sesión");
+		btnLogOut.setHorizontalAlignment(SwingConstants.LEFT);
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				logOut(frame);
 			}
 		});
-		btnLogOut.setBounds(200, 130, 100, 30);
+		btnLogOut.setBounds(200, 130, 113, 30);
 		add(btnLogOut);
 		btnLogOut.setForeground(Color.white);
 		btnLogOut.setFont(new Font("Lucida Grande", Font.ITALIC, 15));
-		btnLogOut.setBackground(new Color(0, 0, 0, 0));
 		btnLogOut.setBorder(new LineBorder(Color.black, 0));
-		btnLogOut.setOpaque(true);
+		btnLogOut.setOpaque(false);
 		btnLogOut.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JPanel panelEditSubscriptionIcon = new JPanel();
@@ -104,7 +104,7 @@ public class Profile extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -146,21 +146,21 @@ public class Profile extends JPanel {
 		btnAcceptLogIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JPanel panelEditInfoIcon = new JPanel();
+		panelEditInfoIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelEditInfoIcon.setBounds(310, 200, 25, 25);
 		panelEditInfoIcon.setLayout(new BorderLayout(0, 0));
+		add(panelEditInfoIcon);
 		panelEditInfoIcon.setOpaque(false);
 		panelEditInfoIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
 		});
-		panelEditInfoIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		add(panelEditInfoIcon);
 		panelEditInfoIcon.setToolTipText("Editar datos de mi cuenta.");
 
 		JLabel lblEditInfoIcon = new JLabel("");
@@ -272,7 +272,7 @@ public class Profile extends JPanel {
 
 	private void logOut(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -313,7 +313,7 @@ public class Profile extends JPanel {
 
 	private void goToLogin(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

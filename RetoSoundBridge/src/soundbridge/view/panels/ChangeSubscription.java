@@ -112,10 +112,10 @@ public class ChangeSubscription extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				if (changedClient == null) {
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null));
+					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null));
 				} else {
 					frame.getContentPane()
-							.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient, null, null));
+							.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient, null, null, null));
 				}
 				frame.revalidate();
 				frame.repaint();
@@ -156,6 +156,7 @@ public class ChangeSubscription extends JPanel {
 		});
 		rbtnPP.setBounds(75, 515, 23, 23);
 		rbtnPP.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		rbtnPP.setOpaque(false);
 		add(rbtnPP);
 
 		rbtnP = new JRadioButton("");
@@ -166,6 +167,7 @@ public class ChangeSubscription extends JPanel {
 		});
 		rbtnP.setBounds(400, 515, 23, 23);
 		rbtnP.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		rbtnP.setOpaque(false);
 		add(rbtnP);
 
 		rbtnB = new JRadioButton("");
@@ -176,6 +178,7 @@ public class ChangeSubscription extends JPanel {
 		});
 		rbtnB.setBounds(725, 515, 23, 23);
 		rbtnB.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		rbtnB.setOpaque(false);
 		add(rbtnB);
 
 		ButtonGroup btnGroup = new ButtonGroup();
