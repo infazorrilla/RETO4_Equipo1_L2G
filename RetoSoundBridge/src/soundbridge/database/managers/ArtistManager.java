@@ -61,9 +61,12 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 				String description = resultSet.getString("description");
 				String image = resultSet.getString("image");
 				String role = resultSet.getString("role");
-
+				
 				java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
-				java.util.Date birthDate = new java.util.Date(sqlBirthDate.getTime());
+				java.util.Date birthDate = null;
+				if (null != sqlBirthDate) {
+					birthDate = new java.util.Date(sqlBirthDate.getTime());
+				}
 
 				artist.setId(id);
 				artist.setName(name);

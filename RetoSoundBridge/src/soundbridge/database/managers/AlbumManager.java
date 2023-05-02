@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Album;
+import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.utils.DBUtils;
 
@@ -189,6 +190,66 @@ public class AlbumManager extends ManagerAbstract<Album> {
 			
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, artist.getId());
+			resultSet = preparedStatement.executeQuery();
+
+
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new ArrayList<Album>();
+				Album album = new Album();
+				int id = resultSet.getInt("A.id");
+				String name = resultSet.getString("A.name");
+				String cover = resultSet.getString("A.cover");
+				java.sql.Date sqlreleaseYear = resultSet.getDate("A.releaseYear");
+				java.util.Date releaseYear = new java.util.Date(sqlreleaseYear.getTime());
+
+				album.setId(id);
+				album.setName(name);
+				album.setCover(cover);
+				album.setReleaseYear(releaseYear);
+				ret.add(album);
+				
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+		return ret;
+	}
+	
+	public List<Album> albumsByArtGroup(ArtGroup artGroup) throws SQLException, Exception {
+		ArrayList<Album> ret = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
+			String sql = "SELECT DISTINCT A.* FROM Album A JOIN Song S ON A.id = S.idAlbum WHERE S.idGroup = ?";
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, artGroup.getId());
 			resultSet = preparedStatement.executeQuery();
 
 

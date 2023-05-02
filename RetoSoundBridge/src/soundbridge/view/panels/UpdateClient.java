@@ -253,7 +253,7 @@ public class UpdateClient extends JPanel {
 				textNationality.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		JTextField textBirthDate = new JTextField((new SimpleDateFormat("dd-MM-yyyy")).format(client.getBirthDate()));
+		JTextField textBirthDate = new JTextField((new SimpleDateFormat("dd/MM/yyyy")).format(client.getBirthDate()));
 		textBirthDate.setOpaque(false);
 		textBirthDate.setHorizontalAlignment(SwingConstants.CENTER);
 		textBirthDate.setForeground(Color.WHITE);

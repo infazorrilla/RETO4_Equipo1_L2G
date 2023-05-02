@@ -152,9 +152,9 @@ public class Library extends JPanel {
 		try {
 			controller.addPossibilitiesToSearchBar(text);
 		} catch (SQLException sqle) {
-			WindowUtils.errorPane("No se han podido añadir opciones de búsqueda.", "Error en la base de datos");
+			WindowUtils.errorPane(sqle.toString(), "Error en la base de datos");
 		} catch (Exception e) {
-			WindowUtils.errorPane("No se han podido añadir opciones de búsqueda.", "Error general");
+			WindowUtils.errorPane(e.toString(), "Error general");
 		}
 	}
 

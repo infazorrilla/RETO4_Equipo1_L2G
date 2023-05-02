@@ -158,7 +158,7 @@ public class Controller {
 		client.setNationality(textNation.getText());
 
 		String birthDate = textBirth.getText();
-		Date date = new SimpleDateFormat("dd-MM-yyyy").parse(birthDate);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse(birthDate);
 
 		client.setBirthDate(date);
 		client.setAddress(textAddr.getText());

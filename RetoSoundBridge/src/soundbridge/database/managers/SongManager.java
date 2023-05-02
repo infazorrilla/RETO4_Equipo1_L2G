@@ -39,9 +39,9 @@ public class SongManager extends ManagerAbstract<Song> {
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new ArrayList<Song>();
-				
+
 				Song song = new Song();
-				
+
 				int id = resultSet.getInt("id");
 				String name = resultSet.getString("name");
 
@@ -55,7 +55,7 @@ public class SongManager extends ManagerAbstract<Song> {
 				int idAlbum = resultSet.getInt("idAlbum");
 				int idArtist = resultSet.getInt("idArtist");
 				int idGroup = resultSet.getInt("idGroup");
-				
+
 				song.setId(id);
 				song.setName(name);
 				song.setReleaseYear(releaseYear);
@@ -113,8 +113,8 @@ public class SongManager extends ManagerAbstract<Song> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 			String sql = "INSERT INTO Song (id, name, creation, duration, cover, lang) VALUES ('" + song.getId()
-					+ "', '" + song.getName() + "', '" + new java.sql.Date((song.getReleaseYear()).getTime()) + "', '" + song.getDuration() + "', '"
-					+ song.getCover() + "', '" + song.getLang() + "')";
+					+ "', '" + song.getName() + "', '" + new java.sql.Date((song.getReleaseYear()).getTime()) + "', '"
+					+ song.getDuration() + "', '" + song.getCover() + "', '" + song.getLang() + "')";
 			statement.executeUpdate(sql);
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -146,14 +146,14 @@ public class SongManager extends ManagerAbstract<Song> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			String sql = "UPDATE Song SET  name = ?, releaseYear = ?, duration = ?, cover = ?, lang = ? where id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			
+
 			preparedStatement.setString(1, song.getName());
 			preparedStatement.setDate(2, new java.sql.Date((song.getReleaseYear()).getTime()));
 			preparedStatement.setInt(3, song.getDuration());
 			preparedStatement.setString(4, song.getCover());
 			preparedStatement.setString(5, song.getLang());
 			preparedStatement.setInt(6, song.getId());
-			
+
 			preparedStatement.executeUpdate();
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -205,17 +205,53 @@ public class SongManager extends ManagerAbstract<Song> {
 			;
 		}
 	}
-	
+
 	public Song getSongById(int idSong) throws SQLException, Exception {
 		Song ret = null;
-	
+
 		ArrayList<Song> songs = (ArrayList<Song>) doSelectAll();
-		
+
 		for (Song song : songs) {
 			if (song.getId() == idSong)
 				ret = song;
 		}
-		
+
+		return ret;
+	}
+
+	public ArrayList<Song> getSinglesByArtist(Artist artist) throws SQLException, Exception {
+		ArrayList<Song> ret = null;
+
+		ArrayList<Song> songs = (ArrayList<Song>) doSelectAll();
+
+		for (Song song : songs) {
+			if ((song.getArtist() != null) && (song.getArtist().getId() == artist.getId())
+					&& (song.getAlbum() == null)) {
+				if (ret == null) {
+					ret = new ArrayList<Song>();
+				}
+				ret.add(song);
+			}
+		}
+
+		return ret;
+	}
+	
+	public ArrayList<Song> getSinglesByGroup(ArtGroup artGroup) throws SQLException, Exception {
+		ArrayList<Song> ret = null;
+
+		ArrayList<Song> songs = (ArrayList<Song>) doSelectAll();
+
+		for (Song song : songs) {
+			if ((song.getArtGroup() != null) && (song.getArtGroup().getId() == artGroup.getId())
+					&& (song.getAlbum() == null)) {
+				if (ret == null) {
+					ret = new ArrayList<Song>();
+				}
+				ret.add(song);
+			}
+		}
+
 		return ret;
 	}
 }
