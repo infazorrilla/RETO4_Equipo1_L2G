@@ -254,4 +254,23 @@ public class SongManager extends ManagerAbstract<Song> {
 
 		return ret;
 	}
+	
+	public ArrayList<Song> getSongsByAlbumWithArtist(Album album, Artist artist) throws SQLException, Exception {
+		ArrayList<Song> ret = null;
+
+		ArrayList<Song> songs = (ArrayList<Song>) doSelectAll();
+
+		for (Song song : songs) {
+			if ((song.getAlbum() != null) && (song.getAlbum().getId() == album.getId())
+					&& (song.getAlbum() == null)) {
+				if (ret == null) {
+					ret = new ArrayList<Song>();
+				}
+				song.setArtist(artist);
+				ret.add(song);
+			}
+		}
+
+		return ret;
+	}
 }

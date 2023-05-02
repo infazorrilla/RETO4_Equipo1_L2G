@@ -65,7 +65,8 @@ public class ArtistProfile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -119,19 +120,24 @@ public class ArtistProfile extends JPanel {
 		panelGridSingles.setLayout(new GridLayout(1, 5, 69, 0));
 		panelGridSingles.setOpaque(false);
 
-		addImagesToAlbums(frame, client, artist);
+		doAddImagesToAlbums(frame, client, artist);
 		addImagesToSingles(artist);
 	}
 
-	private void addImagesToAlbums(JFrame frame, Client client, Artist artist) {
-		AlbumManager albumManager = new AlbumManager();
+	private void doAddImagesToAlbums(JFrame frame, Client client, Artist artist) {
 		try {
-			albums = (ArrayList<Album>) albumManager.albumsByArtist(artist);
+			addImagesToAlbums(frame, client, artist);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se han podido cargar los álbumes.", "Error en la base de datos");
 		} catch (Exception e) {
 			WindowUtils.errorPane("No se han podido cargar los álbumes.", "Error general");
 		}
+	}
+
+	private void addImagesToAlbums(JFrame frame, Client client, Artist artist) throws SQLException, Exception {
+		AlbumManager albumManager = new AlbumManager();
+
+		albums = (ArrayList<Album>) albumManager.albumsByArtist(artist);
 
 		if (null != albums) {
 			for (int i = 0; i < 5; i++) {
@@ -162,17 +168,22 @@ public class ArtistProfile extends JPanel {
 					albumLabels.add(lblAlbum);
 
 					WindowUtils.addImage(albumPanels.get(i), albumLabels.get(i), image);
-					
+
+					SongManager songManager = new SongManager();
+					ArrayList<Song> songsOfAlbum = songManager.getSongsByAlbum(album);
+					album.setSongs(songsOfAlbum);
+
 					panelAlbum.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
 							frame.getContentPane().removeAll();
-							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, album));
+							frame.getContentPane().add(
+									PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, album));
 							frame.revalidate();
 							frame.repaint();
 						}
 					});
-					
+
 					panelAlbum.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 				} else {

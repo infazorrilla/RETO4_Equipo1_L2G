@@ -11,6 +11,10 @@ import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.Client;
@@ -70,6 +74,22 @@ public class AlbumView extends JPanel {
 		lblReleaseYear.setBounds(324, 130, 400, 35);
 		lblReleaseYear.setForeground(Color.white);
 		add(lblReleaseYear);
+		
+		JScrollPane scrollPaneSongs = new JScrollPane();
+		scrollPaneSongs.setBounds(44, 179, 904, 383);
+		add(scrollPaneSongs);
+
+		JTable tableClients = new JTable();
+		tableClients.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableClients.setDefaultEditor(Object.class, null);
+		scrollPaneSongs.setViewportView(tableClients);
+		tableClients.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+		scrollPaneSongs.setViewportView(tableClients);
+		Object[] columnsManagesClients = { "Título", "Género", "Género", "DNI", "Username", "Contraseña", "Bloqueado"  };
+
+		DefaultTableModel modelClients= new DefaultTableModel();
+		modelClients.setColumnIdentifiers(columnsManagesClients);
+		tableClients.setModel(modelClients);
 		
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, album.getCover());
