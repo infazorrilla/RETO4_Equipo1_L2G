@@ -47,7 +47,7 @@ public class ClientPManagerTest {
 		boolean thrown = false;
 		ClientP clientp = new ClientP();
 
-		clientp.setBankAccount("1234567Abc");
+		clientp.setBankAccount("12345678901234567890");
 		clientp.setSuscriptionDate(new java.util.Date(85, 3, 29));
 		clientp.setName("Pedro");
 		clientp.setLastName("López");
@@ -82,7 +82,7 @@ public class ClientPManagerTest {
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			for (ClientP clientp : clientps) {
-				if (clientp.getBankAccount().equalsIgnoreCase("1234567Abc"))
+				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
 					isInserted = true;
 			}
 
@@ -110,7 +110,7 @@ public class ClientPManagerTest {
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			for (ClientP clientp : clientps) {
-				if (clientp.getBankAccount().equalsIgnoreCase("1234567Abc"))
+				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
 					insertedClientp = clientp;
 			}
 
@@ -150,17 +150,17 @@ public class ClientPManagerTest {
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			for (ClientP clientp : clientps) {
-				if (clientp.getBankAccount().equalsIgnoreCase("1234567Abc"))
+				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
 					insertedClientp = clientp;
 			}
 
-			insertedClientp.setBankAccount("1234567Abc");
+			insertedClientp.setBankAccount("12345678901234567890");
 			clientpManager.update(insertedClientp);
 
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			for (ClientP clientp : clientps) {
-				if (clientp.getBankAccount().equalsIgnoreCase("1234567Abc"))
+				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
 					insertedClientp = clientp;
 			}
 
@@ -174,7 +174,7 @@ public class ClientPManagerTest {
 
 		assertNotNull(clientps);
 		assertFalse(thrown);
-		assertTrue(("1234567Abc").equals(insertedClientp.getBankAccount()));
+		assertTrue(("12345678901234567890").equals(insertedClientp.getBankAccount()));
 	}
 
 }

@@ -47,7 +47,7 @@ public class ClientPPManagerTest {
 		boolean thrown = false;
 		ClientPP clientpp = new ClientPP();
 
-		clientpp.setBankAccount("1234567Abc");
+		clientpp.setBankAccount("12345678901234567890");
 		clientpp.setSuscriptionDate(new java.util.Date(85, 3, 29));
 		clientpp.setName("Pedro");
 		clientpp.setLastName("López");
@@ -84,7 +84,7 @@ public class ClientPPManagerTest {
 			clientpps = (ArrayList<ClientPP>) clientppManager.selectAll();
 
 			for (ClientPP clientpp : clientpps) {
-				if (clientpp.getBankAccount().equalsIgnoreCase("1234567Abc"))
+				if (clientpp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
 					isInserted = true;
 			}
 
@@ -106,24 +106,24 @@ public class ClientPPManagerTest {
 		boolean isDeleted = true;
 
 		ArrayList<ClientPP> clientpps = null;
-		ClientPP insertedClientp = null;
+		ClientPP insertedClientpp = null;
 
 		try {
 			clientpps = (ArrayList<ClientPP>) clientppManager.selectAll();
 
 			for (ClientPP clientpp : clientpps) {
-				if (clientpp.getBankAccount().equalsIgnoreCase("1234567Abc"))
-					insertedClientp = clientpp;
+				if (clientpp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
+					insertedClientpp = clientpp;
 			}
 
-			clientppManager.delete(insertedClientp);
+			clientppManager.delete(insertedClientpp);
 
 			clientpps = (ArrayList<ClientPP>) clientppManager.selectAll();
 
 			if (clientpps != null) {
-				for (ClientPP client : clientpps) {
-					if ((client.getUsername().equalsIgnoreCase("pedritolopez")))
-						isDeleted = true;
+				for (ClientPP clientpp : clientpps) {
+					if ((clientpp.getBankAccount().equalsIgnoreCase("12345678901234567890")))
+						isDeleted = false;
 				}
 			} else {
 				isDeleted = true;
@@ -152,17 +152,17 @@ public class ClientPPManagerTest {
 			clientpps = (ArrayList<ClientPP>) clientppManager.selectAll();
 
 			for (ClientPP clientpp : clientpps) {
-				if (clientpp.getBankAccount().equalsIgnoreCase("1234567Abc"))
+				if (clientpp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
 					insertedClientp = clientpp;
 			}
 
-			insertedClientp.setBankAccount("1234567Abc");
+			insertedClientp.setBankAccount("12345678901234567890");
 			clientppManager.update(insertedClientp);
 
 			clientpps = (ArrayList<ClientPP>) clientppManager.selectAll();
 
 			for (ClientPP clientpp : clientpps) {
-				if (clientpp.getBankAccount().equalsIgnoreCase("1234567Abc"))
+				if (clientpp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
 					insertedClientp = clientpp;
 			}
 
@@ -176,7 +176,7 @@ public class ClientPPManagerTest {
 
 		assertNotNull(clientpps);
 		assertFalse(thrown);
-		assertTrue(("1234567Abc").equals(insertedClientp.getBankAccount()));
+		assertTrue(("12345678901234567890").equals(insertedClientp.getBankAccount()));
 	}
 
 }
