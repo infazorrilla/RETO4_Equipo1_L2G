@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import soundbridge.database.exception.NotFoundException;
+import soundbridge.database.managers.ClientManager;
 import soundbridge.database.managers.ClientPManager;
 
 import soundbridge.database.pojos.ClientP;
@@ -110,17 +111,19 @@ public class ClientPManagerTest {
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			for (ClientP clientp : clientps) {
-				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
+				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567891"))
 					insertedClientp = clientp;
 			}
 
 			clientpManager.delete(insertedClientp);
+			ClientManager clientManager = new ClientManager();
+			clientManager.delete(insertedClientp);
 
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			if (clientps != null) {
 				for (ClientP client : clientps) {
-					if ((client.getUsername().equalsIgnoreCase("pedritolopez")))
+					if ((client.getId() == insertedClientp.getId()))
 						isDeleted = true;
 				}
 			} else {
@@ -154,13 +157,13 @@ public class ClientPManagerTest {
 					insertedClientp = clientp;
 			}
 
-			insertedClientp.setBankAccount("12345678901234567890");
+			insertedClientp.setBankAccount("12345678901234567891");
 			clientpManager.update(insertedClientp);
 
 			clientps = (ArrayList<ClientP>) clientpManager.selectAll();
 
 			for (ClientP clientp : clientps) {
-				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567890"))
+				if (clientp.getBankAccount().equalsIgnoreCase("12345678901234567891"))
 					insertedClientp = clientp;
 			}
 
@@ -174,7 +177,7 @@ public class ClientPManagerTest {
 
 		assertNotNull(clientps);
 		assertFalse(thrown);
-		assertTrue(("12345678901234567890").equals(insertedClientp.getBankAccount()));
+		assertTrue(("12345678901234567891").equals(insertedClientp.getBankAccount()));
 	}
 
 }
