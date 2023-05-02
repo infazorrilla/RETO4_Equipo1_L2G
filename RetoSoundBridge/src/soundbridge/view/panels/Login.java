@@ -14,7 +14,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -179,8 +178,9 @@ public class Login extends JPanel {
 				if (client != null) {
 					setClient(controller.returnLoggedClient(username));
 					if (client.isBlocked() == true) {
-						JFrame jFrame = new JFrame();
-						JOptionPane.showMessageDialog(jFrame, "USUARIO BLOQUEADO");
+						WindowUtils.errorPane("Su usuario está bloqueado.", "Usuario Bloqueado");
+						textFieldUserLogIn.setText("");
+						passwordFieldLogIn.setText("");
 					} else {
 
 						controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
