@@ -1,17 +1,19 @@
 package soundbridge.view.panels;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Employee extends JPanel {
 
@@ -35,9 +37,16 @@ public class Employee extends JPanel {
 		lblTitle.setBounds(380, 44, 250, 36);
 		add(lblTitle);
 
-		JButton btnManagerClients = new JButton("New button");
-		btnManagerClients.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JLabel lblClientes = new JLabel("Clientes");
+		lblClientes.setForeground(Color.WHITE);
+		lblClientes.setFont(new Font("Dialog", Font.PLAIN, 17));
+		lblClientes.setBounds(214, 156, 73, 29);
+		add(lblClientes);
+		
+		JPanel panelManageClients = new JPanel();
+		panelManageClients.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
 						.add(PanelFactory.getJPanel(PanelFactory.MANAGE_CLIENTS, frame, null, null, null, null, null));
@@ -45,13 +54,15 @@ public class Employee extends JPanel {
 				frame.repaint();
 			}
 		});
-		btnManagerClients.setBounds(108, 134, 96, 73);
-		add(btnManagerClients);
-
-		JLabel lblClientes = new JLabel("Clientes");
-		lblClientes.setForeground(Color.WHITE);
-		lblClientes.setFont(new Font("Dialog", Font.PLAIN, 17));
-		lblClientes.setBounds(214, 156, 73, 29);
-		add(lblClientes);
+		panelManageClients.setBounds(108, 219, 100, 100);
+		panelManageClients.setOpaque(false);
+		panelManageClients.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		add(panelManageClients);
+		panelManageClients.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblManageClientsIcon = new JLabel("");
+		panelManageClients.add(lblManageClientsIcon, BorderLayout.CENTER);
+		
+		WindowUtils.addImage(panelManageClients, lblManageClientsIcon, "img/icon/clients.png");
 	}
 }
