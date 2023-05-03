@@ -117,7 +117,7 @@ public class ArtistProfile extends JPanel {
 		panelGridSingles.setOpaque(false);
 
 		doAddImagesToAlbums(frame, client, artist);
-		addImagesToSingles(artist);
+		addImagesToSingles(frame, client, artist);
 	}
 
 	private void doAddImagesToAlbums(JFrame frame, Client client, Artist artist) {
@@ -181,7 +181,7 @@ public class ArtistProfile extends JPanel {
 		}
 	}
 
-	private void addImagesToSingles(Artist artist) {
+	private void addImagesToSingles(JFrame frame, Client client, Artist artist) {
 		SongManager songManager = new SongManager();
 		try {
 			singles = (ArrayList<Song>) songManager.getSinglesByArtist(artist);
@@ -209,6 +209,19 @@ public class ArtistProfile extends JPanel {
 					panelSingle.add(lblSingle, BorderLayout.CENTER);
 
 					WindowUtils.addImage(panelSingle, lblSingle, image);
+					
+					panelSingle.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							frame.getContentPane().removeAll();
+							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SINGLE_VIEW, frame, client,
+									artist, null, null, song));
+							frame.revalidate();
+							frame.repaint();
+						}
+					});
+
+					panelSingle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 				} else {
 					JPanel panelToFitGrid = new JPanel();

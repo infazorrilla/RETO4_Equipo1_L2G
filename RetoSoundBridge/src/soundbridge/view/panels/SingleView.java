@@ -160,7 +160,8 @@ public class SingleView extends JPanel {
 		int totalSeconds = song.getDuration();
 		int minutes = (totalSeconds % 3600) / 60;
 		int seconds = totalSeconds % 60;
-		String duration = minutes + ":" + seconds;
+		String secondsStr = String.format("%02d", seconds);
+		String duration = minutes + ":" + secondsStr;
 		String genre = song.getGenre();
 
 		model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });

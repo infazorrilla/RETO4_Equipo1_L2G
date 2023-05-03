@@ -117,7 +117,7 @@ public class GroupProfile extends JPanel {
 		panelGridSingles.setOpaque(false);
 
 		doAddImagesToAlbums(frame, client, artGroup);
-		addImagesToSingles(artGroup);
+		addImagesToSingles(frame, client, artGroup);
 	}
 
 	private void doAddImagesToAlbums(JFrame frame, Client client, ArtGroup artGroup) {
@@ -180,7 +180,7 @@ public class GroupProfile extends JPanel {
 		}
 	}
 
-	private void addImagesToSingles(ArtGroup artGroup) {
+	private void addImagesToSingles(JFrame frame, Client client, ArtGroup artGroup) {
 		SongManager songManager = new SongManager();
 		try {
 			singles = (ArrayList<Song>) songManager.getSinglesByGroup(artGroup);
@@ -208,6 +208,19 @@ public class GroupProfile extends JPanel {
 					panelSingle.add(lblSingle, BorderLayout.CENTER);
 
 					WindowUtils.addImage(panelSingle, lblSingle, image);
+					
+					panelSingle.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							frame.getContentPane().removeAll();
+							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SINGLE_VIEW, frame, client,
+									null, artGroup, null, song));
+							frame.revalidate();
+							frame.repaint();
+						}
+					});
+
+					panelSingle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 				} else {
 					JPanel panelToFitGrid = new JPanel();
