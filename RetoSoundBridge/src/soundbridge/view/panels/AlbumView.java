@@ -206,7 +206,7 @@ public class AlbumView extends JPanel {
 		if (songs != null) {
 			for (int i = 0; i < songs.size(); i++) {
 				Song song = songs.get(i);
-				String number = "" + (i + 1);
+				String number = (i + 1) + ".";
 				String title = song.getName();
 				int totalSeconds = song.getDuration();
 				int minutes = (totalSeconds % 3600) / 60;
