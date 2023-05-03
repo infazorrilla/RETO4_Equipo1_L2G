@@ -34,6 +34,10 @@ public class Library extends JPanel {
 	private static final long serialVersionUID = -2776809426213236020L;
 
 	public Library(JFrame frame, Client client) {
+		initialize(frame, client);
+	}
+	
+	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
