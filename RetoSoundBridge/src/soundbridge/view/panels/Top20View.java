@@ -3,6 +3,7 @@ package soundbridge.view.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -16,12 +17,16 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import javazoom.jl.player.Player;
+import soundbridge.database.managers.ArtGroupManager;
 import soundbridge.database.managers.ArtistManager;
+import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.managers.Top20ViewManager;
 import soundbridge.utils.WindowUtils;
+import soundbridge.view.factory.PanelFactory;
+
 import java.awt.Font;
 import java.io.FileInputStream;
 import java.sql.SQLException;
@@ -37,12 +42,12 @@ public class Top20View extends JPanel {
 	private Player player;
 
 	public Top20View(JFrame frame, Client client) {
-		initialize();
+		initialize (frame, client);
 	}
 
 	private static final long serialVersionUID = -5073547141433278673L;
 
-	public void initialize() {
+	public void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
@@ -83,7 +88,7 @@ public class Top20View extends JPanel {
 		scrollPaneTop20.setViewportView(tableSongsTop20);
 		tableSongsTop20.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		scrollPaneTop20.setViewportView(tableSongsTop20);
-		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "" };
+		Object[] columnsSongs = { "", "", "Título", "Duración", "Género","Artista", "" };
 
 		tableSongsTop20.setShowGrid(false);
 		tableSongsTop20.setBackground(Color.black);
@@ -117,6 +122,27 @@ public class Top20View extends JPanel {
 		tableSongsTop20.setModel(modelTop20Songs);
 		adjustColumnsWidth(tableSongsTop20);
 		addSongsToTable(modelTop20Songs);
+		
+		JPanel panelHomeIcon = new JPanel();
+		panelHomeIcon.setBounds(900, 45, 50, 50);
+		add(panelHomeIcon);
+		panelHomeIcon.setLayout(new BorderLayout(0, 0));
+		panelHomeIcon.setOpaque(false);
+		panelHomeIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelHomeIcon.setToolTipText("Volver a mi biblioteca.");
+
+		JLabel lblHomeIcon = new JLabel("");
+		panelHomeIcon.add(lblHomeIcon, BorderLayout.CENTER);
+		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 	}
 
 	private void addSongsToTable(DefaultTableModel model) {
@@ -131,18 +157,23 @@ public class Top20View extends JPanel {
 			e.printStackTrace();
 		}
 		if (top20songs != null) {
-			
+			ArtGroupManager artGroup = new ArtGroupManager();
 			ArtistManager artman = new ArtistManager();
 			for (int i = 0; i < top20songs.size(); i++) {
 				Song song = top20songs.get(i);
 				Artist artista = null;
+				ArtGroup arttGroup = null;
 				try {
-					artista = artman.selectArtistById(song.getArtist().getId());
+					if (song.getArtist() != null)
+						artista = artman.selectArtistById(song.getArtist().getId());
+					else
+						arttGroup = artGroup.selectGroupById(song.getArtGroup().getId());
+
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					System.out.println(e);
 					e.printStackTrace();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					System.out.println(e);
 					e.printStackTrace();
 				}
 				String number = (i + 1) + ".";
@@ -152,9 +183,11 @@ public class Top20View extends JPanel {
 				int seconds = totalSeconds % 60;
 				String duration = minutes + ":" + seconds;
 				String genre = song.getGenre();
-				
-				
-				model.addRow(new String[] { "\u2661", number, title, duration, genre,artista.getName(), "+" });
+
+				if (artista != null)
+					model.addRow(new String[] { "\u2661", number, title, duration, genre, artista.getName(), "+" });
+				if (arttGroup != null)
+					model.addRow(new String[] { "\u2661", number, title, duration, genre, arttGroup.getName(), "+" });
 			}
 		}
 	}
@@ -166,6 +199,7 @@ public class Top20View extends JPanel {
 		table.getColumnModel().getColumn(2).setMinWidth(300);
 		table.getColumnModel().getColumn(3).setMinWidth(100);
 		table.getColumnModel().getColumn(4).setMinWidth(200);
+		table.getColumnModel().getColumn(5).setMinWidth(160);
 	}
 
 	private void playSelectedSong(JTable table) {

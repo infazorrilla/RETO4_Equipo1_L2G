@@ -225,5 +225,74 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 		return ret;
 	}
+	
+	public ArtGroup selectGroupById(int id) throws SQLException, Exception {
+		ArtGroup ret = null;
+		String sql = "SELECT * FROM ArtGroup where id=?";
+
+		Connection connection = null;
+
+		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
+
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+
+				if (null == ret)
+					ret = new ArtGroup();
+
+				ArtGroup artGroup = new ArtGroup();
+
+				int idGroup = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String description = resultSet.getString("description");
+				String image = resultSet.getString("image");
+
+				artGroup.setId(idGroup);
+				artGroup.setName(name);
+				artGroup.setDescription(description);
+				artGroup.setImage(image);
+
+				ret=(artGroup);
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+
+			}
+			;
+		}
+
+		return ret;
+	}
 
 }

@@ -274,12 +274,12 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 				Artist artist = new Artist();
 
-				
+				int idArtist = resultSet.getInt("id");
 				String name = resultSet.getString("name");
 				String lastName = resultSet.getString("lastName");
 				String nationality = resultSet.getString("nationality");
 				String gender = resultSet.getString("gender");
-				int idGroup = resultSet.getInt("idGroup");
+
 				String description = resultSet.getString("description");
 				String image = resultSet.getString("image");
 				String role = resultSet.getString("role");
@@ -290,20 +290,18 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 					birthDate = new java.util.Date(sqlBirthDate.getTime());
 				}
 
-				artist.setId(id);
+				artist.setId(idArtist);
 				artist.setName(name);
 				artist.setLastName(lastName);
 				artist.setNationality(nationality);
 				artist.setGender(gender);
+
 				artist.setBirthDate(birthDate);
 				artist.setDescription(description);
 				artist.setImage(image);
 				artist.setRole(role);
 				
-				if (idGroup != 0) {
-					artist.setArtGroup(new ArtGroup());
-					artist.getArtGroup().setId(idGroup);
-				}
+				
 
 				ret = artist;
 			}
