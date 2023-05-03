@@ -17,11 +17,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import javazoom.jl.player.Player;
+import soundbridge.controller.Controller;
 import soundbridge.database.managers.ArtGroupManager;
 import soundbridge.database.managers.ArtistManager;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.managers.Top20ViewManager;
 import soundbridge.utils.WindowUtils;
@@ -42,7 +44,7 @@ public class Top20View extends JPanel {
 	private Player player;
 
 	public Top20View(JFrame frame, Client client) {
-		initialize (frame, client);
+		initialize(frame, client);
 	}
 
 	private static final long serialVersionUID = -5073547141433278673L;
@@ -80,7 +82,7 @@ public class Top20View extends JPanel {
 		tableSongsTop20.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(tableSongsTop20);
+				playSelectedSong(tableSongsTop20, client);
 			}
 		});
 		tableSongsTop20.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,7 +90,7 @@ public class Top20View extends JPanel {
 		scrollPaneTop20.setViewportView(tableSongsTop20);
 		tableSongsTop20.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		scrollPaneTop20.setViewportView(tableSongsTop20);
-		Object[] columnsSongs = { "", "", "Título", "Duración", "Género","Artista", "" };
+		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "Artista", "" };
 
 		tableSongsTop20.setShowGrid(false);
 		tableSongsTop20.setBackground(Color.black);
@@ -122,7 +124,7 @@ public class Top20View extends JPanel {
 		tableSongsTop20.setModel(modelTop20Songs);
 		adjustColumnsWidth(tableSongsTop20);
 		addSongsToTable(modelTop20Songs);
-		
+
 		JPanel panelHomeIcon = new JPanel();
 		panelHomeIcon.setBounds(900, 45, 50, 50);
 		add(panelHomeIcon);
@@ -132,7 +134,8 @@ public class Top20View extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -201,13 +204,32 @@ public class Top20View extends JPanel {
 		table.getColumnModel().getColumn(4).setMinWidth(200);
 		table.getColumnModel().getColumn(5).setMinWidth(160);
 	}
-
-	private void playSelectedSong(JTable table) {
+	
+	private void playSelectedSong(JTable table, Client client) {
 		if (isPlayerRunning)
 			this.stop();
-
+		
 		int index = table.getSelectedRow();
-		this.play(top20songs.get(index).getSource());
+		Song song = top20songs.get(index);
+		this.play(song.getSource());
+		doInsertPlay(client, song);
+	}
+
+	private void doInsertPlay(Client client, Song song) {
+		Controller controller = new Controller();
+		Play play = new Play();
+		play.setClient(client);
+		play.setSong(song);
+		
+		try {
+			controller.insertPlay(play);
+		} catch (SQLException e) {
+			WindowUtils.errorPane("Error en la reproducción.", "Error");
+		} catch(Exception e){
+			WindowUtils.errorPane("Error en la reproducción.", "Error");
+		}
+
+
 	}
 
 	private void play(String path) {
