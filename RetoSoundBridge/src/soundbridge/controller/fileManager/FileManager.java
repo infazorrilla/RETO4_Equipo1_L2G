@@ -1,63 +1,69 @@
 package soundbridge.controller.fileManager;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import soundbridge.database.managers.ClientManager;
+import soundbridge.database.pojos.Client;
 
 public class FileManager {
 
-	private File fichero;
-	
-	public FileManager(File fichero) {
-		this.fichero = fichero;
-	}
+	ArrayList<Client> allClients = null;
 
-	public void escribir(String texto) throws IOException {
-		FileWriter fileWriter = new FileWriter(fichero);
-		print(fileWriter, texto);
-		fileWriter.close();
-	}
+	public void crearTicket() {
 
-	private void print(FileWriter fW, String texto) {
-		PrintWriter printWriter = new PrintWriter(fW);
-		printWriter.println(texto);
-		printWriter.close();
-	}
+		final String NOMBRE_FICHERO = "Ticket.txt";
+		final String RUTA_FICHERO = "C:\\Users\\in1dw3\\git\\RETO4_Equipo1_L2G1\\RetoSoundBridge\\src\\soundbridge\\testing\\sprint2\\";
 
-	public String leer() throws IOException {
-		String ret = "";
-		FileReader fileReader = null;
-		BufferedReader bufferedReader = null;
+		File fichero = new File(RUTA_FICHERO + NOMBRE_FICHERO);
 
 		try {
-			fileReader = new FileReader(fichero);
-			bufferedReader = new BufferedReader(fileReader);
 
-			String linea = null;
-			while ((linea = bufferedReader.readLine()) != null) {
-				ret += linea + "\n";
+			if (fichero.createNewFile())
+				System.out.println("El fichero se ha creado correctamente");
+			else
+				System.out.println("No ha podido ser creado el fichero");
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
+		FileWriter fileWriter = null;
+		PrintWriter printWriter = null;
+
+		try {
+
+			fileWriter = new FileWriter(RUTA_FICHERO + NOMBRE_FICHERO);
+
+			printWriter = new PrintWriter(fileWriter);
+			ClientManager clientManager = new ClientManager();
+			try {
+				allClients = (ArrayList<Client>) clientManager.doSelectAll();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			String texto = allClients.toString();
+			printWriter.println(texto);
 
-		} catch (FileNotFoundException e) {
-			throw e;
 		} catch (IOException e) {
-			throw e;
+			System.out.println("IOException - Error de escritura en el fichero " + RUTA_FICHERO + NOMBRE_FICHERO);
 		} finally {
+			printWriter.close();
 			try {
-				if (null != bufferedReader)
-					bufferedReader.close();
+				fileWriter.close();
+
 			} catch (IOException e) {
-			}
-			try {
-				if (null != fileReader)
-					fileReader.close();
-			} catch (IOException e) {
+
 			}
 		}
-		return ret;
 	}
+
 }
