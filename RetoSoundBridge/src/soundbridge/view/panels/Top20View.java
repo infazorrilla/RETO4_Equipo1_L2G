@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import javazoom.jl.player.Player;
+import soundbridge.database.managers.ArtistManager;
+import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.managers.Top20ViewManager;
@@ -33,7 +35,7 @@ public class Top20View extends JPanel {
 	DefaultTableModel modelTop20Songs = null;
 	private boolean isPlayerRunning = false;
 	private Player player;
-	
+
 	public Top20View(JFrame frame, Client client) {
 		initialize();
 	}
@@ -91,7 +93,7 @@ public class Top20View extends JPanel {
 		tableSongsTop20.setSelectionBackground(Color.black);
 		tableSongsTop20.setBorder(null);
 		tableSongsTop20.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-		
+
 			private static final long serialVersionUID = 5651737319882097189L;
 
 			@Override
@@ -108,7 +110,7 @@ public class Top20View extends JPanel {
 		tableSongsTop20.getTableHeader().setFont(new Font("Lucida Grande", Font.BOLD, 18));
 		tableSongsTop20.getTableHeader().setPreferredSize(new Dimension(scrollPaneTop20.getWidth(), 50));
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		renderer.setBorder(null);	
+		renderer.setBorder(null);
 		tableSongsTop20.getTableHeader().setDefaultRenderer(renderer);
 		modelTop20Songs = new DefaultTableModel();
 		modelTop20Songs.setColumnIdentifiers(columnsSongs);
@@ -129,8 +131,20 @@ public class Top20View extends JPanel {
 			e.printStackTrace();
 		}
 		if (top20songs != null) {
+			
+			ArtistManager artman = new ArtistManager();
 			for (int i = 0; i < top20songs.size(); i++) {
 				Song song = top20songs.get(i);
+				Artist artista = null;
+				try {
+					artista = artman.selectArtistById(song.getArtist().getId());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				String number = (i + 1) + ".";
 				String title = song.getName();
 				int totalSeconds = song.getDuration();
@@ -138,8 +152,9 @@ public class Top20View extends JPanel {
 				int seconds = totalSeconds % 60;
 				String duration = minutes + ":" + seconds;
 				String genre = song.getGenre();
-
-				model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });
+				
+				
+				model.addRow(new String[] { "\u2661", number, title, duration, genre,artista.getName(), "+" });
 			}
 		}
 	}
@@ -152,14 +167,15 @@ public class Top20View extends JPanel {
 		table.getColumnModel().getColumn(3).setMinWidth(100);
 		table.getColumnModel().getColumn(4).setMinWidth(200);
 	}
+
 	private void playSelectedSong(JTable table) {
 		if (isPlayerRunning)
 			this.stop();
-		
+
 		int index = table.getSelectedRow();
 		this.play(top20songs.get(index).getSource());
 	}
-	
+
 	private void play(String path) {
 		new Thread() {
 			@Override
@@ -173,7 +189,7 @@ public class Top20View extends JPanel {
 				}
 			}
 		}.start();
-		
+
 		isPlayerRunning = true;
 	}
 
@@ -181,7 +197,7 @@ public class Top20View extends JPanel {
 		if (player != null) {
 			player.close();
 		}
-		
+
 		isPlayerRunning = false;
 	}
 }

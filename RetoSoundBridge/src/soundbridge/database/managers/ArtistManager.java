@@ -249,6 +249,94 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 		return ret;
 	}
+	public Artist selectArtistById(int id) throws SQLException, Exception {
+		Artist ret = null;
+		String sql = "SELECT * FROM Artist where id=?";
+
+		Connection connection = null;
+
+		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+
+				if (null == ret)
+					ret = new Artist();
+
+				Artist artist = new Artist();
+
+				
+				String name = resultSet.getString("name");
+				String lastName = resultSet.getString("lastName");
+				String nationality = resultSet.getString("nationality");
+				String gender = resultSet.getString("gender");
+				int idGroup = resultSet.getInt("idGroup");
+				String description = resultSet.getString("description");
+				String image = resultSet.getString("image");
+				String role = resultSet.getString("role");
+				
+				java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
+				java.util.Date birthDate = null;
+				if (null != sqlBirthDate) {
+					birthDate = new java.util.Date(sqlBirthDate.getTime());
+				}
+
+				artist.setId(id);
+				artist.setName(name);
+				artist.setLastName(lastName);
+				artist.setNationality(nationality);
+				artist.setGender(gender);
+				artist.setBirthDate(birthDate);
+				artist.setDescription(description);
+				artist.setImage(image);
+				artist.setRole(role);
+				
+				if (idGroup != 0) {
+					artist.setArtGroup(new ArtGroup());
+					artist.getArtGroup().setId(idGroup);
+				}
+
+				ret = artist;
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+
+			}
+			;
+		}
+
+		return ret;
+	}
 	
 	
 

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import soundbridge.utils.DBUtils;
-
+import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.pojos.Top20;
 
@@ -95,8 +95,14 @@ public class Top20ViewManager {
 				String genre = resultSet.getString("genre");
 				String lang = resultSet.getString("lang");
 				//int idAlbum = resultSet.getInt("idAlbum");
-				//int idArtist = resultSet.getInt("idArtist");
+				int idArtist = resultSet.getInt("idArtist");
 				//int idGroup = resultSet.getInt("idGroup");
+				
+				if(idArtist!=0) {
+					song.setArtist(new Artist());
+					song.getArtist().setId(idArtist);
+				}
+				
 				
 				song.setId(id);
 				song.setName(name);
@@ -104,7 +110,6 @@ public class Top20ViewManager {
 				song.setSource(source);
 				song.setGenre(genre);
 				song.setLang(lang);
-				//song.setArtist();
 				//song.setAlbum();
 				//song.setArtGroup();
 				ret.add(song);
