@@ -1,6 +1,7 @@
 package soundbridge.view.factory;
 
 import javax.swing.JFrame;
+
 import javax.swing.JPanel;
 
 import soundbridge.database.pojos.Album;
@@ -15,8 +16,10 @@ import soundbridge.view.panels.GroupProfile;
 import soundbridge.view.panels.Library;
 import soundbridge.view.panels.Login;
 import soundbridge.view.panels.ManageClients;
+
 import soundbridge.view.panels.Profile;
 import soundbridge.view.panels.SignUp;
+import soundbridge.view.panels.Top20View;
 import soundbridge.view.panels.UpdateClient;
 
 
@@ -34,6 +37,7 @@ public class PanelFactory {
 	public static final String ARTIST_PROFILE = "ARTIST_PROFILE";
 	public static final String GROUP_PROFILE = "GROUP_PROFILE";
 	public static final String ALBUM_VIEW = "ALBUM_VIEW";
+	public static final String TOP20VIEW = "TOP20VIEW";
 
 	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Artist artist, ArtGroup artGroup, Album album) {
 		switch (panelName) {
@@ -59,6 +63,8 @@ public class PanelFactory {
 			return new GroupProfile(frame, client, artGroup);
 		case ALBUM_VIEW:
 			return new AlbumView(frame, client, album, artist, artGroup);
+		case TOP20VIEW:
+			return new Top20View(frame,client);
 		default:
 			return null;
 		}

@@ -249,5 +249,8 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 		return ret;
 	}
+	
+	
+
 
 }
