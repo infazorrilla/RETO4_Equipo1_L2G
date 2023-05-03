@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -65,11 +66,28 @@ public class Top20View extends JPanel {
 
 		WindowUtils.addImage(panelPlaylistCover, lblPlayListCover, "img/icon/top_icon.png");
 
-		JLabel lblNewLabel = new JLabel("TOP 20 CANCIONES MÁS ESCUCHADAS");
-		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 25));
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setBounds(327, 53, 584, 39);
-		add(lblNewLabel);
+		JLabel lblTitle = new JLabel("Top 20");
+		lblTitle.setFont(new Font("Dialog", Font.BOLD, 25));
+		lblTitle.setForeground(new Color(255, 255, 255));
+		lblTitle.setBounds(327, 70, 584, 39);
+		add(lblTitle);
+		
+		JLabel lblCreator = new JLabel("@soundBridge");
+		lblCreator.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblCreator.setForeground(new Color(244, 135, 244));
+		lblCreator.setBounds(327, 110, 584, 39);
+		add(lblCreator);
+
+		JTextArea textBio = new JTextArea(
+				"Listado de las 20 canciones más escuchadas en SoundBridge que se actualiza contínuamente.");
+		textBio.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		textBio.setEditable(false);
+		textBio.setOpaque(false);
+		textBio.setForeground(Color.white);
+		textBio.setBounds(327, 160, 487, 128);
+		add(textBio);
+		textBio.setLineWrap(true);
+		textBio.setWrapStyleWord(true);
 
 		JScrollPane scrollPaneTop20 = new JScrollPane();
 		scrollPaneTop20.setBounds(44, 335, 867, 289);
@@ -133,6 +151,7 @@ public class Top20View extends JPanel {
 		panelHomeIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				stop();
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
 						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
@@ -205,11 +224,11 @@ public class Top20View extends JPanel {
 		table.getColumnModel().getColumn(4).setMinWidth(200);
 		table.getColumnModel().getColumn(5).setMinWidth(160);
 	}
-	
+
 	private void playSelectedSong(JTable table, Client client) {
 		if (isPlayerRunning)
 			this.stop();
-		
+
 		int index = table.getSelectedRow();
 		Song song = top20songs.get(index);
 		this.play(song.getSource());
@@ -221,15 +240,14 @@ public class Top20View extends JPanel {
 		Play play = new Play();
 		play.setClient(client);
 		play.setSong(song);
-		
+
 		try {
 			controller.insertPlay(play);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
-		} catch(Exception e){
+		} catch (Exception e) {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
 		}
-
 
 	}
 
