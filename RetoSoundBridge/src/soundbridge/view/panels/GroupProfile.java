@@ -30,10 +30,6 @@ public class GroupProfile extends JPanel {
 	private static final long serialVersionUID = -5060067084701215720L;
 	private ArrayList<Album> albums = null;
 	private ArrayList<Song> singles = null;
-	private ArrayList<JPanel> albumPanels = null;
-	private ArrayList<JLabel> albumLabels = null;
-	private ArrayList<JPanel> singlePanels = null;
-	private ArrayList<JLabel> singleLabels = null;
 	private JPanel panelGridAlbums;
 	private JPanel panelGridSingles;
 	private JLabel lblSingles;
@@ -154,18 +150,7 @@ public class GroupProfile extends JPanel {
 					JLabel lblAlbum = new JLabel("");
 					panelAlbum.add(lblAlbum, BorderLayout.CENTER);
 
-					if (albumPanels == null) {
-						albumPanels = new ArrayList<JPanel>();
-					}
-
-					if (albumLabels == null) {
-						albumLabels = new ArrayList<JLabel>();
-					}
-
-					albumPanels.add(panelAlbum);
-					albumLabels.add(lblAlbum);
-
-					WindowUtils.addImage(albumPanels.get(i), albumLabels.get(i), image);
+					WindowUtils.addImage(panelAlbum, lblAlbum, image);
 
 					SongManager songManager = new SongManager();
 					ArrayList<Song> songsOfAlbum = songManager.getSongsByAlbumWithGroup(album, artGroup);
@@ -221,18 +206,7 @@ public class GroupProfile extends JPanel {
 					JLabel lblSingle = new JLabel("");
 					panelSingle.add(lblSingle, BorderLayout.CENTER);
 
-					if (singlePanels == null) {
-						singlePanels = new ArrayList<JPanel>();
-					}
-
-					if (singleLabels == null) {
-						singleLabels = new ArrayList<JLabel>();
-					}
-
-					singlePanels.add(panelSingle);
-					singleLabels.add(lblSingle);
-
-					WindowUtils.addImage(singlePanels.get(i), singleLabels.get(i), image);
+					WindowUtils.addImage(panelSingle, lblSingle, image);
 
 				} else {
 					JPanel panelToFitGrid = new JPanel();
