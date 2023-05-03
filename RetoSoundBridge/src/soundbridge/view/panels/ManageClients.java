@@ -23,14 +23,14 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 
-public class EmployeeManagesClients extends JPanel {
+public class ManageClients extends JPanel {
 
 
 	private static final long serialVersionUID = -6622744341750440365L;
 	private JTable tableClients;
 	DefaultTableModel modelClients=null;
 
-	public EmployeeManagesClients(JFrame frame) {
+	public ManageClients(JFrame frame) {
 
 		initialize(frame);
 
