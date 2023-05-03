@@ -17,12 +17,14 @@ import soundbridge.database.managers.ClientManager;
 import soundbridge.database.managers.ClientPManager;
 import soundbridge.database.managers.ClientPPManager;
 import soundbridge.database.managers.EmployeeManager;
+import soundbridge.database.managers.PlayManager;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Employee;
+import soundbridge.database.pojos.Play;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.AutoCompleteTextField;
 
@@ -181,6 +183,11 @@ public class Controller {
 		client.setPasswd(String.valueOf(passwd1.getPassword()));
 
 		clientManager.update(client);
+	}
+	
+	public void insertPlay(Play play) throws SQLException, Exception {
+		PlayManager playManager = new PlayManager();
+		playManager.insert(play);
 	}
 
 }

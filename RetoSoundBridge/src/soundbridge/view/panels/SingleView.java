@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
@@ -22,9 +23,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import javazoom.jl.player.Player;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
@@ -122,7 +125,7 @@ public class SingleView extends JPanel {
 		tableSongs.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(song);
+				playSelectedSong(song, client);
 			}
 		});
 		scrollPaneSongs.setViewportView(tableSongs);
@@ -193,13 +196,32 @@ public class SingleView extends JPanel {
 			frame.repaint();
 		}
 	}
-
-	private void playSelectedSong(Song song) {
+	
+	private void playSelectedSong(Song song, Client client) {
 		if (isPlayerRunning)
 			this.stop();
 		
 		this.play(song.getSource());
+		doInsertPlay(client, song);
 	}
+
+	private void doInsertPlay(Client client, Song song) {
+		Controller controller = new Controller();
+		Play play = new Play();
+		play.setClient(client);
+		play.setSong(song);
+		
+		try {
+			controller.insertPlay(play);
+		} catch (SQLException e) {
+			WindowUtils.errorPane("Error en la reproducción.", "Error");
+		} catch(Exception e){
+			WindowUtils.errorPane("Error en la reproducción.", "Error");
+		}
+
+
+	}
+
 
 	private void play(String path) {
 		new Thread() {

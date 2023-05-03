@@ -24,10 +24,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import javazoom.jl.player.Player;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.managers.AverageStarsManager;
 import soundbridge.database.views.pojos.AverageStars;
@@ -144,7 +146,7 @@ public class AlbumView extends JPanel {
 		tableSongs.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(tableSongs);
+				playSelectedSong(tableSongs, client);
 			}
 		});
 		scrollPaneSongs.setViewportView(tableSongs);
@@ -245,12 +247,31 @@ public class AlbumView extends JPanel {
 		}
 	}
 
-	private void playSelectedSong(JTable table) {
+	private void playSelectedSong(JTable table, Client client) {
 		if (isPlayerRunning)
 			this.stop();
-
+		
 		int index = table.getSelectedRow();
-		this.play(songs.get(index).getSource());
+		Song song = songs.get(index);
+		this.play(song.getSource());
+		doInsertPlay(client, song);
+	}
+
+	private void doInsertPlay(Client client, Song song) {
+		Controller controller = new Controller();
+		Play play = new Play();
+		play.setClient(client);
+		play.setSong(song);
+		
+		try {
+			controller.insertPlay(play);
+		} catch (SQLException e) {
+			WindowUtils.errorPane("Error en la reproducción.", "Error");
+		} catch(Exception e){
+			WindowUtils.errorPane("Error en la reproducción.", "Error");
+		}
+
+
 	}
 
 	private void play(String path) {
