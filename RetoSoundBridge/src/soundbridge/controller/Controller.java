@@ -35,21 +35,14 @@ public class Controller {
 		String username = textFieldUserLogIn.getText();
 		String typeOfUser = checkTypeOfUser(textFieldUserLogIn, passwordFieldLogIn);
 
-		if (typeOfUser == null) {
-			WindowUtils.errorPane("Login incorrecto.", "Error");
+		if (typeOfUser.equals("employee")) {
+			WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Empleado de SoundBridge");
 			textFieldUserLogIn.setText("");
 			passwordFieldLogIn.setText("");
-			textFieldUserLogIn.requestFocus();
-		} else {
-			if (typeOfUser.equals("employee")) {
-				WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Empleado de SoundBridge");
-				textFieldUserLogIn.setText("");
-				passwordFieldLogIn.setText("");
-			} else if (typeOfUser.equals("client")) {
-				WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Cliente de SoundBridge");
-				textFieldUserLogIn.setText("");
-				passwordFieldLogIn.setText("");
-			}
+		} else if (typeOfUser.equals("client")) {
+			WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Cliente de SoundBridge");
+			textFieldUserLogIn.setText("");
+			passwordFieldLogIn.setText("");
 		}
 
 	}

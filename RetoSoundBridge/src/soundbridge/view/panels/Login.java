@@ -199,6 +199,11 @@ public class Login extends JPanel {
 				frame.revalidate();
 				frame.repaint();
 			}
+		} else {
+			WindowUtils.errorPane("Login incorrecto.", "Error");
+			textFieldUserLogIn.setText("");
+			passwordFieldLogIn.setText("");
+			textFieldUserLogIn.requestFocus();
 		}
 	}
 
