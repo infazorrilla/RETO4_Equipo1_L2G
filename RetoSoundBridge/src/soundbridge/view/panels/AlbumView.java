@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -41,6 +40,7 @@ public class AlbumView extends JPanel {
 	private Player player;
 	private JLabel lblStars;
 	private ArrayList<Song> songs;
+	private boolean isPlayerRunning = false;
 	
 	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		initialize(frame, client, album, artist, artGroup);
@@ -73,6 +73,16 @@ public class AlbumView extends JPanel {
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver");
+		
+		JPanel panelStarIcon = new JPanel();
+		panelStarIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelStarIcon.setBounds(330, 175, 30, 30);
+		panelStarIcon.setLayout(new BorderLayout(0, 0));
+		add(panelStarIcon);
+		panelStarIcon.setOpaque(false);
+
+		JLabel lblStarIcon = new JLabel("");
+		panelStarIcon.add(lblStarIcon, BorderLayout.CENTER);
 
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
@@ -91,7 +101,7 @@ public class AlbumView extends JPanel {
 
 		lblStars = new JLabel("");
 		lblStars.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		lblStars.setBounds(377, 170, 347, 35);
+		lblStars.setBounds(377, 175, 100, 35);
 		lblStars.setForeground(Color.white);
 		add(lblStars);
 
@@ -147,6 +157,7 @@ public class AlbumView extends JPanel {
 		tableSongs.setModel(tableModelSongs);
 
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
+		WindowUtils.addImage(panelStarIcon, lblStarIcon, "img/icon/star.png");
 		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, album.getCover());
 		addReviewStarsToLabel(album);
 		addSongsToTable(album, tableModelSongs);
@@ -220,7 +231,9 @@ public class AlbumView extends JPanel {
 	}
 	
 	private void playSelectedSong(JTable table) {
-		this.stop();
+		if (isPlayerRunning)
+			this.stop();
+		
 		int index = table.getSelectedRow();
 		this.play(songs.get(index).getSource());
 	}
@@ -230,7 +243,7 @@ public class AlbumView extends JPanel {
 			@Override
 			public void run() {
 				try {
-					FileInputStream fileInputStream = new FileInputStream(new File("").getAbsolutePath() + "/" + path);
+					FileInputStream fileInputStream = new FileInputStream(path);
 					player = new Player(fileInputStream);
 					player.play();
 				} catch (Exception e) {
@@ -238,12 +251,16 @@ public class AlbumView extends JPanel {
 				}
 			}
 		}.start();
+		
+		isPlayerRunning = true;
 	}
 
 	public void stop() {
 		if (player != null) {
 			player.close();
 		}
+		
+		isPlayerRunning = false;
 	}
 
 }

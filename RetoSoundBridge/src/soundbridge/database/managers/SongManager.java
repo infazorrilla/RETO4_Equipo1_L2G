@@ -276,4 +276,22 @@ public class SongManager extends ManagerAbstract<Song> {
 
 		return ret;
 	}
+	
+	public ArrayList<Song> getSongsByAlbumWithGroup(Album album, ArtGroup artGroup) throws SQLException, Exception {
+		ArrayList<Song> ret = null;
+
+		ArrayList<Song> songs = (ArrayList<Song>) doSelectAll();
+
+		for (Song song : songs) {
+			if ((song.getAlbum() != null) && (song.getAlbum().getId() == album.getId())) {
+				if (ret == null) {
+					ret = new ArrayList<Song>();
+				}
+				song.setArtGroup(artGroup);
+				ret.add(song);
+			}
+		}
+
+		return ret;
+	}
 }

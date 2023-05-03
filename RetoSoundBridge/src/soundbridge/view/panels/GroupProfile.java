@@ -119,66 +119,75 @@ public class GroupProfile extends JPanel {
 		panelGridSingles.setLayout(new GridLayout(1, 5, 69, 0));
 		panelGridSingles.setOpaque(false);
 		
-		addImagesToAlbums(frame, client, artGroup);
+		doAddImagesToAlbums(frame, client, artGroup);
 		addImagesToSingles(artGroup);
 	}
 	
-	private void addImagesToAlbums(JFrame frame, Client client, ArtGroup artGroup) {
-		AlbumManager albumManager = new AlbumManager();
+	private void doAddImagesToAlbums(JFrame frame, Client client, ArtGroup artGroup) {
 		try {
-			albums = (ArrayList<Album>) albumManager.albumsByArtGroup(artGroup);
+			addImagesToAlbums(frame, client, artGroup);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se han podido cargar los álbumes.", "Error en la base de datos");
 		} catch (Exception e) {
 			WindowUtils.errorPane("No se han podido cargar los álbumes.", "Error general");
 		}
-		
+	}
+	
+	private void addImagesToAlbums(JFrame frame, Client client, ArtGroup artGroup) throws SQLException, Exception {
+		AlbumManager albumManager = new AlbumManager();
+
+		albums = (ArrayList<Album>) albumManager.albumsByArtGroup(artGroup);
 		if (null != albums) {
 			for (int i = 0; i < 5; i++) {
 				if (i < albums.size()) {
 					Album album = albums.get(i);
 					String image = album.getCover();
-					
+
 					JPanel panelAlbum = new JPanel();
 					panelGridAlbums.add(panelAlbum);
-					panelAlbum.setBounds(0,0,115,115);
+					panelAlbum.setBounds(0, 0, 115, 115);
 					panelAlbum.setLayout(new BorderLayout(0, 0));
 					panelAlbum.setOpaque(false);
 					panelAlbum.setToolTipText(album.getName() + " ("
 							+ (new SimpleDateFormat("yyyy")).format(album.getReleaseYear()) + ")");
-					
+
 					JLabel lblAlbum = new JLabel("");
 					panelAlbum.add(lblAlbum, BorderLayout.CENTER);
-					
+
 					if (albumPanels == null) {
 						albumPanels = new ArrayList<JPanel>();
 					}
-					
+
 					if (albumLabels == null) {
-						albumLabels = new  ArrayList<JLabel>();
+						albumLabels = new ArrayList<JLabel>();
 					}
-					
+
 					albumPanels.add(panelAlbum);
 					albumLabels.add(lblAlbum);
-					
+
 					WindowUtils.addImage(albumPanels.get(i), albumLabels.get(i), image);
-					
+
+					SongManager songManager = new SongManager();
+					ArrayList<Song> songsOfAlbum = songManager.getSongsByAlbumWithGroup(album, artGroup);
+					album.setSongs(songsOfAlbum);
+
 					panelAlbum.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
 							frame.getContentPane().removeAll();
-							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, album));
+							frame.getContentPane().add(
+									PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artGroup, album));
 							frame.revalidate();
 							frame.repaint();
 						}
 					});
-					
+
 					panelAlbum.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-					
+
 				} else {
 					JPanel panelToFitGrid = new JPanel();
 					panelGridAlbums.add(panelToFitGrid);
-					panelToFitGrid.setBounds(0,0,115,115);
+					panelToFitGrid.setBounds(0, 0, 115, 115);
 					panelToFitGrid.setVisible(false);
 				}
 			}
