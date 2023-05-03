@@ -62,7 +62,7 @@ public class ArtistProfile extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -163,7 +163,7 @@ public class ArtistProfile extends JPanel {
 						public void mouseClicked(MouseEvent e) {
 							frame.getContentPane().removeAll();
 							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client,
-									artist, null, album));
+									artist, null, album, null));
 							frame.revalidate();
 							frame.repaint();
 						}

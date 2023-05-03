@@ -40,7 +40,7 @@ public class Employee extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.MANAGE_CLIENTS, frame, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.MANAGE_CLIENTS, frame, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}

@@ -33,11 +33,11 @@ public class GroupProfile extends JPanel {
 	private JPanel panelGridAlbums;
 	private JPanel panelGridSingles;
 	private JLabel lblSingles;
-	
+
 	public GroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
 		initialize(frame, client, artGroup);
 	}
-	
+
 	private void initialize(JFrame frame, Client client, ArtGroup artGroup) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -61,7 +61,8 @@ public class GroupProfile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -90,7 +91,7 @@ public class GroupProfile extends JPanel {
 
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 		WindowUtils.addImage(panelGroupImage, lblGroupImage, artGroup.getImage());
-		
+
 		JLabel lblAlbums = new JLabel("Álbumes");
 		lblAlbums.setForeground(Color.WHITE);
 		lblAlbums.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
@@ -102,7 +103,7 @@ public class GroupProfile extends JPanel {
 		add(panelGridAlbums);
 		panelGridAlbums.setLayout(new GridLayout(1, 5, 69, 0));
 		panelGridAlbums.setOpaque(false);
-		
+
 		lblSingles = new JLabel("Singles");
 		lblSingles.setForeground(Color.WHITE);
 		lblSingles.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
@@ -114,11 +115,11 @@ public class GroupProfile extends JPanel {
 		add(panelGridSingles);
 		panelGridSingles.setLayout(new GridLayout(1, 5, 69, 0));
 		panelGridSingles.setOpaque(false);
-		
+
 		doAddImagesToAlbums(frame, client, artGroup);
 		addImagesToSingles(artGroup);
 	}
-	
+
 	private void doAddImagesToAlbums(JFrame frame, Client client, ArtGroup artGroup) {
 		try {
 			addImagesToAlbums(frame, client, artGroup);
@@ -128,7 +129,7 @@ public class GroupProfile extends JPanel {
 			WindowUtils.errorPane("No se han podido cargar los álbumes.", "Error general");
 		}
 	}
-	
+
 	private void addImagesToAlbums(JFrame frame, Client client, ArtGroup artGroup) throws SQLException, Exception {
 		AlbumManager albumManager = new AlbumManager();
 
@@ -160,8 +161,8 @@ public class GroupProfile extends JPanel {
 						@Override
 						public void mouseClicked(MouseEvent e) {
 							frame.getContentPane().removeAll();
-							frame.getContentPane().add(
-									PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artGroup, album));
+							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client,
+									null, artGroup, album, null));
 							frame.revalidate();
 							frame.repaint();
 						}
@@ -178,7 +179,7 @@ public class GroupProfile extends JPanel {
 			}
 		}
 	}
-	
+
 	private void addImagesToSingles(ArtGroup artGroup) {
 		SongManager songManager = new SongManager();
 		try {

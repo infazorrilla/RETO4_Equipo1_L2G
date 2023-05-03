@@ -9,9 +9,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -24,13 +22,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import javazoom.jl.player.Player;
-import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Song;
-import soundbridge.database.views.managers.AverageStarsManager;
-import soundbridge.database.views.pojos.AverageStars;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
@@ -38,8 +33,6 @@ public class SingleView extends JPanel {
 
 	private static final long serialVersionUID = -611767121036203376L;
 	private Player player;
-	private JLabel lblStars;
-	private ArrayList<Song> songs;
 	private boolean isPlayerRunning = false;
 
 	public SingleView(JFrame frame, Client client, Song song, Artist artist, ArtGroup artGroup) {
@@ -188,13 +181,13 @@ public class SingleView extends JPanel {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane()
-					.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null));
+					.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane()
-					.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null));
+					.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}

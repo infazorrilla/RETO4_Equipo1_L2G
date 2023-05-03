@@ -23,7 +23,7 @@ public class MainFrame {
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(Color.black);
 
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

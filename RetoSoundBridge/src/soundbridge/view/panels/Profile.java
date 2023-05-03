@@ -56,7 +56,8 @@ public class Profile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -103,8 +104,8 @@ public class Profile extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null,
+						null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -156,7 +157,7 @@ public class Profile extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -272,7 +273,7 @@ public class Profile extends JPanel {
 
 	private void logOut(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -313,7 +314,7 @@ public class Profile extends JPanel {
 
 	private void goToLogin(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

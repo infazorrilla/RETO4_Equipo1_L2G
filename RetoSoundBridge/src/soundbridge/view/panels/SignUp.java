@@ -405,7 +405,8 @@ public class SignUp extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -509,14 +510,14 @@ public class SignUp extends JPanel {
 	private void registerUser(JFrame frame) {
 		Client client = null;
 		ClientManager clientManager = new ClientManager();
-		
+
 		if (suscription == 1)
 			client = new ClientP();
-		else if (suscription == 2) 
+		else if (suscription == 2)
 			client = new ClientPP();
 		else
 			client = new Client();
-		
+
 		client.setName(textFildNameSignUp.getText());
 		client.setLastName(textFildLastNameSignUp.getText());
 		client.setUsername(textFildUsernameSignUp.getText());
@@ -528,10 +529,10 @@ public class SignUp extends JPanel {
 		client.setAddress(textFieldAdressSignUp.getText());
 		client.setTelephone(textFieldPhoneNumberSignUp.getText());
 		client.setEmail(textFieldEmailSignUp.getText());
-		
+
 		try {
 
-			if (suscription == 1) {	
+			if (suscription == 1) {
 				clientManager.insert(client);
 				bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
 						"img/icon/money.png");
@@ -545,7 +546,8 @@ public class SignUp extends JPanel {
 				clientManager.insert(client);
 				WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -568,7 +570,7 @@ public class SignUp extends JPanel {
 			clientpmanager.insertReal(clientp);
 			WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (SQLException e1) {
@@ -589,7 +591,7 @@ public class SignUp extends JPanel {
 			clientppmanager.insertReal(clientpp);
 			WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (Exception e) {

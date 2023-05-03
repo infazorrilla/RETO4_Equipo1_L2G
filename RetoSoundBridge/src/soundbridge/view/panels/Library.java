@@ -36,7 +36,7 @@ public class Library extends JPanel {
 	public Library(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
-	
+
 	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -52,7 +52,7 @@ public class Library extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -104,7 +104,8 @@ public class Library extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.TOP20VIEW, frame, client, null, null, null));
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.TOP20VIEW, frame, client, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -228,7 +229,7 @@ public class Library extends JPanel {
 	private void goToArtistProfile(JFrame frame, Client client, Artist artist) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null));
+				.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -236,7 +237,7 @@ public class Library extends JPanel {
 	private void goToGroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null));
+				.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

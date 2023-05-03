@@ -8,6 +8,7 @@ import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.Song;
 import soundbridge.view.panels.AlbumView;
 import soundbridge.view.panels.ArtistProfile;
 import soundbridge.view.panels.ChangeSubscription;
@@ -19,10 +20,9 @@ import soundbridge.view.panels.ManageClients;
 
 import soundbridge.view.panels.Profile;
 import soundbridge.view.panels.SignUp;
+import soundbridge.view.panels.SingleView;
 import soundbridge.view.panels.Top20View;
 import soundbridge.view.panels.UpdateClient;
-
-
 
 public class PanelFactory {
 
@@ -38,8 +38,10 @@ public class PanelFactory {
 	public static final String GROUP_PROFILE = "GROUP_PROFILE";
 	public static final String ALBUM_VIEW = "ALBUM_VIEW";
 	public static final String TOP20VIEW = "TOP20VIEW";
+	public static final String SINGLE_VIEW = "SINGLE_VIEW";
 
-	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Artist artist, ArtGroup artGroup, Album album) {
+	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Artist artist, ArtGroup artGroup,
+			Album album, Song song) {
 		switch (panelName) {
 		case LOGIN:
 			return new Login(frame);
@@ -64,7 +66,9 @@ public class PanelFactory {
 		case ALBUM_VIEW:
 			return new AlbumView(frame, client, album, artist, artGroup);
 		case TOP20VIEW:
-			return new Top20View(frame,client);
+			return new Top20View(frame, client);
+		case SINGLE_VIEW:
+			return new SingleView(frame, client, song, artist, artGroup);
 		default:
 			return null;
 		}

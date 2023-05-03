@@ -41,7 +41,7 @@ public class AlbumView extends JPanel {
 	private JLabel lblStars;
 	private ArrayList<Song> songs;
 	private boolean isPlayerRunning = false;
-	
+
 	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		initialize(frame, client, album, artist, artGroup);
 	}
@@ -73,13 +73,13 @@ public class AlbumView extends JPanel {
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver");
-		
+
 		JLabel lblArtistName = new JLabel();
 		lblArtistName.setForeground(new Color(244, 135, 244));
 		lblArtistName.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		lblArtistName.setBounds(324, 175, 400, 35);
 		add(lblArtistName);
-		
+
 		JPanel panelStarIcon = new JPanel();
 		panelStarIcon.setBounds(330, 218, 30, 30);
 		panelStarIcon.setLayout(new BorderLayout(0, 0));
@@ -186,7 +186,7 @@ public class AlbumView extends JPanel {
 
 		return averageStars;
 	}
-	
+
 	private void addArtistOrGroupName(JLabel label, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
 			label.setText(artist.getName());
@@ -217,7 +217,7 @@ public class AlbumView extends JPanel {
 			}
 		}
 	}
-	
+
 	private void adjustColumnsWidth(JTable table) {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -226,32 +226,32 @@ public class AlbumView extends JPanel {
 		table.getColumnModel().getColumn(3).setMinWidth(100);
 		table.getColumnModel().getColumn(4).setMinWidth(200);
 	}
-	
+
 	private void goBack(JFrame frame, Client client, Artist artist, ArtGroup artGroup) {
 		this.stop();
 		if (artist != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null));
+			frame.getContentPane()
+					.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null));
+			frame.getContentPane()
+					.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}
 	}
-	
+
 	private void playSelectedSong(JTable table) {
 		if (isPlayerRunning)
 			this.stop();
-		
+
 		int index = table.getSelectedRow();
 		this.play(songs.get(index).getSource());
 	}
-	
+
 	private void play(String path) {
 		new Thread() {
 			@Override
@@ -265,7 +265,7 @@ public class AlbumView extends JPanel {
 				}
 			}
 		}.start();
-		
+
 		isPlayerRunning = true;
 	}
 
@@ -273,7 +273,7 @@ public class AlbumView extends JPanel {
 		if (player != null) {
 			player.close();
 		}
-		
+
 		isPlayerRunning = false;
 	}
 }
