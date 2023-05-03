@@ -4,16 +4,16 @@ import java.util.Objects;
 
 public class AverageStars {
 
-	private int idAlbum = 0;
+	private int id = 0;
 	private String name = null;
 	private double average = 0;
 
-	public int getIdAlbum() {
-		return idAlbum;
+	public int getId() {
+		return id;
 	}
 
-	public void setIdAlbum(int idAlbum) {
-		this.idAlbum = idAlbum;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -34,7 +34,7 @@ public class AverageStars {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(average, idAlbum, name);
+		return Objects.hash(average, id, name);
 	}
 
 	@Override
@@ -46,13 +46,13 @@ public class AverageStars {
 		if (getClass() != obj.getClass())
 			return false;
 		AverageStars other = (AverageStars) obj;
-		return Double.doubleToLongBits(average) == Double.doubleToLongBits(other.average) && idAlbum == other.idAlbum
+		return Double.doubleToLongBits(average) == Double.doubleToLongBits(other.average) && id == other.id
 				&& Objects.equals(name, other.name);
 	}
 
 	@Override
 	public String toString() {
-		return "AverageStars [idAlbum=" + idAlbum + ", name=" + name + ", average=" + average + "]";
+		return "AverageStars [id=" + id + ", name=" + name + ", average=" + average + "]";
 	}
 
 }

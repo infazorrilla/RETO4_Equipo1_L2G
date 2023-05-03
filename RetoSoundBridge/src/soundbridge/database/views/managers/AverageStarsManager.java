@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import soundbridge.utils.DBUtils;
+import soundbridge.database.pojos.Album;
 import soundbridge.database.views.pojos.AverageStars;
 
 public class AverageStarsManager {
@@ -29,11 +30,11 @@ public class AverageStarsManager {
 				
 				AverageStars averageStars = new AverageStars();
 					
-				int idAlbum = resultSet.getInt("idAlbum");
+				int idAlbum = resultSet.getInt("id");
 				String name = resultSet.getString("name");
 				double average = resultSet.getDouble("average");
 				
-				averageStars.setIdAlbum(idAlbum);
+				averageStars.setId(idAlbum);
 				averageStars.setName(name);
 				averageStars.setAverage(average);
 				
@@ -62,6 +63,21 @@ public class AverageStarsManager {
 			} catch (Exception e) {
 			}
 			;
+		}
+		
+		return ret;
+	}
+	
+	
+	public AverageStars getAverageStarsByAlbum(Album album) throws SQLException, Exception {
+		AverageStars ret = null;
+		ArrayList<AverageStars> averageStars = selectView();
+		if (averageStars != null) {
+			for (AverageStars avgStars : averageStars) {
+				if (avgStars.getId() == album.getId()) {
+					ret = avgStars;
+				}
+			}
 		}
 		
 		return ret;

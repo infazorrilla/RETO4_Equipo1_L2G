@@ -170,7 +170,7 @@ public class ArtistProfile extends JPanel {
 					WindowUtils.addImage(albumPanels.get(i), albumLabels.get(i), image);
 
 					SongManager songManager = new SongManager();
-					ArrayList<Song> songsOfAlbum = songManager.getSongsByAlbum(album);
+					ArrayList<Song> songsOfAlbum = songManager.getSongsByAlbumWithArtist(album, artist);
 					album.setSongs(songsOfAlbum);
 
 					panelAlbum.addMouseListener(new MouseAdapter() {
@@ -178,7 +178,7 @@ public class ArtistProfile extends JPanel {
 						public void mouseClicked(MouseEvent e) {
 							frame.getContentPane().removeAll();
 							frame.getContentPane().add(
-									PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, album));
+									PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, artist, null, album));
 							frame.revalidate();
 							frame.repaint();
 						}

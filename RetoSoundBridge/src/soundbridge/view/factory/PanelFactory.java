@@ -58,7 +58,7 @@ public class PanelFactory {
 		case GROUP_PROFILE:
 			return new GroupProfile(frame, client, artGroup);
 		case ALBUM_VIEW:
-			return new AlbumView(frame, client, album);
+			return new AlbumView(frame, client, album, artist, artGroup);
 		default:
 			return null;
 		}
