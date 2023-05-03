@@ -34,19 +34,19 @@ import soundbridge.database.views.pojos.AverageStars;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
-public class AlbumView extends JPanel {
+public class SingleView extends JPanel {
 
 	private static final long serialVersionUID = -611767121036203376L;
 	private Player player;
 	private JLabel lblStars;
 	private ArrayList<Song> songs;
 	private boolean isPlayerRunning = false;
-	
-	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
-		initialize(frame, client, album, artist, artGroup);
+
+	public SingleView(JFrame frame, Client client, Song song, Artist artist, ArtGroup artGroup) {
+		initialize(frame, client, song, artist, artGroup);
 	}
 
-	public void initialize(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+	public void initialize(JFrame frame, Client client, Song song, Artist artist, ArtGroup artGroup) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
@@ -73,42 +73,27 @@ public class AlbumView extends JPanel {
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver");
-		
+
 		JLabel lblArtistName = new JLabel();
 		lblArtistName.setForeground(new Color(244, 135, 244));
 		lblArtistName.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		lblArtistName.setBounds(324, 175, 400, 35);
 		add(lblArtistName);
-		
-		JPanel panelStarIcon = new JPanel();
-		panelStarIcon.setBounds(330, 218, 30, 30);
-		panelStarIcon.setLayout(new BorderLayout(0, 0));
-		add(panelStarIcon);
-		panelStarIcon.setOpaque(false);
-
-		JLabel lblStarIcon = new JLabel("");
-		panelStarIcon.add(lblStarIcon, BorderLayout.CENTER);
 
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
-		JLabel lblName = new JLabel(album.getName());
+		JLabel lblName = new JLabel(song.getName());
 		lblName.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
 		lblName.setBounds(324, 90, 400, 40);
 		lblName.setForeground(Color.white);
 		add(lblName);
 
-		JLabel lblReleaseYear = new JLabel("(" + (new SimpleDateFormat("yyyy")).format(album.getReleaseYear()) + ")");
+		JLabel lblReleaseYear = new JLabel("(" + (new SimpleDateFormat("yyyy")).format(song.getReleaseYear()) + ")");
 		lblReleaseYear.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		lblReleaseYear.setBounds(324, 138, 400, 35);
 		lblReleaseYear.setForeground(Color.white);
 		add(lblReleaseYear);
-
-		lblStars = new JLabel("");
-		lblStars.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		lblStars.setBounds(377, 220, 100, 35);
-		lblStars.setForeground(Color.white);
-		add(lblStars);
 
 		JScrollPane scrollPaneSongs = new JScrollPane();
 		scrollPaneSongs.setBounds(40, 310, 904, 320);
@@ -144,7 +129,7 @@ public class AlbumView extends JPanel {
 		tableSongs.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(tableSongs);
+				playSelectedSong(song);
 			}
 		});
 		scrollPaneSongs.setViewportView(tableSongs);
@@ -162,31 +147,12 @@ public class AlbumView extends JPanel {
 		tableSongs.setModel(tableModelSongs);
 
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-		WindowUtils.addImage(panelStarIcon, lblStarIcon, "img/icon/star.png");
-		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, album.getCover());
-		addReviewStarsToLabel(album);
-		addSongsToTable(album, tableModelSongs);
+		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, song.getCover());
+		addSongToTable(song, tableModelSongs);
 		adjustColumnsWidth(tableSongs);
 		addArtistOrGroupName(lblArtistName, artist, artGroup);
 	}
 
-	private AverageStars getAverageStars(Album album) {
-		AverageStars averageStars = null;
-		AverageStarsManager averageStarsManager = new AverageStarsManager();
-
-		try {
-			averageStars = averageStarsManager.getAverageStarsByAlbum(album);
-		} catch (SQLException e) {
-			System.out.println(e);
-			WindowUtils.errorPane("No se ha podido añadir la valoración media.", "Error en la base de datos");
-		} catch (Exception e) {
-			WindowUtils.errorPane("No se ha podido añadir la valoración media.", "Error general");
-			System.out.println(e);
-		}
-
-		return averageStars;
-	}
-	
 	private void addArtistOrGroupName(JLabel label, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
 			label.setText(artist.getName());
@@ -195,29 +161,19 @@ public class AlbumView extends JPanel {
 		}
 	}
 
-	private void addReviewStarsToLabel(Album album) {
-		AverageStars averageStars = getAverageStars(album);
-		lblStars.setText("" + averageStars.getAverage());
+	private void addSongToTable(Song song, DefaultTableModel model) {
+		String number = "1.";
+		String title = song.getName();
+		int totalSeconds = song.getDuration();
+		int minutes = (totalSeconds % 3600) / 60;
+		int seconds = totalSeconds % 60;
+		String duration = minutes + ":" + seconds;
+		String genre = song.getGenre();
+
+		model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });
+
 	}
 
-	private void addSongsToTable(Album album, DefaultTableModel model) {
-		songs = album.getSongs();
-		if (songs != null) {
-			for (int i = 0; i < songs.size(); i++) {
-				Song song = songs.get(i);
-				String number = (i + 1) + ".";
-				String title = song.getName();
-				int totalSeconds = song.getDuration();
-				int minutes = (totalSeconds % 3600) / 60;
-				int seconds = totalSeconds % 60;
-				String duration = minutes + ":" + seconds;
-				String genre = song.getGenre();
-
-				model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });
-			}
-		}
-	}
-	
 	private void adjustColumnsWidth(JTable table) {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -226,32 +182,31 @@ public class AlbumView extends JPanel {
 		table.getColumnModel().getColumn(3).setMinWidth(100);
 		table.getColumnModel().getColumn(4).setMinWidth(200);
 	}
-	
+
 	private void goBack(JFrame frame, Client client, Artist artist, ArtGroup artGroup) {
 		this.stop();
 		if (artist != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null));
+			frame.getContentPane()
+					.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null));
+			frame.getContentPane()
+					.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null));
 			frame.revalidate();
 			frame.repaint();
 		}
 	}
-	
-	private void playSelectedSong(JTable table) {
+
+	private void playSelectedSong(Song song) {
 		if (isPlayerRunning)
 			this.stop();
 		
-		int index = table.getSelectedRow();
-		this.play(songs.get(index).getSource());
+		this.play(song.getSource());
 	}
-	
+
 	private void play(String path) {
 		new Thread() {
 			@Override
@@ -265,7 +220,7 @@ public class AlbumView extends JPanel {
 				}
 			}
 		}.start();
-		
+
 		isPlayerRunning = true;
 	}
 
@@ -273,7 +228,7 @@ public class AlbumView extends JPanel {
 		if (player != null) {
 			player.close();
 		}
-		
+
 		isPlayerRunning = false;
 	}
 }
