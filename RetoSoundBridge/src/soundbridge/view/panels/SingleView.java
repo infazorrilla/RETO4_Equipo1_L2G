@@ -219,7 +219,6 @@ public class SingleView extends JPanel {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
 		}
 
-
 	}
 
 

@@ -111,6 +111,7 @@ public class Library extends JPanel {
 			}
 		});
 		panelTop20.setBounds(90, 170, 115, 115);
+		panelTop20.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		add(panelTop20);
 		panelTop20.setLayout(new BorderLayout(0, 0));
 		panelTop20.setOpaque(false);

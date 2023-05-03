@@ -59,7 +59,6 @@ public class Top20View extends JPanel {
 		add(panelPlaylistCover);
 		panelPlaylistCover.setLayout(new BorderLayout(0, 0));
 		panelPlaylistCover.setOpaque(false);
-		panelPlaylistCover.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JLabel lblPlayListCover = new JLabel("");
 		panelPlaylistCover.add(lblPlayListCover, BorderLayout.CENTER);
@@ -185,7 +184,8 @@ public class Top20View extends JPanel {
 				int totalSeconds = song.getDuration();
 				int minutes = (totalSeconds % 3600) / 60;
 				int seconds = totalSeconds % 60;
-				String duration = minutes + ":" + seconds;
+				String secondsStr = String.format("%02d", seconds);
+				String duration = minutes + ":" + secondsStr;
 				String genre = song.getGenre();
 
 				if (artista != null)
