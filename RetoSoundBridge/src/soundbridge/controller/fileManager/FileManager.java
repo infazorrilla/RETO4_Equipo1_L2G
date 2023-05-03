@@ -1,4 +1,4 @@
-package soundbridge.testing.fileManager;
+package soundbridge.controller.fileManager;
 
 import java.io.BufferedReader;
 import java.io.File;
