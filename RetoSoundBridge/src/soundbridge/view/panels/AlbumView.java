@@ -74,9 +74,15 @@ public class AlbumView extends JPanel {
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver");
 		
+		JLabel lblArtistName = new JLabel();
+		lblArtistName.setForeground(new Color(244, 135, 244));
+		lblArtistName.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		lblArtistName.setBounds(324, 175, 400, 35);
+		add(lblArtistName);
+		
 		JPanel panelStarIcon = new JPanel();
 		panelStarIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelStarIcon.setBounds(330, 175, 30, 30);
+		panelStarIcon.setBounds(330, 218, 30, 30);
 		panelStarIcon.setLayout(new BorderLayout(0, 0));
 		add(panelStarIcon);
 		panelStarIcon.setOpaque(false);
@@ -88,20 +94,20 @@ public class AlbumView extends JPanel {
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
 		JLabel lblName = new JLabel(album.getName());
-		lblName.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-		lblName.setBounds(324, 103, 400, 35);
+		lblName.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
+		lblName.setBounds(324, 90, 400, 40);
 		lblName.setForeground(Color.white);
 		add(lblName);
 
 		JLabel lblReleaseYear = new JLabel("(" + (new SimpleDateFormat("yyyy")).format(album.getReleaseYear()) + ")");
-		lblReleaseYear.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		lblReleaseYear.setBounds(324, 130, 400, 35);
+		lblReleaseYear.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblReleaseYear.setBounds(324, 138, 400, 35);
 		lblReleaseYear.setForeground(Color.white);
 		add(lblReleaseYear);
 
 		lblStars = new JLabel("");
 		lblStars.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		lblStars.setBounds(377, 175, 100, 35);
+		lblStars.setBounds(377, 220, 100, 35);
 		lblStars.setForeground(Color.white);
 		add(lblStars);
 
@@ -116,12 +122,12 @@ public class AlbumView extends JPanel {
 		tableSongs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableSongs.setDefaultEditor(Object.class, null);
 		scrollPaneSongs.setViewportView(tableSongs);
-		tableSongs.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		tableSongs.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		tableSongs.setShowGrid(false);
 		tableSongs.setBackground(Color.black);
 		tableSongs.setForeground(Color.white);
 		tableSongs.setSelectionForeground(new Color(244, 135, 244));
-		tableSongs.setRowHeight(25);
+		tableSongs.setRowHeight(35);
 		tableSongs.setSelectionBackground(Color.black);
 		tableSongs.setBorder(null);
 		tableSongs.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
@@ -146,8 +152,8 @@ public class AlbumView extends JPanel {
 
 		tableSongs.getTableHeader().setBackground(Color.black);
 		tableSongs.getTableHeader().setForeground(Color.white);
-		tableSongs.getTableHeader().setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		tableSongs.getTableHeader().setPreferredSize(new Dimension(scrollPaneSongs.getWidth(), 30));
+		tableSongs.getTableHeader().setFont(new Font("Lucida Grande", Font.BOLD, 18));
+		tableSongs.getTableHeader().setPreferredSize(new Dimension(scrollPaneSongs.getWidth(), 50));
 
 		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "" };
 
@@ -162,6 +168,7 @@ public class AlbumView extends JPanel {
 		addReviewStarsToLabel(album);
 		addSongsToTable(album, tableModelSongs);
 		adjustColumnsWidth(tableSongs);
+		addArtistOrGroupName(lblArtistName, artist, artGroup);
 	}
 
 	private AverageStars getAverageStars(Album album) {
@@ -179,6 +186,14 @@ public class AlbumView extends JPanel {
 		}
 
 		return averageStars;
+	}
+	
+	private void addArtistOrGroupName(JLabel label, Artist artist, ArtGroup artGroup) {
+		if (artist != null) {
+			label.setText(artist.getName());
+		} else if (artGroup != null) {
+			label.setText(artGroup.getName());
+		}
 	}
 
 	private void addReviewStarsToLabel(Album album) {
@@ -262,5 +277,4 @@ public class AlbumView extends JPanel {
 		
 		isPlayerRunning = false;
 	}
-
 }

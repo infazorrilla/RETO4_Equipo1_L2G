@@ -19,7 +19,6 @@ import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -49,7 +48,7 @@ public class SignUp extends JPanel {
 	JTextField textFieldAdressSignUp = null;
 	JTextField textFieldPhoneNumberSignUp = null;
 	JTextField textFieldEmailSignUp = null;
-	JTextField textFildBankAccount = null;
+	String bankNumber = null;
 	int suscription = 0;
 	private static final long serialVersionUID = -2586474039198890631L;
 
@@ -328,7 +327,7 @@ public class SignUp extends JPanel {
 			}
 		});
 
-		TextPrompt placeholderBirthDateSignUp = new TextPrompt("YYYY/MM/dd", textFieldBirthDateSignUp);
+		TextPrompt placeholderBirthDateSignUp = new TextPrompt("dd/MM/yyyy", textFieldBirthDateSignUp);
 		placeholderBirthDateSignUp.changeAlpha(0.8f);
 		placeholderBirthDateSignUp.changeStyle(Font.ITALIC);
 		placeholderBirthDateSignUp.setHorizontalAlignment(SwingConstants.CENTER);
@@ -508,9 +507,16 @@ public class SignUp extends JPanel {
 	}
 
 	private void registerUser(JFrame frame) {
-		Client client = new Client();
+		Client client = null;
 		ClientManager clientManager = new ClientManager();
-
+		
+		if (suscription == 1)
+			client = new ClientP();
+		else if (suscription == 2) 
+			client = new ClientPP();
+		else
+			client = new Client();
+		
 		client.setName(textFildNameSignUp.getText());
 		client.setLastName(textFildLastNameSignUp.getText());
 		client.setUsername(textFildUsernameSignUp.getText());
@@ -522,35 +528,30 @@ public class SignUp extends JPanel {
 		client.setAddress(textFieldAdressSignUp.getText());
 		client.setTelephone(textFieldPhoneNumberSignUp.getText());
 		client.setEmail(textFieldEmailSignUp.getText());
-
+		
 		try {
 
-			if (suscription == 1) {
-				textFildBankAccount = new JTextField();
+			if (suscription == 1) {	
 				clientManager.insert(client);
-				Object[] message = { "Cuenta bancaria: ", textFildBankAccount };
-				JOptionPane.showMessageDialog(null, message, "Has elegido un plan de pago", JOptionPane.PLAIN_MESSAGE);
+				bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
+						"img/icon/money.png");
 				registerUserP(frame);
 			} else if (suscription == 2) {
 				clientManager.insert(client);
-				JTextField textFildBankAccount = new JTextField();
-
-				Object[] message = { "Cuenta bancaria: ", textFildBankAccount };
-				JOptionPane.showMessageDialog(null, message, "Has elegido un plan de pago", JOptionPane.PLAIN_MESSAGE);
+				bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
+						"img/icon/money.png");
 				registerUserPP(frame);
 			} else if (suscription == 3) {
 				clientManager.insert(client);
-				JFrame jFrame = new JFrame();
-				JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
+				WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
 		} catch (Exception e) {
-			JFrame jFrame = new JFrame();
-			JOptionPane.showMessageDialog(jFrame, "ERROR EN EL REGISTRO");
-			e.printStackTrace();
+			WindowUtils.errorPane("Error en el registro.", "Error");
+			System.out.println(e);
 		}
 
 	}
@@ -563,18 +564,17 @@ public class SignUp extends JPanel {
 			Client client = clientManager.getClientByUsername(textFildUsernameSignUp.getText());
 			ClientP clientp = new ClientP();
 			clientp.setId(client.getId());
-			clientp.setBankAccount(textFildBankAccount.getText());
+			clientp.setBankAccount(bankNumber);
 			clientpmanager.insertReal(clientp);
-			JFrame jFrame = new JFrame();
-			JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
+			WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			WindowUtils.errorPane("Error en el registro.", "Error en la base de datos");
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			WindowUtils.errorPane("Error en el registro.", "Error general");
 		}
 	}
 
@@ -585,29 +585,26 @@ public class SignUp extends JPanel {
 		try {
 			Client client = clientManager.getClientByUsername(textFildUsernameSignUp.getText());
 			clientpp.setId(client.getId());
-			clientpp.setBankAccount(textFildBankAccount.getText());
+			clientpp.setBankAccount(bankNumber);
 			clientppmanager.insertReal(clientpp);
-			JFrame jFrame = new JFrame();
-			JOptionPane.showMessageDialog(jFrame, "El registro ha ocurrido de forma exitosa");
+			WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} catch (Exception e) {
-			JFrame jFrame = new JFrame();
-			JOptionPane.showMessageDialog(jFrame, "ERROR EN EL REGISTRO");
-			e.printStackTrace();
+			WindowUtils.errorPane("Error en el registro.", "Error");
 		}
 	}
 
 	private Date stringToDate(String fecha) {
 		Date ret = null;
 		try {
-			String pattern = "yyyy/MM/dd";
+			String pattern = "dd/MM/yyyy";
 			SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.ENGLISH);
 			ret = formatter.parse(fecha);
 		} catch (Exception e) {
-			// Algo ha ido mal, devolvemos la fecha del sistema
+			WindowUtils.errorPane("Formato de fecha incorrecto.", "Error");
 			ret = new Date();
 		}
 		return ret;
