@@ -20,8 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import javazoom.jl.player.Player;
 import soundbridge.controller.Controller;
@@ -152,9 +154,21 @@ public class AlbumView extends JPanel {
 		scrollPaneSongs.setViewportView(tableSongs);
 
 		tableSongs.getTableHeader().setBackground(Color.black);
-		tableSongs.getTableHeader().setForeground(Color.white);
-		tableSongs.getTableHeader().setFont(new Font("Lucida Grande", Font.BOLD, 18));
 		tableSongs.getTableHeader().setPreferredSize(new Dimension(scrollPaneSongs.getWidth(), 50));
+		
+		TableCellRenderer renderer = tableSongs.getTableHeader().getDefaultRenderer();
+		tableSongs.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+
+	        @Override
+	        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	            JLabel lbl = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	            lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+	            lbl.setHorizontalAlignment(SwingConstants.LEFT);
+	            lbl.setForeground(Color.white);
+                lbl.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+	            return lbl;
+	        }
+	    });
 
 		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "" };
 
