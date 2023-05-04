@@ -40,7 +40,7 @@ public class Employee extends JPanel {
 		JLabel lblClientes = new JLabel("Clientes");
 		lblClientes.setForeground(Color.WHITE);
 		lblClientes.setFont(new Font("Dialog", Font.PLAIN, 17));
-		lblClientes.setBounds(214, 156, 73, 29);
+		lblClientes.setBounds(220, 183, 119, 29);
 		add(lblClientes);
 		
 		JPanel panelManageClients = new JPanel();
@@ -54,7 +54,7 @@ public class Employee extends JPanel {
 				frame.repaint();
 			}
 		});
-		panelManageClients.setBounds(108, 219, 100, 100);
+		panelManageClients.setBounds(108, 150, 100, 100);
 		panelManageClients.setOpaque(false);
 		panelManageClients.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		add(panelManageClients);

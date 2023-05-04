@@ -551,9 +551,12 @@ public class SignUp extends JPanel {
 				frame.revalidate();
 				frame.repaint();
 			}
+
+		} catch (SQLException e) {
+			WindowUtils.errorPane("Debe rellenar todos los datos y ser mayor de 18 años.", "Error");
+
 		} catch (Exception e) {
 			WindowUtils.errorPane("Error en el registro.", "Error");
-			System.out.println(e);
 		}
 
 	}
