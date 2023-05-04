@@ -81,8 +81,6 @@ public class AverageStarsManager {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			
-			System.out.println(sql);
-			
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
 			
