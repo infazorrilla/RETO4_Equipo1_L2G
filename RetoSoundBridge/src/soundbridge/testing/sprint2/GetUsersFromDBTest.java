@@ -173,16 +173,15 @@ public class GetUsersFromDBTest {
 	}
 
 	/**
-	 * Para restablecer la base de datos, eliminamos el empleado y cliente
-	 * insertados.
+	 * Reestablece la base de datos, eliminando el empleado y cliente insertados.
 	 */
 	@Test
 	public void testEDelete() {
 		boolean thrown = false;
-		
+
 		ArrayList<Employee> employees = null;
 		Employee insertedEmployee = null;
-		
+
 		ArrayList<Client> clients = null;
 		Client insertedClient = null;
 
@@ -214,7 +213,7 @@ public class GetUsersFromDBTest {
 			thrown = true;
 			System.out.println(e);
 		}
-		
+
 		assertFalse(thrown);
 	}
 
