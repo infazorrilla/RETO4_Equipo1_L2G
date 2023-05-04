@@ -1,4 +1,4 @@
-package soundbridge.testing.managers;
+package soundbridge.testing.sprint1;
 
 import static org.junit.Assert.*;
 

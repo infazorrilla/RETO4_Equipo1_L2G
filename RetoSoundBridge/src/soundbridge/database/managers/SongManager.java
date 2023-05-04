@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import soundbridge.database.exception.NotFoundException;
@@ -109,24 +110,47 @@ public class SongManager extends ManagerAbstract<Song> {
 	@Override
 	public void insert(Song song) throws SQLException, Exception {
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		try {
-			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			statement = connection.createStatement();
-			String sql = "INSERT INTO Song (id, name, creation, duration, cover, lang, genre) VALUES ('" + song.getId()
-					+ "', '" + song.getName() + "', '" + new java.sql.Date((song.getReleaseYear()).getTime()) + "', '"
-					+ song.getDuration() + "', '" + song.getCover() + "', '" + song.getLang() + "', '" + song.getGenre()
-					+ "')";
-			statement.executeUpdate(sql);
+
+			String sql = "INSERT INTO Song (name, releaseYear, duration, cover, lang, source, genre, idAlbum, idArtist, idGroup) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setString(1, song.getName());
+			preparedStatement.setString(2, new SimpleDateFormat("yyyy").format(song.getReleaseYear()));
+			preparedStatement.setInt(3, song.getDuration());
+			preparedStatement.setString(4, song.getCover());
+			preparedStatement.setString(5, song.getLang());
+			preparedStatement.setString(6, song.getSource());
+			preparedStatement.setString(7, song.getGenre());
+			if (song.getAlbum() != null) {
+				preparedStatement.setInt(8, song.getAlbum().getId());
+			} else {
+				preparedStatement.setString(8, null);
+			}
+			if (song.getArtist() != null) {
+				preparedStatement.setInt(9, song.getArtist().getId());
+			} else {
+				preparedStatement.setString(9, null);
+			}
+			if (song.getArtGroup() != null) {
+				preparedStatement.setInt(10, song.getArtGroup().getId());
+			} else {
+				preparedStatement.setString(10, null);
+			}
+
+			preparedStatement.executeUpdate();
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
 			throw e;
 		} finally {
 			try {
-				if (statement != null)
-					statement.close();
+				if (preparedStatement != null)
+					preparedStatement.close();
 			} catch (Exception e) {
 			}
 			;
@@ -147,16 +171,17 @@ public class SongManager extends ManagerAbstract<Song> {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			String sql = "UPDATE Song SET  name = ?, releaseYear = ?, duration = ?, cover = ?, lang = ?, genre = ? where id = ?";
+			String sql = "UPDATE Song SET  name = ?, releaseYear = ?, duration = ?, cover = ?, lang = ?, source = ?, genre = ? where id = ?";
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setString(1, song.getName());
-			preparedStatement.setDate(2, new java.sql.Date((song.getReleaseYear()).getTime()));
+			preparedStatement.setString(2, new SimpleDateFormat("yyyy").format(song.getReleaseYear()));
 			preparedStatement.setInt(3, song.getDuration());
 			preparedStatement.setString(4, song.getCover());
 			preparedStatement.setString(5, song.getLang());
-			preparedStatement.setString(6, song.getGenre());
-			preparedStatement.setInt(7, song.getId());
+			preparedStatement.setString(6, song.getSource());
+			preparedStatement.setString(7, song.getGenre());
+			preparedStatement.setInt(8, song.getId());
 
 			preparedStatement.executeUpdate();
 		} catch (SQLException sqle) {
@@ -276,7 +301,7 @@ public class SongManager extends ManagerAbstract<Song> {
 
 		return ret;
 	}
-	
+
 	public ArrayList<Song> getSongsByAlbumWithGroup(Album album, ArtGroup artGroup) throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 
