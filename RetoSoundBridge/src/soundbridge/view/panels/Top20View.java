@@ -39,7 +39,7 @@ import java.awt.event.MouseEvent;
 
 public class Top20View extends JPanel {
 	private ArrayList<Song> top20songs;
-	private JTable tableSongsTop20;
+	public JTable tableSongsTop20;
 	DefaultTableModel modelTop20Songs = null;
 	private boolean isPlayerRunning = false;
 	private Player player;
@@ -275,4 +275,13 @@ public class Top20View extends JPanel {
 
 		isPlayerRunning = false;
 	}
+
+	public JTable getTableSongsTop20() {
+		return tableSongsTop20;
+	}
+
+	public void setTableSongsTop20(JTable tableSongsTop20) {
+		this.tableSongsTop20 = tableSongsTop20;
+	}
+	
 }
