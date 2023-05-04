@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import soundbridge.database.exception.NotFoundException;
@@ -79,24 +80,29 @@ public class AlbumManager extends ManagerAbstract<Album> {
 
 	@Override
 	public void insert(Album album) throws SQLException, Exception {
-
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		try {
-			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			statement = connection.createStatement();
-			String sql = "INSERT INTO Album (id, name, cover, releaseYear) VALUES ('" + album.getId() + "', '"
-					+ album.getName() + "', '" + album.getCover() + "', '" + album.getReleaseYear() + "')";
-			statement.executeUpdate(sql);
+
+			String sql = "INSERT INTO Album (name, releaseYear, cover) "
+					+ "VALUES (?, ?, ?)";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setString(1, album.getName());
+			preparedStatement.setString(2, new SimpleDateFormat("yyyy").format(album.getReleaseYear()));
+			preparedStatement.setString(3, album.getCover());
+
+			preparedStatement.executeUpdate();
 		} catch (SQLException sqle) {
 			throw sqle;
 		} catch (Exception e) {
 			throw e;
 		} finally {
 			try {
-				if (statement != null)
-					statement.close();
+				if (preparedStatement != null)
+					preparedStatement.close();
 			} catch (Exception e) {
 			}
 			;
@@ -107,6 +113,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 			}
 			;
 		}
+
 	}
 
 	@Override
@@ -117,12 +124,13 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			String sql = "UPDATE Album SET id = ?, name = ?, cover = ?,  releaseYear = ? where id = ?";
+			String sql = "UPDATE Album SET name = ?, cover = ?, releaseYear = ? WHERE id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, album.getId());
-			preparedStatement.setString(2, album.getName());
-			preparedStatement.setString(13, album.getCover());
-			preparedStatement.setDate(5, new java.sql.Date((album.getReleaseYear()).getTime()));
+
+			preparedStatement.setString(1, album.getName());
+			preparedStatement.setString(2, album.getCover());
+			preparedStatement.setString(3, new SimpleDateFormat("yyyy").format(album.getReleaseYear()));
+			preparedStatement.setInt(4, album.getId());
 
 			preparedStatement.executeUpdate();
 		} catch (SQLException sqle) {
