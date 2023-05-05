@@ -48,6 +48,7 @@ public class Top20View extends JPanel {
 	private boolean isPlayerRunning = false;
 	private Player player;
 	private JPanel panelPauseIcon;
+	private Controller controller;
 
 	public Top20View(JFrame frame, Client client) {
 		initialize(frame, client);
@@ -59,7 +60,7 @@ public class Top20View extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
 		panelPauseIcon = new JPanel();
 		panelPauseIcon.setBounds(115, 115, 100, 100);
 		add(panelPauseIcon);
@@ -227,15 +228,18 @@ public class Top20View extends JPanel {
 
 		JLabel lblHomeIcon = new JLabel("");
 		panelHomeIcon.add(lblHomeIcon, BorderLayout.CENTER);
-		
+
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause_black.png");
 	}
 
 	private void addSongsToTable(DefaultTableModel model) {
-		Top20ViewManager top20 = new Top20ViewManager();
+
+		if (null == controller)
+			controller = new Controller();
+
 		try {
-			top20songs = top20.selectViewTop20AndSongs();
+			top20songs = controller.getTop20Songs();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -245,14 +249,17 @@ public class Top20View extends JPanel {
 		}
 		if (top20songs != null) {
 			ArtGroupManager artGroup = new ArtGroupManager();
-			ArtistManager artman = new ArtistManager();
+			
+			if (null == controller)
+				controller = new Controller();
+
 			for (int i = 0; i < top20songs.size(); i++) {
 				Song song = top20songs.get(i);
 				Artist artista = null;
 				ArtGroup arttGroup = null;
 				try {
 					if (song.getArtist() != null)
-						artista = artman.selectArtistById(song.getArtist().getId());
+						artista = controller.getArtistById(song.getArtist().getId());
 					else
 						arttGroup = artGroup.selectGroupById(song.getArtGroup().getId());
 
@@ -300,7 +307,7 @@ public class Top20View extends JPanel {
 		doInsertPlay(client, song);
 		panelPauseIcon.setVisible(true);
 	}
-	
+
 	private void stopMusic() {
 		if (isPlayerRunning)
 			this.stop();

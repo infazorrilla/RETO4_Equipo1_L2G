@@ -30,6 +30,7 @@ import soundbridge.database.pojos.Employee;
 import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.managers.AverageStarsManager;
+import soundbridge.database.views.managers.Top20ViewManager;
 import soundbridge.database.views.pojos.AverageStars;
 import soundbridge.view.components.AutoCompleteTextField;
 
@@ -213,33 +214,74 @@ public class Controller {
 
 		clientManager.changeSubscription(client.getId(), bankNumber, actualSubscription, newSubscription);
 	}
-	
+
 	public ClientP getPremiumClient(Client client) throws SQLException, Exception {
 		if (null == clientPManager)
 			clientPManager = new ClientPManager();
-		
+
 		return clientPManager.getClientPById(client.getId());
 	}
-	
+
 	public ClientPP getPremiumPlusClient(Client client) throws SQLException, Exception {
 		if (null == clientPPManager)
 			clientPPManager = new ClientPPManager();
-		
+
 		return clientPPManager.getClientPPById(client.getId());
 	}
-	
+
 	public Artist searchedArtist(String search) throws SQLException, Exception {
 		if (null == artistManager)
 			artistManager = new ArtistManager();
-		
+
 		return artistManager.getArtistByName(search);
 	}
-	
+
 	public ArtGroup searchedGroup(String search) throws SQLException, Exception {
 		if (null == artGroupManager)
 			artGroupManager = new ArtGroupManager();
-		
+
 		return artGroupManager.getArtGroupByName(search);
+	}
+
+	public void insertClient(Client client) throws SQLException, Exception {
+		ClientManager clientManager = new ClientManager();
+		clientManager.insert(client);
+	}
+
+	public void insertClientP(ClientP clientp) throws SQLException, Exception {
+		ClientPManager clientpManager = new ClientPManager();
+		clientpManager.insert(clientp);
+	}
+
+	public void insertClientPP(ClientPP clientpp) throws SQLException, Exception {
+		ClientPPManager clientppManager = new ClientPPManager();
+		clientppManager.insert(clientpp);
+	}
+
+	public void updateClient(Client client) throws SQLException, Exception {
+		ClientManager clientManager = new ClientManager();
+		clientManager.update(client);
+	}
+
+	public Client getClientByUsername(String username) throws SQLException, Exception {
+		ClientManager clientManager = new ClientManager();
+		return clientManager.getClientByUsername(username);
+	}
+
+	public ArrayList<Client> getAllClients() throws SQLException, Exception {
+		ClientManager clientManager = new ClientManager();
+
+		return (ArrayList<Client>) clientManager.doSelectAll();
+	}
+	
+	public ArrayList<Song> getTop20Songs() throws SQLException, Exception {
+		Top20ViewManager top20manager = new Top20ViewManager();
+
+		return (ArrayList<Song>) top20manager.selectViewTop20AndSongs();
+	}
+	public Artist getArtistById(int id) throws SQLException, Exception {
+		ArtistManager artman = new ArtistManager();
+		return artman.selectArtistById(id);
 	}
 
 }

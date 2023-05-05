@@ -2,6 +2,7 @@ package soundbridge.view.panels;
 
 import java.awt.Color;
 
+
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,9 +27,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import soundbridge.controller.Controller;
 import soundbridge.database.managers.ClientManager;
-import soundbridge.database.managers.ClientPManager;
-import soundbridge.database.managers.ClientPPManager;
+
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -36,21 +38,23 @@ import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
 
 import java.awt.BorderLayout;
+import javax.swing.JRadioButton;
 
 public class SignUp extends JPanel {
-	JTextField textFildNameSignUp = null;
-	JTextField textFildLastNameSignUp = null;
-	JTextField textFildUsernameSignUp = null;
-	JTextField textFieldPasswdSignUp = null;
-	JTextField textFieldPersonalIdSignUp = null;
-	JTextField textFildGenderSignUp = null;
-	JTextField textFieldNationalitySignUp = null;
-	JTextField textFieldBirthDateSignUp = null;
-	JTextField textFieldAdressSignUp = null;
-	JTextField textFieldPhoneNumberSignUp = null;
-	JTextField textFieldEmailSignUp = null;
-	String bankNumber = null;
-	int suscription = 0;
+	private JTextField textFildNameSignUp = null;
+	private JTextField textFildLastNameSignUp = null;
+	private JTextField textFildUsernameSignUp = null;
+	private JTextField textFieldPasswdSignUp = null;
+	private JTextField textFieldPersonalIdSignUp = null;
+	private JTextField textFildGenderSignUp = null;
+	private JTextField textFieldNationalitySignUp = null;
+	private JTextField textFieldBirthDateSignUp = null;
+	private JTextField textFieldAdressSignUp = null;
+	private JTextField textFieldPhoneNumberSignUp = null;
+	private JTextField textFieldEmailSignUp = null;
+	private Controller controller = null;
+	private String bankNumber = null;
+	private int suscription = 0;
 	private static final long serialVersionUID = -2586474039198890631L;
 
 	public SignUp(JFrame frame) {
@@ -424,12 +428,7 @@ public class SignUp extends JPanel {
 
 		JPanel panelSuscriptionP = new JPanel();
 		panelSuscriptionP.setOpaque(false);
-		panelSuscriptionP.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				suscription = 1;
-			}
-		});
+		
 		panelSuscriptionP.setBounds(550, 169, 150, 150);
 		add(panelSuscriptionP);
 		panelSuscriptionP.setLayout(new BorderLayout(0, 0));
@@ -438,12 +437,7 @@ public class SignUp extends JPanel {
 		panelSuscriptionP.add(lblSuscription);
 
 		JPanel panelSuscriptionPP = new JPanel();
-		panelSuscriptionPP.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				suscription = 2;
-			}
-		});
+		
 		panelSuscriptionPP.setOpaque(false);
 		panelSuscriptionPP.setBounds(745, 169, 150, 150);
 		add(panelSuscriptionPP);
@@ -465,12 +459,7 @@ public class SignUp extends JPanel {
 		add(lblPriceSuscriptionPP);
 
 		JPanel panelSuscriptionBasic = new JPanel();
-		panelSuscriptionBasic.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				suscription = 3;
-			}
-		});
+
 		panelSuscriptionBasic.setOpaque(false);
 		panelSuscriptionBasic.setBounds(655, 364, 150, 150);
 		add(panelSuscriptionBasic);
@@ -506,11 +495,45 @@ public class SignUp extends JPanel {
 		WindowUtils.addImage(panelSuscriptionP, lblSuscription, "img/icon/sbp.png");
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/arrow.png");
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
+
+		JRadioButton rdbtnPremium = new JRadioButton("");
+		rdbtnPremium.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				suscription = 1;
+			}
+		});
+		rdbtnPremium.setBounds(560, 332, 20, 23);
+		add(rdbtnPremium);
+
+		JRadioButton rdbtnPremiumPlus = new JRadioButton("");
+		rdbtnPremiumPlus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				suscription = 2;
+			}
+		});
+		rdbtnPremiumPlus.setBounds(760, 332, 20, 23);
+		add(rdbtnPremiumPlus);
+
+		JRadioButton rdbtnBasic = new JRadioButton("");
+		rdbtnBasic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				suscription = 3;
+			}
+		});
+		rdbtnBasic.setBounds(685, 527, 20, 23);
+		add(rdbtnBasic);
+
+		ButtonGroup btnGroup = new ButtonGroup();
+		btnGroup.add(rdbtnPremium);
+		btnGroup.add(rdbtnPremiumPlus);
+		btnGroup.add(rdbtnBasic);
 	}
 
 	private void registerUser(JFrame frame) {
 		Client client = null;
-		ClientManager clientManager = new ClientManager();
+		if (null == controller)
+			controller = new Controller();
+		
 
 		if (suscription == 1)
 			client = new ClientP();
@@ -533,19 +556,19 @@ public class SignUp extends JPanel {
 		try {
 			if (!textFieldBirthDateSignUp.getText().isBlank())
 				client.setBirthDate(stringToDate(textFieldBirthDateSignUp.getText()));
-
+			controller.insertClient(client);
 			if (suscription == 1) {
-				clientManager.insert(client);
+				
 				bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
 						"img/icon/money.png");
 				registerUserP(frame);
 			} else if (suscription == 2) {
-				clientManager.insert(client);
+				
 				bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
 						"img/icon/money.png");
 				registerUserPP(frame);
 			} else if (suscription == 3) {
-				clientManager.insert(client);
+				
 				WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
@@ -568,15 +591,15 @@ public class SignUp extends JPanel {
 	}
 
 	private void registerUserP(JFrame frame) {
-
-		ClientPManager clientpmanager = new ClientPManager();
+		if (null == controller)
+			controller = new Controller();
 		ClientManager clientManager = new ClientManager();
 		try {
 			Client client = clientManager.getClientByUsername(textFildUsernameSignUp.getText());
 			ClientP clientp = new ClientP();
 			clientp.setId(client.getId());
 			clientp.setBankAccount(bankNumber);
-			clientpmanager.insertReal(clientp);
+			controller.insertClientP(clientp);
 			WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 			frame.getContentPane().removeAll();
 			frame.getContentPane()
@@ -592,13 +615,14 @@ public class SignUp extends JPanel {
 
 	private void registerUserPP(JFrame frame) {
 		ClientPP clientpp = new ClientPP();
-		ClientManager clientManager = new ClientManager();
-		ClientPPManager clientppmanager = new ClientPPManager();
+		if (null == controller)
+			controller = new Controller();
+		
 		try {
-			Client client = clientManager.getClientByUsername(textFildUsernameSignUp.getText());
+			Client client = controller.getClientByUsername(textFildUsernameSignUp.getText());
 			clientpp.setId(client.getId());
 			clientpp.setBankAccount(bankNumber);
-			clientppmanager.insertReal(clientpp);
+			controller.insertClientPP(clientpp);
 			WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 			frame.getContentPane().removeAll();
 			frame.getContentPane()

@@ -1,6 +1,7 @@
 package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -14,7 +15,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import soundbridge.database.managers.ClientManager;
+import soundbridge.controller.Controller;
+
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Employee;
 import soundbridge.utils.WindowUtils;
@@ -31,8 +33,8 @@ public class ManageClients extends JPanel {
 
 	private static final long serialVersionUID = -6622744341750440365L;
 	private JTable tableClients;
-	DefaultTableModel modelClients = null;
-
+	private DefaultTableModel modelClients = null;
+	private Controller controller = null;
 	public ManageClients(JFrame frame, Employee employee) {
 
 		initialize(frame, employee);
@@ -98,24 +100,10 @@ public class ManageClients extends JPanel {
 		JButton btnBloqClient = new JButton("Bloquear cliente");
 		btnBloqClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				blockUser();
 
-				try {
-					ClientManager clientmanager = new ClientManager();
-					Client client = new Client();
-					String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
-					client.setUsername(username);
-					Client selectedClient = clientmanager.getClientByUsername(username);
-					selectedClient.setBlocked(true);
-					clientmanager.update(selectedClient);
-					showClients();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					
-				}
 			}
+
 		});
 		btnBloqClient.setBounds(139, 600, 143, 23);
 		add(btnBloqClient);
@@ -123,20 +111,22 @@ public class ManageClients extends JPanel {
 		JButton btnDesBloqClient = new JButton("Desbloquear cliente");
 		btnDesBloqClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (null == controller)
+					controller = new Controller();
 				
+				Client client = new Client();
+				String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
+				client.setUsername(username);
+				Client selectedClient;
 				try {
-					ClientManager clientmanager = new ClientManager();
-					Client client = new Client();
-					String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
-					client.setUsername(username);
-					Client selectedClient;
-					selectedClient = clientmanager.getClientByUsername(username);
+					
+					selectedClient = controller.getClientByUsername(username);
 					selectedClient.setBlocked(false);
-					clientmanager.update(selectedClient);
+					controller.updateClient(selectedClient);
 					showClients();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					
+
 				}
 
 			}
@@ -147,11 +137,12 @@ public class ManageClients extends JPanel {
 		JButton btnSelectBloqClients = new JButton("Lista de clientes bloqueados");
 		btnSelectBloqClients.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ClientManager clientmanager = new ClientManager();
+				if (null == controller)
+					controller = new Controller();
 				try {
 					tableClients.removeAll();
 					modelClients.setRowCount(0);
-					ArrayList<Client> allClients = (ArrayList<Client>) clientmanager.doSelectAll();
+					ArrayList<Client> allClients = (ArrayList<Client>) controller.getAllClients();
 					for (int i = 0; i < allClients.size(); i++) {
 						Client client = allClients.get(i);
 						if (client.isBlocked() == true) {
@@ -183,11 +174,12 @@ public class ManageClients extends JPanel {
 	}
 
 	private void showClients() {
-		ClientManager clientmanager = new ClientManager();
+		if (null == controller)
+			controller = new Controller();
 		try {
 			tableClients.removeAll();
 			modelClients.setRowCount(0);
-			ArrayList<Client> allClients = (ArrayList<Client>) clientmanager.doSelectAll();
+			ArrayList<Client> allClients = (ArrayList<Client>) controller.getAllClients();
 			for (int i = 0; i < allClients.size(); i++) {
 				Client client = allClients.get(i);
 				String nombre = client.getName();
@@ -216,6 +208,29 @@ public class ManageClients extends JPanel {
 				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
+	}
+
+	private void blockUser() {
+		
+		if (null == controller)
+			controller = new Controller();
+		Client client = new Client();
+		String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
+		client.setUsername(username);
+		
+		try {
+			Client selectedClient = controller.getClientByUsername(username);
+			selectedClient.setBlocked(true);
+			controller.updateClient(selectedClient);
+			showClients();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			
+		}
+
 	}
 
 }
