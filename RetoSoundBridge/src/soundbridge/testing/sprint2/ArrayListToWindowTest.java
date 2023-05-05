@@ -34,10 +34,19 @@ public class ArrayListToWindowTest {
 	public void testArrayListToTable() {
 		boolean thrown = false;
 		boolean isEqualName = true;
+		int arraySize = 0;
+		int tableRowCount = 0;
 
 		ArrayList<Song> top20Songs = null;
 		try {
 			top20Songs = top20Manager.selectViewTop20AndSongs();
+		} catch (SQLException e) {
+			thrown = true;
+		} catch (Exception e) {
+			thrown = true;
+		}
+
+		if (top20Songs != null) {
 			Top20View top20View = new Top20View(null, null);
 			for (int i = 0; i < top20Songs.size(); i++) {
 				String songNameAtTable = (String) top20View.getTableSongsTop20().getValueAt(i, 2);
@@ -45,15 +54,15 @@ public class ArrayListToWindowTest {
 				if (!songNameAtTable.equalsIgnoreCase(songNameAtArray))
 					isEqualName = false;
 			}
-		} catch (SQLException e) {
-			thrown = true;
-		} catch (Exception e) {
-			thrown = true;
+
+			arraySize = top20Songs.size();
+			tableRowCount = top20View.getTableSongsTop20().getRowCount();
 		}
 
 		assertFalse(thrown);
 		assertNotNull(top20Songs);
 		assertTrue(isEqualName);
+		assertTrue((arraySize != 0) && (tableRowCount != 0) && (arraySize == tableRowCount));
 	}
 
 }
