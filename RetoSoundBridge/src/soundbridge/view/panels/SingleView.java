@@ -184,23 +184,23 @@ public class SingleView extends JPanel {
 		this.stop();
 		if (artist != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane()
-					.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null, null));
+			frame.getContentPane().add(
+					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane()
-					.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null,
+					artGroup, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}
 	}
-	
+
 	private void playSelectedSong(Song song, Client client) {
 		if (isPlayerRunning)
 			this.stop();
-		
+
 		this.play(song.getSource());
 		doInsertPlay(client, song);
 	}
@@ -210,17 +210,16 @@ public class SingleView extends JPanel {
 		Play play = new Play();
 		play.setClient(client);
 		play.setSong(song);
-		
+
 		try {
 			controller.insertPlay(play);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
-		} catch(Exception e){
+		} catch (Exception e) {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
 		}
 
 	}
-
 
 	private void play(String path) {
 		new Thread() {

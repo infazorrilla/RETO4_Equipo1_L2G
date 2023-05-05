@@ -181,7 +181,7 @@ public class Login extends JPanel {
 
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -205,10 +205,10 @@ public class Login extends JPanel {
 			WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Cliente de SoundBridge");
 			textFieldUserLogIn.setText("");
 			passwordFieldLogIn.setText("");
-			
+
 			frame.getContentPane().removeAll();
 			frame.getContentPane()
-					.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null, null, null, null));
+					.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 
@@ -224,11 +224,11 @@ public class Login extends JPanel {
 	private void doLogIn(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
 		if (null == controller)
 			controller = new Controller();
-		
+
 		try {
 			boolean isClient = controller.isClient(textFieldUserLogIn, passwordFieldLogIn);
 			boolean isEmployee = controller.isEmployee(textFieldUserLogIn, passwordFieldLogIn);
-			
+
 			if (isClient) {
 				logInClient(frame, textFieldUserLogIn, passwordFieldLogIn);
 			} else if (isEmployee) {
@@ -250,7 +250,8 @@ public class Login extends JPanel {
 
 	private void goToSignUp(JFrame frame) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null, null, null, null));
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

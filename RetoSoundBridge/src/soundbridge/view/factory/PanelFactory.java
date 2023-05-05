@@ -8,11 +8,12 @@ import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.Employee;
 import soundbridge.database.pojos.Song;
 import soundbridge.view.panels.AlbumView;
 import soundbridge.view.panels.ArtistProfile;
 import soundbridge.view.panels.ChangeSubscription;
-import soundbridge.view.panels.Employee;
+import soundbridge.view.panels.EmployeeMenu;
 import soundbridge.view.panels.GroupProfile;
 import soundbridge.view.panels.Library;
 import soundbridge.view.panels.Login;
@@ -32,7 +33,7 @@ public class PanelFactory {
 	public static final String SIGNUP = "SIGNUP";
 	public static final String CHANGE_SUBSCRIPTION = "CHANGE_SUBSCRIPTION";
 	public static final String UPDATE_CLIENT = "UPDATE_CLIENT";
-	public static final String EMPLOYEE = "EMPLOYEE";
+	public static final String EMPLOYEE_MENU = "EMPLOYEE_MENU";
 	public static final String MANAGE_CLIENTS = "MANAGE_CLIENTS";
 	public static final String ARTIST_PROFILE = "ARTIST_PROFILE";
 	public static final String GROUP_PROFILE = "GROUP_PROFILE";
@@ -40,7 +41,7 @@ public class PanelFactory {
 	public static final String TOP20VIEW = "TOP20VIEW";
 	public static final String SINGLE_VIEW = "SINGLE_VIEW";
 
-	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Artist artist, ArtGroup artGroup,
+	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist, ArtGroup artGroup,
 			Album album, Song song) {
 		switch (panelName) {
 		case LOGIN:
@@ -55,10 +56,10 @@ public class PanelFactory {
 			return new ChangeSubscription(frame, client);
 		case UPDATE_CLIENT:
 			return new UpdateClient(frame, client);
-		case EMPLOYEE:
-			return new Employee(frame);
+		case EMPLOYEE_MENU:
+			return new EmployeeMenu(frame, employee);
 		case MANAGE_CLIENTS:
-			return new ManageClients(frame);
+			return new ManageClients(frame, employee);
 		case ARTIST_PROFILE:
 			return new ArtistProfile(frame, client, artist);
 		case GROUP_PROFILE:

@@ -77,6 +77,9 @@ public class AlbumView extends JPanel {
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver");
+		
+		JLabel lblBackIcon = new JLabel("");
+		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
 		JLabel lblArtistName = new JLabel();
 		lblArtistName.setForeground(new Color(244, 135, 244));
@@ -92,9 +95,6 @@ public class AlbumView extends JPanel {
 
 		JLabel lblStarIcon = new JLabel("");
 		panelStarIcon.add(lblStarIcon, BorderLayout.CENTER);
-
-		JLabel lblBackIcon = new JLabel("");
-		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
 		JLabel lblName = new JLabel(album.getName());
 		lblName.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
@@ -155,20 +155,22 @@ public class AlbumView extends JPanel {
 
 		tableSongs.getTableHeader().setBackground(Color.black);
 		tableSongs.getTableHeader().setPreferredSize(new Dimension(scrollPaneSongs.getWidth(), 50));
-		
+
 		TableCellRenderer renderer = tableSongs.getTableHeader().getDefaultRenderer();
 		tableSongs.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
 
-	        @Override
-	        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	            JLabel lbl = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-	            lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-	            lbl.setHorizontalAlignment(SwingConstants.LEFT);
-	            lbl.setForeground(Color.white);
-                lbl.setFont(new Font("Lucida Grande", Font.BOLD, 18));
-	            return lbl;
-	        }
-	    });
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				JLabel lbl = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+						column);
+				lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+				lbl.setHorizontalAlignment(SwingConstants.LEFT);
+				lbl.setForeground(Color.white);
+				lbl.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+				return lbl;
+			}
+		});
 
 		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "" };
 
@@ -248,14 +250,14 @@ public class AlbumView extends JPanel {
 		this.stop();
 		if (artist != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane()
-					.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, artist, null, null, null));
+			frame.getContentPane().add(
+					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane()
-					.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, artGroup, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null,
+					artGroup, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}
@@ -264,7 +266,7 @@ public class AlbumView extends JPanel {
 	private void playSelectedSong(JTable table, Client client) {
 		if (isPlayerRunning)
 			this.stop();
-		
+
 		int index = table.getSelectedRow();
 		Song song = songs.get(index);
 		this.play(song.getSource());
@@ -276,15 +278,14 @@ public class AlbumView extends JPanel {
 		Play play = new Play();
 		play.setClient(client);
 		play.setSong(song);
-		
+
 		try {
 			controller.insertPlay(play);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
-		} catch(Exception e){
+		} catch (Exception e) {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
 		}
-
 
 	}
 

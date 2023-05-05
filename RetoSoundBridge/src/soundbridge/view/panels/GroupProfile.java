@@ -62,7 +62,7 @@ public class GroupProfile extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -162,7 +162,7 @@ public class GroupProfile extends JPanel {
 						public void mouseClicked(MouseEvent e) {
 							frame.getContentPane().removeAll();
 							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client,
-									null, artGroup, album, null));
+									null, null, artGroup, album, null));
 							frame.revalidate();
 							frame.repaint();
 						}
@@ -208,13 +208,13 @@ public class GroupProfile extends JPanel {
 					panelSingle.add(lblSingle, BorderLayout.CENTER);
 
 					WindowUtils.addImage(panelSingle, lblSingle, image);
-					
+
 					panelSingle.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
 							frame.getContentPane().removeAll();
 							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SINGLE_VIEW, frame, client,
-									null, artGroup, null, song));
+									null, null, artGroup, null, song));
 							frame.revalidate();
 							frame.repaint();
 						}

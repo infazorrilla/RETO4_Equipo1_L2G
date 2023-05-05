@@ -99,34 +99,33 @@ public class Top20View extends JPanel {
 		scrollPaneTop20.setOpaque(false);
 		scrollPaneTop20.getViewport().setOpaque(false);
 		scrollPaneTop20.setBorder(BorderFactory.createEmptyBorder());
-		
-		scrollPaneTop20.getVerticalScrollBar().setUI(new BasicScrollBarUI()
-	    {   
-	        @Override
-	        protected JButton createDecreaseButton(int orientation) {
-	            return createZeroButton();
-	        }
 
-	        @Override    
-	        protected JButton createIncreaseButton(int orientation) {
-	            return createZeroButton();
-	        }
+		scrollPaneTop20.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+			@Override
+			protected JButton createDecreaseButton(int orientation) {
+				return createZeroButton();
+			}
 
-	        private JButton createZeroButton() {
-	            JButton jbutton = new JButton();
-	            jbutton.setPreferredSize(new Dimension(0, 0));
-	            jbutton.setMinimumSize(new Dimension(0, 0));
-	            jbutton.setMaximumSize(new Dimension(0, 0));
-	            return jbutton;
-	        }
-	        
-	        @Override
-	        protected void configureScrollBarColors() {
-	            this.thumbColor = Color.black;
-	            this.thumbHighlightColor = Color.WHITE;
-	            this.trackColor = Color.BLACK;
-	        }
-	    });
+			@Override
+			protected JButton createIncreaseButton(int orientation) {
+				return createZeroButton();
+			}
+
+			private JButton createZeroButton() {
+				JButton jbutton = new JButton();
+				jbutton.setPreferredSize(new Dimension(0, 0));
+				jbutton.setMinimumSize(new Dimension(0, 0));
+				jbutton.setMaximumSize(new Dimension(0, 0));
+				return jbutton;
+			}
+
+			@Override
+			protected void configureScrollBarColors() {
+				this.thumbColor = Color.black;
+				this.thumbHighlightColor = Color.WHITE;
+				this.trackColor = Color.BLACK;
+			}
+		});
 
 		tableSongsTop20 = new JTable();
 		tableSongsTop20.addMouseListener(new MouseAdapter() {
@@ -164,21 +163,23 @@ public class Top20View extends JPanel {
 		});
 		tableSongsTop20.getTableHeader().setBackground(Color.black);
 		tableSongsTop20.getTableHeader().setPreferredSize(new Dimension(scrollPaneTop20.getWidth(), 50));
-		
-	    TableCellRenderer renderer = tableSongsTop20.getTableHeader().getDefaultRenderer();
-	    tableSongsTop20.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
 
-	        @Override
-	        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	            JLabel lbl = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-	            lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-	            lbl.setHorizontalAlignment(SwingConstants.LEFT);
-	            lbl.setForeground(Color.white);
-                lbl.setFont(new Font("Lucida Grande", Font.BOLD, 18));
-	            return lbl;
-	        }
-	    });
-		
+		TableCellRenderer renderer = tableSongsTop20.getTableHeader().getDefaultRenderer();
+		tableSongsTop20.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				JLabel lbl = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+						column);
+				lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+				lbl.setHorizontalAlignment(SwingConstants.LEFT);
+				lbl.setForeground(Color.white);
+				lbl.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+				return lbl;
+			}
+		});
+
 		modelTop20Songs = new DefaultTableModel();
 		modelTop20Songs.setColumnIdentifiers(columnsSongs);
 		tableSongsTop20.setModel(modelTop20Songs);
@@ -196,7 +197,7 @@ public class Top20View extends JPanel {
 				stop();
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
