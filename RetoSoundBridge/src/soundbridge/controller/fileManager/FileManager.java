@@ -1,7 +1,9 @@
 package soundbridge.controller.fileManager;
 
+import java.io.BufferedReader;
 import java.io.File;
-
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,10 +17,10 @@ public class FileManager {
 
 	ArrayList<Client> allClients = null;
 
-	public void crearTicket() {
+	public void crearTicket(String RUTA_FICHERO) {
 
 		final String NOMBRE_FICHERO = "Ticket.txt";
-		final String RUTA_FICHERO = "C:\\Users\\in1dw3\\git\\RETO4_Equipo1_L2G1\\RetoSoundBridge\\src\\soundbridge\\testing\\sprint2\\";
+		
 
 		File fichero = new File(RUTA_FICHERO + NOMBRE_FICHERO);
 
@@ -65,5 +67,37 @@ public class FileManager {
 			}
 		}
 	}
+	public void read(String RUTA_FICHERO) throws IOException {
+		File archivo = null;
+	      FileReader fr = null;
+	      BufferedReader br = null;
+
+	      try {
+	        
+	         archivo = new File (RUTA_FICHERO);
+	         fr = new FileReader (archivo);
+	         br = new BufferedReader(fr);
+
+	         // Lectura del fichero
+	         String linea;
+	         while((linea=br.readLine())!=null)
+	            System.out.println(linea);
+	      }
+	      catch(Exception e){
+	         e.printStackTrace();
+	      }finally{
+	         // En el finally cerramos el fichero, para asegurarnos
+	         // que se cierra tanto si todo va bien como si salta 
+	         // una excepcion.
+	         try{                    
+	            if( null != fr ){   
+	               fr.close();     
+	            }                  
+	         }catch (Exception e2){ 
+	            e2.printStackTrace();
+	         }
+	      }
+	   }
+
 
 }
