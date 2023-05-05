@@ -47,6 +47,7 @@ public class Top20View extends JPanel {
 	DefaultTableModel modelTop20Songs = null;
 	private boolean isPlayerRunning = false;
 	private Player player;
+	private JPanel panelPauseIcon;
 
 	public Top20View(JFrame frame, Client client) {
 		initialize(frame, client);
@@ -58,6 +59,23 @@ public class Top20View extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
+		
+		panelPauseIcon = new JPanel();
+		panelPauseIcon.setBounds(115, 115, 100, 100);
+		add(panelPauseIcon);
+		panelPauseIcon.setLayout(new BorderLayout(0, 0));
+		panelPauseIcon.setOpaque(false);
+		panelPauseIcon.setVisible(false);
+		panelPauseIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelPauseIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				stopMusic();
+			}
+		});
+
+		JLabel lblPauseIcon = new JLabel("");
+		panelPauseIcon.add(lblPauseIcon, BorderLayout.CENTER);
 
 		JPanel panelPlaylistCover = new JPanel();
 		panelPlaylistCover.setBounds(40, 40, 250, 250);
@@ -131,7 +149,7 @@ public class Top20View extends JPanel {
 		tableSongsTop20.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(tableSongsTop20, client);
+				playSelectedSong(client);
 			}
 		});
 		tableSongsTop20.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -155,7 +173,7 @@ public class Top20View extends JPanel {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
-				if (isSelected) {
+				if (isSelected || !isSelected) {
 					hasFocus = false;
 				}
 				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -163,6 +181,7 @@ public class Top20View extends JPanel {
 		});
 		tableSongsTop20.getTableHeader().setBackground(Color.black);
 		tableSongsTop20.getTableHeader().setPreferredSize(new Dimension(scrollPaneTop20.getWidth(), 50));
+		tableSongsTop20.getTableHeader().setReorderingAllowed(false);
 
 		TableCellRenderer renderer = tableSongsTop20.getTableHeader().getDefaultRenderer();
 		tableSongsTop20.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
@@ -207,7 +226,9 @@ public class Top20View extends JPanel {
 
 		JLabel lblHomeIcon = new JLabel("");
 		panelHomeIcon.add(lblHomeIcon, BorderLayout.CENTER);
+		
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
+		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause_black.png");
 	}
 
 	private void addSongsToTable(DefaultTableModel model) {
@@ -268,14 +289,22 @@ public class Top20View extends JPanel {
 		table.getColumnModel().getColumn(5).setMinWidth(160);
 	}
 
-	private void playSelectedSong(JTable table, Client client) {
+	private void playSelectedSong(Client client) {
 		if (isPlayerRunning)
 			this.stop();
 
-		int index = table.getSelectedRow();
+		int index = tableSongsTop20.getSelectedRow();
 		Song song = top20songs.get(index);
 		this.play(song.getSource());
 		doInsertPlay(client, song);
+		panelPauseIcon.setVisible(true);
+	}
+	
+	private void stopMusic() {
+		if (isPlayerRunning)
+			this.stop();
+		panelPauseIcon.setVisible(false);
+		tableSongsTop20.getSelectionModel().clearSelection();
 	}
 
 	private void doInsertPlay(Client client, Song song) {

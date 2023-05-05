@@ -19,8 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import javazoom.jl.player.Player;
 import soundbridge.controller.Controller;
@@ -37,6 +39,8 @@ public class SingleView extends JPanel {
 	private static final long serialVersionUID = -611767121036203376L;
 	private Player player;
 	private boolean isPlayerRunning = false;
+	private JPanel panelPauseIcon;
+	private JTable tableSongs;
 
 	public SingleView(JFrame frame, Client client, Song song, Artist artist, ArtGroup artGroup) {
 		initialize(frame, client, song, artist, artGroup);
@@ -46,6 +50,23 @@ public class SingleView extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
+		
+		panelPauseIcon = new JPanel();
+		panelPauseIcon.setBounds(115, 115, 100, 100);
+		add(panelPauseIcon);
+		panelPauseIcon.setLayout(new BorderLayout(0, 0));
+		panelPauseIcon.setOpaque(false);
+		panelPauseIcon.setVisible(false);
+		panelPauseIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelPauseIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				stopMusic();
+			}
+		});
+
+		JLabel lblPauseIcon = new JLabel("");
+		panelPauseIcon.add(lblPauseIcon, BorderLayout.CENTER);
 
 		JPanel panelAlbumCover = new JPanel();
 		panelAlbumCover.setBounds(40, 40, 250, 250);
@@ -98,7 +119,7 @@ public class SingleView extends JPanel {
 		scrollPaneSongs.getViewport().setOpaque(false);
 		scrollPaneSongs.setBorder(BorderFactory.createEmptyBorder());
 
-		JTable tableSongs = new JTable();
+		tableSongs = new JTable();
 		tableSongs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableSongs.setDefaultEditor(Object.class, null);
 		scrollPaneSongs.setViewportView(tableSongs);
@@ -116,7 +137,7 @@ public class SingleView extends JPanel {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
-				if (isSelected) {
+				if (isSelected || !isSelected) {
 					hasFocus = false;
 				}
 				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -131,9 +152,24 @@ public class SingleView extends JPanel {
 		scrollPaneSongs.setViewportView(tableSongs);
 
 		tableSongs.getTableHeader().setBackground(Color.black);
-		tableSongs.getTableHeader().setForeground(Color.white);
-		tableSongs.getTableHeader().setFont(new Font("Lucida Grande", Font.BOLD, 18));
 		tableSongs.getTableHeader().setPreferredSize(new Dimension(scrollPaneSongs.getWidth(), 50));
+		tableSongs.getTableHeader().setReorderingAllowed(false);
+
+		TableCellRenderer renderer = tableSongs.getTableHeader().getDefaultRenderer();
+		tableSongs.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				JLabel lbl = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+						column);
+				lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+				lbl.setHorizontalAlignment(SwingConstants.LEFT);
+				lbl.setForeground(Color.white);
+				lbl.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+				return lbl;
+			}
+		});
 
 		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "" };
 
@@ -203,6 +239,14 @@ public class SingleView extends JPanel {
 
 		this.play(song.getSource());
 		doInsertPlay(client, song);
+		panelPauseIcon.setVisible(true);
+	}
+	
+	private void stopMusic() {
+		if (isPlayerRunning)
+			this.stop();
+		panelPauseIcon.setVisible(false);
+		tableSongs.getSelectionModel().clearSelection();
 	}
 
 	private void doInsertPlay(Client client, Song song) {

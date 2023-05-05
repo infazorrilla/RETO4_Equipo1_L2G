@@ -44,6 +44,8 @@ public class AlbumView extends JPanel {
 	private JLabel lblStars;
 	private ArrayList<Song> songs;
 	private boolean isPlayerRunning = false;
+	private JPanel panelPauseIcon;
+	private JTable tableSongs;
 
 	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		initialize(frame, client, album, artist, artGroup);
@@ -53,6 +55,23 @@ public class AlbumView extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
+		
+		panelPauseIcon = new JPanel();
+		panelPauseIcon.setBounds(115, 115, 100, 100);
+		add(panelPauseIcon);
+		panelPauseIcon.setLayout(new BorderLayout(0, 0));
+		panelPauseIcon.setOpaque(false);
+		panelPauseIcon.setVisible(false);
+		panelPauseIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelPauseIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				stopMusic();
+			}
+		});
+
+		JLabel lblPauseIcon = new JLabel("");
+		panelPauseIcon.add(lblPauseIcon, BorderLayout.CENTER);
 
 		JPanel panelAlbumCover = new JPanel();
 		panelAlbumCover.setBounds(40, 40, 250, 250);
@@ -120,7 +139,7 @@ public class AlbumView extends JPanel {
 		scrollPaneSongs.getViewport().setOpaque(false);
 		scrollPaneSongs.setBorder(BorderFactory.createEmptyBorder());
 
-		JTable tableSongs = new JTable();
+		tableSongs = new JTable();
 		tableSongs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableSongs.setDefaultEditor(Object.class, null);
 		scrollPaneSongs.setViewportView(tableSongs);
@@ -138,7 +157,7 @@ public class AlbumView extends JPanel {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
-				if (isSelected) {
+				if (isSelected || !isSelected) {
 					hasFocus = false;
 				}
 				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -147,13 +166,14 @@ public class AlbumView extends JPanel {
 		tableSongs.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(tableSongs, client);
+				playSelectedSong(client);
 			}
 		});
 		scrollPaneSongs.setViewportView(tableSongs);
 
 		tableSongs.getTableHeader().setBackground(Color.black);
 		tableSongs.getTableHeader().setPreferredSize(new Dimension(scrollPaneSongs.getWidth(), 50));
+		tableSongs.getTableHeader().setReorderingAllowed(false);
 
 		TableCellRenderer renderer = tableSongs.getTableHeader().getDefaultRenderer();
 		tableSongs.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
@@ -180,10 +200,11 @@ public class AlbumView extends JPanel {
 
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 		WindowUtils.addImage(panelStarIcon, lblStarIcon, "img/icon/star.png");
+		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause.png");
 		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, album.getCover());
 		addReviewStarsToLabel(album);
 		addSongsToTable(album, tableModelSongs);
-		adjustColumnsWidth(tableSongs);
+		adjustColumnsWidth();
 		addArtistOrGroupName(lblArtistName, artist, artGroup);
 	}
 
@@ -240,13 +261,13 @@ public class AlbumView extends JPanel {
 		model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });
 	}
 
-	private void adjustColumnsWidth(JTable table) {
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		table.getColumnModel().getColumn(0).setMaxWidth(50);
-		table.getColumnModel().getColumn(1).setMaxWidth(50);
-		table.getColumnModel().getColumn(2).setMinWidth(300);
-		table.getColumnModel().getColumn(3).setMinWidth(100);
-		table.getColumnModel().getColumn(4).setMinWidth(200);
+	private void adjustColumnsWidth() {
+		tableSongs.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		tableSongs.getColumnModel().getColumn(0).setMaxWidth(50);
+		tableSongs.getColumnModel().getColumn(1).setMaxWidth(50);
+		tableSongs.getColumnModel().getColumn(2).setMinWidth(300);
+		tableSongs.getColumnModel().getColumn(3).setMinWidth(100);
+		tableSongs.getColumnModel().getColumn(4).setMinWidth(200);
 	}
 
 	private void goBack(JFrame frame, Client client, Artist artist, ArtGroup artGroup) {
@@ -266,14 +287,22 @@ public class AlbumView extends JPanel {
 		}
 	}
 
-	private void playSelectedSong(JTable table, Client client) {
+	private void playSelectedSong(Client client) {
 		if (isPlayerRunning)
 			this.stop();
 
-		int index = table.getSelectedRow();
+		int index = tableSongs.getSelectedRow();
 		Song song = songs.get(index);
 		this.play(song.getSource());
 		doInsertPlay(client, song);
+		panelPauseIcon.setVisible(true);
+	}
+	
+	private void stopMusic() {
+		if (isPlayerRunning)
+			this.stop();
+		panelPauseIcon.setVisible(false);
+		tableSongs.getSelectionModel().clearSelection();
 	}
 
 	private void doInsertPlay(Client client, Song song) {
