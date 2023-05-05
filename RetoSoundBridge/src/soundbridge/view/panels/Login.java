@@ -10,6 +10,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,8 +37,6 @@ public class Login extends JPanel {
 	private JLabel lblBackground;
 
 	public Login(JFrame frame) {
-		controller = new Controller();
-
 		initialize(frame);
 
 		WindowUtils.addGif(lblBackground, "img/panel/new_smoke.gif");
@@ -95,7 +94,7 @@ public class Login extends JPanel {
 		passwordFieldLogIn.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent evt) {
 				if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-					logIn(frame, textFieldUserLogIn, passwordFieldLogIn);
+					doLogIn(frame, textFieldUserLogIn, passwordFieldLogIn);
 				}
 			}
 		});
@@ -113,7 +112,7 @@ public class Login extends JPanel {
 		JButton btnAcceptLogIn = new JButton("Iniciar sesión");
 		btnAcceptLogIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				logIn(frame, textFieldUserLogIn, passwordFieldLogIn);
+				doLogIn(frame, textFieldUserLogIn, passwordFieldLogIn);
 			}
 		});
 		btnAcceptLogIn.setBounds(700, 360, 200, 50);
@@ -163,47 +162,89 @@ public class Login extends JPanel {
 
 	}
 
-	private void logIn(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
+	private void logInClient(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
 		String username = textFieldUserLogIn.getText();
+		if (null == controller)
+			controller = new Controller();
 
-		String typeOfUser = controller.checkTypeOfUser(textFieldUserLogIn, passwordFieldLogIn);
+		try {
+			setClient(controller.returnLoggedClient(username));
+			if (client.isBlocked() == true) {
+				WindowUtils.messagePaneWithIcon("Su usuario está bloqueado.", "Usuario Bloqueado", "img/icon/lock.png");
+				textFieldUserLogIn.setText("");
+				passwordFieldLogIn.setText("");
+				textFieldUserLogIn.requestFocus();
+			} else {
+				WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Cliente de SoundBridge");
+				textFieldUserLogIn.setText("");
+				passwordFieldLogIn.setText("");
 
-		if (typeOfUser != null) {
-			if (typeOfUser.equals("client")) {
-				if (client == null) {
-					client = new Client();
-				}
-
-				if (client != null) {
-					setClient(controller.returnLoggedClient(username));
-					if (client.isBlocked() == true) {
-						WindowUtils.errorPane("Su usuario está bloqueado.", "Usuario Bloqueado");
-						textFieldUserLogIn.setText("");
-						passwordFieldLogIn.setText("");
-					} else {
-
-						controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
-						frame.getContentPane().removeAll();
-						frame.getContentPane().add(
-								PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
-						frame.revalidate();
-						frame.repaint();
-					}
-				}
-			} else if (typeOfUser.equals("employee")) {
-				controller.checkLogin(textFieldUserLogIn, passwordFieldLogIn);
-				setEmployee(controller.returnLoggedEmployee(textFieldUserLogIn.getText()));
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
-		} else {
-			WindowUtils.errorPane("Login incorrecto.", "Error");
+
+		} catch (SQLException e) {
+			WindowUtils.errorPane("Error en el login.", "Error en la base de datos");
+			System.out.println(e);
+		} catch (Exception e) {
+			WindowUtils.errorPane("Error en el login.", "Error general");
+			System.out.println(e);
+		}
+	}
+
+	private void logInEmployee(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
+		String username = textFieldUserLogIn.getText();
+		if (null == controller)
+			controller = new Controller();
+
+		try {
+			setEmployee(controller.returnLoggedEmployee(username));
+			WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Cliente de SoundBridge");
 			textFieldUserLogIn.setText("");
 			passwordFieldLogIn.setText("");
-			textFieldUserLogIn.requestFocus();
+			
+			frame.getContentPane().removeAll();
+			frame.getContentPane()
+					.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE, frame, null, null, null, null, null));
+			frame.revalidate();
+			frame.repaint();
+
+		} catch (SQLException e) {
+			WindowUtils.errorPane("Error en el login.", "Error en la base de datos");
+			System.out.println(e);
+		} catch (Exception e) {
+			WindowUtils.errorPane("Error en el login.", "Error general");
+			System.out.println(e);
+		}
+	}
+
+	private void doLogIn(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
+		if (null == controller)
+			controller = new Controller();
+		
+		try {
+			boolean isClient = controller.isClient(textFieldUserLogIn, passwordFieldLogIn);
+			boolean isEmployee = controller.isEmployee(textFieldUserLogIn, passwordFieldLogIn);
+			
+			if (isClient) {
+				logInClient(frame, textFieldUserLogIn, passwordFieldLogIn);
+			} else if (isEmployee) {
+				logInEmployee(frame, textFieldUserLogIn, passwordFieldLogIn);
+			} else {
+				WindowUtils.errorPane("Login incorrecto.", "Error");
+				textFieldUserLogIn.setText("");
+				passwordFieldLogIn.setText("");
+				textFieldUserLogIn.requestFocus();
+			}
+		} catch (SQLException e) {
+			WindowUtils.errorPane("Error en el login.", "Error en la base de datos");
+			System.out.println(e);
+		} catch (Exception e) {
+			WindowUtils.errorPane("Error en el login.", "Error general");
+			System.out.println(e);
 		}
 	}
 

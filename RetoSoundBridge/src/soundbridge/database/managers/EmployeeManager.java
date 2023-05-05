@@ -252,7 +252,7 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 		}
 
 	}
-	public boolean askForEmployeeUsingIdAndPasswd(String username, String passwd) {
+	public boolean askForEmployeeUsingIdAndPasswd(String username, String passwd) throws SQLException, Exception {
 
 		String sql = "select * from employee where username=? and passwd=?";
 
@@ -278,9 +278,9 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 
 			}
 		} catch (SQLException sqle) {
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
+			throw sqle;
 		} catch (Exception e) {
-			System.out.println("Error generico - " + e.getMessage());
+			throw e;
 		} finally {
 
 			try {

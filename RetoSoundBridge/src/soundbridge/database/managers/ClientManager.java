@@ -291,7 +291,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	}
 
-	public boolean askForClientUsingIdAndPasswd(String username, String passwd) {
+	public boolean askForClientUsingIdAndPasswd(String username, String passwd) throws SQLException, Exception {
 
 		String sql = "select * from client where username=? and passwd=?";
 
@@ -317,9 +317,9 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 			}
 		} catch (SQLException sqle) {
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
+			throw sqle;
 		} catch (Exception e) {
-			System.out.println("Error generico - " + e.getMessage());
+			throw e;
 		} finally {
 
 			try {

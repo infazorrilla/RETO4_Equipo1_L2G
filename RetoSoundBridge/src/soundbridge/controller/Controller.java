@@ -25,89 +25,49 @@ import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Employee;
 import soundbridge.database.pojos.Play;
-import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.AutoCompleteTextField;
 
 public class Controller {
 
 	private ClientManager clientManager = null;
 	private EmployeeManager employeeManager = null;
-
-	public void checkLogin(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn) {
-		String username = textFieldUserLogIn.getText();
-		String typeOfUser = checkTypeOfUser(textFieldUserLogIn, passwordFieldLogIn);
-
-		if (typeOfUser.equals("employee")) {
-			WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Empleado de SoundBridge");
-			textFieldUserLogIn.setText("");
-			passwordFieldLogIn.setText("");
-		} else if (typeOfUser.equals("client")) {
-			WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Cliente de SoundBridge");
-			textFieldUserLogIn.setText("");
-			passwordFieldLogIn.setText("");
-		}
-
-	}
-
-	public String checkTypeOfUser(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn) {
-		String ret = null;
+	
+	public boolean isEmployee(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn) throws SQLException, Exception {
 		String username = textFieldUserLogIn.getText();
 		String passwd = passwordFieldLogIn.getText();
-
-		if (null == clientManager) {
-			clientManager = new ClientManager();
-		}
-
+		
 		if (null == employeeManager) {
 			employeeManager = new EmployeeManager();
 		}
-
-		boolean logInUser = clientManager.askForClientUsingIdAndPasswd(username, passwd);
-		boolean logInAdmin = employeeManager.askForEmployeeUsingIdAndPasswd(username, passwd);
-
-		if (!logInUser && logInAdmin) {
-			ret = "employee";
-		} else if (logInUser && !logInAdmin) {
-			ret = "client";
-		}
-
-		return ret;
+		
+		return employeeManager.askForEmployeeUsingIdAndPasswd(username, passwd);
 	}
-
-	public Client returnLoggedClient(String username) {
-		Client client = null;
-
+	
+	public boolean isClient(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn) throws SQLException, Exception {
+		String username = textFieldUserLogIn.getText();
+		String passwd = passwordFieldLogIn.getText();
+		
 		if (null == clientManager) {
 			clientManager = new ClientManager();
 		}
-
-		try {
-			client = clientManager.getClientByUsername(username);
-		} catch (SQLException sqle) {
-			WindowUtils.errorPane("No se ha encontrado el usuario.", "Error Cliente");
-		} catch (Exception e) {
-			WindowUtils.errorPane("No se ha encontrado el usuario.", "Error Cliente");
-		}
-
-		return client;
+		
+		return clientManager.askForClientUsingIdAndPasswd(username, passwd);
 	}
 
-	public Employee returnLoggedEmployee(String username) {
-		Employee employee = null;
+	public Client returnLoggedClient(String username) throws SQLException, Exception {
+		if (null == clientManager) {
+			clientManager = new ClientManager();
+		}
+		
+		return clientManager.getClientByUsername(username);
+	}
 
+	public Employee returnLoggedEmployee(String username) throws SQLException, Exception {
 		if (null == employeeManager) {
 			employeeManager = new EmployeeManager();
 		}
-
-		try {
-			employee = employeeManager.doSelectAllUsingUsername(username);
-		} catch (SQLException sqle) {
-			WindowUtils.errorPane("No se ha encontrado el usuario.", "Error Empleado");
-		} catch (Exception e) {
-			WindowUtils.errorPane("No se ha encontrado el usuario.", "Error Empleado");
-		}
-
-		return employee;
+		
+		return employeeManager.doSelectAllUsingUsername(username);
 	}
 
 	public void deleteAccount(Client client) throws SQLException, Exception {
