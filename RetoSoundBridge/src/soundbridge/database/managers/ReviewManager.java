@@ -226,6 +226,83 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 	}
 	
+	public ArrayList<Review> nonValidatedReviews() throws SQLException, Exception {
+		ArrayList<Review> ret = null;
+		String sql = "SELECT * FROM Review WHERE isValidated = false";
+
+		Connection connection = null;
+
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+
+			while (resultSet.next()) {
+
+				if (null == ret)
+					ret = new ArrayList<Review>();
+
+				Review review = new Review();
+
+				int idClientPP = resultSet.getInt("idClientPP");
+				int idAlbum = resultSet.getInt("idAlbum");
+				int stars = resultSet.getInt("stars");
+				String title = resultSet.getString("title");
+				String opinion = resultSet.getString("opinion");
+				boolean isValidated = resultSet.getBoolean("isValidated");
+
+				java.sql.Timestamp sqlReviewDate = resultSet.getTimestamp("reviewDate");
+				java.util.Date reviewDate = new java.util.Date(sqlReviewDate.getTime());
+
+				review.setClientPP(new ClientPP());
+				review.getClientPP().setId(idClientPP);
+				review.setAlbum(new Album());
+				review.getAlbum().setId(idAlbum);
+				review.setStars(stars);
+				review.setTitle(title);
+				review.setOpinion(opinion);
+				review.setReviewDate(reviewDate);
+				review.setValidated(isValidated);
+
+				ret.add(review);
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+
+			}
+			;
+		}
+
+		return ret;
+	}
+	
 	public ArrayList<Review> getReviewsByClientPP(ClientPP clientPP) throws SQLException, Exception{
 		ArrayList<Review> ret = null;
 		ArrayList<Review> reviews = (ArrayList<Review>) doSelectAll();
