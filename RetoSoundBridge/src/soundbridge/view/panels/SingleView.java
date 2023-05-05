@@ -131,6 +131,7 @@ public class SingleView extends JPanel {
 		tableSongs.setRowHeight(35);
 		tableSongs.setSelectionBackground(Color.black);
 		tableSongs.setBorder(null);
+		tableSongs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tableSongs.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 			private static final long serialVersionUID = 1852554938143426518L;
 

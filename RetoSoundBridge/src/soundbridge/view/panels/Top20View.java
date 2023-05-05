@@ -182,6 +182,7 @@ public class Top20View extends JPanel {
 		tableSongsTop20.getTableHeader().setBackground(Color.black);
 		tableSongsTop20.getTableHeader().setPreferredSize(new Dimension(scrollPaneTop20.getWidth(), 50));
 		tableSongsTop20.getTableHeader().setReorderingAllowed(false);
+		tableSongsTop20.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		TableCellRenderer renderer = tableSongsTop20.getTableHeader().getDefaultRenderer();
 		tableSongsTop20.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
