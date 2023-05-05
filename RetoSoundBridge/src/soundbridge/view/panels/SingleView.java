@@ -181,6 +181,7 @@ public class SingleView extends JPanel {
 
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, song.getCover());
+		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause.png");
 		addSongToTable(song, tableModelSongs);
 		adjustColumnsWidth(tableSongs);
 		addArtistOrGroupName(lblArtistName, artist, artGroup);
