@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
@@ -525,12 +526,13 @@ public class SignUp extends JPanel {
 		client.setPersonalId(textFieldPersonalIdSignUp.getText());
 		client.setGender(textFildGenderSignUp.getText());
 		client.setNationality(textFieldNationalitySignUp.getText());
-		client.setBirthDate(stringToDate(textFieldBirthDateSignUp.getText()));
 		client.setAddress(textFieldAdressSignUp.getText());
 		client.setTelephone(textFieldPhoneNumberSignUp.getText());
 		client.setEmail(textFieldEmailSignUp.getText());
 
 		try {
+			if (!textFieldBirthDateSignUp.getText().isBlank())
+				client.setBirthDate(stringToDate(textFieldBirthDateSignUp.getText()));
 
 			if (suscription == 1) {
 				clientManager.insert(client);
@@ -550,10 +552,14 @@ public class SignUp extends JPanel {
 						.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
+			} else {
+				WindowUtils.errorPane("Debe seleccionar un método de suscripción.", "Error");
 			}
+		} catch (ParseException e) {
+			WindowUtils.errorPane("Formato de fecha incorrecto.", "Error");
 
 		} catch (SQLException e) {
-			WindowUtils.errorPane("Debe rellenar todos los datos y ser mayor de 18 años.", "Error");
+			WindowUtils.errorPane("Debe rellenar todos los datos correctamente y ser mayor de 18 años.", "Error");
 
 		} catch (Exception e) {
 			WindowUtils.errorPane("Error en el registro.", "Error");
@@ -604,16 +610,9 @@ public class SignUp extends JPanel {
 		}
 	}
 
-	private Date stringToDate(String fecha) {
-		Date ret = null;
-		try {
-			String pattern = "dd/MM/yyyy";
-			SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.ENGLISH);
-			ret = formatter.parse(fecha);
-		} catch (Exception e) {
-			WindowUtils.errorPane("Formato de fecha incorrecto.", "Error");
-			ret = new Date();
-		}
-		return ret;
+	private Date stringToDate(String fecha) throws ParseException {
+		String pattern = "dd/MM/yyyy";
+		SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.ENGLISH);
+		return formatter.parse(fecha);
 	}
 }
