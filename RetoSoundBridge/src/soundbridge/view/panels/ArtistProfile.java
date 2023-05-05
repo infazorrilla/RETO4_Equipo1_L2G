@@ -14,8 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import soundbridge.database.managers.AlbumManager;
-import soundbridge.database.managers.SongManager;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
@@ -33,6 +32,7 @@ public class ArtistProfile extends JPanel {
 	private JPanel panelGridAlbums;
 	private JPanel panelGridSingles;
 	private JLabel lblSingles;
+	private Controller controller = null;
 
 	public ArtistProfile(JFrame frame, Client client, Artist artist) {
 		initialize(frame, client, artist);
@@ -117,7 +117,7 @@ public class ArtistProfile extends JPanel {
 		panelGridSingles.setOpaque(false);
 
 		doAddImagesToAlbums(frame, client, artist);
-		addImagesToSingles(frame, client, artist);
+		doAddImagesToSingles(frame, client, artist);
 	}
 
 	private void doAddImagesToAlbums(JFrame frame, Client client, Artist artist) {
@@ -129,11 +129,34 @@ public class ArtistProfile extends JPanel {
 			WindowUtils.errorPane("No se han podido cargar los álbumes.", "Error general");
 		}
 	}
+	
+	private void doAddImagesToSingles(JFrame frame, Client client, Artist artist) {
+		try {
+			addImagesToSingles(frame, client, artist);
+		} catch (SQLException e) {
+			WindowUtils.errorPane("No se han podido cargar los singles.", "Error en la base de datos");
+		} catch (Exception e) {
+			WindowUtils.errorPane("No se han podido cargar los singles.", "Error general");
+		}
+	}
+
+	private ArrayList<Album> getAlbums(Artist artist) throws SQLException, Exception {
+		if (null == controller)
+			controller = new Controller();
+		return controller.getAlbumsByArtist(artist);
+
+	}
+
+	private ArrayList<Song> getSongsOfAlbum(Album album, Artist artist) throws SQLException, Exception {
+		if (null == controller)
+			controller = new Controller();
+		return controller.getSongsByAlbumAndArtist(album, artist);
+
+	}
 
 	private void addImagesToAlbums(JFrame frame, Client client, Artist artist) throws SQLException, Exception {
-		AlbumManager albumManager = new AlbumManager();
 
-		albums = (ArrayList<Album>) albumManager.albumsByArtist(artist);
+		albums = getAlbums(artist);
 
 		if (null != albums) {
 			for (int i = 0; i < 5; i++) {
@@ -141,55 +164,87 @@ public class ArtistProfile extends JPanel {
 					Album album = albums.get(i);
 					String image = album.getCover();
 
-					JPanel panelAlbum = new JPanel();
-					panelGridAlbums.add(panelAlbum);
-					panelAlbum.setBounds(0, 0, 115, 115);
-					panelAlbum.setLayout(new BorderLayout(0, 0));
-					panelAlbum.setOpaque(false);
+					JPanel panelAlbum = createPanel();
 					panelAlbum.setToolTipText(album.getName() + " ("
 							+ (new SimpleDateFormat("yyyy")).format(album.getReleaseYear()) + ")");
+					panelGridAlbums.add(panelAlbum);
 
-					JLabel lblAlbum = new JLabel("");
-					panelAlbum.add(lblAlbum, BorderLayout.CENTER);
+					JLabel lblAlbum = createLabel(panelAlbum);
 
 					WindowUtils.addImage(panelAlbum, lblAlbum, image);
 
-					SongManager songManager = new SongManager();
-					ArrayList<Song> songsOfAlbum = songManager.getSongsByAlbumWithArtist(album, artist);
+					ArrayList<Song> songsOfAlbum = getSongsOfAlbum(album, artist);
 					album.setSongs(songsOfAlbum);
 
-					panelAlbum.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseClicked(MouseEvent e) {
-							frame.getContentPane().removeAll();
-							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client,
-									null, artist, null, album, null));
-							frame.revalidate();
-							frame.repaint();
-						}
-					});
-
-					panelAlbum.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+					createAlbumPanelListener(frame, panelAlbum, client, artist, album);
 
 				} else {
-					JPanel panelToFitGrid = new JPanel();
+					JPanel panelToFitGrid = createPanelToFitGrid();
 					panelGridAlbums.add(panelToFitGrid);
-					panelToFitGrid.setBounds(0, 0, 115, 115);
-					panelToFitGrid.setVisible(false);
 				}
 			}
 		}
 	}
 
-	private void addImagesToSingles(JFrame frame, Client client, Artist artist) {
-		SongManager songManager = new SongManager();
-		try {
-			singles = (ArrayList<Song>) songManager.getSinglesByArtist(artist);
-		} catch (SQLException e) {
-			WindowUtils.errorPane("No se han podido cargar los singles.", "Error en la base de datos");
-		} catch (Exception e) {
-			WindowUtils.errorPane("No se han podido cargar los singles.", "Error general");
-		}
+	private JPanel createPanelToFitGrid() {
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 115, 115);
+		panel.setVisible(false);
+
+		return panel;
+	}
+
+	private JPanel createPanel() {
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 115, 115);
+		panel.setLayout(new BorderLayout(0, 0));
+		panel.setOpaque(false);
+		panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		return panel;
+	}
+
+	private JLabel createLabel(JPanel panel) {
+		JLabel label = new JLabel("");
+		panel.add(label, BorderLayout.CENTER);
+		return label;
+
+	}
+
+	private void createAlbumPanelListener(JFrame frame, JPanel panel, Client client, Artist artist, Album album) {
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artist,
+						null, album, null));
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+	}
+
+	private ArrayList<Song> getSingles(Artist artist) throws SQLException, Exception {
+		if (null == controller)
+			controller = new Controller();
+		return controller.getSinglesByArtist(artist);
+	}
+
+	private void createSinglePanelListener(JPanel panel, JFrame frame, Client client, Artist artist, Song song) {
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SINGLE_VIEW, frame, client, null, artist,
+						null, null, song));
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+	}
+
+	private void addImagesToSingles(JFrame frame, Client client, Artist artist) throws SQLException, Exception {
+		singles = getSingles(artist);
 
 		if (null != singles) {
 			for (int i = 0; i < 5; i++) {
@@ -197,37 +252,20 @@ public class ArtistProfile extends JPanel {
 					Song song = singles.get(i);
 					String image = song.getCover();
 
-					JPanel panelSingle = new JPanel();
-					panelGridSingles.add(panelSingle);
-					panelSingle.setBounds(0, 0, 115, 115);
-					panelSingle.setLayout(new BorderLayout(0, 0));
-					panelSingle.setOpaque(false);
+					JPanel panelSingle = createPanel();
 					panelSingle.setToolTipText(
 							song.getName() + " (" + (new SimpleDateFormat("yyyy")).format(song.getReleaseYear()) + ")");
+					panelGridSingles.add(panelSingle);
 
-					JLabel lblSingle = new JLabel("");
-					panelSingle.add(lblSingle, BorderLayout.CENTER);
+					JLabel lblSingle = createLabel(panelSingle);
 
 					WindowUtils.addImage(panelSingle, lblSingle, image);
 
-					panelSingle.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseClicked(MouseEvent e) {
-							frame.getContentPane().removeAll();
-							frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.SINGLE_VIEW, frame, client,
-									null, artist, null, null, song));
-							frame.revalidate();
-							frame.repaint();
-						}
-					});
-
-					panelSingle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+					createSinglePanelListener(panelSingle, frame, client, artist, song);
 
 				} else {
-					JPanel panelToFitGrid = new JPanel();
+					JPanel panelToFitGrid = createPanelToFitGrid();
 					panelGridSingles.add(panelToFitGrid);
-					panelToFitGrid.setBounds(0, 0, 115, 115);
-					panelToFitGrid.setVisible(false);
 				}
 			}
 		} else {

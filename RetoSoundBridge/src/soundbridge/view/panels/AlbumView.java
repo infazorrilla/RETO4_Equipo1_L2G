@@ -33,7 +33,6 @@ import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
-import soundbridge.database.views.managers.AverageStarsManager;
 import soundbridge.database.views.pojos.AverageStars;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
@@ -188,12 +187,12 @@ public class AlbumView extends JPanel {
 		addArtistOrGroupName(lblArtistName, artist, artGroup);
 	}
 
-	private AverageStars getAverageStars(Album album) {
+	private AverageStars doGetAverageStars(Album album) {
 		AverageStars averageStars = null;
-		AverageStarsManager averageStarsManager = new AverageStarsManager();
-
+		Controller controller = new Controller();
+		
 		try {
-			averageStars = averageStarsManager.getAverageStarsByAlbum(album);
+			averageStars = controller.getAverageStars(album);
 		} catch (SQLException e) {
 			System.out.println(e);
 			WindowUtils.errorPane("No se ha podido añadir la valoración media.", "Error en la base de datos");
@@ -214,7 +213,7 @@ public class AlbumView extends JPanel {
 	}
 
 	private void addReviewStarsToLabel(Album album) {
-		AverageStars averageStars = getAverageStars(album);
+		AverageStars averageStars = doGetAverageStars(album);
 		lblStars.setText("" + averageStars.getAverage());
 	}
 
@@ -223,18 +222,22 @@ public class AlbumView extends JPanel {
 		if (songs != null) {
 			for (int i = 0; i < songs.size(); i++) {
 				Song song = songs.get(i);
-				String number = (i + 1) + ".";
-				String title = song.getName();
-				int totalSeconds = song.getDuration();
-				int minutes = (totalSeconds % 3600) / 60;
-				int seconds = totalSeconds % 60;
-				String secondsStr = String.format("%02d", seconds);
-				String duration = minutes + ":" + secondsStr;
-				String genre = song.getGenre();
-
-				model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });
+				addInfoToTable(song, model, i);		
 			}
 		}
+	}
+	
+	private void addInfoToTable(Song song, DefaultTableModel model, int i) {
+		String number = (i + 1) + ".";
+		String title = song.getName();
+		int totalSeconds = song.getDuration();
+		int minutes = (totalSeconds % 3600) / 60;
+		int seconds = totalSeconds % 60;
+		String secondsStr = String.format("%02d", seconds);
+		String duration = minutes + ":" + secondsStr;
+		String genre = song.getGenre();
+		
+		model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });
 	}
 
 	private void adjustColumnsWidth(JTable table) {

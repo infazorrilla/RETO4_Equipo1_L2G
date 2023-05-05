@@ -214,9 +214,9 @@ public class SingleView extends JPanel {
 		try {
 			controller.insertPlay(play);
 		} catch (SQLException e) {
-			WindowUtils.errorPane("Error en la reproducción.", "Error");
+			WindowUtils.errorPane("Error en la cuantificación de la reproducción.", "Error");
 		} catch (Exception e) {
-			WindowUtils.errorPane("Error en la reproducción.", "Error");
+			WindowUtils.errorPane("Error en la cuantificación de la reproducción.", "Error");
 		}
 
 	}

@@ -15,8 +15,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import soundbridge.controller.Controller;
-import soundbridge.database.managers.ArtGroupManager;
-import soundbridge.database.managers.ArtistManager;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
@@ -32,6 +30,7 @@ import java.awt.event.KeyEvent;
 public class Library extends JPanel {
 
 	private static final long serialVersionUID = -2776809426213236020L;
+	private Controller controller = null;
 
 	public Library(JFrame frame, Client client) {
 		initialize(frame, client);
@@ -158,13 +157,15 @@ public class Library extends JPanel {
 	}
 
 	private void doAddPossibilitiesToSearchBar(AutoCompleteTextField text) {
-		Controller controller = new Controller();
+		if (null == controller)
+			controller = new Controller();
+
 		try {
 			controller.addPossibilitiesToSearchBar(text);
 		} catch (SQLException sqle) {
-			WindowUtils.errorPane(sqle.toString(), "Error en la base de datos");
+			WindowUtils.errorPane("No se ha podido añadir el autocompletado.", "Error en la base de datos");
 		} catch (Exception e) {
-			WindowUtils.errorPane(e.toString(), "Error general");
+			WindowUtils.errorPane("No se ha podido añadir el autocompletado.", "Error general");
 		}
 	}
 
@@ -175,17 +176,13 @@ public class Library extends JPanel {
 		}
 	}
 
-	private Artist searchedArtist(String search) throws SQLException, Exception {
-		Artist ret = null;
-		ArtistManager artistManager = new ArtistManager();
-		ret = artistManager.getArtistByName(search);
-		return ret;
-	}
-
 	private Artist doSearchedArtist(String search) {
+		if (null == controller)
+			controller = new Controller();
+		
 		Artist artist = null;
 		try {
-			artist = searchedArtist(search);
+			artist = controller.searchedArtist(search);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se ha podido realizar la búsqueda.", "Error en la base de datos");
 		} catch (Exception e) {
@@ -195,17 +192,13 @@ public class Library extends JPanel {
 		return artist;
 	}
 
-	private ArtGroup searchedGroup(String search) throws SQLException, Exception {
-		ArtGroup ret = null;
-		ArtGroupManager artGroupManager = new ArtGroupManager();
-		ret = artGroupManager.getArtGroupByName(search);
-		return ret;
-	}
-
 	private ArtGroup doSearchedGroup(String search) {
+		if (null == controller)
+			controller = new Controller();
+		
 		ArtGroup group = null;
 		try {
-			group = searchedGroup(search);
+			group = controller.searchedGroup(search);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se ha podido realizar la búsqueda.", "Error en la base de datos");
 		} catch (Exception e) {

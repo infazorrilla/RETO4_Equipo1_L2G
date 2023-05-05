@@ -16,9 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import soundbridge.database.managers.ClientManager;
-import soundbridge.database.managers.ClientPManager;
-import soundbridge.database.managers.ClientPPManager;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -364,9 +362,7 @@ public class ChangeSubscription extends JPanel {
 	private void checkNewSubscription(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
 			JPanel panelPremiumIcon, JLabel lblPremiumIcon, JPanel panelBasicIcon, JLabel lblBasicIcon)
 			throws SQLException, Exception {
-		ClientManager clientManager = new ClientManager();
-		ClientPManager clientPManager = new ClientPManager();
-		ClientPPManager clientPPManager = new ClientPPManager();
+		Controller controller = new Controller();
 
 		if (actualSubscription.equalsIgnoreCase(newSubscription)) {
 			WindowUtils.errorPane("Ya posee ese nivel de suscripción.", "Error");
@@ -377,20 +373,20 @@ public class ChangeSubscription extends JPanel {
 					String bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
 							"img/icon/money.png");
 
-					clientManager.changeSubscription(client.getId(), bankNumber, actualSubscription, newSubscription);
+					controller.changeClientSubscription(client, bankNumber, actualSubscription, newSubscription);
 				} else if (actualSubscription.equalsIgnoreCase("premium")) {
-					ClientP clientP = clientPManager.getClientPById(client.getId());
-					clientManager.changeSubscription(client.getId(), clientP.getBankAccount(), actualSubscription,
+					ClientP clientP = controller.getPremiumClient(client);
+					controller.changeClientSubscription(client, clientP.getBankAccount(), actualSubscription,
 							newSubscription);
 				} else if (actualSubscription.equalsIgnoreCase("premium plus")) {
-					ClientPP clientPP = clientPPManager.getClientPPById(client.getId());
-					clientManager.changeSubscription(client.getId(), clientPP.getBankAccount(), actualSubscription,
+					ClientPP clientPP = controller.getPremiumPlusClient(client);
+					controller.changeClientSubscription(client, clientPP.getBankAccount(), actualSubscription,
 							newSubscription);
 				}
 
 				WindowUtils.confirmationPane("Su suscripción a cambiado a " + newSubscription + ".", "Actualización");
 
-				changedClient = clientManager.getClientByUsername(client.getUsername());
+				changedClient = controller.clientByUsername(client.getUsername());
 
 				addSubscriptionImages(changedClient, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon,
 						lblPremiumIcon, panelBasicIcon, lblBasicIcon);

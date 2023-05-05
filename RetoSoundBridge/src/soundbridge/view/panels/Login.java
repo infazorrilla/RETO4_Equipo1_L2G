@@ -168,7 +168,7 @@ public class Login extends JPanel {
 			controller = new Controller();
 
 		try {
-			setClient(controller.returnLoggedClient(username));
+			setClient(controller.clientByUsername(username));
 			if (client.isBlocked() == true) {
 				WindowUtils.messagePaneWithIcon("Su usuario está bloqueado.", "Usuario Bloqueado", "img/icon/lock.png");
 				textFieldUserLogIn.setText("");
@@ -201,7 +201,7 @@ public class Login extends JPanel {
 			controller = new Controller();
 
 		try {
-			setEmployee(controller.returnLoggedEmployee(username));
+			setEmployee(controller.employeeByUsername(username));
 			WindowUtils.confirmationPane("¡Bienvenid@ " + username + "!", "Cliente de SoundBridge");
 			textFieldUserLogIn.setText("");
 			passwordFieldLogIn.setText("");
