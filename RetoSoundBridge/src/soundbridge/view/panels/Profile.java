@@ -37,7 +37,7 @@ public class Profile extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-
+		
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(30, 30, 150, 150);
 		add(panelProfileIcon);
@@ -77,7 +77,7 @@ public class Profile extends JPanel {
 		JLabel lblUsername = new JLabel("@" + client.getUsername());
 		lblUsername.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 		lblUsername.setBounds(200, 90, 301, 27);
-		lblUsername.setForeground(Color.white);
+		lblUsername.setForeground(new Color(244, 135, 244));
 		add(lblUsername);
 
 		JButton btnLogOut = new JButton("Cerrar Sesión");
@@ -89,8 +89,8 @@ public class Profile extends JPanel {
 		});
 		btnLogOut.setBounds(200, 130, 113, 30);
 		add(btnLogOut);
-		btnLogOut.setForeground(Color.white);
-		btnLogOut.setFont(new Font("Lucida Grande", Font.ITALIC, 15));
+		btnLogOut.setForeground(Color.WHITE);
+		btnLogOut.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 15));
 		btnLogOut.setBorder(new LineBorder(Color.black, 0));
 		btnLogOut.setOpaque(false);
 		btnLogOut.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

@@ -1,8 +1,11 @@
 package soundbridge.view;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 import soundbridge.view.factory.PanelFactory;
 
@@ -15,6 +18,11 @@ public class MainFrame {
 	}
 
 	private void initialize() {
+		UIManager.put("ToolTip.background", Color.white);
+		UIManager.put("ToolTip.font", new Font("Lucida Grande", Font.PLAIN, 13));
+		UIManager.put("ToolTip.foreground", Color.black);
+		UIManager.put("ToolTip.border",new LineBorder(Color.BLACK,1));
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
