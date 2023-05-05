@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +36,7 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
 
 public class ManageClients extends JPanel {
 
@@ -42,6 +44,7 @@ public class ManageClients extends JPanel {
 	private JTable tableClients;
 	private DefaultTableModel modelClients = null;
 	private Controller controller = null;
+
 	public ManageClients(JFrame frame, Employee employee) {
 
 		initialize(frame, employee);
@@ -56,10 +59,10 @@ public class ManageClients extends JPanel {
 
 		JLabel lblTitle = new JLabel("Gestión de clientes");
 		lblTitle.setForeground(Color.WHITE);
-		lblTitle.setFont(new Font("Dialog", Font.PLAIN, 22));
+		lblTitle.setFont(new Font("Dialog", Font.BOLD, 22));
 		lblTitle.setBounds(380, 44, 250, 36);
 		add(lblTitle);
-
+	
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -77,16 +80,6 @@ public class ManageClients extends JPanel {
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
-		JButton btnSelectAllClients = new JButton("Lista de clientes");
-		btnSelectAllClients.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				showClients();
-			}
-
-		});
-		btnSelectAllClients.setBounds(139, 123, 156, 23);
-		add(btnSelectAllClients);
-
 		JScrollPane scrollPaneClients = new JScrollPane();
 		scrollPaneClients.setBounds(44, 179, 904, 383);
 		add(scrollPaneClients);
@@ -95,6 +88,7 @@ public class ManageClients extends JPanel {
 		scrollPaneClients.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPaneClients.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+
 			@Override
 			protected JButton createDecreaseButton(int orientation) {
 				return createZeroButton();
@@ -121,7 +115,6 @@ public class ManageClients extends JPanel {
 			}
 		});
 
-
 		tableClients = new JTable();
 		tableClients.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableClients.setDefaultEditor(Object.class, null);
@@ -129,7 +122,7 @@ public class ManageClients extends JPanel {
 		tableClients.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		Object[] columnsManagesClients = { "Nombre", "Apellido", "Género", "DNI", "Username", "Contraseña",
 				"Bloqueado" };
-		
+
 		tableClients.setShowGrid(false);
 		tableClients.setBackground(Color.black);
 		tableClients.setForeground(Color.white);
@@ -175,44 +168,28 @@ public class ManageClients extends JPanel {
 		modelClients.setColumnIdentifiers(columnsManagesClients);
 		tableClients.setModel(modelClients);
 
-		JButton btnBloqClient = new JButton("Bloquear cliente");
-		btnBloqClient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				blockUser();
+		JPanel panelGridList = new JPanel();
+		panelGridList.setBounds(0, 120, 1000, 40);
+		add(panelGridList);
+		panelGridList.setLayout(new GridLayout(1, 0, 0, 0));
 
+		JButton btnSelectAllClients = new JButton("Lista de todos los clientes");
+		panelGridList.add(btnSelectAllClients);
+		btnSelectAllClients.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showClients();
 			}
 
 		});
-		btnBloqClient.setBounds(139, 600, 143, 23);
-		add(btnBloqClient);
-
-		JButton btnDesBloqClient = new JButton("Desbloquear cliente");
-		btnDesBloqClient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (null == controller)
-					controller = new Controller();
-				
-				Client client = new Client();
-				
-				Client selectedClient = null;
-				try {
-					String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
-					client.setUsername(username);
-					selectedClient = controller.getClientByUsername(username);
-					selectedClient.setBlocked(false);
-					controller.updateClient(selectedClient);
-					showClients();
-				} catch (Exception e1) {
-					WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
-
-				}
-
-			}
-		});
-		btnDesBloqClient.setBounds(474, 600, 156, 23);
-		add(btnDesBloqClient);
+		btnSelectAllClients.setForeground(Color.white);
+		btnSelectAllClients.setFont(new Font("Dialog", Font.BOLD, 15));
+		btnSelectAllClients.setBackground(new Color(102, 0, 82));
+		btnSelectAllClients.setBorder(new LineBorder(Color.WHITE, 0));
+		btnSelectAllClients.setOpaque(true);
+		btnSelectAllClients.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JButton btnSelectBloqClients = new JButton("Lista de clientes bloqueados");
+		panelGridList.add(btnSelectBloqClients);
 		btnSelectBloqClients.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (null == controller)
@@ -244,11 +221,65 @@ public class ManageClients extends JPanel {
 				}
 			}
 		});
-		btnSelectBloqClients.setBounds(423, 123, 207, 23);
-		add(btnSelectBloqClients);
+		btnSelectBloqClients.setForeground(Color.white);
+		btnSelectBloqClients.setFont(new Font("Dialog", Font.BOLD, 15));
+		btnSelectBloqClients.setBackground(new Color(102, 0, 82));
+		btnSelectBloqClients.setBorder(new LineBorder(Color.WHITE, 0));
+		btnSelectBloqClients.setOpaque(true);
+		btnSelectBloqClients.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 
+		JPanel panelGridBlock = new JPanel();
+		panelGridBlock.setBounds(0, 595, 1000, 40);
+		add(panelGridBlock);
+		panelGridBlock.setLayout(new GridLayout(1, 0, 0, 0));
+
+		JButton btnBloqClient = new JButton("Bloquear cliente");
+		panelGridBlock.add(btnBloqClient);
+		btnBloqClient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				blockUser();
+			}
+
+		});
+		btnBloqClient.setForeground(Color.WHITE);
+		btnBloqClient.setFont(new Font("Dialog", Font.BOLD, 15));
+		btnBloqClient.setBackground(new Color(155, 155, 155));
+		btnBloqClient.setBorder(new LineBorder(Color.WHITE, 0));
+		btnBloqClient.setOpaque(true);
+		btnBloqClient.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		JButton btnDesBloqClient = new JButton("Desbloquear cliente");
+		panelGridBlock.add(btnDesBloqClient);
+		btnDesBloqClient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (null == controller)
+					controller = new Controller();
+
+				Client client = new Client();
+
+				Client selectedClient = null;
+				try {
+					String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
+					client.setUsername(username);
+					selectedClient = controller.getClientByUsername(username);
+					selectedClient.setBlocked(false);
+					controller.updateClient(selectedClient);
+					showClients();
+				} catch (Exception e1) {
+					WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
+
+				}
+
+			}
+		});
+		btnDesBloqClient.setForeground(Color.WHITE);
+		btnDesBloqClient.setFont(new Font("Dialog", Font.BOLD, 15));
+		btnDesBloqClient.setBackground(new Color(155, 155, 155));
+		btnDesBloqClient.setBorder(new LineBorder(Color.WHITE, 0));
+		btnDesBloqClient.setOpaque(true);
+		btnDesBloqClient.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
 	private void showClients() {
@@ -289,12 +320,11 @@ public class ManageClients extends JPanel {
 	}
 
 	private void blockUser() {
-		
+
 		if (null == controller)
 			controller = new Controller();
 		Client client = new Client();
-		
-		
+
 		try {
 			String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
 			client.setUsername(username);
@@ -304,12 +334,11 @@ public class ManageClients extends JPanel {
 			showClients();
 		} catch (SQLException e1) {
 			WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error en la base de datos");
-			
+
 		} catch (Exception e1) {
 			WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
-			
+
 		}
 
 	}
-
 }

@@ -38,22 +38,22 @@ public class EmployeeMenu extends JPanel {
 		lblTitle.setBounds(380, 44, 250, 36);
 		add(lblTitle);
 		
-		JPanel panelLogOutIcon = new JPanel();
-		panelLogOutIcon.setBounds(903, 45, 50, 50);
-		add(panelLogOutIcon);
-		panelLogOutIcon.setLayout(new BorderLayout(0, 0));
-		panelLogOutIcon.setOpaque(false);
-		panelLogOutIcon.addMouseListener(new MouseAdapter() {
+		JPanel panelProfileIcon = new JPanel();
+		panelProfileIcon.setBounds(903, 45, 50, 50);
+		add(panelProfileIcon);
+		panelProfileIcon.setLayout(new BorderLayout(0, 0));
+		panelProfileIcon.setOpaque(false);
+		panelProfileIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				logOut(frame);
+				goToProfile(frame, employee);
 			}
 		});
-		panelLogOutIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelLogOutIcon.setToolTipText("Cerrar sesión");
-		
-		JLabel lblLogOutIcon = new JLabel("");
-		panelLogOutIcon.add(lblLogOutIcon, BorderLayout.CENTER);
+		panelProfileIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelProfileIcon.setToolTipText("Ir a mi perfil.");
+
+		JLabel lblProfileIcon = new JLabel("");
+		panelProfileIcon.add(lblProfileIcon, BorderLayout.CENTER);
 
 		JLabel lblClientes = new JLabel("Clientes");
 		lblClientes.setForeground(Color.WHITE);
@@ -82,13 +82,13 @@ public class EmployeeMenu extends JPanel {
 		panelManageClients.add(lblManageClientsIcon, BorderLayout.CENTER);
 
 		WindowUtils.addImage(panelManageClients, lblManageClientsIcon, "img/icon/clients.png");
-		WindowUtils.addImage(panelLogOutIcon, lblLogOutIcon, "img/icon/off.png");
+		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 	}
 	
-	private void logOut(JFrame frame) {
+	private void goToProfile(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null));
+				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_PROFILE, frame, null, employee, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

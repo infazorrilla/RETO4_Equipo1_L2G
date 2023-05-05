@@ -439,7 +439,7 @@ public class UpdateClient extends JPanel {
 
 		if (isPasswdOk(passwd1, passwd2)) {
 			try {
-				controller.changePasswd(client, passwd1, passwd2);
+				controller.changePasswdClient(client, passwd1, passwd2);
 				WindowUtils.confirmationPane("Su contraseña se ha cambiado.", "Confirmación");
 			} catch (SQLException e) {
 				WindowUtils.errorPane("No se ha podido cambiar la contraseña.", "Error en la base de datos");

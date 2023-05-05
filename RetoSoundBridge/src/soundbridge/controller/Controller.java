@@ -145,7 +145,7 @@ public class Controller {
 		}
 	}
 
-	public void changePasswd(Client client, JPasswordField passwd1, JPasswordField passwd2)
+	public void changePasswdClient(Client client, JPasswordField passwd1, JPasswordField passwd2)
 			throws SQLException, Exception {
 		if (null == clientManager)
 			clientManager = new ClientManager();
@@ -153,6 +153,16 @@ public class Controller {
 		client.setPasswd(String.valueOf(passwd1.getPassword()));
 
 		clientManager.update(client);
+	}
+	
+	public void changePasswdEmployee(Employee employee, JPasswordField passwd1, JPasswordField passwd2)
+			throws SQLException, Exception {
+		if (null == employeeManager)
+			employeeManager = new EmployeeManager();
+
+		employee.setPasswd(String.valueOf(passwd1.getPassword()));
+
+		employeeManager.update(employee);
 	}
 
 	public void insertPlay(Play play) throws SQLException, Exception {

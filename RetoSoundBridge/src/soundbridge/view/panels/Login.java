@@ -188,10 +188,10 @@ public class Login extends JPanel {
 
 		} catch (SQLException e) {
 			WindowUtils.errorPane("Error en el login.", "Error en la base de datos");
-			System.out.println(e);
+			
 		} catch (Exception e) {
 			WindowUtils.errorPane("Error en el login.", "Error general");
-			System.out.println(e);
+			
 		}
 	}
 
