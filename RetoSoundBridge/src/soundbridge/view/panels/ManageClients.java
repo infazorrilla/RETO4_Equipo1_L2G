@@ -193,17 +193,17 @@ public class ManageClients extends JPanel {
 					controller = new Controller();
 				
 				Client client = new Client();
-				String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
-				client.setUsername(username);
-				Client selectedClient;
+				
+				Client selectedClient = null;
 				try {
-					
+					String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
+					client.setUsername(username);
 					selectedClient = controller.getClientByUsername(username);
 					selectedClient.setBlocked(false);
 					controller.updateClient(selectedClient);
 					showClients();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
+					WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
 
 				}
 
@@ -236,10 +236,10 @@ public class ManageClients extends JPanel {
 						}
 					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error en la base de datos");
 					e1.printStackTrace();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
+					WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
 					e1.printStackTrace();
 				}
 			}
@@ -271,10 +271,10 @@ public class ManageClients extends JPanel {
 						new String[] { nombre, apellido, genero, dNI, username, contrasena, bloqueado.toString() });
 			}
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error en la base de datos");
 			e1.printStackTrace();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
 			e1.printStackTrace();
 		}
 
@@ -293,19 +293,20 @@ public class ManageClients extends JPanel {
 		if (null == controller)
 			controller = new Controller();
 		Client client = new Client();
-		String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
-		client.setUsername(username);
+		
 		
 		try {
+			String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
+			client.setUsername(username);
 			Client selectedClient = controller.getClientByUsername(username);
 			selectedClient.setBlocked(true);
 			controller.updateClient(selectedClient);
 			showClients();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error en la base de datos");
 			
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
 			
 		}
 
