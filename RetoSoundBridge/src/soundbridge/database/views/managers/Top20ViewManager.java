@@ -73,7 +73,7 @@ public class Top20ViewManager {
 
 	public ArrayList<Song> selectViewTop20AndSongs() throws SQLException, Exception {
 		ArrayList<Song> ret = null;
-		String sql = "SELECT * FROM soundBridge.top20 JOIN song ON soundBridge.top20.name=song.name";
+		String sql = "SELECT * FROM soundBridge.top20 JOIN song ON soundBridge.top20.name=song.name ORDER BY plays DESC";
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
