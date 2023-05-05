@@ -296,14 +296,21 @@ public class Top20View extends JPanel {
 	}
 
 	private void playSelectedSong(Client client) {
-		if (isPlayerRunning)
-			this.stop();
+		
 
-		int index = tableSongsTop20.getSelectedRow();
-		Song song = top20songs.get(index);
-		this.play(song.getSource());
-		doInsertPlay(client, song);
-		panelPauseIcon.setVisible(true);
+		int indexx = tableSongsTop20.getSelectedColumn();
+		if (indexx == 0) {
+			addToFavourites();
+		}
+		if (indexx == 1 || indexx == 2 || indexx == 3 || indexx == 4) {
+			if (isPlayerRunning)
+				this.stop();
+			int index = tableSongsTop20.getSelectedRow();
+			Song song = top20songs.get(index);
+			this.play(song.getSource());
+			doInsertPlay(client, song);
+			panelPauseIcon.setVisible(true);
+		}
 	}
 
 	private void stopMusic() {
@@ -360,6 +367,10 @@ public class Top20View extends JPanel {
 
 	public void setTableSongsTop20(JTable tableSongsTop20) {
 		this.tableSongsTop20 = tableSongsTop20;
+	}
+
+	private void addToFavourites() {
+
 	}
 
 }

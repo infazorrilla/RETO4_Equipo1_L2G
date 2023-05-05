@@ -172,7 +172,7 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 			preparedStatement.setString(3, artist.getNationality());
 			preparedStatement.setString(4, artist.getGender());
 			preparedStatement.setDate(5, new java.sql.Date((artist.getBirthDate()).getTime()));
-
+			preparedStatement.setInt(6, artist.getId());
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException sqle) {

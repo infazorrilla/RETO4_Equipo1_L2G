@@ -144,10 +144,10 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 			preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setInt(1, artGroup.getId());
-			preparedStatement.setString(2, artGroup.getName());
-			preparedStatement.setString(13, artGroup.getDescription());
-			preparedStatement.setString(13, artGroup.getImage());
+			preparedStatement.setInt(4, artGroup.getId());
+			preparedStatement.setString(1, artGroup.getName());
+			preparedStatement.setString(2, artGroup.getDescription());
+			preparedStatement.setString(3, artGroup.getImage());
 
 			preparedStatement.executeUpdate();
 
