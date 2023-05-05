@@ -3,17 +3,24 @@ package soundbridge.view.panels;
 import java.awt.BorderLayout;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import soundbridge.controller.Controller;
 
@@ -80,18 +87,89 @@ public class ManageClients extends JPanel {
 		btnSelectAllClients.setBounds(139, 123, 156, 23);
 		add(btnSelectAllClients);
 
-		JScrollPane scrollPaneResumenCompra = new JScrollPane();
-		scrollPaneResumenCompra.setBounds(44, 179, 904, 383);
-		add(scrollPaneResumenCompra);
+		JScrollPane scrollPaneClients = new JScrollPane();
+		scrollPaneClients.setBounds(44, 179, 904, 383);
+		add(scrollPaneClients);
+		scrollPaneClients.setOpaque(false);
+		scrollPaneClients.getViewport().setOpaque(false);
+		scrollPaneClients.setBorder(BorderFactory.createEmptyBorder());
+
+		scrollPaneClients.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+			@Override
+			protected JButton createDecreaseButton(int orientation) {
+				return createZeroButton();
+			}
+
+			@Override
+			protected JButton createIncreaseButton(int orientation) {
+				return createZeroButton();
+			}
+
+			private JButton createZeroButton() {
+				JButton jbutton = new JButton();
+				jbutton.setPreferredSize(new Dimension(0, 0));
+				jbutton.setMinimumSize(new Dimension(0, 0));
+				jbutton.setMaximumSize(new Dimension(0, 0));
+				return jbutton;
+			}
+
+			@Override
+			protected void configureScrollBarColors() {
+				this.thumbColor = Color.black;
+				this.thumbHighlightColor = Color.WHITE;
+				this.trackColor = Color.BLACK;
+			}
+		});
+
 
 		tableClients = new JTable();
 		tableClients.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableClients.setDefaultEditor(Object.class, null);
-		scrollPaneResumenCompra.setViewportView(tableClients);
-		tableClients.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
-		scrollPaneResumenCompra.setViewportView(tableClients);
+		scrollPaneClients.setViewportView(tableClients);
+		tableClients.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		Object[] columnsManagesClients = { "Nombre", "Apellido", "Género", "DNI", "Username", "Contraseña",
 				"Bloqueado" };
+		
+		tableClients.setShowGrid(false);
+		tableClients.setBackground(Color.black);
+		tableClients.setForeground(Color.white);
+		tableClients.setSelectionForeground(new Color(244, 135, 244));
+		tableClients.setRowHeight(35);
+		tableClients.setSelectionBackground(Color.black);
+		tableClients.setBorder(null);
+		tableClients.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 5651737319882097189L;
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				if (isSelected || !isSelected) {
+					hasFocus = false;
+				}
+				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			}
+		});
+		tableClients.getTableHeader().setBackground(Color.black);
+		tableClients.getTableHeader().setPreferredSize(new Dimension(scrollPaneClients.getWidth(), 50));
+		tableClients.getTableHeader().setReorderingAllowed(false);
+		tableClients.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		TableCellRenderer renderer = tableClients.getTableHeader().getDefaultRenderer();
+		tableClients.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				JLabel lbl = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+						column);
+				lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+				lbl.setHorizontalAlignment(SwingConstants.LEFT);
+				lbl.setForeground(Color.white);
+				lbl.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+				return lbl;
+			}
+		});
 
 		modelClients = new DefaultTableModel();
 		modelClients.setColumnIdentifiers(columnsManagesClients);
