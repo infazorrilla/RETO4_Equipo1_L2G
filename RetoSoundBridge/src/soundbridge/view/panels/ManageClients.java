@@ -98,21 +98,22 @@ public class ManageClients extends JPanel {
 		JButton btnBloqClient = new JButton("Bloquear cliente");
 		btnBloqClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ClientManager clientmanager = new ClientManager();
-				Client client = new Client();
-				String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
-				client.setUsername(username);
+
 				try {
+					ClientManager clientmanager = new ClientManager();
+					Client client = new Client();
+					String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
+					client.setUsername(username);
 					Client selectedClient = clientmanager.getClientByUsername(username);
 					selectedClient.setBlocked(true);
 					clientmanager.update(selectedClient);
 					showClients();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					
 				}
 			}
 		});
@@ -122,20 +123,20 @@ public class ManageClients extends JPanel {
 		JButton btnDesBloqClient = new JButton("Desbloquear cliente");
 		btnDesBloqClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ClientManager clientmanager = new ClientManager();
-				Client client = new Client();
-				String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
-				client.setUsername(username);
-				Client selectedClient;
+				
 				try {
-
+					ClientManager clientmanager = new ClientManager();
+					Client client = new Client();
+					String username = (String) modelClients.getValueAt(tableClients.getSelectedRow(), 4);
+					client.setUsername(username);
+					Client selectedClient;
 					selectedClient = clientmanager.getClientByUsername(username);
 					selectedClient.setBlocked(false);
 					clientmanager.update(selectedClient);
 					showClients();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					
 				}
 
 			}
@@ -208,11 +209,11 @@ public class ManageClients extends JPanel {
 		}
 
 	}
-	
+
 	private void goBack(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee,
-				null, null, null, null));
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
