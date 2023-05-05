@@ -283,5 +283,8 @@ public class Controller {
 		ArtistManager artman = new ArtistManager();
 		return artman.selectArtistById(id);
 	}
-
+	public ArtGroup getGroupById(int id) throws SQLException, Exception {
+		ArtGroupManager artGroup = new ArtGroupManager();
+		return artGroup.selectGroupById(id);
+	}
 }

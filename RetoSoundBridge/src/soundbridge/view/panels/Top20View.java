@@ -1,6 +1,7 @@
 package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -23,14 +24,13 @@ import javax.swing.table.TableCellRenderer;
 
 import javazoom.jl.player.Player;
 import soundbridge.controller.Controller;
-import soundbridge.database.managers.ArtGroupManager;
-import soundbridge.database.managers.ArtistManager;
+
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
-import soundbridge.database.views.managers.Top20ViewManager;
+
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
@@ -157,7 +157,6 @@ public class Top20View extends JPanel {
 		tableSongsTop20.setDefaultEditor(Object.class, null);
 		scrollPaneTop20.setViewportView(tableSongsTop20);
 		tableSongsTop20.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		scrollPaneTop20.setViewportView(tableSongsTop20);
 		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "Artista", "" };
 
 		tableSongsTop20.setShowGrid(false);
@@ -248,8 +247,7 @@ public class Top20View extends JPanel {
 			e.printStackTrace();
 		}
 		if (top20songs != null) {
-			ArtGroupManager artGroup = new ArtGroupManager();
-			
+
 			if (null == controller)
 				controller = new Controller();
 
@@ -261,7 +259,7 @@ public class Top20View extends JPanel {
 					if (song.getArtist() != null)
 						artista = controller.getArtistById(song.getArtist().getId());
 					else
-						arttGroup = artGroup.selectGroupById(song.getArtGroup().getId());
+						arttGroup = controller.getGroupById(song.getArtGroup().getId());
 
 				} catch (SQLException e) {
 					System.out.println(e);
