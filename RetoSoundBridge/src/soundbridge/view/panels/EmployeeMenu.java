@@ -80,15 +80,13 @@ public class EmployeeMenu extends JPanel {
 
 		JLabel lblManageClientsIcon = new JLabel("");
 		panelManageClients.add(lblManageClientsIcon, BorderLayout.CENTER);
-
-		WindowUtils.addImage(panelManageClients, lblManageClientsIcon, "img/icon/clients.png");
-		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		
 		JPanel panelReviews = new JPanel();
 		panelReviews.setOpaque(false);
 		panelReviews.setBounds(108, 279, 100, 100);
 		add(panelReviews);
 		panelReviews.setLayout(new BorderLayout(0, 0));
+		panelReviews.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelReviews.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -108,6 +106,10 @@ public class EmployeeMenu extends JPanel {
 		lblReviews.setFont(new Font("Dialog", Font.PLAIN, 17));
 		lblReviews.setBounds(220, 315, 119, 29);
 		add(lblReviews);
+		
+		WindowUtils.addImage(panelManageClients, lblManageClientsIcon, "img/icon/clients.png");
+		WindowUtils.addImage(panelReviews, lblReviewIcon, "img/icon/review.png");
+		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 	}
 	
 	private void goToProfile(JFrame frame, Employee employee) {

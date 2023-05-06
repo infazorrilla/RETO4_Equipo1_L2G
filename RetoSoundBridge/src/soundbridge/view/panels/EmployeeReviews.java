@@ -126,9 +126,9 @@ public class EmployeeReviews extends JPanel {
 			}
 		});
 		panelGridList.add(btnValidate);
-		btnValidate.setForeground(Color.white);
+		btnValidate.setForeground(Color.BLACK);
 		btnValidate.setFont(new Font("Dialog", Font.BOLD, 15));
-		btnValidate.setBackground(new Color(42, 70, 33));
+		btnValidate.setBackground(new Color(104, 197, 111));
 		btnValidate.setBorder(new LineBorder(Color.WHITE, 0));
 		btnValidate.setOpaque(true);
 		btnValidate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -140,9 +140,9 @@ public class EmployeeReviews extends JPanel {
 			}
 		});
 		panelGridList.add(btnReject);
-		btnReject.setForeground(Color.white);
+		btnReject.setForeground(Color.WHITE);
 		btnReject.setFont(new Font("Dialog", Font.BOLD, 15));
-		btnReject.setBackground(new Color(69, 30, 26));
+		btnReject.setBackground(new Color(236, 64, 68));
 		btnReject.setBorder(new LineBorder(Color.WHITE, 0));
 		btnReject.setOpaque(true);
 		btnReject.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

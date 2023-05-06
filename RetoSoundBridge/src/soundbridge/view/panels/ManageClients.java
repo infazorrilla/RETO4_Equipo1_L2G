@@ -188,9 +188,9 @@ public class ManageClients extends JPanel {
 		btnSelectAllClients.setOpaque(true);
 		btnSelectAllClients.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		JButton btnSelectBloqClients = new JButton("Lista de clientes bloqueados");
-		panelGridList.add(btnSelectBloqClients);
-		btnSelectBloqClients.addActionListener(new ActionListener() {
+		JButton btnSelectBlockClients = new JButton("Lista de clientes bloqueados");
+		panelGridList.add(btnSelectBlockClients);
+		btnSelectBlockClients.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (null == controller)
 					controller = new Controller();
@@ -221,12 +221,12 @@ public class ManageClients extends JPanel {
 				}
 			}
 		});
-		btnSelectBloqClients.setForeground(Color.white);
-		btnSelectBloqClients.setFont(new Font("Dialog", Font.BOLD, 15));
-		btnSelectBloqClients.setBackground(new Color(102, 0, 82));
-		btnSelectBloqClients.setBorder(new LineBorder(Color.WHITE, 0));
-		btnSelectBloqClients.setOpaque(true);
-		btnSelectBloqClients.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSelectBlockClients.setForeground(Color.white);
+		btnSelectBlockClients.setFont(new Font("Dialog", Font.BOLD, 15));
+		btnSelectBlockClients.setBackground(new Color(102, 0, 82));
+		btnSelectBlockClients.setBorder(new LineBorder(Color.WHITE, 0));
+		btnSelectBlockClients.setOpaque(true);
+		btnSelectBlockClients.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 
@@ -235,24 +235,24 @@ public class ManageClients extends JPanel {
 		add(panelGridBlock);
 		panelGridBlock.setLayout(new GridLayout(1, 0, 0, 0));
 
-		JButton btnBloqClient = new JButton("Bloquear cliente");
-		panelGridBlock.add(btnBloqClient);
-		btnBloqClient.addActionListener(new ActionListener() {
+		JButton btnBlockClient = new JButton("Bloquear cliente");
+		panelGridBlock.add(btnBlockClient);
+		btnBlockClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				blockUser();
 			}
 
 		});
-		btnBloqClient.setForeground(Color.WHITE);
-		btnBloqClient.setFont(new Font("Dialog", Font.BOLD, 15));
-		btnBloqClient.setBackground(new Color(155, 155, 155));
-		btnBloqClient.setBorder(new LineBorder(Color.WHITE, 0));
-		btnBloqClient.setOpaque(true);
-		btnBloqClient.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnBlockClient.setForeground(Color.WHITE);
+		btnBlockClient.setFont(new Font("Dialog", Font.BOLD, 15));
+		btnBlockClient.setBackground(new Color(236, 64, 68));
+		btnBlockClient.setBorder(new LineBorder(Color.WHITE, 0));
+		btnBlockClient.setOpaque(true);
+		btnBlockClient.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		JButton btnDesBloqClient = new JButton("Desbloquear cliente");
-		panelGridBlock.add(btnDesBloqClient);
-		btnDesBloqClient.addActionListener(new ActionListener() {
+		JButton btnDesBlockClient = new JButton("Desbloquear cliente");
+		panelGridBlock.add(btnDesBlockClient);
+		btnDesBlockClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (null == controller)
 					controller = new Controller();
@@ -274,12 +274,12 @@ public class ManageClients extends JPanel {
 
 			}
 		});
-		btnDesBloqClient.setForeground(Color.WHITE);
-		btnDesBloqClient.setFont(new Font("Dialog", Font.BOLD, 15));
-		btnDesBloqClient.setBackground(new Color(155, 155, 155));
-		btnDesBloqClient.setBorder(new LineBorder(Color.WHITE, 0));
-		btnDesBloqClient.setOpaque(true);
-		btnDesBloqClient.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnDesBlockClient.setForeground(Color.BLACK);
+		btnDesBlockClient.setFont(new Font("Dialog", Font.BOLD, 15));
+		btnDesBlockClient.setBackground(new Color(104, 197, 111));
+		btnDesBlockClient.setBorder(new LineBorder(Color.WHITE, 0));
+		btnDesBlockClient.setOpaque(true);
+		btnDesBlockClient.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
 	private void showClients() {
