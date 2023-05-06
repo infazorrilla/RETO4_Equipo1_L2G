@@ -11,6 +11,7 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Album;
+import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Review;
 import soundbridge.utils.DBUtils;
@@ -152,7 +153,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "UPDATE Review SET stars = ?, title = ?, opinion = ?, reviewDate = ?, isValidaded = ? "
+			String sql = "UPDATE Review SET stars = ?, title = ?, opinion = ?, reviewDate = ?, isValidated = ? "
 					+ "where idClientPP = ? AND idAlbum = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
@@ -161,8 +162,8 @@ public class ReviewManager extends ManagerAbstract<Review> {
 			preparedStatement.setString(2, review.getTitle());
 			preparedStatement.setString(3, review.getOpinion());
 			preparedStatement.setDate(4, new java.sql.Date((review.getReviewDate()).getTime()));
-			preparedStatement.setInt(5, review.getClientPP().getId());
-			preparedStatement.setBoolean(6, review.isValidated());
+			preparedStatement.setBoolean(5, review.isValidated());
+			preparedStatement.setInt(6, review.getClientPP().getId());
 			preparedStatement.setInt(7, review.getAlbum().getId());
 
 			preparedStatement.executeUpdate();
@@ -228,7 +229,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 	
 	public ArrayList<Review> nonValidatedReviews() throws SQLException, Exception {
 		ArrayList<Review> ret = null;
-		String sql = "SELECT * FROM Review WHERE isValidated = false";
+		String sql = "SELECT * FROM Review WHERE isValidated = false ORDER BY reviewDate";
 
 		Connection connection = null;
 
@@ -300,6 +301,25 @@ public class ReviewManager extends ManagerAbstract<Review> {
 			;
 		}
 
+		return ret;
+	}
+	
+	public ArrayList<Review> nonValidatedReviewsWithAllInformation() throws SQLException, Exception{
+		ArrayList<Review> ret = nonValidatedReviews();
+		
+		AlbumManager albumManager = new AlbumManager();
+		ClientManager clientManager = new ClientManager();
+		
+		if (ret != null) {
+			for (Review review : ret) {
+				Album album = albumManager.albumById(review.getAlbum().getId());
+				review.setAlbum(album);
+				
+				Client client = clientManager.clientById(review.getClientPP().getId());
+				review.setClientPP((ClientPP) client);
+			}
+		}
+		
 		return ret;
 	}
 	

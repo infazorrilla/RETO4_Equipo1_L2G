@@ -304,4 +304,63 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		}
 		return ret;
 	}
+	
+	public Album albumById(int idAlbum) throws SQLException, Exception {
+		Album ret = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
+			String sql = "SELECT * FROM Album WHERE id = ?";
+			
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, idAlbum);
+			resultSet = preparedStatement.executeQuery();
+
+
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new Album();
+				
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String cover = resultSet.getString("cover");
+				java.sql.Date sqlreleaseYear = resultSet.getDate("releaseYear");
+				java.util.Date releaseYear = new java.util.Date(sqlreleaseYear.getTime());
+
+				ret.setId(id);
+				ret.setName(name);
+				ret.setCover(cover);
+				ret.setReleaseYear(releaseYear);
+				
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+		return ret;
+	}
 }

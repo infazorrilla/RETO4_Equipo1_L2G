@@ -401,5 +401,107 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 
 	}
+	
+	public Client clientById(int idClient) throws SQLException, Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Client ret = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			String sql = "SELECT * FROM Client WHERE id = ?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, idClient);
+
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+
+				if (null == ret)
+					ret = new Client();
+
+				String type = resultSet.getString("type");
+				if (type.equalsIgnoreCase("basic")) {
+					ret = new Client();
+				} else if (type.equalsIgnoreCase("premium")) {
+					ret = new ClientP();
+				} else if (type.equalsIgnoreCase("premium plus")) {
+					ret = new ClientPP();
+				}
+
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String lastName = resultSet.getString("lastName");
+				String nationality = resultSet.getString("nationality");
+				String gender = resultSet.getString("gender");
+
+				java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
+				java.util.Date birthDate = new java.util.Date(sqlBirthDate.getTime());
+
+				String personalId = resultSet.getString("personalId");
+				String telephone = resultSet.getString("telephone");
+				String email = resultSet.getString("email");
+				String address = resultSet.getString("address");
+				String username = resultSet.getString("username");
+				String passwd = resultSet.getString("passwd");
+				boolean isBlocked = resultSet.getBoolean("isBlocked");
+
+				ret.setId(id);
+				ret.setName(name);
+				ret.setLastName(lastName);
+				ret.setNationality(nationality);
+				ret.setGender(gender);
+				ret.setBirthDate(birthDate);
+				ret.setPersonalId(personalId);
+				ret.setTelephone(telephone);
+				ret.setEmail(email);
+				ret.setAddress(address);
+				ret.setUsername(username);
+				ret.setPasswd(passwd);
+				ret.setBlocked(isBlocked);
+
+				if (ret instanceof ClientP) {
+					ClientPManager clientPManager = new ClientPManager();
+					ClientP clientP = clientPManager.getClientPById(id);
+					if (clientP != null) {
+						((ClientP) ret).setBankAccount(clientP.getBankAccount());
+						((ClientP) ret).setSuscriptionDate(clientP.getSuscriptionDate());
+					}
+				} else if (ret instanceof ClientPP) {
+					ClientPPManager clientPPManager = new ClientPPManager();
+					ClientPP clientPP = clientPPManager.getClientPPById(id);
+					if (clientPP != null) {
+						((ClientPP) ret).setBankAccount(clientPP.getBankAccount());
+						((ClientPP) ret).setSuscriptionDate(clientPP.getSuscriptionDate());
+					}
+				}
+			}
+
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+		
+		return ret;
+
+	}
 
 }
