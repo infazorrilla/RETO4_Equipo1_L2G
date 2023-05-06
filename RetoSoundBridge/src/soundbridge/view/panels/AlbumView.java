@@ -55,7 +55,7 @@ public class AlbumView extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
 		panelPauseIcon = new JPanel();
 		panelPauseIcon.setBounds(115, 115, 100, 100);
 		add(panelPauseIcon);
@@ -95,7 +95,7 @@ public class AlbumView extends JPanel {
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver");
-		
+
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
@@ -110,6 +110,13 @@ public class AlbumView extends JPanel {
 		panelStarIcon.setLayout(new BorderLayout(0, 0));
 		add(panelStarIcon);
 		panelStarIcon.setOpaque(false);
+		panelStarIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelStarIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				goToReviews(frame, client, album, artist, artGroup);
+			}
+		});
 
 		JLabel lblStarIcon = new JLabel("");
 		panelStarIcon.add(lblStarIcon, BorderLayout.CENTER);
@@ -212,7 +219,7 @@ public class AlbumView extends JPanel {
 	private AverageStars doGetAverageStars(Album album) {
 		AverageStars averageStars = null;
 		Controller controller = new Controller();
-		
+
 		try {
 			averageStars = controller.getAverageStars(album);
 		} catch (SQLException e) {
@@ -244,11 +251,11 @@ public class AlbumView extends JPanel {
 		if (songs != null) {
 			for (int i = 0; i < songs.size(); i++) {
 				Song song = songs.get(i);
-				addInfoToTable(song, model, i);		
+				addInfoToTable(song, model, i);
 			}
 		}
 	}
-	
+
 	private void addInfoToTable(Song song, DefaultTableModel model, int i) {
 		String number = (i + 1) + ".";
 		String title = song.getName();
@@ -258,7 +265,7 @@ public class AlbumView extends JPanel {
 		String secondsStr = String.format("%02d", seconds);
 		String duration = minutes + ":" + secondsStr;
 		String genre = song.getGenre();
-		
+
 		model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });
 	}
 
@@ -298,7 +305,7 @@ public class AlbumView extends JPanel {
 		doInsertPlay(client, song);
 		panelPauseIcon.setVisible(true);
 	}
-	
+
 	private void stopMusic() {
 		if (isPlayerRunning)
 			this.stop();
@@ -345,5 +352,25 @@ public class AlbumView extends JPanel {
 		}
 
 		isPlayerRunning = false;
+	}
+
+	private void goToReviews(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+		if (lblStars.getText().equals("0.0")) {
+			WindowUtils.errorPane("No hay valoraciones.", "Error");
+		} else {
+			if (artist != null) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CLIENTS_REVIEWS, frame, client, null,
+						artist, null, album, null));
+				frame.revalidate();
+				frame.repaint();
+			} else if (artGroup != null) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CLIENTS_REVIEWS, frame, client, null,
+						null, artGroup, album, null));
+				frame.revalidate();
+				frame.repaint();
+			}
+		}
 	}
 }

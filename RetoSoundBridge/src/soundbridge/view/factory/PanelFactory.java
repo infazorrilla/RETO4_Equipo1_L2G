@@ -13,6 +13,7 @@ import soundbridge.database.pojos.Song;
 import soundbridge.view.panels.AlbumView;
 import soundbridge.view.panels.ArtistProfile;
 import soundbridge.view.panels.ChangeSubscription;
+import soundbridge.view.panels.ClientsReviews;
 import soundbridge.view.panels.EmployeeMenu;
 import soundbridge.view.panels.EmployeeProfile;
 import soundbridge.view.panels.EmployeeReviews;
@@ -44,6 +45,7 @@ public class PanelFactory {
 	public static final String SINGLE_VIEW = "SINGLE_VIEW";
 	public static final String EMPLOYEE_PROFILE = "EMPLOYEE_PROFILE";
 	public static final String EMPLOYEE_REVIEWS = "EMPLOYEE_REVIEWS";
+	public static final String CLIENTS_REVIEWS = "CLIENTS_REVIEWS";
 
 	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist, ArtGroup artGroup,
 			Album album, Song song) {
@@ -78,6 +80,8 @@ public class PanelFactory {
 			return new EmployeeProfile(frame, employee);
 		case EMPLOYEE_REVIEWS:
 			return new EmployeeReviews(frame, employee);
+		case CLIENTS_REVIEWS:
+			return new ClientsReviews(frame, client, album, artist, artGroup);
 		default:
 			return null;
 		}
