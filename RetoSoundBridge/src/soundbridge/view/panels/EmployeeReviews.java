@@ -75,7 +75,7 @@ public class EmployeeReviews extends JPanel {
 
 		JPanel panelGridReviews = new JPanel();
 		panelGridReviews.setBackground(Color.black);
-		panelGridReviews.setLayout(new GridLayout(0, 1, 0, 10));
+		panelGridReviews.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JPanel panelGridList = new JPanel();
 		panelGridList.setBounds(0, 105, 1000, 40);
@@ -84,7 +84,7 @@ public class EmployeeReviews extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane(panelGridReviews, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(50, 150, 900, 520);
+		scrollPane.setBounds(50, 150, 900, 500);
 		add(scrollPane);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);

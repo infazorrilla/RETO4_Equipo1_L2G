@@ -13,6 +13,8 @@ import soundbridge.database.pojos.Review;
 import soundbridge.utils.WindowUtils;
 
 import java.awt.BorderLayout;
+
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 
 public class ReviewPanel extends JPanel {
@@ -104,38 +106,39 @@ public class ReviewPanel extends JPanel {
 		JLabel lblStar5 = new JLabel("");
 		panelStar5.add(lblStar5, BorderLayout.CENTER);
 		labels.add(lblStar5);
-		
+
 		JPanel panelAlbumCover = new JPanel();
 		panelAlbumCover.setOpaque(false);
 		panelAlbumCover.setBounds(698, 40, 150, 150);
 		add(panelAlbumCover);
 		panelAlbumCover.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblAlbumCover = new JLabel("");
 		panelAlbumCover.add(lblAlbumCover, BorderLayout.CENTER);
-		
+
 		JLabel lblUsername = new JLabel("@" + review.getClientPP().getUsername());
 		lblUsername.setForeground(new Color(244, 135, 244));
 		lblUsername.setFont(new Font("Dialog", Font.PLAIN, 16));
 		lblUsername.setBounds(46, 84, 249, 30);
 		add(lblUsername);
-		
+
 		JLabel lblDate = new JLabel((new SimpleDateFormat("dd/MM/yyyy")).format(review.getReviewDate()));
 		lblDate.setForeground(Color.WHITE);
 		lblDate.setFont(new Font("Dialog", Font.PLAIN, 14));
 		lblDate.setBounds(46, 129, 249, 30);
 		add(lblDate);
-		
+
 		JLabel lblAlbum = new JLabel(review.getAlbum().getName());
 		lblAlbum.setForeground(Color.WHITE);
 		lblAlbum.setFont(new Font("Dialog", Font.PLAIN, 16));
 		lblAlbum.setBounds(46, 169, 249, 30);
 		add(lblAlbum);
-		
+
 		checkBox = new JCheckBox("");
 		checkBox.setBounds(835, 350, 25, 25);
 		add(checkBox);
-		
+		checkBox.setOpaque(false);
+
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(5, 5, 890, 390);
 		add(panelBackground);
