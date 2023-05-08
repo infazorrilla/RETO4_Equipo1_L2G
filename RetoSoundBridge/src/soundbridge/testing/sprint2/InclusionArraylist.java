@@ -12,7 +12,7 @@ import soundbridge.database.managers.ArtistManager;
 import soundbridge.database.pojos.Artist;
 
 public class InclusionArraylist {
-
+	
 	@Test
 	public void test() {
 
@@ -20,7 +20,6 @@ public class InclusionArraylist {
 		ArrayList<Artist> artists = null;
 		Artist artistt = null;
 		boolean correct = false;
-
 		try {
 
 			artists = (ArrayList<Artist>) artistman.selectAll();
@@ -42,7 +41,7 @@ public class InclusionArraylist {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertTrue(correct = true);
+		assertTrue(correct);
 	}
 
 }

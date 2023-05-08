@@ -67,11 +67,11 @@ public class FileManager {
 			}
 		}
 	}
-	public void read(String RUTA_FICHERO) throws IOException {
+	public String read(String RUTA_FICHERO) throws IOException {
 		File archivo = null;
 	      FileReader fr = null;
 	      BufferedReader br = null;
-
+	      String linea = null;
 	      try {
 	        
 	         archivo = new File (RUTA_FICHERO);
@@ -79,9 +79,11 @@ public class FileManager {
 	         br = new BufferedReader(fr);
 
 	         // Lectura del fichero
-	         String linea;
-	         while((linea=br.readLine())!=null)
-	            System.out.println(linea);
+	         
+	         
+	        	 linea=br.readLine();
+	         
+	            
 	      }
 	      catch(Exception e){
 	         e.printStackTrace();
@@ -97,6 +99,7 @@ public class FileManager {
 	            e2.printStackTrace();
 	         }
 	      }
+		return linea;
 	   }
 
 
