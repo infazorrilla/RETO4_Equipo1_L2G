@@ -24,9 +24,9 @@ public class InclusionArraylist {
 
 			artists = (ArrayList<Artist>) artistman.selectAll();
 			artistt = artists.get(0);
-			if (artistt.getName().equals("Dan") && artistt.getRole().equals("Cantante")) {
+			if (artistt.getName().equals("Dan") && artistt.getRole().equals("Cantante")&& artistt.getNationality().equals("Estados Unidos")) {
 				artistt = artists.get(1);
-				if (artistt.getName().equals("Wayne") && artistt.getRole().equals("Guitarrista")) {
+				if (artistt.getName().equals("Wayne") && artistt.getRole().equals("Guitarrista")&& artistt.getNationality().equals("Estados Unidos")) {
 					correct = true;
 				}
 			}
