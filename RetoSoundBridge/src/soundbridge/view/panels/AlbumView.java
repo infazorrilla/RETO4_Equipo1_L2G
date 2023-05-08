@@ -205,10 +205,27 @@ public class AlbumView extends JPanel {
 		tableModelSongs.setColumnCount(6);
 		tableModelSongs.setColumnIdentifiers(columnsSongs);
 		tableSongs.setModel(tableModelSongs);
+		
+		JPanel panelEditReview = new JPanel();
+		panelEditReview.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		panelEditReview.setOpaque(false);
+		panelEditReview.setBounds(410, 225, 20, 20);
+		add(panelEditReview);
+		panelEditReview.setLayout(new BorderLayout(0, 0));
+		panelEditReview.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		JLabel lblEditReviewIcon = new JLabel("");
+		panelEditReview.add(lblEditReviewIcon, BorderLayout.CENTER);
 
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 		WindowUtils.addImage(panelStarIcon, lblStarIcon, "img/icon/star.png");
 		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause.png");
+		WindowUtils.addImage(panelEditReview, lblEditReviewIcon, "img/icon/pen.png");
 		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, album.getCover());
 		addReviewStarsToLabel(album);
 		addSongsToTable(album, tableModelSongs);
