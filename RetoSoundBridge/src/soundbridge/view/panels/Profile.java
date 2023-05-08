@@ -219,7 +219,7 @@ public class Profile extends JPanel {
 		lblBirthDate.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblBirthDate);
 
-		JLabel lblBirthDateValue = new JLabel((new SimpleDateFormat("dd-MM-yyyy")).format(client.getBirthDate()));
+		JLabel lblBirthDateValue = new JLabel((new SimpleDateFormat("dd/MM/yyyy")).format(client.getBirthDate()));
 		lblBirthDateValue.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		lblBirthDateValue.setBounds(480, 400, 301, 20);
 		lblBirthDateValue.setForeground(Color.white);
