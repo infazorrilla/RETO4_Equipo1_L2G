@@ -14,7 +14,6 @@ import soundbridge.utils.WindowUtils;
 
 import java.awt.BorderLayout;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 
 public class ReviewPanel extends JPanel {
