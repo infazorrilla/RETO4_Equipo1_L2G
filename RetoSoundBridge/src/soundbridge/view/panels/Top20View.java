@@ -28,7 +28,11 @@ import soundbridge.controller.Controller;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientP;
+import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Play;
+import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 
 import soundbridge.utils.WindowUtils;
@@ -43,13 +47,14 @@ import java.awt.event.MouseEvent;
 
 public class Top20View extends JPanel {
 	private ArrayList<Song> top20songs;
+	
 	public JTable tableSongsTop20;
-	DefaultTableModel modelTop20Songs = null;
+	private DefaultTableModel modelTop20Songs = null;
 	private boolean isPlayerRunning = false;
 	private Player player;
 	private JPanel panelPauseIcon;
 	private Controller controller;
-
+	private int indexx = 0;
 	public Top20View(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
@@ -296,11 +301,13 @@ public class Top20View extends JPanel {
 	}
 
 	private void playSelectedSong(Client client) {
-		
 
-		int indexx = tableSongsTop20.getSelectedColumn();
+		indexx = tableSongsTop20.getSelectedColumn();
 		if (indexx == 0) {
-			addToFavourites();
+			if (null == controller)
+				controller = new Controller();
+			
+			controller.addToFavourites(client,top20songs,tableSongsTop20);
 		}
 		if (indexx == 1 || indexx == 2 || indexx == 3 || indexx == 4) {
 			if (isPlayerRunning)
@@ -321,7 +328,8 @@ public class Top20View extends JPanel {
 	}
 
 	private void doInsertPlay(Client client, Song song) {
-		Controller controller = new Controller();
+		if (null == controller)
+			controller = new Controller();
 		Play play = new Play();
 		play.setClient(client);
 		play.setSong(song);
@@ -369,8 +377,6 @@ public class Top20View extends JPanel {
 		this.tableSongsTop20 = tableSongsTop20;
 	}
 
-	private void addToFavourites() {
-
-	}
+	
 
 }

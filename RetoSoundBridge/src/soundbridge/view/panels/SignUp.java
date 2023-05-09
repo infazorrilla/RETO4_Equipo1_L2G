@@ -606,9 +606,10 @@ public class SignUp extends JPanel {
 					.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
-		} catch (SQLException e1) {
+		} catch (SQLException e) {
 			WindowUtils.errorPane("Error en el registro.", "Error en la base de datos");
 		} catch (Exception e1) {
+			
 			WindowUtils.errorPane("Error en el registro.", "Error general");
 		}
 	}
@@ -630,6 +631,7 @@ public class SignUp extends JPanel {
 			frame.revalidate();
 			frame.repaint();
 		} catch (Exception e) {
+			System.out.println(e);
 			WindowUtils.errorPane("Error en el registro.", "Error");
 		}
 	}

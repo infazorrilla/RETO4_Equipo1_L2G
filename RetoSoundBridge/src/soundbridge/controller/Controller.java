@@ -8,6 +8,7 @@ import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -17,8 +18,10 @@ import soundbridge.database.managers.ArtistManager;
 import soundbridge.database.managers.ClientManager;
 import soundbridge.database.managers.ClientPManager;
 import soundbridge.database.managers.ClientPPManager;
+import soundbridge.database.managers.ContainManager;
 import soundbridge.database.managers.EmployeeManager;
 import soundbridge.database.managers.PlayManager;
+import soundbridge.database.managers.PlaylistManager;
 import soundbridge.database.managers.SongManager;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
@@ -26,8 +29,10 @@ import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Employee;
 import soundbridge.database.pojos.Play;
+import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.managers.AverageStarsManager;
 import soundbridge.database.views.managers.Top20ViewManager;
@@ -265,7 +270,7 @@ public class Controller {
 
 	public void insertClientPP(ClientPP clientpp) throws SQLException, Exception {
 		ClientPPManager clientppManager = new ClientPPManager();
-		clientppManager.insert(clientpp);
+		clientppManager.insertReal(clientpp);
 	}
 
 	public void updateClient(Client client) throws SQLException, Exception {
@@ -296,5 +301,38 @@ public class Controller {
 	public ArtGroup getGroupById(int id) throws SQLException, Exception {
 		ArtGroupManager artGroup = new ArtGroupManager();
 		return artGroup.selectGroupById(id);
+	}
+	public void insertSongPLayList(Contain contain) throws SQLException, Exception {
+		ContainManager contMan = new ContainManager();
+		contMan.insert(contain);
+	}
+	public ArrayList<Playlist> getPlaylistsOfClientPPById(Client client) throws SQLException, Exception {
+		PlaylistManager playMan = new PlaylistManager();
+
+		return (ArrayList<Playlist>) playMan.getPlaylistsOfClientPPById(client);
+	}
+	public void addToFavourites(Client client,ArrayList<Song> songs,JTable table) {
+
+		if (client instanceof ClientP || client instanceof ClientPP) {
+			Controller controller = new Controller();
+			Contain contain = new Contain();
+			ArrayList<Playlist> songsById;
+			Playlist playlist = new Playlist();
+			Playlist playlistt = new Playlist();
+			Song song = new Song();
+			try {
+				songsById = controller.getPlaylistsOfClientPPById(client);
+				playlist = songsById.get(0);
+				playlistt.setId(playlist.getId());
+				contain.setPlaylist(playlistt);
+				song.setId(songs.get(table.getSelectedRow()).getId());
+				contain.setSong(song);
+				controller.insertSongPLayList(contain);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

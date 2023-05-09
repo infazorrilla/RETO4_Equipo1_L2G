@@ -106,7 +106,7 @@ public class ContainManager extends ManagerAbstract<Contain> {
 			statement = connection.createStatement();
 
 			String sql = "INSERT INTO Contain (playlistId, songId) VALUES ("
-					+ contain.getPlaylist().getId() + ", " +  contain.getSong().getId() + "')";
+					+ contain.getPlaylist().getId() + ", " +  contain.getSong().getId() + ")";
 
 			statement.executeUpdate(sql);
 
