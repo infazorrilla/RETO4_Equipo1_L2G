@@ -183,7 +183,7 @@ public class ReviewPanel extends JPanel {
 			for (int i = 0; i < 5; i++) {
 				JPanel panel = panels.get(i);
 				JLabel label = labels.get(i);
-				if (i != 3 || i != 4) {
+				if (i != 3 && i != 4) {
 					WindowUtils.addImage(panel, label, path + ".png");
 				} else {
 					WindowUtils.addImage(panel, label, path + "_grey.png");
