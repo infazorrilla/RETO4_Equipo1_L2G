@@ -319,5 +319,87 @@ public class SongManager extends ManagerAbstract<Song> {
 
 		return ret;
 	}
+	
+	public List<Song> selectFavouriteSongs() throws SQLException, Exception {
+		ArrayList<Song> ret = null;
+		String sql = "SELECT * FROM Song";
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new ArrayList<Song>();
+
+				Song song = new Song();
+
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+
+				java.sql.Date sqlReleaseYear = resultSet.getDate("releaseYear");
+				java.util.Date releaseYear = new java.util.Date(sqlReleaseYear.getTime());
+
+				int duration = resultSet.getInt("duration");
+				String cover = resultSet.getString("cover");
+				String lang = resultSet.getString("lang");
+				String source = resultSet.getString("source");
+				String genre = resultSet.getString("genre");
+				int idAlbum = resultSet.getInt("idAlbum");
+				int idArtist = resultSet.getInt("idArtist");
+				int idGroup = resultSet.getInt("idGroup");
+
+				song.setId(id);
+				song.setName(name);
+				song.setReleaseYear(releaseYear);
+				song.setDuration(duration);
+				song.setCover(cover);
+				song.setLang(lang);
+				song.setSource(source);
+				song.setGenre(genre);
+				if (idAlbum != 0) {
+					song.setAlbum(new Album());
+					song.getAlbum().setId(idAlbum);
+				}
+				if (idArtist != 0) {
+					song.setArtist(new Artist());
+					song.getArtist().setId(idArtist);
+				}
+				if (idGroup != 0) {
+					song.setArtGroup(new ArtGroup());
+					song.getArtGroup().setId(idGroup);
+				}
+				ret.add(song);
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+		return ret;
+	}
+
 
 }

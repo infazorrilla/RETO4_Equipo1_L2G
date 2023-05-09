@@ -168,10 +168,8 @@ public class ClientManagerTest {
 			if (clients != null) {
 				for (Client client : clients) {
 					if ((client.getUsername().equalsIgnoreCase("pedritolopez")))
-						isDeleted = true;
+						isDeleted = false;
 				}
-			} else {
-				isDeleted = true;
 			}
 
 		} catch (NotFoundException nfe) {

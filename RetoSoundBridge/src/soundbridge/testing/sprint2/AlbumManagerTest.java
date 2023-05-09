@@ -162,10 +162,8 @@ public class AlbumManagerTest {
 			if (albums != null) {
 				for (Album song : albums) {
 					if (song.getName().equalsIgnoreCase("Sensaciones"))
-						isDeleted = true;
+						isDeleted = false;
 				}
-			} else {
-				isDeleted = true;
 			}
 
 		} catch (NotFoundException nfe) {

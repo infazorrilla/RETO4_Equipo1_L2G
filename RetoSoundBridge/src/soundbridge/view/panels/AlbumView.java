@@ -31,6 +31,7 @@ import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.pojos.AverageStars;
@@ -46,6 +47,7 @@ public class AlbumView extends JPanel {
 	private boolean isPlayerRunning = false;
 	private JPanel panelPauseIcon;
 	private JTable tableSongs;
+	private JPanel panelEditReview;
 
 	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		initialize(frame, client, album, artist, artGroup);
@@ -205,12 +207,12 @@ public class AlbumView extends JPanel {
 		tableModelSongs.setColumnCount(6);
 		tableModelSongs.setColumnIdentifiers(columnsSongs);
 		tableSongs.setModel(tableModelSongs);
-		
-		JPanel panelEditReview = new JPanel();
+
+		panelEditReview = new JPanel();
 		panelEditReview.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				goToWriteReview(frame, client, album, artist, artGroup);
 			}
 		});
 		panelEditReview.setOpaque(false);
@@ -218,7 +220,7 @@ public class AlbumView extends JPanel {
 		add(panelEditReview);
 		panelEditReview.setLayout(new BorderLayout(0, 0));
 		panelEditReview.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		JLabel lblEditReviewIcon = new JLabel("");
 		panelEditReview.add(lblEditReviewIcon, BorderLayout.CENTER);
 
@@ -231,6 +233,7 @@ public class AlbumView extends JPanel {
 		addSongsToTable(album, tableModelSongs);
 		adjustColumnsWidth();
 		addArtistOrGroupName(lblArtistName, artist, artGroup);
+		showEditReviewPanel(client);
 	}
 
 	private AverageStars doGetAverageStars(Album album) {
@@ -389,5 +392,31 @@ public class AlbumView extends JPanel {
 				frame.repaint();
 			}
 		}
+	}
+
+	private void goToWriteReview(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+		if (artist != null) {
+			frame.getContentPane().removeAll();
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.WRITE_REVIEW, frame, client, null, artist,
+					null, album, null));
+			frame.revalidate();
+			frame.repaint();
+		} else if (artGroup != null) {
+			frame.getContentPane().removeAll();
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.WRITE_REVIEW, frame, client, null, null,
+					artGroup, album, null));
+			frame.revalidate();
+			frame.repaint();
+		}
+	}
+	
+	private void showEditReviewPanel(Client client) {
+		if (client instanceof ClientPP) {
+			panelEditReview.setVisible (true);
+		} else {
+			panelEditReview.setVisible (false);
+
+		}
+		
 	}
 }

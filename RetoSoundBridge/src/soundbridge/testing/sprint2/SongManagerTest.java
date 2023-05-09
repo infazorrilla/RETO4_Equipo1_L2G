@@ -172,10 +172,8 @@ public class SongManagerTest {
 			if (songs != null) {
 				for (Song song : songs) {
 					if (song.getName().equalsIgnoreCase("Qué Facilidad"))
-						isDeleted = true;
+						isDeleted = false;
 				}
-			} else {
-				isDeleted = true;
 			}
 
 		} catch (NotFoundException nfe) {

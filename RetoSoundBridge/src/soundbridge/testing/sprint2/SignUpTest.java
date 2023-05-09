@@ -125,11 +125,9 @@ public class SignUpTest {
 
 			if (clients != null) {
 				for (Client client : clients) {
-					if ((client.getUsername().equalsIgnoreCase("v")))
-						isDeleted = true;
+					if ((client.getUsername().equalsIgnoreCase("pedrolopez")))
+						isDeleted = false;
 				}
-			} else {
-				isDeleted = true;
 			}
 
 		} catch (NotFoundException nfe) {
