@@ -170,10 +170,8 @@ public class EmployeeManagerTest {
 			if (employees != null) {
 				for (Employee employee : employees) {
 					if ((employee.getUsername().equalsIgnoreCase("anitagarcia")))
-						isDeleted = true;
+						isDeleted = false;
 				}
-			} else {
-				isDeleted = true;
 			}
 
 		} catch (NotFoundException nfe) {

@@ -208,10 +208,8 @@ public class GetUsersFromDBTest {
 
 		} catch (SQLException sqle) {
 			thrown = true;
-			System.out.println(sqle);
 		} catch (Exception e) {
 			thrown = true;
-			System.out.println(e);
 		}
 
 		assertFalse(thrown);
