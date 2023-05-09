@@ -319,6 +319,46 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 		}
 		return ret;
 	}
+	
+	public void intertClintWithEmployee(String personalidClient )
+			throws SQLException, Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			String sql = "CALL intertClintWithEmployee(?)";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setString(1, personalidClient);
+
+
+			preparedStatement.execute();
+
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+	}
 
 
 }

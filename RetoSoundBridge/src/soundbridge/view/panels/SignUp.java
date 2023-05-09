@@ -2,7 +2,6 @@ package soundbridge.view.panels;
 
 import java.awt.Color;
 
-
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -29,7 +28,7 @@ import javax.swing.border.LineBorder;
 
 import soundbridge.controller.Controller;
 import soundbridge.database.managers.ClientManager;
-
+import soundbridge.database.managers.EmployeeManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -428,7 +427,7 @@ public class SignUp extends JPanel {
 
 		JPanel panelSuscriptionP = new JPanel();
 		panelSuscriptionP.setOpaque(false);
-		
+
 		panelSuscriptionP.setBounds(550, 169, 150, 150);
 		add(panelSuscriptionP);
 		panelSuscriptionP.setLayout(new BorderLayout(0, 0));
@@ -437,7 +436,7 @@ public class SignUp extends JPanel {
 		panelSuscriptionP.add(lblSuscription);
 
 		JPanel panelSuscriptionPP = new JPanel();
-		
+
 		panelSuscriptionPP.setOpaque(false);
 		panelSuscriptionPP.setBounds(745, 169, 150, 150);
 		add(panelSuscriptionPP);
@@ -531,15 +530,16 @@ public class SignUp extends JPanel {
 
 	private void registerUser(JFrame frame) {
 		Client client = null;
+		EmployeeManager empMan = new EmployeeManager();
 		if (null == controller)
 			controller = new Controller();
-		
 
 		if (suscription == 1)
 			client = new ClientP();
 		else if (suscription == 2)
 			client = new ClientPP();
 		else
+
 			client = new Client();
 
 		client.setName(textFildNameSignUp.getText());
@@ -558,17 +558,17 @@ public class SignUp extends JPanel {
 				client.setBirthDate(stringToDate(textFieldBirthDateSignUp.getText()));
 			controller.insertClient(client);
 			if (suscription == 1) {
-				
+
 				bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
 						"img/icon/money.png");
 				registerUserP(frame);
 			} else if (suscription == 2) {
-				
+
 				bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
 						"img/icon/money.png");
 				registerUserPP(frame);
 			} else if (suscription == 3) {
-				
+
 				WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
@@ -617,7 +617,7 @@ public class SignUp extends JPanel {
 		ClientPP clientpp = new ClientPP();
 		if (null == controller)
 			controller = new Controller();
-		
+
 		try {
 			Client client = controller.getClientByUsername(textFildUsernameSignUp.getText());
 			clientpp.setId(client.getId());
