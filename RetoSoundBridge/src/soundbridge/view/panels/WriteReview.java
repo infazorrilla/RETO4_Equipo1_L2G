@@ -10,6 +10,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -20,10 +21,13 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import soundbridge.database.managers.ReviewManager;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Review;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
@@ -31,29 +35,30 @@ import soundbridge.view.factory.PanelFactory;
 public class WriteReview extends JPanel {
 
 	private static final long serialVersionUID = 8019879665852364145L;
-	
+
 	private ArrayList<JPanel> panels = null;
 	private ArrayList<JLabel> labels = null;
 	private int selectedStars = 0;
+	private Review previousReview = null;
 
-	public WriteReview (JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+	public WriteReview(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		panels = new ArrayList<JPanel>();
 		labels = new ArrayList<JLabel>();
-		initialize (frame, client, album, artist, artGroup);
+		initialize(frame, client, album, artist, artGroup);
 	}
-	
-	private void initialize (JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+
+	private void initialize(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
 		JLabel lblTitle = new JLabel("Mi reseña");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setForeground(Color.WHITE);
 		lblTitle.setFont(new Font("Dialog", Font.BOLD, 22));
 		lblTitle.setBounds(365, 44, 300, 36);
 		add(lblTitle);
-		
+
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -67,11 +72,10 @@ public class WriteReview extends JPanel {
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver");
-		
+
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
-		
 		JTextArea textAreaOpinion = new JTextArea();
 		textAreaOpinion.setBounds(50, 328, 900, 190);
 		add(textAreaOpinion);
@@ -93,13 +97,13 @@ public class WriteReview extends JPanel {
 				textAreaOpinion.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		
+
 		TextPrompt placeholderOpinion = new TextPrompt("Escribe tú opinión...", textAreaOpinion);
 		placeholderOpinion.setVerticalAlignment(SwingConstants.TOP);
 		placeholderOpinion.changeAlpha(0.8f);
 		placeholderOpinion.changeStyle(Font.ITALIC);
 		placeholderOpinion.setHorizontalAlignment(SwingConstants.LEFT);
-		
+
 		JTextArea textAreaTitle = new JTextArea();
 		textAreaTitle.setWrapStyleWord(true);
 		textAreaTitle.setOpaque(false);
@@ -121,12 +125,12 @@ public class WriteReview extends JPanel {
 				textAreaTitle.setBorder(new LineBorder(Color.WHITE, 2));
 			}
 		});
-		
+
 		TextPrompt placeholderTitle = new TextPrompt("Título", textAreaTitle);
 		placeholderTitle.changeAlpha(0.8f);
 		placeholderTitle.changeStyle(Font.ITALIC);
 		placeholderTitle.setHorizontalAlignment(SwingConstants.LEFT);
-		
+
 		JPanel panelStar1 = new JPanel();
 		panelStar1.setFont(new Font("Dialog", Font.BOLD, 16));
 		panelStar1.addMouseListener(new MouseAdapter() {
@@ -229,11 +233,11 @@ public class WriteReview extends JPanel {
 		lblUsername.setFont(new Font("Dialog", Font.BOLD, 16));
 		lblUsername.setBounds(234, 252, 249, 30);
 		add(lblUsername);
-		
+
 		JButton btnSend = new JButton("Enviar");
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				sendReview(album, client, textAreaTitle, textAreaOpinion);
 			}
 		});
 		btnSend.setBounds(402, 571, 200, 40);
@@ -244,15 +248,17 @@ public class WriteReview extends JPanel {
 		btnSend.setBorder(new LineBorder(new Color(244, 135, 244), 2));
 		btnSend.setOpaque(true);
 		btnSend.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-				
-						JLabel lblAlbumCover = new JLabel("");
-						panelAlbumCover.add(lblAlbumCover, BorderLayout.CENTER);
-						WindowUtils.addImage(panelAlbumCover, lblAlbumCover, album.getCover());
+
+		JLabel lblAlbumCover = new JLabel("");
+		panelAlbumCover.add(lblAlbumCover, BorderLayout.CENTER);
+		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, album.getCover());
+		checkPreviousReview(client, album);
+		addPreviousReview(textAreaTitle, textAreaOpinion);
 		showStars();
 	}
-	
+
 	private void goBack(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
@@ -262,13 +268,13 @@ public class WriteReview extends JPanel {
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null,
-					artGroup, album, null));
+			frame.getContentPane().add(
+					PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, artGroup, album, null));
 			frame.revalidate();
 			frame.repaint();
 		}
 	}
-	
+
 	private void showStars() {
 		String path = "img/icon/star";
 
@@ -336,6 +342,76 @@ public class WriteReview extends JPanel {
 				WindowUtils.addImage(panel, label, path + ".png");
 			}
 			break;
+		}
+	}
+
+	private void checkPreviousReview(Client client, Album album) {
+		ReviewManager reviewManager = new ReviewManager();
+		try {
+			previousReview = reviewManager.getReviewByClientPPAndAlbum((ClientPP) client, album);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void addPreviousReview(JTextArea title, JTextArea opinion) {
+		if (previousReview != null) {
+			title.setText(previousReview.getTitle());
+			opinion.setText(previousReview.getOpinion());
+			selectedStars = previousReview.getStars();
+		}
+	}
+
+	private boolean isReviewCorrect(JTextArea title, JTextArea opinion) {
+		if (title.getText().isBlank() || opinion.getText().isBlank() || selectedStars == 0)
+			return false;
+		else
+			return true;
+	}
+
+	private void sendReview(Album album, Client client, JTextArea title, JTextArea opinion) {
+		ReviewManager reviewManager = new ReviewManager();
+		if (isReviewCorrect(title, opinion)) {
+			if (previousReview != null) {
+				previousReview.setOpinion(opinion.getText());
+				previousReview.setTitle(title.getText());
+				previousReview.setStars(selectedStars);
+				previousReview.setValidated(false);
+				try {
+					reviewManager.update(previousReview);
+					WindowUtils.confirmationPane("Su reseña ha sido actualizada.", "Confirmación");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				Review newReview = new Review();
+				newReview.setAlbum(album);
+				newReview.setClientPP((ClientPP) client);
+				newReview.setOpinion(opinion.getText());
+				newReview.setTitle(title.getText());
+				newReview.setStars(selectedStars);
+				try {
+					reviewManager.insert(newReview);
+					WindowUtils.confirmationPane("Su reseña ha sido enviada.", "Confirmación");
+					checkPreviousReview(client, album);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} else {
+			WindowUtils.errorPane("Debe rellenar los campos y seleccionar una valoración.", "Error");
 		}
 	}
 }

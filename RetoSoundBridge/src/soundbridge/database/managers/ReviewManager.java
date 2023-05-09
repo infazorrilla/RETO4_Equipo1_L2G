@@ -417,22 +417,74 @@ public class ReviewManager extends ManagerAbstract<Review> {
 		return ret;
 	}
 	
-	public ArrayList<Review> getReviewsByClientPP(ClientPP clientPP) throws SQLException, Exception{
-		ArrayList<Review> ret = null;
-		ArrayList<Review> reviews = (ArrayList<Review>) doSelectAll();
-		
-		if (reviews != null) {
-			for (Review review : reviews) {
-				if (review.getClientPP().getId() == clientPP.getId()) {
-					if (ret == null) {
-						ret = new ArrayList<Review>();
-					}
-					
-					ret.add(review);
-				}
+	public Review getReviewByClientPPAndAlbum(ClientPP clientPP, Album album) throws SQLException, Exception {
+		Review ret = null;
+		String sql = "SELECT * FROM Review WHERE idClientPP = ? && idAlbum = ?";
+
+		Connection connection = null;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, clientPP.getId());
+			preparedStatement.setInt(2, album.getId());
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+
+				if (null == ret)
+					ret = new Review();
+				
+				int stars = resultSet.getInt("stars");
+				String title = resultSet.getString("title");
+				String opinion = resultSet.getString("opinion");
+				boolean isValidated = resultSet.getBoolean("isValidated");
+
+				java.sql.Timestamp sqlReviewDate = resultSet.getTimestamp("reviewDate");
+				java.util.Date reviewDate = new java.util.Date(sqlReviewDate.getTime());
+
+				ret.setClientPP(clientPP);
+				ret.setAlbum(album);
+				ret.setStars(stars);
+				ret.setTitle(title);
+				ret.setOpinion(opinion);
+				ret.setReviewDate(reviewDate);
+				ret.setValidated(isValidated);
 			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+
+			}
+			;
 		}
-		
+
 		return ret;
 	}
 
