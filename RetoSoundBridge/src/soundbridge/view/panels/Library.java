@@ -146,24 +146,43 @@ public class Library extends JPanel {
 		lblFavourites.setForeground(Color.white);
 		lblFavourites.setBounds(230, 295, 115, 27);
 		add(lblFavourites);
+		
+		JPanel panelImagePlus = new JPanel();
+		panelImagePlus.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				WindowUtils.createPlaylistWithIcon("Titulo de la playlist", "Descripción de la playlist", TOOL_TIP_TEXT_KEY, null);
+			}
+		});
+		add(panelImagePlus);
+		panelImagePlus.setBounds(823, 166, 50, 40);
+		panelImagePlus.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblPlusIcon = new JLabel("       +");
+		lblPlusIcon.setForeground(new Color(255, 255, 255));
+		panelImagePlus.add(lblPlusIcon, BorderLayout.CENTER);
+		
+		WindowUtils.addImage(panelTop20, lblTop20Img, "img/icon/top_icon.png");
+		WindowUtils.addImage(panelFavourites, lblFavouritesImg, "img/icon/fav_icon.png");
+		doAddPossibilitiesToSearchBar(searchBar);
+		showFavourites(client, panelFavourites, lblFavourites);
 
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
-		panelBackground.setLayout(new BorderLayout(0, 0));
+		panelBackground.setLayout(null);
 
 		JLabel lblBackground = new JLabel("");
-		panelBackground.add(lblBackground, BorderLayout.CENTER);
+		lblBackground.setBounds(0, 0, 1000, 672);
+		panelBackground.add(lblBackground);
 		
 		panelFavourites.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelFavourites.setToolTipText("Ir a canciones favoritas.");
 
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
-		WindowUtils.addImage(panelTop20, lblTop20Img, "img/icon/top_icon.png");
-		WindowUtils.addImage(panelFavourites, lblFavouritesImg, "img/icon/fav_icon.png");
-		doAddPossibilitiesToSearchBar(searchBar);
-		showFavourites(client, panelFavourites, lblFavourites);
+		
+		
 	}
 
 	private void doAddPossibilitiesToSearchBar(AutoCompleteTextField text) {
