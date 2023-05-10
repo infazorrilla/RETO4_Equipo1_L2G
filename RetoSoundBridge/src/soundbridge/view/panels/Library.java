@@ -103,8 +103,8 @@ public class Library extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.TOP20VIEW, frame, client, null, null, null, null, null));
+				frame.getContentPane().add(
+						PanelFactory.getJPanel(PanelFactory.TOP20VIEW, frame, client, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -125,6 +125,13 @@ public class Library extends JPanel {
 		add(lblTop20);
 
 		JPanel panelFavourites = new JPanel();
+		panelFavourites.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				goToFvourites(frame, client);
+			}
+
+		});
 		panelFavourites.setBounds(230, 170, 115, 115);
 		add(panelFavourites);
 		panelFavourites.setLayout(new BorderLayout(0, 0));
@@ -147,6 +154,9 @@ public class Library extends JPanel {
 
 		JLabel lblBackground = new JLabel("");
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
+		
+		panelFavourites.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelFavourites.setToolTipText("Ir a canciones favoritas.");
 
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
@@ -179,7 +189,7 @@ public class Library extends JPanel {
 	private Artist doSearchedArtist(String search) {
 		if (null == controller)
 			controller = new Controller();
-		
+
 		Artist artist = null;
 		try {
 			artist = controller.searchedArtist(search);
@@ -195,7 +205,7 @@ public class Library extends JPanel {
 	private ArtGroup doSearchedGroup(String search) {
 		if (null == controller)
 			controller = new Controller();
-		
+
 		ArtGroup group = null;
 		try {
 			group = controller.searchedGroup(search);
@@ -222,17 +232,26 @@ public class Library extends JPanel {
 
 	private void goToArtistProfile(JFrame frame, Client client, Artist artist) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null));
+		frame.getContentPane().add(
+				PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
 
 	private void goToGroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null, artGroup, null, null));
+		frame.getContentPane().add(
+				PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null, artGroup, null, null));
 		frame.revalidate();
 		frame.repaint();
+	}
+
+	private void goToFvourites(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.FAVOURITE_SONGS, frame, client, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+
 	}
 }

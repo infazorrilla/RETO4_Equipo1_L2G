@@ -2,6 +2,7 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -28,11 +29,9 @@ import soundbridge.controller.Controller;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
-import soundbridge.database.pojos.ClientP;
-import soundbridge.database.pojos.ClientPP;
-import soundbridge.database.pojos.Contain;
+
 import soundbridge.database.pojos.Play;
-import soundbridge.database.pojos.Playlist;
+
 import soundbridge.database.pojos.Song;
 
 import soundbridge.utils.WindowUtils;

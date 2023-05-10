@@ -1,6 +1,7 @@
 package soundbridge.database.managers;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
+import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.DBUtils;
 
@@ -319,7 +321,7 @@ public class SongManager extends ManagerAbstract<Song> {
 
 		return ret;
 	}
-	
+
 	public List<Song> selectFavouriteSongs() throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 		String sql = "SELECT * FROM Song";
@@ -331,6 +333,7 @@ public class SongManager extends ManagerAbstract<Song> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
+			
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new ArrayList<Song>();
@@ -401,5 +404,159 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	public ArrayList<Song> selectFavouriteSongOfClientPP(Client client) throws SQLException, Exception {
+		ArrayList<Song> ret = null;
+		String sql = "select s.id,s.name,s.duration,s.source,s.genre,s.lang,s.idartist,s.idalbum,s.idGroup "
+				+ "from contain c join playlist p on p.id=c.playlistid join song s on s.id=c.songid join clientpp cp on cp.idClient=p.idclientpp "
+				+ "where p.name='Favoritos' and cp.idClient= ? group by p.name,s.name";
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, client.getId());
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new ArrayList<Song>();
+
+				Song song = new Song();
+
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				int duration = resultSet.getInt("duration");
+				String source = resultSet.getString("source");
+				String genre = resultSet.getString("genre");
+				String lang = resultSet.getString("lang");
+				// int idAlbum = resultSet.getInt("idAlbum");
+				int idArtist = resultSet.getInt("idArtist");
+				int idGroup = resultSet.getInt("idGroup");
+
+				if (idArtist != 0) {
+					song.setArtist(new Artist());
+					song.getArtist().setId(idArtist);
+				}
+				if (idGroup != 0) {
+					song.setArtGroup(new ArtGroup());
+					song.getArtGroup().setId(idGroup);
+				}
+
+				song.setId(id);
+				song.setName(name);
+				song.setDuration(duration);
+				song.setSource(source);
+				song.setGenre(genre);
+				song.setLang(lang);
+				// song.setAlbum();
+				// song.setArtGroup();
+				ret.add(song);
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+		return ret;
+	}
+	public ArrayList<Song> selectFavouriteSongOfClientP(Client client) throws SQLException, Exception {
+		ArrayList<Song> ret = null;
+		String sql = "select s.id,s.name,s.duration,s.source,s.genre,s.lang,s.idartist,s.idalbum,s.idGroup "
+				+ "from contain c join playlist p on p.id=c.playlistid join song s on s.id=c.songid join clientp cp on cp.idClient=p.idclientp "
+				+ "where p.name='Favoritos' and cp.idClient= ? group by p.name,s.name";
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, client.getId());
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new ArrayList<Song>();
+
+				Song song = new Song();
+
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				int duration = resultSet.getInt("duration");
+				String source = resultSet.getString("source");
+				String genre = resultSet.getString("genre");
+				String lang = resultSet.getString("lang");
+				// int idAlbum = resultSet.getInt("idAlbum");
+				int idArtist = resultSet.getInt("idArtist");
+				int idGroup = resultSet.getInt("idGroup");
+
+				if (idArtist != 0) {
+					song.setArtist(new Artist());
+					song.getArtist().setId(idArtist);
+				}
+				if (idGroup != 0) {
+					song.setArtGroup(new ArtGroup());
+					song.getArtGroup().setId(idGroup);
+				}
+
+				song.setId(id);
+				song.setName(name);
+				song.setDuration(duration);
+				song.setSource(source);
+				song.setGenre(genre);
+				song.setLang(lang);
+				// song.setAlbum();
+				// song.setArtGroup();
+				ret.add(song);
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+		return ret;
+	}
 
 }

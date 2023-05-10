@@ -17,6 +17,7 @@ import soundbridge.view.panels.ClientsReviews;
 import soundbridge.view.panels.EmployeeMenu;
 import soundbridge.view.panels.EmployeeProfile;
 import soundbridge.view.panels.EmployeeReviews;
+import soundbridge.view.panels.FavouriteSongs;
 import soundbridge.view.panels.GroupProfile;
 import soundbridge.view.panels.Library;
 import soundbridge.view.panels.Login;
@@ -48,7 +49,8 @@ public class PanelFactory {
 	public static final String EMPLOYEE_REVIEWS = "EMPLOYEE_REVIEWS";
 	public static final String CLIENTS_REVIEWS = "CLIENTS_REVIEWS";
 	public static final String WRITE_REVIEW = "WRITE_REVIEW";
-
+	public static final String FAVOURITE_SONGS = "FAVOURITE_SONGS";
+	
 	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist, ArtGroup artGroup,
 			Album album, Song song) {
 		switch (panelName) {
@@ -86,6 +88,8 @@ public class PanelFactory {
 			return new ClientsReviews(frame, client, album, artist, artGroup);
 		case WRITE_REVIEW:
 			return new WriteReview(frame, client, album, artist, artGroup);
+		case FAVOURITE_SONGS:
+			return new FavouriteSongs(frame, client);
 		default:
 			return null;
 		}

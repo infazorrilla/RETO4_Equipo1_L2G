@@ -265,7 +265,7 @@ public class Controller {
 
 	public void insertClientP(ClientP clientp) throws SQLException, Exception {
 		ClientPManager clientpManager = new ClientPManager();
-		clientpManager.insert(clientp);
+		clientpManager.insertReal(clientp);
 	}
 
 	public void insertClientPP(ClientPP clientpp) throws SQLException, Exception {
@@ -311,9 +311,14 @@ public class Controller {
 
 		return (ArrayList<Playlist>) playMan.getPlaylistsOfClientPPById(client);
 	}
+	public ArrayList<Playlist> getPlaylistsOfClientPById(Client client) throws SQLException, Exception {
+		PlaylistManager playMan = new PlaylistManager();
+
+		return (ArrayList<Playlist>) playMan.getPlaylistsOfClientPById(client);
+	}
 	public void addToFavourites(Client client,ArrayList<Song> songs,JTable table) {
 
-		if (client instanceof ClientP || client instanceof ClientPP) {
+		if (client instanceof ClientPP) {
 			Controller controller = new Controller();
 			Contain contain = new Contain();
 			ArrayList<Playlist> songsById;
@@ -334,5 +339,38 @@ public class Controller {
 				e.printStackTrace();
 			}
 		}
+		if (client instanceof ClientP) {
+			Controller controller = new Controller();
+			Contain contain = new Contain();
+			ArrayList<Playlist> songsById;
+			Playlist playlist = new Playlist();
+			Playlist playlistt = new Playlist();
+			Song song = new Song();
+			try {
+				songsById = controller.getPlaylistsOfClientPById(client);
+				playlist = songsById.get(0);
+				playlistt.setId(playlist.getId());
+				contain.setPlaylist(playlistt);
+				song.setId(songs.get(table.getSelectedRow()).getId());
+				contain.setSong(song);
+				controller.insertSongPLayList(contain);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
+	public ArrayList<Song> selectFavouriteSongOfClientPP(Client client) throws SQLException, Exception {
+		SongManager songMan = new SongManager();
+
+		return (ArrayList<Song>) songMan.selectFavouriteSongOfClientPP(client);
+	}
+	public ArrayList<Song> selectFavouriteSongOfClientP(Client client) throws SQLException, Exception {
+		SongManager songMan = new SongManager();
+
+		return (ArrayList<Song>) songMan.selectFavouriteSongOfClientP(client);
+	}
+	
+	
 }

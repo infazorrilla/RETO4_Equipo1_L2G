@@ -48,6 +48,8 @@ public class AlbumView extends JPanel {
 	private JPanel panelPauseIcon;
 	private JTable tableSongs;
 	private JPanel panelEditReview;
+	private Controller controller;
+	private int indexx = 0;
 
 	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		initialize(frame, client, album, artist, artGroup);
@@ -316,14 +318,25 @@ public class AlbumView extends JPanel {
 	}
 
 	private void playSelectedSong(Client client) {
+		indexx = tableSongs.getSelectedColumn();
+		if (indexx == 0) {
+			if (null == controller)
+				controller = new Controller();
+			
+			controller.addToFavourites(client,songs,tableSongs);
+		}
 		if (isPlayerRunning)
 			this.stop();
-
-		int index = tableSongs.getSelectedRow();
-		Song song = songs.get(index);
-		this.play(song.getSource());
-		doInsertPlay(client, song);
-		panelPauseIcon.setVisible(true);
+		if (indexx == 1 || indexx == 2 || indexx == 3 || indexx == 4) {
+			if (isPlayerRunning)
+				this.stop();
+			int index = tableSongs.getSelectedRow();
+			Song song = songs.get(index);
+			this.play(song.getSource());
+			doInsertPlay(client, song);
+			panelPauseIcon.setVisible(true);
+		}
+		
 	}
 
 	private void stopMusic() {

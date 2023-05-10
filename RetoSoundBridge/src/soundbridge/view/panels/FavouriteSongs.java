@@ -2,6 +2,7 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -28,11 +29,9 @@ import soundbridge.controller.Controller;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
-import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
-import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Play;
-import soundbridge.database.pojos.Playlist;
+
 import soundbridge.database.pojos.Song;
 
 import soundbridge.utils.WindowUtils;
@@ -93,22 +92,22 @@ public class FavouriteSongs extends JPanel {
 		JLabel lblPlayListCover = new JLabel("");
 		panelPlaylistCover.add(lblPlayListCover, BorderLayout.CENTER);
 
-		WindowUtils.addImage(panelPlaylistCover, lblPlayListCover, "img/icon/top_icon.png");
+		WindowUtils.addImage(panelPlaylistCover, lblPlayListCover, "img/icon/fav_icon.png");
 
-		JLabel lblTitle = new JLabel("Top 20");
+		JLabel lblTitle = new JLabel("Favourites");
 		lblTitle.setFont(new Font("Dialog", Font.BOLD, 25));
 		lblTitle.setForeground(new Color(255, 255, 255));
 		lblTitle.setBounds(327, 70, 584, 39);
 		add(lblTitle);
 
-		JLabel lblCreator = new JLabel("@soundBridge");
+		JLabel lblCreator = new JLabel(client.getUsername().toString());
 		lblCreator.setFont(new Font("Dialog", Font.BOLD, 16));
 		lblCreator.setForeground(new Color(244, 135, 244));
 		lblCreator.setBounds(327, 110, 584, 39);
 		add(lblCreator);
 
 		JTextArea textBio = new JTextArea(
-				"Listado de las 20 canciones más escuchadas en SoundBridge que se actualiza contínuamente.");
+				"Listado de las canciones que te han gustado");
 		textBio.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		textBio.setEditable(false);
 		textBio.setOpaque(false);
@@ -210,7 +209,7 @@ public class FavouriteSongs extends JPanel {
 		modelFavouriteSongs.setColumnIdentifiers(columnsSongs);
 		tableFavouriteSongs.setModel(modelFavouriteSongs);
 		adjustColumnsWidth(tableFavouriteSongs);
-		addSongsToTable(modelFavouriteSongs);
+		addSongsToTable(modelFavouriteSongs,client);
 
 		JPanel panelHomeIcon = new JPanel();
 		panelHomeIcon.setBounds(900, 45, 50, 50);
@@ -318,13 +317,19 @@ public class FavouriteSongs extends JPanel {
 
 		isPlayerRunning = false;
 	}
-	private void addSongsToTable(DefaultTableModel model) {
+	private void addSongsToTable(DefaultTableModel model,Client client) {
 
 		if (null == controller)
 			controller = new Controller();
 
 		try {
-			favouriteSongs = controller.getTop20Songs();
+			if (client instanceof ClientPP) {
+				favouriteSongs = controller.selectFavouriteSongOfClientPP(client);
+			}
+			else {
+				favouriteSongs = controller.selectFavouriteSongOfClientP(client);
+			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
