@@ -101,12 +101,12 @@ public class Login extends JPanel {
 
 		TextPrompt placeholderUser = new TextPrompt("Usuario", textFieldUserLogIn);
 		placeholderUser.changeAlpha(0.8f);
-		placeholderUser.changeStyle(Font.ITALIC);
+		placeholderUser.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderUser.setHorizontalAlignment(SwingConstants.CENTER);
 
 		TextPrompt placeholderPasswd = new TextPrompt("Contraseña", passwordFieldLogIn);
 		placeholderPasswd.changeAlpha(0.8f);
-		placeholderPasswd.changeStyle(Font.ITALIC);
+		placeholderPasswd.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderPasswd.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JButton btnAcceptLogIn = new JButton("Iniciar sesión");

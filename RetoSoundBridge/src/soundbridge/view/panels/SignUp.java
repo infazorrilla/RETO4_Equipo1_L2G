@@ -491,6 +491,7 @@ public class SignUp extends JPanel {
 		});
 		rdbtnBasic.setBounds(685, 527, 20, 23);
 		rdbtnBasic.setOpaque(false);
+		rdbtnBasic.setSelected(true);
 		add(rdbtnBasic);
 
 		ButtonGroup btnGroup = new ButtonGroup();

@@ -2,7 +2,9 @@ package soundbridge.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
@@ -30,6 +32,10 @@ public class MainFrame {
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(Color.black);
+		
+		ImageIcon icon = new ImageIcon("img/icon/sbbasic.png");
+		Image img = icon.getImage();
+		frame.setIconImage(img);
 
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null));
 		frame.revalidate();
