@@ -6,8 +6,6 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -28,7 +26,6 @@ import javax.swing.border.LineBorder;
 
 import soundbridge.controller.Controller;
 import soundbridge.database.managers.ClientManager;
-import soundbridge.database.managers.EmployeeManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -38,17 +35,19 @@ import soundbridge.view.factory.PanelFactory;
 
 import java.awt.BorderLayout;
 import javax.swing.JRadioButton;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class SignUp extends JPanel {
-	private JTextField textFildNameSignUp = null;
-	private JTextField textFildLastNameSignUp = null;
-	private JTextField textFildUsernameSignUp = null;
+	private JTextField textFieldNameSignUp = null;
+	private JTextField textFieldLastNameSignUp = null;
+	private JTextField textFieldUsernameSignUp = null;
 	private JTextField textFieldPasswdSignUp = null;
 	private JTextField textFieldPersonalIdSignUp = null;
-	private JTextField textFildGenderSignUp = null;
+	private JTextField textFieldGenderSignUp = null;
 	private JTextField textFieldNationalitySignUp = null;
 	private JTextField textFieldBirthDateSignUp = null;
-	private JTextField textFieldAdressSignUp = null;
+	private JTextField textFieldAddressSignUp = null;
 	private JTextField textFieldPhoneNumberSignUp = null;
 	private JTextField textFieldEmailSignUp = null;
 	private Controller controller = null;
@@ -76,58 +75,50 @@ public class SignUp extends JPanel {
 		JLabel lblProfileIcon = new JLabel("");
 		panelProfileIcon.add(lblProfileIcon, BorderLayout.CENTER);
 
-		textFildNameSignUp = new JTextField();
-		textFildNameSignUp.setBounds(190, 49, 200, 40);
-		add(textFildNameSignUp);
-		textFildNameSignUp.setColumns(10);
-		textFildNameSignUp.setForeground(Color.white);
-		textFildNameSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
-		textFildNameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFildNameSignUp.setCaretColor(Color.WHITE);
-		textFildNameSignUp.setOpaque(false);
-		textFildNameSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFildNameSignUp.addFocusListener(new FocusAdapter() {
+		textFieldNameSignUp = new JTextField();
+		textFieldNameSignUp.setBounds(190, 49, 200, 40);
+		add(textFieldNameSignUp);
+		textFieldNameSignUp.setColumns(10);
+		textFieldNameSignUp.setForeground(Color.white);
+		textFieldNameSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		textFieldNameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+		textFieldNameSignUp.setCaretColor(Color.WHITE);
+		textFieldNameSignUp.setOpaque(true);
+		textFieldNameSignUp.setBackground(Color.BLACK);
+		textFieldNameSignUp.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldNameSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFildNameSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFildNameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateNameField();
 			}
 		});
 
-		textFildLastNameSignUp = new JTextField();
-		textFildLastNameSignUp.setBounds(190, 112, 200, 40);
-		add(textFildLastNameSignUp);
-		textFildLastNameSignUp.setColumns(10);
-		textFildLastNameSignUp.setForeground(Color.white);
-		textFildLastNameSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
-		textFildLastNameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFildLastNameSignUp.setCaretColor(Color.WHITE);
-		textFildLastNameSignUp.setOpaque(false);
-		textFildLastNameSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFildLastNameSignUp.addFocusListener(new FocusAdapter() {
+		textFieldLastNameSignUp = new JTextField();
+		textFieldLastNameSignUp.setBounds(190, 112, 200, 40);
+		add(textFieldLastNameSignUp);
+		textFieldLastNameSignUp.setColumns(10);
+		textFieldLastNameSignUp.setForeground(Color.white);
+		textFieldLastNameSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		textFieldLastNameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+		textFieldLastNameSignUp.setCaretColor(Color.WHITE);
+		textFieldLastNameSignUp.setOpaque(true);
+		textFieldLastNameSignUp.setBackground(Color.BLACK);
+		textFieldLastNameSignUp.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldLastNameSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFildLastNameSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFildLastNameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateLastNameField();
 			}
 		});
 
-		TextPrompt placeholderName = new TextPrompt("Nombre", textFildNameSignUp);
+		TextPrompt placeholderName = new TextPrompt("Nombre", textFieldNameSignUp);
 		placeholderName.changeAlpha(0.8f);
-		placeholderName.changeStyle(Font.ITALIC);
+		placeholderName.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderName.setHorizontalAlignment(SwingConstants.CENTER);
 
-		TextPrompt placeholderLastName = new TextPrompt("Apellido", textFildLastNameSignUp);
+		TextPrompt placeholderLastName = new TextPrompt("Apellido", textFieldLastNameSignUp);
 		placeholderLastName.changeAlpha(0.8f);
-		placeholderLastName.changeStyle(Font.ITALIC);
+		placeholderLastName.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderLastName.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel lblPersonalInformation = new JLabel("Datos personales:");
@@ -190,30 +181,30 @@ public class SignUp extends JPanel {
 		lblMail.setBounds(203, 590, 66, 23);
 		add(lblMail);
 
-		textFildUsernameSignUp = new JTextField();
-		textFildUsernameSignUp.setBounds(256, 264, 200, 35);
-		add(textFildUsernameSignUp);
-		textFildUsernameSignUp.setColumns(10);
-		textFildUsernameSignUp.setForeground(Color.white);
-		textFildUsernameSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
-		textFildUsernameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFildUsernameSignUp.setCaretColor(Color.WHITE);
-		textFildUsernameSignUp.setOpaque(false);
-		textFildUsernameSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFildUsernameSignUp.addFocusListener(new FocusAdapter() {
+		textFieldUsernameSignUp = new JTextField();
+		textFieldUsernameSignUp.setBounds(256, 264, 200, 35);
+		add(textFieldUsernameSignUp);
+		textFieldUsernameSignUp.setColumns(10);
+		textFieldUsernameSignUp.setForeground(Color.white);
+		textFieldUsernameSignUp.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		textFieldUsernameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+		textFieldUsernameSignUp.setCaretColor(Color.WHITE);
+		textFieldUsernameSignUp.setOpaque(true);
+		textFieldUsernameSignUp.setBackground(Color.BLACK);
+		textFieldUsernameSignUp.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldUsernameSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFildUsernameSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFildUsernameSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateUserField();
 			}
 		});
 
+		TextPrompt placeholderUsername = new TextPrompt("Min 5 caracteres", textFieldUsernameSignUp);
+		placeholderUsername.changeAlpha(0.8f);
+		placeholderUsername.changeStyle(Font.BOLD + Font.ITALIC);
+		placeholderUsername.setHorizontalAlignment(SwingConstants.CENTER);
+
 		textFieldPasswdSignUp = new JTextField();
-		textFieldPasswdSignUp.setOpaque(false);
 		textFieldPasswdSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPasswdSignUp.setForeground(Color.WHITE);
 		textFieldPasswdSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -221,96 +212,82 @@ public class SignUp extends JPanel {
 		textFieldPasswdSignUp.setCaretColor(Color.WHITE);
 		textFieldPasswdSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 		textFieldPasswdSignUp.setBounds(256, 304, 200, 35);
+		textFieldPasswdSignUp.setOpaque(true);
+		textFieldPasswdSignUp.setBackground(Color.BLACK);
 		add(textFieldPasswdSignUp);
-		textFieldPasswdSignUp.addFocusListener(new FocusAdapter() {
+		textFieldPasswdSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldPasswdSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldPasswdSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validatePasswdField();
 			}
 		});
 
 		TextPrompt placeholderPasswdSignUp = new TextPrompt("Min 10 caracteres", textFieldPasswdSignUp);
 		placeholderPasswdSignUp.changeAlpha(0.8f);
-		placeholderPasswdSignUp.changeStyle(Font.ITALIC);
+		placeholderPasswdSignUp.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderPasswdSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 
 		textFieldPersonalIdSignUp = new JTextField();
-		textFieldPersonalIdSignUp.setOpaque(false);
-		textFieldPersonalIdSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPersonalIdSignUp.setForeground(Color.WHITE);
 		textFieldPersonalIdSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
 		textFieldPersonalIdSignUp.setColumns(10);
 		textFieldPersonalIdSignUp.setCaretColor(Color.WHITE);
 		textFieldPersonalIdSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 		textFieldPersonalIdSignUp.setBounds(256, 344, 200, 35);
+		textFieldPersonalIdSignUp.setOpaque(true);
+		textFieldPersonalIdSignUp.setBackground(Color.BLACK);
+		textFieldPersonalIdSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		add(textFieldPersonalIdSignUp);
-		textFieldPersonalIdSignUp.addFocusListener(new FocusAdapter() {
+		textFieldPersonalIdSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldPersonalIdSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldPersonalIdSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validatePersonalIdField();
 			}
 		});
 
-		textFildGenderSignUp = new JTextField();
-		textFildGenderSignUp.setOpaque(false);
-		textFildGenderSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFildGenderSignUp.setForeground(Color.WHITE);
-		textFildGenderSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFildGenderSignUp.setColumns(10);
-		textFildGenderSignUp.setCaretColor(Color.WHITE);
-		textFildGenderSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFildGenderSignUp.setBounds(256, 384, 200, 35);
-		add(textFildGenderSignUp);
-		textFildGenderSignUp.addFocusListener(new FocusAdapter() {
+		textFieldGenderSignUp = new JTextField();
+		textFieldGenderSignUp.setForeground(Color.WHITE);
+		textFieldGenderSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textFieldGenderSignUp.setColumns(10);
+		textFieldGenderSignUp.setCaretColor(Color.WHITE);
+		textFieldGenderSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+		textFieldGenderSignUp.setBounds(256, 384, 200, 35);
+		textFieldGenderSignUp.setOpaque(true);
+		textFieldGenderSignUp.setBackground(Color.BLACK);
+		textFieldGenderSignUp.setHorizontalAlignment(SwingConstants.CENTER);
+		add(textFieldGenderSignUp);
+		textFieldGenderSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFildGenderSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFildGenderSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateGenderField();
 			}
 		});
 
-		TextPrompt placeholderGenderSignUp = new TextPrompt("Hombre/Mujer/Otro", textFildGenderSignUp);
+		TextPrompt placeholderGenderSignUp = new TextPrompt("Hombre   Mujer   Otro", textFieldGenderSignUp);
 		placeholderGenderSignUp.changeAlpha(0.8f);
-		placeholderGenderSignUp.changeStyle(Font.ITALIC);
+		placeholderGenderSignUp.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderGenderSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 
 		textFieldNationalitySignUp = new JTextField();
-		textFieldNationalitySignUp.setOpaque(false);
-		textFieldNationalitySignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldNationalitySignUp.setForeground(Color.WHITE);
 		textFieldNationalitySignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
 		textFieldNationalitySignUp.setColumns(10);
 		textFieldNationalitySignUp.setCaretColor(Color.WHITE);
 		textFieldNationalitySignUp.setBorder(new LineBorder(Color.WHITE, 2));
 		textFieldNationalitySignUp.setBounds(256, 424, 200, 35);
+		textFieldNationalitySignUp.setOpaque(true);
+		textFieldNationalitySignUp.setBackground(Color.BLACK);
+		textFieldNationalitySignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		add(textFieldNationalitySignUp);
-		textFieldNationalitySignUp.addFocusListener(new FocusAdapter() {
+		textFieldNationalitySignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldNationalitySignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldNationalitySignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateNationalityField();
 			}
 		});
+
 		textFieldBirthDateSignUp = new JTextField();
-		textFieldBirthDateSignUp.setOpaque(false);
+		textFieldBirthDateSignUp.setOpaque(true);
 		textFieldBirthDateSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldBirthDateSignUp.setForeground(Color.WHITE);
 		textFieldBirthDateSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -318,47 +295,41 @@ public class SignUp extends JPanel {
 		textFieldBirthDateSignUp.setCaretColor(Color.WHITE);
 		textFieldBirthDateSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 		textFieldBirthDateSignUp.setBounds(256, 464, 200, 35);
+		textFieldBirthDateSignUp.setBackground(Color.BLACK);
 		add(textFieldBirthDateSignUp);
-		textFieldBirthDateSignUp.addFocusListener(new FocusAdapter() {
+		textFieldBirthDateSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldBirthDateSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldBirthDateSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateBirthDateField();
 			}
 		});
 
 		TextPrompt placeholderBirthDateSignUp = new TextPrompt("dd/MM/yyyy", textFieldBirthDateSignUp);
 		placeholderBirthDateSignUp.changeAlpha(0.8f);
-		placeholderBirthDateSignUp.changeStyle(Font.ITALIC);
+		placeholderBirthDateSignUp.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderBirthDateSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 
-		textFieldAdressSignUp = new JTextField();
-		textFieldAdressSignUp.setOpaque(false);
-		textFieldAdressSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		textFieldAdressSignUp.setForeground(Color.WHITE);
-		textFieldAdressSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
-		textFieldAdressSignUp.setColumns(10);
-		textFieldAdressSignUp.setCaretColor(Color.WHITE);
-		textFieldAdressSignUp.setBorder(new LineBorder(Color.WHITE, 2));
-		textFieldAdressSignUp.setBounds(256, 504, 200, 35);
-		add(textFieldAdressSignUp);
-		textFieldAdressSignUp.addFocusListener(new FocusAdapter() {
+		textFieldAddressSignUp = new JTextField();
+		textFieldAddressSignUp.setOpaque(true);
+		textFieldAddressSignUp.setBackground(Color.BLACK);
+		textFieldAddressSignUp.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldAddressSignUp.setForeground(Color.WHITE);
+		textFieldAddressSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textFieldAddressSignUp.setColumns(10);
+		textFieldAddressSignUp.setCaretColor(Color.WHITE);
+		textFieldAddressSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+		textFieldAddressSignUp.setBounds(256, 504, 200, 35);
+		add(textFieldAddressSignUp);
+		textFieldAddressSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldAdressSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldAdressSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateAddressField();
 			}
 		});
+
 		textFieldPhoneNumberSignUp = new JTextField();
-		textFieldPhoneNumberSignUp.setOpaque(false);
+		textFieldPhoneNumberSignUp.setOpaque(true);
+		textFieldPhoneNumberSignUp.setBackground(Color.BLACK);
 		textFieldPhoneNumberSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPhoneNumberSignUp.setForeground(Color.WHITE);
 		textFieldPhoneNumberSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -367,19 +338,21 @@ public class SignUp extends JPanel {
 		textFieldPhoneNumberSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 		textFieldPhoneNumberSignUp.setBounds(256, 544, 200, 35);
 		add(textFieldPhoneNumberSignUp);
-		textFieldPhoneNumberSignUp.addFocusListener(new FocusAdapter() {
+		textFieldPhoneNumberSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldPhoneNumberSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldPhoneNumberSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validatePhoneField();
 			}
 		});
+
+		TextPrompt placeholderPhoneeSignUp = new TextPrompt("+34000000000", textFieldPhoneNumberSignUp);
+		placeholderPhoneeSignUp.changeAlpha(0.8f);
+		placeholderPhoneeSignUp.changeStyle(Font.BOLD + Font.ITALIC);
+		placeholderPhoneeSignUp.setHorizontalAlignment(SwingConstants.CENTER);
+
 		textFieldEmailSignUp = new JTextField();
-		textFieldEmailSignUp.setOpaque(false);
+		textFieldEmailSignUp.setOpaque(true);
+		textFieldEmailSignUp.setBackground(Color.BLACK);
 		textFieldEmailSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldEmailSignUp.setForeground(Color.WHITE);
 		textFieldEmailSignUp.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -388,15 +361,10 @@ public class SignUp extends JPanel {
 		textFieldEmailSignUp.setBorder(new LineBorder(Color.WHITE, 2));
 		textFieldEmailSignUp.setBounds(256, 584, 200, 35);
 		add(textFieldEmailSignUp);
-		textFieldEmailSignUp.addFocusListener(new FocusAdapter() {
+		textFieldEmailSignUp.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldEmailSignUp.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldEmailSignUp.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateEmailField();
 			}
 		});
 
@@ -476,7 +444,7 @@ public class SignUp extends JPanel {
 		JButton btnRegister = new JButton("REGISTRARME");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				registerUser(frame);
+				checkAllFields(frame);
 			}
 
 		});
@@ -502,6 +470,7 @@ public class SignUp extends JPanel {
 			}
 		});
 		rdbtnPremium.setBounds(560, 332, 20, 23);
+		rdbtnPremium.setOpaque(false);
 		add(rdbtnPremium);
 
 		JRadioButton rdbtnPremiumPlus = new JRadioButton("");
@@ -511,6 +480,7 @@ public class SignUp extends JPanel {
 			}
 		});
 		rdbtnPremiumPlus.setBounds(760, 332, 20, 23);
+		rdbtnPremiumPlus.setOpaque(false);
 		add(rdbtnPremiumPlus);
 
 		JRadioButton rdbtnBasic = new JRadioButton("");
@@ -520,6 +490,7 @@ public class SignUp extends JPanel {
 			}
 		});
 		rdbtnBasic.setBounds(685, 527, 20, 23);
+		rdbtnBasic.setOpaque(false);
 		add(rdbtnBasic);
 
 		ButtonGroup btnGroup = new ButtonGroup();
@@ -530,7 +501,6 @@ public class SignUp extends JPanel {
 
 	private void registerUser(JFrame frame) {
 		Client client = null;
-		EmployeeManager empMan = new EmployeeManager();
 		if (null == controller)
 			controller = new Controller();
 
@@ -542,14 +512,14 @@ public class SignUp extends JPanel {
 
 			client = new Client();
 
-		client.setName(textFildNameSignUp.getText());
-		client.setLastName(textFildLastNameSignUp.getText());
-		client.setUsername(textFildUsernameSignUp.getText());
+		client.setName(textFieldNameSignUp.getText());
+		client.setLastName(textFieldLastNameSignUp.getText());
+		client.setUsername(textFieldUsernameSignUp.getText());
 		client.setPasswd(textFieldPasswdSignUp.getText());
 		client.setPersonalId(textFieldPersonalIdSignUp.getText());
-		client.setGender(textFildGenderSignUp.getText());
+		client.setGender(textFieldGenderSignUp.getText());
 		client.setNationality(textFieldNationalitySignUp.getText());
-		client.setAddress(textFieldAdressSignUp.getText());
+		client.setAddress(textFieldAddressSignUp.getText());
 		client.setTelephone(textFieldPhoneNumberSignUp.getText());
 		client.setEmail(textFieldEmailSignUp.getText());
 
@@ -595,7 +565,7 @@ public class SignUp extends JPanel {
 			controller = new Controller();
 		ClientManager clientManager = new ClientManager();
 		try {
-			Client client = clientManager.getClientByUsername(textFildUsernameSignUp.getText());
+			Client client = clientManager.getClientByUsername(textFieldUsernameSignUp.getText());
 			ClientP clientp = new ClientP();
 			clientp.setId(client.getId());
 			clientp.setBankAccount(bankNumber);
@@ -609,7 +579,7 @@ public class SignUp extends JPanel {
 		} catch (SQLException e) {
 			WindowUtils.errorPane("Error en el registro.", "Error en la base de datos");
 		} catch (Exception e1) {
-			
+
 			WindowUtils.errorPane("Error en el registro.", "Error general");
 		}
 	}
@@ -620,7 +590,7 @@ public class SignUp extends JPanel {
 			controller = new Controller();
 
 		try {
-			Client client = controller.getClientByUsername(textFildUsernameSignUp.getText());
+			Client client = controller.getClientByUsername(textFieldUsernameSignUp.getText());
 			clientpp.setId(client.getId());
 			clientpp.setBankAccount(bankNumber);
 			controller.insertClientPP(clientpp);
@@ -640,5 +610,225 @@ public class SignUp extends JPanel {
 		String pattern = "dd/MM/yyyy";
 		SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.ENGLISH);
 		return formatter.parse(fecha);
+	}
+
+	private boolean isLetterStringCorrect(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			char[] chars = str.toCharArray();
+
+			for (char c : chars) {
+				if (!Character.isLetter(c)) {
+					return false;
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	private boolean isEmptyText(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		}
+
+		return ret;
+	}
+
+	private boolean isLengthCorrect(JTextField textField, int length) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (str.length() < length) {
+				ret = false;
+			}
+		}
+
+		return ret;
+	}
+
+	private boolean isPersonalIdCorrect() {
+		boolean ret = true;
+		String str = textFieldPersonalIdSignUp.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (str.length() != 9) {
+				ret = false;
+			} else {
+				if (!str.matches("[0-9]{8}[a-zA-Z]"))
+					ret = false;
+			}
+		}
+
+		return ret;
+	}
+
+	private boolean isGenderCorrect() {
+		boolean ret = true;
+		String str = textFieldGenderSignUp.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.equalsIgnoreCase("Hombre") && !str.equalsIgnoreCase("Mujer") && !str.equalsIgnoreCase("Otro"))
+				ret = false;
+		}
+
+		return ret;
+
+	}
+
+	private boolean isDateCorrect() {
+		boolean ret = true;
+		String str = textFieldBirthDateSignUp.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.matches("[0-9]{2}/[0-9]{2}/[0-9]{4}"))
+				ret = false;
+		}
+
+		return ret;
+	}
+
+	private boolean isPhoneCorrect() {
+		boolean ret = true;
+		String str = textFieldPhoneNumberSignUp.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.matches(".[0-9]{11}"))
+				ret = false;
+		}
+
+		return ret;
+	}
+
+	private boolean isEmailCorrect() {
+		boolean ret = true;
+		String str = textFieldEmailSignUp.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.matches("(.+)@(.+)"))
+				ret = false;
+		}
+
+		return ret;
+	}
+
+	private void validateNameField() {
+		if (isLetterStringCorrect(textFieldNameSignUp))
+			textFieldNameSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldNameSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateLastNameField() {
+		if (isLetterStringCorrect(textFieldLastNameSignUp))
+			textFieldLastNameSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldLastNameSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateUserField() {
+		if (isLengthCorrect(textFieldUsernameSignUp, 5))
+			textFieldUsernameSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldUsernameSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validatePasswdField() {
+		if (isLengthCorrect(textFieldPasswdSignUp, 10))
+			textFieldPasswdSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldPasswdSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validatePersonalIdField() {
+		if (isPersonalIdCorrect())
+			textFieldPersonalIdSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldPersonalIdSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateGenderField() {
+		if (isGenderCorrect())
+			textFieldGenderSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldGenderSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateNationalityField() {
+		if (isLetterStringCorrect(textFieldNationalitySignUp))
+			textFieldNationalitySignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldNationalitySignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateBirthDateField() {
+		if (isDateCorrect())
+			textFieldBirthDateSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldBirthDateSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateAddressField() {
+		if (isEmptyText(textFieldAddressSignUp))
+			textFieldAddressSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldAddressSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validatePhoneField() {
+		if (isPhoneCorrect())
+			textFieldPhoneNumberSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldPhoneNumberSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateEmailField() {
+		if (isEmailCorrect())
+			textFieldEmailSignUp.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textFieldEmailSignUp.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void checkAllFields(JFrame frame) {
+		if (isLetterStringCorrect(textFieldNameSignUp) && isLetterStringCorrect(textFieldLastNameSignUp)
+				&& isLengthCorrect(textFieldUsernameSignUp, 5) && isLengthCorrect(textFieldPasswdSignUp, 10)
+				&& isPersonalIdCorrect() && isGenderCorrect() && isLetterStringCorrect(textFieldNationalitySignUp)
+				&& isDateCorrect() && isEmptyText(textFieldAddressSignUp) && isPhoneCorrect() && isEmailCorrect()) {
+			registerUser(frame);
+		} else {
+			validateNameField();
+			validateLastNameField();
+			validateUserField();
+			validatePasswdField();
+			validatePersonalIdField();
+			validateGenderField();
+			validateNationalityField();
+			validateBirthDateField();
+			validateAddressField();
+			validatePhoneField();
+			validateEmailField();
+			
+			WindowUtils.errorPane("Revisa los campos incorrectos marcados de color rojo.", "Error");
+		}
 	}
 }
