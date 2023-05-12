@@ -305,13 +305,13 @@ public class AlbumView extends JPanel {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null));
+					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null,null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null,
-					artGroup, null, null));
+					artGroup, null, null,null));
 			frame.revalidate();
 			frame.repaint();
 		}
@@ -394,13 +394,13 @@ public class AlbumView extends JPanel {
 			if (artist != null) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CLIENTS_REVIEWS, frame, client, null,
-						artist, null, album, null));
+						artist, null, album, null,null));
 				frame.revalidate();
 				frame.repaint();
 			} else if (artGroup != null) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CLIENTS_REVIEWS, frame, client, null,
-						null, artGroup, album, null));
+						null, artGroup, album, null,null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -411,13 +411,13 @@ public class AlbumView extends JPanel {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.WRITE_REVIEW, frame, client, null, artist,
-					null, album, null));
+					null, album, null,null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.WRITE_REVIEW, frame, client, null, null,
-					artGroup, album, null));
+					artGroup, album, null,null));
 			frame.revalidate();
 			frame.repaint();
 		}

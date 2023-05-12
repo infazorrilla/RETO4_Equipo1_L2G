@@ -9,6 +9,7 @@ import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Employee;
+import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 import soundbridge.view.panels.AlbumView;
 import soundbridge.view.panels.ArtistProfile;
@@ -52,7 +53,7 @@ public class PanelFactory {
 	public static final String FAVOURITE_SONGS = "FAVOURITE_SONGS";
 	
 	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist, ArtGroup artGroup,
-			Album album, Song song) {
+			Album album, Song song,Playlist playlist) {
 		switch (panelName) {
 		case LOGIN:
 			return new Login(frame);
