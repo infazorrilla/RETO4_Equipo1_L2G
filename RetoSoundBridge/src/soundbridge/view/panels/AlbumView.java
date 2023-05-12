@@ -42,7 +42,7 @@ import soundbridge.view.factory.PanelFactory;
  * Panel that contains the songs belonging to the album. A logged client can
  * play songs and watch reviews of the album if there is any. When a logged
  * client's subscription is Premium Plus, it's enabled the option to write a
- * review or edit it if the client has already written one.
+ * review or edit it if the client has already written one. 
  */
 public class AlbumView extends JPanel {
 
