@@ -42,7 +42,7 @@ import soundbridge.view.factory.PanelFactory;
  * Panel that contains the songs belonging to the album. A logged client can
  * play songs and watch reviews of the album if there is any. When a logged
  * client's subscription is Premium Plus, it's enabled the option to write a
- * review or edit it if the client has already written one. 
+ * review or edit it if the client has already written one.
  */
 public class AlbumView extends JPanel {
 
@@ -55,7 +55,6 @@ public class AlbumView extends JPanel {
 	private JTable tableSongs;
 	private JPanel panelEditReview;
 	private Controller controller;
-	private int indexx = 0;
 
 	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		initialize(frame, client, album, artist, artGroup);
@@ -373,8 +372,8 @@ public class AlbumView extends JPanel {
 	 * @param client logged client
 	 */
 	private void playSelectedSong(Client client) {
-		indexx = tableSongs.getSelectedColumn();
-		if (indexx == 0) {
+		int indexColumn = tableSongs.getSelectedColumn();
+		if (indexColumn == 0) {
 			if (null == controller)
 				controller = new Controller();
 
@@ -382,11 +381,11 @@ public class AlbumView extends JPanel {
 		}
 		if (isPlayerRunning)
 			this.stop();
-		if (indexx == 1 || indexx == 2 || indexx == 3 || indexx == 4) {
+		if (indexColumn == 1 || indexColumn == 2 || indexColumn == 3 || indexColumn == 4) {
 			if (isPlayerRunning)
 				this.stop();
-			int index = tableSongs.getSelectedRow();
-			Song song = songs.get(index);
+			int indexRow = tableSongs.getSelectedRow();
+			Song song = songs.get(indexRow);
 			this.play(song.getSource());
 			doInsertPlay(client, song);
 			panelPauseIcon.setVisible(true);
