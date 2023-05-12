@@ -178,6 +178,12 @@ public class Library extends JPanel {
 		WindowUtils.addImage(panelFavourites, lblFavouritesImg, "img/icon/fav_icon.png");
 		doAddPossibilitiesToSearchBar(searchBar);
 		showFavourites(client, panelFavourites, lblFavourites);
+		
+		panelGridPlaylist = new JPanel();
+		panelGridPlaylist.setBounds(90, 386, 920, 115);
+		add(panelGridPlaylist);
+		panelGridPlaylist.setLayout(new GridLayout(1, 5, 69, 0));
+		panelGridPlaylist.setOpaque(false);
 
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
@@ -196,11 +202,7 @@ public class Library extends JPanel {
 
 
 		
-		panelGridPlaylist = new JPanel();
-		panelGridPlaylist.setBounds(90, 386, 920, 115);
-		add(panelGridPlaylist);
-		panelGridPlaylist.setLayout(new GridLayout(1, 5, 69, 0));
-		panelGridPlaylist.setOpaque(false);
+		
 		
 		try {
 			addImagesToAlbums(frame,client);
