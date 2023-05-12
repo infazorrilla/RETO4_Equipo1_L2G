@@ -222,7 +222,7 @@ public class FavouriteSongs extends JPanel {
 				stop();
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}

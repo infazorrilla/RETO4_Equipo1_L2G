@@ -155,7 +155,7 @@ public class EmployeeReviews extends JPanel {
 	private void goBack(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null));
+				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

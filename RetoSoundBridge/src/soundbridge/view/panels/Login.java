@@ -181,7 +181,7 @@ public class Login extends JPanel {
 
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -208,7 +208,7 @@ public class Login extends JPanel {
 
 			frame.getContentPane().removeAll();
 			frame.getContentPane()
-					.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null));
+					.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 
@@ -251,7 +251,7 @@ public class Login extends JPanel {
 	private void goToSignUp(JFrame frame) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null, null, null, null, null));
+				.add(PanelFactory.getJPanel(PanelFactory.SIGNUP, frame, null, null, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

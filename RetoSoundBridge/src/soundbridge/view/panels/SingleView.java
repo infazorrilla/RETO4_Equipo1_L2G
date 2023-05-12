@@ -223,13 +223,13 @@ public class SingleView extends JPanel {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null));
+					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null,
-					artGroup, null, null));
+					artGroup, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}

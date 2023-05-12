@@ -51,7 +51,7 @@ public class Library extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -104,7 +104,7 @@ public class Library extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(
-						PanelFactory.getJPanel(PanelFactory.TOP20VIEW, frame, client, null, null, null, null, null));
+						PanelFactory.getJPanel(PanelFactory.TOP20VIEW, frame, client, null, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -252,7 +252,7 @@ public class Library extends JPanel {
 	private void goToArtistProfile(JFrame frame, Client client, Artist artist) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(
-				PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null));
+				PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -260,7 +260,7 @@ public class Library extends JPanel {
 	private void goToGroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(
-				PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null, artGroup, null, null));
+				PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null, artGroup, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -268,7 +268,7 @@ public class Library extends JPanel {
 	private void goToFvourites(JFrame frame, Client client) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.FAVOURITE_SONGS, frame, client, null, null, null, null, null));
+				.add(PanelFactory.getJPanel(PanelFactory.FAVOURITE_SONGS, frame, client, null, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 

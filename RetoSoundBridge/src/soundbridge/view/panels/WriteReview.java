@@ -263,13 +263,13 @@ public class WriteReview extends JPanel {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artist, null, album, null));
+					PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artist, null, album, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, artGroup, album, null));
+					PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, artGroup, album, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}

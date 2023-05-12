@@ -37,7 +37,7 @@ public class MainFrame {
 		Image img = icon.getImage();
 		frame.setIconImage(img);
 
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

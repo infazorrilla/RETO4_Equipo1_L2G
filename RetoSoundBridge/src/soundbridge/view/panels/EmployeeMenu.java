@@ -67,7 +67,7 @@ public class EmployeeMenu extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.MANAGE_CLIENTS, frame, null, employee,
-						null, null, null, null));
+						null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -92,7 +92,7 @@ public class EmployeeMenu extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_REVIEWS, frame, null, employee,
-						null, null, null, null));
+						null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -115,7 +115,7 @@ public class EmployeeMenu extends JPanel {
 	private void goToProfile(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_PROFILE, frame, null, employee, null, null, null, null));
+				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_PROFILE, frame, null, employee, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

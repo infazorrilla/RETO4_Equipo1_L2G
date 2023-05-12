@@ -59,7 +59,7 @@ public class EmployeeProfile extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null));
+						.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -256,7 +256,7 @@ public class EmployeeProfile extends JPanel {
 	private void logOut(JFrame frame) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null));
+				.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
