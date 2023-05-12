@@ -115,7 +115,7 @@ public class ArtistProfile extends JPanel {
 		panelGridAlbums = new JPanel();
 		panelGridAlbums.setBounds(40, 350, 920, 115);
 		add(panelGridAlbums);
-		panelGridAlbums.setLayout(new GridLayout(1, 5, 69, 0));
+		panelGridAlbums.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridAlbums.setOpaque(false);
 
 		lblSingles = new JLabel("Singles");
@@ -227,7 +227,7 @@ public class ArtistProfile extends JPanel {
 		albums = getAlbums(artist);
 
 		if (null != albums) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 6; i++) {
 				if (i < albums.size()) {
 					Album album = albums.get(i);
 					String image = album.getCover();
