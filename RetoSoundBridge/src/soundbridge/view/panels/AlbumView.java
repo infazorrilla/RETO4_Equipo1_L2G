@@ -38,6 +38,12 @@ import soundbridge.database.views.pojos.AverageStars;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
+/**
+ * Panel that contains the songs belonging to the album. A logged client can
+ * play songs and watch reviews of the album if there is any. When a logged
+ * client's subscription is Premium Plus, it's enabled the option to write a
+ * review or edit it if the client has already written one.
+ */
 public class AlbumView extends JPanel {
 
 	private static final long serialVersionUID = -611767121036203376L;
@@ -238,6 +244,12 @@ public class AlbumView extends JPanel {
 		showEditReviewPanel(client);
 	}
 
+	/**
+	 * Returns the average stars of an album. Exceptions are captured.
+	 * 
+	 * @param album album from which the average rating is obtained
+	 * @return average stars
+	 */
 	private AverageStars doGetAverageStars(Album album) {
 		AverageStars averageStars = null;
 		Controller controller = new Controller();
@@ -255,6 +267,13 @@ public class AlbumView extends JPanel {
 		return averageStars;
 	}
 
+	/**
+	 * Prints the name of an artist or group on a label.
+	 * 
+	 * @param label    label where the name is printed
+	 * @param artist   artist whose name is printed if it is not null
+	 * @param artGroup art group whose name is printed if it is not null
+	 */
 	private void addArtistOrGroupName(JLabel label, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
 			label.setText(artist.getName());
@@ -263,11 +282,22 @@ public class AlbumView extends JPanel {
 		}
 	}
 
+	/**
+	 * Prints the average stars' value on a label.
+	 * 
+	 * @param album album from which the average rating is obtained
+	 */
 	private void addReviewStarsToLabel(Album album) {
 		AverageStars averageStars = doGetAverageStars(album);
 		lblStars.setText("" + averageStars.getAverage());
 	}
 
+	/**
+	 * Adds every song's information to a table.
+	 * 
+	 * @param album album to which songs belong
+	 * @param model model of the table
+	 */
 	private void addSongsToTable(Album album, DefaultTableModel model) {
 		songs = album.getSongs();
 		if (songs != null) {
@@ -278,6 +308,13 @@ public class AlbumView extends JPanel {
 		}
 	}
 
+	/**
+	 * Gets one song's information and adds it to a table.
+	 * 
+	 * @param song  song from which information is obtained
+	 * @param model model of the table
+	 * @param i     position of the song on the array list
+	 */
 	private void addInfoToTable(Song song, DefaultTableModel model, int i) {
 		String number = (i + 1) + ".";
 		String title = song.getName();
@@ -291,6 +328,9 @@ public class AlbumView extends JPanel {
 		model.addRow(new String[] { "\u2661", number, title, duration, genre, "+" });
 	}
 
+	/**
+	 * Adjusts widths of a table's columns.
+	 */
 	private void adjustColumnsWidth() {
 		tableSongs.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		tableSongs.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -300,30 +340,45 @@ public class AlbumView extends JPanel {
 		tableSongs.getColumnModel().getColumn(4).setMinWidth(200);
 	}
 
+	/**
+	 * Takes the client back to the artist or art group's profile.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artist   artist whose album is displayed if it is not null
+	 * @param artGroup art group whose album is displayed if it is not null
+	 */
 	private void goBack(JFrame frame, Client client, Artist artist, ArtGroup artGroup) {
 		this.stop();
 		if (artist != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null,null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist,
+					null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null,
-					artGroup, null, null,null));
+					artGroup, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}
 	}
 
+	/**
+	 * Plays the song that has been selected on a table, adds a reproduction and if
+	 * the client selects the first column the song is added to the favorites play
+	 * list.
+	 * 
+	 * @param client logged client
+	 */
 	private void playSelectedSong(Client client) {
 		indexx = tableSongs.getSelectedColumn();
 		if (indexx == 0) {
 			if (null == controller)
 				controller = new Controller();
-			
-			controller.addToFavourites(client,songs,tableSongs);
+
+			controller.addToFavourites(client, songs, tableSongs);
 		}
 		if (isPlayerRunning)
 			this.stop();
@@ -336,9 +391,12 @@ public class AlbumView extends JPanel {
 			doInsertPlay(client, song);
 			panelPauseIcon.setVisible(true);
 		}
-		
+
 	}
 
+	/**
+	 * Stops the music if a song is playing.
+	 */
 	private void stopMusic() {
 		if (isPlayerRunning)
 			this.stop();
@@ -346,6 +404,12 @@ public class AlbumView extends JPanel {
 		tableSongs.getSelectionModel().clearSelection();
 	}
 
+	/**
+	 * Inserts a reproduction every time a song is played.
+	 * 
+	 * @param client logged client
+	 * @param song   selected song
+	 */
 	private void doInsertPlay(Client client, Song song) {
 		Controller controller = new Controller();
 		Play play = new Play();
@@ -356,12 +420,18 @@ public class AlbumView extends JPanel {
 			controller.insertPlay(play);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
+
 		} catch (Exception e) {
 			WindowUtils.errorPane("Error en la reproducción.", "Error");
 		}
 
 	}
 
+	/**
+	 * Starts the player given the song at path. Path cannot be null.
+	 * 
+	 * @param path path of the music file
+	 */
 	private void play(String path) {
 		new Thread() {
 			@Override
@@ -379,6 +449,9 @@ public class AlbumView extends JPanel {
 		isPlayerRunning = true;
 	}
 
+	/**
+	 * Stops the player.
+	 */
 	public void stop() {
 		if (player != null) {
 			player.close();
@@ -387,6 +460,15 @@ public class AlbumView extends JPanel {
 		isPlayerRunning = false;
 	}
 
+	/**
+	 * Takes the customer to the reviews panel if there is any review.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param album    selected album
+	 * @param artist   artist whose album is displayed if it is not null
+	 * @param artGroup art group whose album is displayed if it is not null
+	 */
 	private void goToReviews(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		if (lblStars.getText().equals("0.0")) {
 			WindowUtils.errorPane("No hay valoraciones.", "Error");
@@ -394,42 +476,58 @@ public class AlbumView extends JPanel {
 			if (artist != null) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CLIENTS_REVIEWS, frame, client, null,
-						artist, null, album, null,null));
+						artist, null, album, null, null));
 				frame.revalidate();
 				frame.repaint();
 			} else if (artGroup != null) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CLIENTS_REVIEWS, frame, client, null,
-						null, artGroup, album, null,null));
+						null, artGroup, album, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
 		}
 	}
 
+	/**
+	 * Takes the customer to the panel where a review can be written if the client
+	 * is premium plus.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param album    selected album
+	 * @param artist   artist whose album is displayed if it is not null
+	 * @param artGroup art group whose album is displayed if it is not null
+	 */
 	private void goToWriteReview(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.WRITE_REVIEW, frame, client, null, artist,
-					null, album, null,null));
+					null, album, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.WRITE_REVIEW, frame, client, null, null,
-					artGroup, album, null,null));
+					artGroup, album, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}
 	}
-	
+
+	/**
+	 * Shows the review edition panel if the client is premium plus. If not, the
+	 * panel is hidden.
+	 * 
+	 * @param client logged client
+	 */
 	private void showEditReviewPanel(Client client) {
 		if (client instanceof ClientPP) {
-			panelEditReview.setVisible (true);
+			panelEditReview.setVisible(true);
 		} else {
-			panelEditReview.setVisible (false);
+			panelEditReview.setVisible(false);
 
 		}
-		
+
 	}
 }
