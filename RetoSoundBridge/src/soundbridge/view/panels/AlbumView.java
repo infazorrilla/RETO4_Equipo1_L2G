@@ -56,10 +56,28 @@ public class AlbumView extends JPanel {
 	private JPanel panelEditReview;
 	private Controller controller;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame		frame where the panel is added
+	 * @param client	logged client
+	 * @param album		selected album
+	 * @param artist	albums owner if not null
+	 * @param artGroup	albums owner if not null
+	 */
 	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		initialize(frame, client, album, artist, artGroup);
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame		frame where the panel is added
+	 * @param client	logged client
+	 * @param album		selected album
+	 * @param artist	albums owner if not null
+	 * @param artGroup	albums owner if not null
+	 */
 	public void initialize(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
