@@ -46,6 +46,10 @@ public class ArtistProfile extends JPanel {
 	 * @param artist artist whose profile is shown
 	 */
 	public ArtistProfile(JFrame frame, Client client, Artist artist) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+
 		initialize(frame, client, artist);
 	}
 
@@ -57,10 +61,6 @@ public class ArtistProfile extends JPanel {
 	 * @param artist artist whose profile is shown
 	 */
 	private void initialize(JFrame frame, Client client, Artist artist) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		JPanel panelArtistImage = new JPanel();
 		panelArtistImage.setBounds(40, 40, 250, 250);
 		add(panelArtistImage);

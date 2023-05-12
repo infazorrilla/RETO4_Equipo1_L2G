@@ -30,23 +30,41 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 import javax.swing.SwingConstants;
 
+/**
+ * Panel that contains the validated reviews of the album.
+ */
 public class ClientsReviews extends JPanel {
 
 	private static final long serialVersionUID = -2335885884396696647L;
 	private ArrayList<Review> validatedReviews = null;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame		frame where panel is added
+	 * @param client	logged client
+	 * @param album		selected album
+	 * @param artist	owner of the album if not null
+	 * @param artGroup	owner of the album if not null
+	 */
 	public ClientsReviews(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
-
-		initialize(frame, client, album, artist, artGroup);
-
-	}
-
-	private void initialize(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
-
 		setBounds(0, 0, 1000, 672);
 		setBackground(Color.black);
 		setLayout(null);
+		
+		initialize(frame, client, album, artist, artGroup);
+	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame		frame where panel is added
+	 * @param client	logged client
+	 * @param album		selected album
+	 * @param artist	owner of the album if not null
+	 * @param artGroup	owner of the album if not null
+	 */
+	private void initialize(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		JLabel lblTitle = new JLabel("Valoraciones");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setForeground(Color.WHITE);
@@ -76,7 +94,7 @@ public class ClientsReviews extends JPanel {
 		JPanel panelGridReviews = new JPanel();
 		panelGridReviews.setBackground(Color.black);
 		panelGridReviews.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		JScrollPane scrollPane = new JScrollPane(panelGridReviews, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(50, 150, 900, 500);
@@ -113,16 +131,24 @@ public class ClientsReviews extends JPanel {
 			}
 		});
 
-		
 		getAllValidatedReviews(album);
 		createReviewPanel(panelGridReviews, scrollPane);
 	}
 
+	/**
+	 * Takes the client back to the album panel.
+	 * 
+	 * @param frame		frame where panel is added
+	 * @param client	logged client
+	 * @param album		selected album
+	 * @param artist	owner of the album if not null
+	 * @param artGroup	owner of the album if not null
+	 */
 	private void goBack(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artist, null, album, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artist,
+					null, album, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {

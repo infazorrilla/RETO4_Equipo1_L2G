@@ -66,6 +66,10 @@ public class AlbumView extends JPanel {
 	 * @param artGroup	albums owner if not null
 	 */
 	public AlbumView(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+		
 		initialize(frame, client, album, artist, artGroup);
 	}
 
@@ -79,10 +83,6 @@ public class AlbumView extends JPanel {
 	 * @param artGroup	albums owner if not null
 	 */
 	public void initialize(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		panelPauseIcon = new JPanel();
 		panelPauseIcon.setBounds(115, 115, 100, 100);
 		add(panelPauseIcon);

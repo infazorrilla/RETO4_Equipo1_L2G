@@ -46,6 +46,10 @@ public class ChangeSubscription extends JPanel {
 	 * @param client logged client
 	 */
 	public ChangeSubscription(JFrame frame, Client client) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+		
 		initialize(frame, client);
 		addBackgroundGif();
 	}
@@ -57,10 +61,6 @@ public class ChangeSubscription extends JPanel {
 	 * @param client logged client
 	 */
 	private void initialize(JFrame frame, Client client) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		JLabel lblTitle = new JLabel("Seleccione la suscripción que desee:");
 		lblTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		lblTitle.setBounds(75, 40, 510, 38);
