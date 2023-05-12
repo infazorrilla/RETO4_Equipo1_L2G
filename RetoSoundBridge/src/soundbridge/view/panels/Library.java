@@ -17,12 +17,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import soundbridge.controller.Controller;
+import soundbridge.database.managers.PlaylistManager;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.AutoCompleteTextField;
@@ -37,7 +39,7 @@ public class Library extends JPanel {
 	private static final long serialVersionUID = -2776809426213236020L;
 	private Controller controller = null;
 	private JPanel panelGridPlaylist;
-
+	private ArrayList<Playlist> playlists = null;
 	public Library(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
@@ -192,10 +194,20 @@ public class Library extends JPanel {
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
 
+
+		
 		panelGridPlaylist = new JPanel();
-		panelGridPlaylist.setBounds(90, 386, 868, 124);
-		panelBackground.add(panelGridPlaylist);
-		panelGridPlaylist.setLayout(new GridLayout(1, 0, 0, 0));
+		panelGridPlaylist.setBounds(90, 386, 920, 115);
+		add(panelGridPlaylist);
+		panelGridPlaylist.setLayout(new GridLayout(1, 5, 69, 0));
+		panelGridPlaylist.setOpaque(false);
+		
+		try {
+			addImagesToAlbums(frame,client);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 	}
 
@@ -287,30 +299,74 @@ public class Library extends JPanel {
 		frame.repaint();
 
 	}
+	private ArrayList<Playlist> getPlaylistsOfClientP(Client client) throws SQLException, Exception {
+		PlaylistManager playMan = new PlaylistManager();
+		
+		
+		return playMan.selectPlaylistOfCLientP(client);
+	
+	}
+	private ArrayList<Playlist> getPlaylistsOfClientPP(Client client) throws SQLException, Exception {
+		PlaylistManager playMan = new PlaylistManager();
+		
+		
+		return playMan.selectPlaylistOfCLientPP(client);
+	
+	}
+	
+	private JPanel createPanel() {
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 115, 115);
+		panel.setLayout(new BorderLayout(0, 0));
+		panel.setOpaque(false);
+		panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-	private void addImagesToAlbums(JFrame frame, Client client, Artist artist) throws SQLException, Exception {
+		return panel;
+	}
+	
+	private JLabel createLabel(JPanel panel) {
+		JLabel label = new JLabel("");
+		panel.add(label, BorderLayout.CENTER);
+		return label;
 
-		albums = getAlbums(artist);
+	}
+	
+	private JPanel createPanelToFitGrid() {
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 115, 115);
+		panel.setVisible(false);
 
-		if (null != albums) {
+		return panel;
+	}
+	
+	
+
+	private void addImagesToAlbums(JFrame frame, Client client) throws SQLException, Exception {
+		if (client instanceof ClientP)
+		playlists = getPlaylistsOfClientP(client);
+		
+		if (client instanceof ClientPP)
+		playlists = getPlaylistsOfClientPP(client);
+			
+		if (null != playlists) {
 			for (int i = 0; i < 5; i++) {
-				if (i < albums.size()) {
-					Album album = albums.get(i);
-					String image = album.getCover();
+				if (i < playlists.size()) {
+					Playlist playlist = playlists.get(i);
+					String image = "img/icon/playlist_icon.png";
 
 					JPanel panelAlbum = createPanel();
-					panelAlbum.setToolTipText(album.getName() + " ("
-							+ (new SimpleDateFormat("yyyy")).format(album.getReleaseYear()) + ")");
+					panelAlbum.setToolTipText(playlist.getName() + " ("
+							+ (new SimpleDateFormat("yyyy")).format(playlist.getCreationDate()) + ")");
 					panelGridPlaylist.add(panelAlbum);
 
 					JLabel lblAlbum = createLabel(panelAlbum);
 
 					WindowUtils.addImage(panelAlbum, lblAlbum, image);
 
-					ArrayList<Song> songsOfAlbum = getSongsOfAlbum(album, artist);
-					album.setSongs(songsOfAlbum);
+					//ArrayList<Song> songsOfAlbum = getSongsOfAlbum(playlist, artist);
+					//playlist.setSongs(songsOfAlbum);
 
-					createAlbumPanelListener(frame, panelAlbum, client, artist, album);
+					//createSinglePanelListener(frame, panelAlbum, client, artist, playlist);
 
 				} else {
 					JPanel panelToFitGrid = createPanelToFitGrid();
@@ -318,4 +374,5 @@ public class Library extends JPanel {
 				}
 			}
 		}
+	}
 }

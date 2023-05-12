@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 public class CreatePlaylist extends JPanel {
 
 	private static final long serialVersionUID = -2776809426213236020L;
-	private Controller controller = null;
 	private JTextField textField;
 	private JTextField textField_1;
 	
@@ -67,13 +66,29 @@ public class CreatePlaylist extends JPanel {
 				ClientPP clientPP = new ClientPP();
 				playlist.setName(textField.getText());
 				playlist.setDescription(textField_1.getText());
-				playlist.setClientP(null);
+				
+				if (client instanceof ClientPP) {
+				clientPP.setId(client.getId());
+				playlist.setClientPP(clientPP);
 				try {
-					playMan.insert(playlist);
+					playMan.insertPlaylistClienPP(playlist);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				}
+				
+				if (client instanceof ClientP) {
+					clientP.setId(client.getId());
+					playlist.setClientP(clientP);
+					try {
+						playMan.insertPlaylistClienP(playlist);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(
 						PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null, null, null, null, playlist));

@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
+import soundbridge.database.pojos.Album;
+import soundbridge.database.pojos.ArtGroup;
+import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -116,12 +119,11 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO Playlist (name, description,creationDate,idClienteP,idClientePp) VALUES ("
-					+ playlist.getClientPP().getId() + ", " + playlist.getClientP().getId() + ", " + playlist.getId()
-					+ ", '" + playlist.getName() + "', '" + playlist.getDescription() + "','"
-					+ playlist.getCreationDate() + "')";
+			String sql = "INSERT INTO Playlist (name, description,creationDate,idClienteP,idClientePp) VALUES ('"
+					+ playlist.getName() + "', '" + playlist.getDescription() + "', '" + playlist.getCreationDate()
+					+ "', " + playlist.getClientP().getId() + ", " + playlist.getClientPP().getId() + ")";
 
-			statement.executeUpdate(sql);
+			statement.execute(sql);
 
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -258,6 +260,7 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 		return ret;
 	}
+
 	public ArrayList<Playlist> getPlaylistsOfClientPById(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
 		ArrayList<Playlist> playlists = (ArrayList<Playlist>) doSelectAll();
@@ -288,6 +291,214 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 					ret.add(playlist);
 				}
 			}
+		}
+
+		return ret;
+	}
+
+	public void insertPlaylistClienP(Playlist playlist) throws SQLException, Exception {
+		Connection connection = null;
+		Statement statement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			statement = connection.createStatement();
+
+			String sql = "INSERT INTO Playlist (name, description,idClientP) VALUES ('" + playlist.getName() + "', '"
+					+ playlist.getDescription() + "', " + playlist.getClientP().getId() + ")";
+
+			statement.execute(sql);
+
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+	}
+
+	public void insertPlaylistClienPP(Playlist playlist) throws SQLException, Exception {
+		Connection connection = null;
+		Statement statement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			statement = connection.createStatement();
+
+			String sql = "INSERT INTO Playlist (name, description,idClientPP) VALUES ('" + playlist.getName() + "', '"
+					+ playlist.getDescription() + "', '"
+
+					+ "', " + playlist.getClientPP().getId() + ")";
+
+			statement.execute(sql);
+
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+	}
+
+	public ArrayList<Playlist> selectPlaylistOfCLientP(Client client) throws SQLException, Exception {
+		ArrayList<Playlist> ret = null;
+		String sql = "select * from playlist where idClientP=?";
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, client.getId());
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new ArrayList<Playlist>();
+
+				Playlist playlist = new Playlist();
+
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String description = resultSet.getString("description");
+				java.sql.Date sqlCreationDate = resultSet.getDate("creationDate");
+				java.util.Date creationDate = new java.util.Date(sqlCreationDate.getTime());
+				int idClientP = resultSet.getInt("idClientP");
+				int idClientPP = resultSet.getInt("idClientPP");
+
+				playlist.setId(id);
+				playlist.setName(name);
+				playlist.setDescription(description);
+				playlist.setCreationDate(creationDate);
+				ClientP clientp = new ClientP();
+				clientp.setId(idClientP);
+				playlist.setClientP(clientp);
+				ClientPP clientpp = new ClientPP();
+				clientpp.setId(idClientPP);
+				playlist.setClientPP(clientpp);
+
+				ret.add(playlist);
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+		return ret;
+	}
+
+	public ArrayList<Playlist> selectPlaylistOfCLientPP(Client client) throws SQLException, Exception {
+		ArrayList<Playlist> ret = null;
+		String sql = "select * from playlist where idClientPP=?";
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, client.getId());
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new ArrayList<Playlist>();
+
+				Playlist playlist = new Playlist();
+
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String description = resultSet.getString("description");
+				java.sql.Date sqlCreationDate = resultSet.getDate("creationDate");
+				java.util.Date creationDate = new java.util.Date(sqlCreationDate.getTime());
+				int idClientP = resultSet.getInt("idClientP");
+				int idClientPP = resultSet.getInt("idClientPP");
+
+				playlist.setId(id);
+				playlist.setName(name);
+				playlist.setDescription(description);
+				playlist.setCreationDate(creationDate);
+				ClientP clientp = new ClientP();
+				clientp.setId(idClientP);
+				playlist.setClientP(clientp);
+				ClientPP clientpp = new ClientPP();
+				clientpp.setId(idClientPP);
+				playlist.setClientPP(clientpp);
+
+				ret.add(playlist);
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
 		}
 
 		return ret;
