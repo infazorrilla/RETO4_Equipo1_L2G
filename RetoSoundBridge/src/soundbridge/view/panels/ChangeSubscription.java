@@ -26,6 +26,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.JRadioButton;
 
+/**
+ * Panel that enables a client to change his subscription.
+ */
 public class ChangeSubscription extends JPanel {
 
 	private static final long serialVersionUID = -8063689617197980268L;
@@ -36,11 +39,23 @@ public class ChangeSubscription extends JPanel {
 	private JRadioButton rbtnP;
 	private JRadioButton rbtnB;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	public ChangeSubscription(JFrame frame, Client client) {
 		initialize(frame, client);
 		addBackgroundGif();
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -108,16 +123,7 @@ public class ChangeSubscription extends JPanel {
 		panelBackIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				if (changedClient == null) {
-					frame.getContentPane().add(
-							PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null, null));
-				} else {
-					frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient, null,
-							null, null, null, null, null));
-				}
-				frame.revalidate();
-				frame.repaint();
+				goToClientProfile(frame, client);
 			}
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -188,8 +194,8 @@ public class ChangeSubscription extends JPanel {
 		JButton btnConfirm = new JButton("Confirmar selección");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doCheckSubscription(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
-						panelBasicIcon, lblBasicIcon);
+				doChangeClientSubscription(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon,
+						lblPremiumIcon, panelBasicIcon, lblBasicIcon);
 			}
 		});
 		btnConfirm.setBounds(400, 600, 200, 50);
@@ -271,16 +277,6 @@ public class ChangeSubscription extends JPanel {
 		lblBasic1.setBounds(762, 175, 163, 25);
 		add(lblBasic1);
 
-		WindowUtils.addImage(panelIconCross, lblIconCross, "img/icon/cross.png");
-		WindowUtils.addImage(panelIconTick1, lblIconTick1, "img/icon/tick.png");
-		WindowUtils.addImage(panelIconTick2, lblIconTick2, "img/icon/tick.png");
-		WindowUtils.addImage(panelIconTick3, lblIconTick3, "img/icon/tick.png");
-		WindowUtils.addImage(panelIconTick4, lblIconTick4, "img/icon/tick.png");
-
-		addSubscriptionImages(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
-				panelBasicIcon, lblBasicIcon);
-		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
@@ -290,9 +286,40 @@ public class ChangeSubscription extends JPanel {
 		JLabel lblBackground = new JLabel("");
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
 
+		WindowUtils.addImage(panelIconCross, lblIconCross, "img/icon/cross.png");
+		WindowUtils.addImage(panelIconTick1, lblIconTick1, "img/icon/tick.png");
+		WindowUtils.addImage(panelIconTick2, lblIconTick2, "img/icon/tick.png");
+		WindowUtils.addImage(panelIconTick3, lblIconTick3, "img/icon/tick.png");
+		WindowUtils.addImage(panelIconTick4, lblIconTick4, "img/icon/tick.png");
+
+		addSubscriptionImages(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
+				panelBasicIcon, lblBasicIcon);
+		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/sub_bg.png");
 	}
 
+	/**
+	 * Takes the client to his profile panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToClientProfile(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		if (changedClient == null) {
+			frame.getContentPane().add(
+					PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null, null));
+		} else {
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, changedClient, null, null,
+					null, null, null, null));
+		}
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Adds a .GIF image as background of the main panel.
+	 */
 	private void addBackgroundGif() {
 		setLayout(new BorderLayout(0, 0));
 
@@ -302,6 +329,14 @@ public class ChangeSubscription extends JPanel {
 		WindowUtils.addGif(lblBackground, "img/panel/sub_bg.gif");
 	}
 
+	/**
+	 * Adds a colored image related to the premium plus subscription when the client
+	 * is premium plus. On the contrary, a grey scaled image is added.
+	 * 
+	 * @param client logged client
+	 * @param panel  panel where the image is added
+	 * @param lbl    label where the image is placed
+	 */
 	private void addImagePremiumPlus(Client client, JPanel panel, JLabel lbl) {
 		if (client instanceof ClientPP) {
 			WindowUtils.addImage(panel, lbl, "img/icon/sbpp.png");
@@ -313,6 +348,14 @@ public class ChangeSubscription extends JPanel {
 		}
 	}
 
+	/**
+	 * Adds a colored image related to the premium subscription when the client is
+	 * premium. On the contrary, a grey scaled image is added.
+	 * 
+	 * @param client logged client
+	 * @param panel  panel where the image is added
+	 * @param lbl    label where the image is placed
+	 */
 	private void addImagePremium(Client client, JPanel panel, JLabel lbl) {
 		if (client instanceof ClientP) {
 			WindowUtils.addImage(panel, lbl, "img/icon/sbp.png");
@@ -324,6 +367,14 @@ public class ChangeSubscription extends JPanel {
 		}
 	}
 
+	/**
+	 * Adds a colored image related to the basic subscription when the client is
+	 * basic. On the contrary, a grey scaled image is added.
+	 * 
+	 * @param client logged client
+	 * @param panel  panel where the image is added
+	 * @param lbl    label where the image is placed
+	 */
 	private void addImageBasic(Client client, JPanel panel, JLabel lbl) {
 		if (!(client instanceof ClientPP) && !(client instanceof ClientP)) {
 			WindowUtils.addImage(panel, lbl, "img/icon/sbbasic.png");
@@ -335,6 +386,19 @@ public class ChangeSubscription extends JPanel {
 		}
 	}
 
+	/**
+	 * Adds every subscription image.
+	 * 
+	 * @param client               logged client
+	 * @param panelPremiumPlusIcon panel corresponding to the premium plus
+	 *                             subscription
+	 * @param lblPremiumPlusIcon   label corresponding to the premium plus
+	 *                             subscription
+	 * @param panelPremiumIcon     panel corresponding to the premium subscription
+	 * @param lblPremiumIcon       label corresponding to the premium subscription
+	 * @param panelBasicIcon       panel corresponding to the basic subscription
+	 * @param lblBasicIcon         label corresponding to the basic subscription
+	 */
 	private void addSubscriptionImages(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
 			JPanel panelPremiumIcon, JLabel lblPremiumIcon, JPanel panelBasicIcon, JLabel lblBasicIcon) {
 		addImagePremiumPlus(client, panelPremiumPlusIcon, lblPremiumPlusIcon);
@@ -342,6 +406,11 @@ public class ChangeSubscription extends JPanel {
 		addImageBasic(client, panelBasicIcon, lblBasicIcon);
 	}
 
+	/**
+	 * Asks the client to confirm the subscription change.
+	 * 
+	 * @return reply value
+	 */
 	public int askToConfirmChange() {
 		String iconPath = null;
 
@@ -359,7 +428,22 @@ public class ChangeSubscription extends JPanel {
 		return ret;
 	}
 
-	private void checkNewSubscription(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
+	/**
+	 * Changes the client's subscription if the selected one is different.
+	 * 
+	 * @param client               logged client
+	 * @param panelPremiumPlusIcon panel corresponding to the premium plus
+	 *                             subscription
+	 * @param lblPremiumPlusIcon   label corresponding to the premium plus
+	 *                             subscription
+	 * @param panelPremiumIcon     panel corresponding to the premium subscription
+	 * @param lblPremiumIcon       label corresponding to the premium subscription
+	 * @param panelBasicIcon       panel corresponding to the basic subscription
+	 * @param lblBasicIcon         label corresponding to the basic subscription
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	private void changeClientSubscription(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
 			JPanel panelPremiumIcon, JLabel lblPremiumIcon, JPanel panelBasicIcon, JLabel lblBasicIcon)
 			throws SQLException, Exception {
 		Controller controller = new Controller();
@@ -392,10 +476,23 @@ public class ChangeSubscription extends JPanel {
 		}
 	}
 
-	private void doCheckSubscription(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
+	/**
+	 * Changes the client's subscription, controlling the exceptions.
+	 * 
+	 * @param client               logged client
+	 * @param panelPremiumPlusIcon panel corresponding to the premium plus
+	 *                             subscription
+	 * @param lblPremiumPlusIcon   label corresponding to the premium plus
+	 *                             subscription
+	 * @param panelPremiumIcon     panel corresponding to the premium subscription
+	 * @param lblPremiumIcon       label corresponding to the premium subscription
+	 * @param panelBasicIcon       panel corresponding to the basic subscription
+	 * @param lblBasicIcon         label corresponding to the basic subscription
+	 */
+	private void doChangeClientSubscription(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
 			JPanel panelPremiumIcon, JLabel lblPremiumIcon, JPanel panelBasicIcon, JLabel lblBasicIcon) {
 		try {
-			checkNewSubscription(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
+			changeClientSubscription(client, panelPremiumPlusIcon, lblPremiumPlusIcon, panelPremiumIcon, lblPremiumIcon,
 					panelBasicIcon, lblBasicIcon);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se ha podido realizar el cambio de suscripción.", "Error");
