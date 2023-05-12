@@ -1,6 +1,7 @@
 package soundbridge.database.managers;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
-import soundbridge.database.pojos.Album;
-import soundbridge.database.pojos.ArtGroup;
-import soundbridge.database.pojos.Artist;
+
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
@@ -341,9 +340,7 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 			statement = connection.createStatement();
 
 			String sql = "INSERT INTO Playlist (name, description,idClientPP) VALUES ('" + playlist.getName() + "', '"
-					+ playlist.getDescription() + "', '"
-
-					+ "', " + playlist.getClientPP().getId() + ")";
+					+ playlist.getDescription() + "', " + playlist.getClientPP().getId() + ")";
 
 			statement.execute(sql);
 
@@ -368,77 +365,9 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 	}
 
-	public ArrayList<Playlist> selectPlaylistOfCLientP(Client client) throws SQLException, Exception {
-		ArrayList<Playlist> ret = null;
-		String sql = "select * from playlist where idClientP=?";
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		try {
-			Class.forName(DBUtils.DRIVER);
-			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, client.getId());
-			resultSet = preparedStatement.executeQuery();
-
-			while (resultSet.next()) {
-				if (null == ret)
-					ret = new ArrayList<Playlist>();
-
-				Playlist playlist = new Playlist();
-
-				int id = resultSet.getInt("id");
-				String name = resultSet.getString("name");
-				String description = resultSet.getString("description");
-				java.sql.Date sqlCreationDate = resultSet.getDate("creationDate");
-				java.util.Date creationDate = new java.util.Date(sqlCreationDate.getTime());
-				int idClientP = resultSet.getInt("idClientP");
-				int idClientPP = resultSet.getInt("idClientPP");
-
-				playlist.setId(id);
-				playlist.setName(name);
-				playlist.setDescription(description);
-				playlist.setCreationDate(creationDate);
-				ClientP clientp = new ClientP();
-				clientp.setId(idClientP);
-				playlist.setClientP(clientp);
-				ClientPP clientpp = new ClientPP();
-				clientpp.setId(idClientPP);
-				playlist.setClientPP(clientpp);
-
-				ret.add(playlist);
-			}
-		} catch (SQLException sqle) {
-			throw sqle;
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-			} catch (Exception e) {
-			}
-			;
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} catch (Exception e) {
-			}
-			;
-			try {
-				if (connection != null)
-					connection.close();
-			} catch (Exception e) {
-			}
-			;
-		}
-
-		return ret;
-	}
-
 	public ArrayList<Playlist> selectPlaylistOfCLientPP(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
-		String sql = "select * from playlist where idClientPP=?";
+		String sql = "select * from playlist where idClientPP=? and name !='Favoritos'";
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;

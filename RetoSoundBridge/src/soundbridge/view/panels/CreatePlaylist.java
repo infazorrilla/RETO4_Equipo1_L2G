@@ -5,10 +5,9 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import soundbridge.controller.Controller;
 import soundbridge.database.managers.PlaylistManager;
 import soundbridge.database.pojos.Client;
-import soundbridge.database.pojos.ClientP;
+
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.view.factory.PanelFactory;
@@ -62,7 +61,6 @@ public class CreatePlaylist extends JPanel {
 			
 			public void actionPerformed(ActionEvent e) {
 				PlaylistManager playMan = new PlaylistManager();
-				ClientP clientP = new ClientP();
 				ClientPP clientPP = new ClientPP();
 				playlist.setName(textField.getText());
 				playlist.setDescription(textField_1.getText());
@@ -77,17 +75,7 @@ public class CreatePlaylist extends JPanel {
 					e1.printStackTrace();
 				}
 				}
-				
-				if (client instanceof ClientP) {
-					clientP.setId(client.getId());
-					playlist.setClientP(clientP);
-					try {
-						playMan.insertPlaylistClienP(playlist);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+			
 				
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(

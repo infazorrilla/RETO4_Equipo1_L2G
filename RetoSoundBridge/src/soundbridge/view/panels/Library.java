@@ -1,6 +1,7 @@
 package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -18,14 +19,14 @@ import javax.swing.border.LineBorder;
 
 import soundbridge.controller.Controller;
 import soundbridge.database.managers.PlaylistManager;
-import soundbridge.database.pojos.Album;
+
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Playlist;
-import soundbridge.database.pojos.Song;
+
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.AutoCompleteTextField;
 import soundbridge.view.components.TextPrompt;
@@ -40,6 +41,7 @@ public class Library extends JPanel {
 	private Controller controller = null;
 	private JPanel panelGridPlaylist;
 	private ArrayList<Playlist> playlists = null;
+
 	public Library(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
@@ -174,15 +176,23 @@ public class Library extends JPanel {
 		lblPlusIcon.setForeground(new Color(255, 255, 255));
 		panelImagePlus.add(lblPlusIcon, BorderLayout.CENTER);
 
+		if (client instanceof ClientPP) {
+			panelImagePlus.setVisible(true);
+		}
+		
+		if (client instanceof ClientP) {
+			panelImagePlus.setVisible(false);
+		}
+
 		WindowUtils.addImage(panelTop20, lblTop20Img, "img/icon/top_icon.png");
 		WindowUtils.addImage(panelFavourites, lblFavouritesImg, "img/icon/fav_icon.png");
 		doAddPossibilitiesToSearchBar(searchBar);
 		showFavourites(client, panelFavourites, lblFavourites);
-		
+
 		panelGridPlaylist = new JPanel();
 		panelGridPlaylist.setBounds(90, 386, 920, 115);
 		add(panelGridPlaylist);
-		panelGridPlaylist.setLayout(new GridLayout(1, 5, 69, 0));
+		panelGridPlaylist.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridPlaylist.setOpaque(false);
 
 		JPanel panelBackground = new JPanel();
@@ -200,12 +210,9 @@ public class Library extends JPanel {
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
 
-
-		
-		
-		
+	
 		try {
-			addImagesToAlbums(frame,client);
+			addImagesToAlbums(frame, client);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -301,21 +308,14 @@ public class Library extends JPanel {
 		frame.repaint();
 
 	}
-	private ArrayList<Playlist> getPlaylistsOfClientP(Client client) throws SQLException, Exception {
-		PlaylistManager playMan = new PlaylistManager();
-		
-		
-		return playMan.selectPlaylistOfCLientP(client);
-	
-	}
+
 	private ArrayList<Playlist> getPlaylistsOfClientPP(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
-		
-		
+
 		return playMan.selectPlaylistOfCLientPP(client);
-	
+
 	}
-	
+
 	private JPanel createPanel() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 115, 115);
@@ -325,14 +325,14 @@ public class Library extends JPanel {
 
 		return panel;
 	}
-	
+
 	private JLabel createLabel(JPanel panel) {
 		JLabel label = new JLabel("");
 		panel.add(label, BorderLayout.CENTER);
 		return label;
 
 	}
-	
+
 	private JPanel createPanelToFitGrid() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 115, 115);
@@ -340,18 +340,14 @@ public class Library extends JPanel {
 
 		return panel;
 	}
-	
-	
 
 	private void addImagesToAlbums(JFrame frame, Client client) throws SQLException, Exception {
-		if (client instanceof ClientP)
-		playlists = getPlaylistsOfClientP(client);
-		
+
 		if (client instanceof ClientPP)
-		playlists = getPlaylistsOfClientPP(client);
-			
+			playlists = getPlaylistsOfClientPP(client);
+
 		if (null != playlists) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 6; i++) {
 				if (i < playlists.size()) {
 					Playlist playlist = playlists.get(i);
 					String image = "img/icon/playlist_icon.png";
@@ -365,10 +361,10 @@ public class Library extends JPanel {
 
 					WindowUtils.addImage(panelAlbum, lblAlbum, image);
 
-					//ArrayList<Song> songsOfAlbum = getSongsOfAlbum(playlist, artist);
-					//playlist.setSongs(songsOfAlbum);
+					// ArrayList<Song> songsOfAlbum = getSongsOfAlbum(playlist, artist);
+					// playlist.setSongs(songsOfAlbum);
 
-					//createSinglePanelListener(frame, panelAlbum, client, artist, playlist);
+					// createSinglePanelListener(frame, panelAlbum, client, artist, playlist);
 
 				} else {
 					JPanel panelToFitGrid = createPanelToFitGrid();
