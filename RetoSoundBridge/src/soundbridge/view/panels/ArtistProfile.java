@@ -46,6 +46,10 @@ public class ArtistProfile extends JPanel {
 	 * @param artist artist whose profile is shown
 	 */
 	public ArtistProfile(JFrame frame, Client client, Artist artist) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+
 		initialize(frame, client, artist);
 	}
 
@@ -57,10 +61,6 @@ public class ArtistProfile extends JPanel {
 	 * @param artist artist whose profile is shown
 	 */
 	private void initialize(JFrame frame, Client client, Artist artist) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		JPanel panelArtistImage = new JPanel();
 		panelArtistImage.setBounds(40, 40, 250, 250);
 		add(panelArtistImage);
@@ -127,7 +127,7 @@ public class ArtistProfile extends JPanel {
 		panelGridSingles = new JPanel();
 		panelGridSingles.setBounds(40, 528, 920, 115);
 		add(panelGridSingles);
-		panelGridSingles.setLayout(new GridLayout(1, 5, 69, 0));
+		panelGridSingles.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridSingles.setOpaque(false);
 
 		doCreateFunctionalAlbumPanels(frame, client, artist);
@@ -369,7 +369,7 @@ public class ArtistProfile extends JPanel {
 		singles = getSingles(artist);
 
 		if (null != singles) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 6; i++) {
 				if (i < singles.size()) {
 					Song song = singles.get(i);
 					String image = song.getCover();
