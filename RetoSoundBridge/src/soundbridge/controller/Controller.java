@@ -159,7 +159,7 @@ public class Controller {
 
 		clientManager.update(client);
 	}
-	
+
 	public void changePasswdEmployee(Employee employee, JPasswordField passwd1, JPasswordField passwd2)
 			throws SQLException, Exception {
 		if (null == employeeManager)
@@ -222,12 +222,12 @@ public class Controller {
 		return (ArrayList<Song>) songManager.getSinglesByGroup(artGroup);
 	}
 
-	public void changeClientSubscription(Client client, String bankNumber, String actualSubscription,
-			String newSubscription) throws SQLException, Exception {
+	public void changeClientSubscription(Client client, String bankNumber, String newSubscription)
+			throws SQLException, Exception {
 		if (null == clientManager)
 			clientManager = new ClientManager();
 
-		clientManager.changeSubscription(client.getId(), bankNumber, actualSubscription, newSubscription);
+		clientManager.changeSubscription(client.getId(), bankNumber, newSubscription);
 	}
 
 	public ClientP getPremiumClient(Client client) throws SQLException, Exception {
@@ -288,35 +288,41 @@ public class Controller {
 
 		return (ArrayList<Client>) clientManager.doSelectAll();
 	}
-	
+
 	public ArrayList<Song> getTop20Songs() throws SQLException, Exception {
 		Top20ViewManager top20manager = new Top20ViewManager();
 
 		return (ArrayList<Song>) top20manager.selectViewTop20AndSongs();
 	}
+
 	public Artist getArtistById(int id) throws SQLException, Exception {
 		ArtistManager artman = new ArtistManager();
 		return artman.selectArtistById(id);
 	}
+
 	public ArtGroup getGroupById(int id) throws SQLException, Exception {
 		ArtGroupManager artGroup = new ArtGroupManager();
 		return artGroup.selectGroupById(id);
 	}
+
 	public void insertSongPLayList(Contain contain) throws SQLException, Exception {
 		ContainManager contMan = new ContainManager();
 		contMan.insert(contain);
 	}
+
 	public ArrayList<Playlist> getPlaylistsOfClientPPById(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
 
 		return (ArrayList<Playlist>) playMan.getPlaylistsOfClientPPById(client);
 	}
+
 	public ArrayList<Playlist> getPlaylistsOfClientPById(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
 
 		return (ArrayList<Playlist>) playMan.getPlaylistsOfClientPById(client);
 	}
-	public void addToFavourites(Client client,ArrayList<Song> songs,JTable table) {
+
+	public void addToFavourites(Client client, ArrayList<Song> songs, JTable table) {
 
 		if (client instanceof ClientPP) {
 			Controller controller = new Controller();
@@ -333,7 +339,7 @@ public class Controller {
 				song.setId(songs.get(table.getSelectedRow()).getId());
 				contain.setSong(song);
 				controller.insertSongPLayList(contain);
-				
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -354,23 +360,165 @@ public class Controller {
 				song.setId(songs.get(table.getSelectedRow()).getId());
 				contain.setSong(song);
 				controller.insertSongPLayList(contain);
-				
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
+
 	public ArrayList<Song> selectFavouriteSongOfClientPP(Client client) throws SQLException, Exception {
 		SongManager songMan = new SongManager();
 
 		return (ArrayList<Song>) songMan.selectFavouriteSongOfClientPP(client);
 	}
+
 	public ArrayList<Song> selectFavouriteSongOfClientP(Client client) throws SQLException, Exception {
 		SongManager songMan = new SongManager();
 
 		return (ArrayList<Song>) songMan.selectFavouriteSongOfClientP(client);
 	}
 	
+	public boolean isLetterStringCorrect(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.matches("^[A-Za-zÑñÁÉÍÓÚÜáéíóúü\s]*$"))
+				ret = false;
+		}
+
+		return ret;
+	}
+
+	public boolean isEmptyText(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		}
+
+		return ret;
+	}
 	
+	public boolean isEmptyTextArea(JTextArea textArea) {
+		boolean ret = true;
+		String str = textArea.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		}
+
+		return ret;
+	}
+
+	public boolean isLengthCorrect(JTextField textField, int length) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (str.length() < length) {
+				ret = false;
+			}
+		}
+
+		return ret;
+	}
+	
+	public boolean isLengthCorrectInPasswdField(JPasswordField passwdField, int length) {
+		boolean ret = true;
+		String str = String.valueOf(passwdField.getPassword());
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (str.length() < length) {
+				ret = false;
+			}
+		}
+
+		return ret;
+	}
+
+	public boolean isPersonalIdCorrect(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (str.length() != 9) {
+				ret = false;
+			} else {
+				if (!str.matches("^\\d{8}[a-zA-Z]$"))
+					ret = false;
+			}
+		}
+
+		return ret;
+	}
+
+	public boolean isGenderCorrect(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.equalsIgnoreCase("Hombre") && !str.equalsIgnoreCase("Mujer") && !str.equalsIgnoreCase("Otro"))
+				ret = false;
+		}
+
+		return ret;
+
+	}
+
+	public boolean isDateCorrect(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.matches("^\\d{2}/\\d{2}/\\d{4}$"))
+				ret = false;
+		}
+
+		return ret;
+	}
+
+	public boolean isPhoneCorrect(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.matches("^[+]\\d{11}$"))
+				ret = false;
+		}
+
+		return ret;
+	}
+
+	public boolean isEmailCorrect(JTextField textField) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if (!str.matches("^(.+)@(.+)[.](.+)$"))
+				ret = false;
+		}
+
+		return ret;
+	}
+
 }

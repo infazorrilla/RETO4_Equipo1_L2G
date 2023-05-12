@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -35,8 +37,14 @@ import javax.swing.JComboBox;
 public class UpdateClient extends JPanel {
 
 	private static final long serialVersionUID = 2091925243705072798L;
-	private JTextField textBankAccount;
 	private Controller controller = null;
+	private JTextField textBankAccount;
+	private JTextField textNationality;
+	private JTextField textBirthDate;
+	private JTextArea textAreaAddress;
+	private JTextField textPhone;
+	private JTextField textEmail;
+	private JComboBox<String> comboBoxGender;
 
 	public UpdateClient(JFrame frame, Client client) {
 		initialize(frame, client);
@@ -154,15 +162,10 @@ public class UpdateClient extends JPanel {
 		passwdField1.setBorder(new LineBorder(Color.WHITE, 2));
 		passwdField1.setBounds(723, 142, 200, 35);
 		add(passwdField1);
-		passwdField1.addFocusListener(new FocusAdapter() {
+		passwdField1.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				passwdField1.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				passwdField1.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validatePasswdField(passwdField1);
 			}
 		});
 
@@ -176,15 +179,10 @@ public class UpdateClient extends JPanel {
 		passwdField2.setBorder(new LineBorder(Color.WHITE, 2));
 		passwdField2.setBounds(723, 202, 200, 35);
 		add(passwdField2);
-		passwdField2.addFocusListener(new FocusAdapter() {
+		passwdField2.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				passwdField2.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				passwdField2.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validatePasswdField(passwdField2);
 			}
 		});
 
@@ -198,19 +196,14 @@ public class UpdateClient extends JPanel {
 		textBankAccount.setBorder(new LineBorder(Color.WHITE, 2));
 		textBankAccount.setBounds(235, 142, 200, 35);
 		add(textBankAccount);
-		textBankAccount.addFocusListener(new FocusAdapter() {
+		textBankAccount.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textBankAccount.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textBankAccount.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateBankAccount();
 			}
 		});
 
-		JComboBox<String> comboBoxGender = new JComboBox<String>();
+		comboBoxGender = new JComboBox<String>();
 		comboBoxGender.setBounds(235, 202, 200, 35);
 		comboBoxGender.setForeground(Color.WHITE);
 		comboBoxGender.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -220,12 +213,12 @@ public class UpdateClient extends JPanel {
 		comboBoxGender.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				comboBoxGender.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+				comboBoxGender.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				comboBoxGender.setBorder(new LineBorder(Color.WHITE, 2));
+				comboBoxGender.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 			}
 		});
 		comboBoxGender.addItem("Hombre");
@@ -233,7 +226,7 @@ public class UpdateClient extends JPanel {
 		comboBoxGender.addItem("Otro");
 		comboBoxGender.setSelectedItem(client.getGender());
 
-		JTextField textNationality = new JTextField(client.getNationality());
+		textNationality = new JTextField(client.getNationality());
 		textNationality.setOpaque(false);
 		textNationality.setHorizontalAlignment(SwingConstants.CENTER);
 		textNationality.setForeground(Color.WHITE);
@@ -243,18 +236,14 @@ public class UpdateClient extends JPanel {
 		textNationality.setBorder(new LineBorder(Color.WHITE, 2));
 		textNationality.setBounds(235, 262, 200, 35);
 		add(textNationality);
-		textNationality.addFocusListener(new FocusAdapter() {
+		textNationality.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textNationality.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textNationality.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateNationalityField();
 			}
 		});
-		JTextField textBirthDate = new JTextField((new SimpleDateFormat("dd/MM/yyyy")).format(client.getBirthDate()));
+
+		textBirthDate = new JTextField((new SimpleDateFormat("dd/MM/yyyy")).format(client.getBirthDate()));
 		textBirthDate.setOpaque(false);
 		textBirthDate.setHorizontalAlignment(SwingConstants.CENTER);
 		textBirthDate.setForeground(Color.WHITE);
@@ -264,19 +253,14 @@ public class UpdateClient extends JPanel {
 		textBirthDate.setBorder(new LineBorder(Color.WHITE, 2));
 		textBirthDate.setBounds(235, 322, 200, 35);
 		add(textBirthDate);
-		textBirthDate.addFocusListener(new FocusAdapter() {
+		textBirthDate.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textBirthDate.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textBirthDate.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateBirthDateField();
 			}
 		});
 
-		JTextArea textAreaAddress = new JTextArea(client.getAddress());
+		textAreaAddress = new JTextArea(client.getAddress());
 		textAreaAddress.setOpaque(false);
 		textAreaAddress.setForeground(Color.WHITE);
 		textAreaAddress.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -285,21 +269,16 @@ public class UpdateClient extends JPanel {
 		textAreaAddress.setBorder(new LineBorder(Color.WHITE, 2));
 		textAreaAddress.setBounds(235, 382, 200, 70);
 		add(textAreaAddress);
-		textAreaAddress.addFocusListener(new FocusAdapter() {
+		textAreaAddress.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textAreaAddress.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textAreaAddress.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateAddressField();
 			}
 		});
 		textAreaAddress.setLineWrap(true);
 		textAreaAddress.setWrapStyleWord(true);
 
-		JTextField textPhone = new JTextField(client.getTelephone());
+		textPhone = new JTextField(client.getTelephone());
 		textPhone.setOpaque(false);
 		textPhone.setHorizontalAlignment(SwingConstants.CENTER);
 		textPhone.setForeground(Color.WHITE);
@@ -309,18 +288,14 @@ public class UpdateClient extends JPanel {
 		textPhone.setBorder(new LineBorder(Color.WHITE, 2));
 		textPhone.setBounds(235, 477, 200, 35);
 		add(textPhone);
-		textPhone.addFocusListener(new FocusAdapter() {
+		textPhone.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textPhone.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textPhone.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validatePhoneField();
 			}
 		});
-		JTextField textEmail = new JTextField(client.getEmail());
+
+		textEmail = new JTextField(client.getEmail());
 		textEmail.setOpaque(false);
 		textEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		textEmail.setForeground(Color.WHITE);
@@ -330,23 +305,17 @@ public class UpdateClient extends JPanel {
 		textEmail.setBorder(new LineBorder(Color.WHITE, 2));
 		textEmail.setBounds(235, 537, 200, 35);
 		add(textEmail);
-		textEmail.addFocusListener(new FocusAdapter() {
+		textEmail.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				textEmail.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				textEmail.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validateEmailField();
 			}
 		});
 
 		JButton btnUpdateInfo = new JButton("Actualizar");
 		btnUpdateInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doUpdateClient(client, comboBoxGender, textNationality, textBirthDate, textAreaAddress, textPhone,
-						textEmail, textBankAccount);
+				checkAllInformationFields(client);
 			}
 		});
 		btnUpdateInfo.setBounds(235, 597, 200, 40);
@@ -401,15 +370,15 @@ public class UpdateClient extends JPanel {
 		}
 	}
 
-	private void doUpdateClient(Client client, JComboBox<String> combo, JTextField textNation, JTextField textBirth,
-			JTextArea textAddr, JTextField textPhone, JTextField textEmail, JTextField textBank) {
+	private void doUpdateClient(Client client) {
 
 		if (null == controller) {
 			controller = new Controller();
 		}
 
 		try {
-			controller.updateClient(client, combo, textNation, textBirth, textAddr, textPhone, textEmail, textBank);
+			controller.updateClient(client, comboBoxGender, textNationality, textBirthDate, textAreaAddress, textPhone,
+					textEmail, textBankAccount);
 			WindowUtils.confirmationPane("Sus datos han sido actalizados.", "Confirmación");
 		} catch (ParseException e) {
 			WindowUtils.errorPane("El formato de la fecha es incorrecto.", "Error");
@@ -418,18 +387,6 @@ public class UpdateClient extends JPanel {
 		} catch (Exception e) {
 			WindowUtils.errorPane("No se ha podido realizar la actualización.", "Error");
 		}
-	}
-
-	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
-		boolean ret = false;
-		String pass1 = String.valueOf(passwd1.getPassword());
-		String pass2 = String.valueOf(passwd2.getPassword());
-
-		if (pass1.equals(pass2) && (pass1.length() >= 9)) {
-			ret = true;
-		}
-
-		return ret;
 	}
 
 	private void doChangePasswd(Client client, JPasswordField passwd1, JPasswordField passwd2) {
@@ -450,9 +407,143 @@ public class UpdateClient extends JPanel {
 			WindowUtils.errorPane(
 					"<html>Sus contraseñas no coinciden o tienen<br>una longitud menor de 10 caracteres.</html>",
 					"Error");
+			passwd1.setBorder(new LineBorder(Color.WHITE, 2));
+			passwd2.setBorder(new LineBorder(Color.WHITE, 2));
 		}
 
 		passwd1.setText("");
 		passwd2.setText("");
+	}
+
+	private void validateBankAccount() {
+		if (textBankAccount.isEnabled()) {
+			if (controller == null)
+				controller = new Controller();
+
+			if (controller.isLengthCorrect(textBankAccount, 20))
+				textBankAccount.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+			else
+				textBankAccount.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+		}
+	}
+
+	private void validateNationalityField() {
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isLetterStringCorrect(textNationality))
+			textNationality.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textNationality.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateBirthDateField() {
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isDateCorrect(textBirthDate))
+			textBirthDate.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textBirthDate.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateAddressField() {
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isEmptyTextArea(textAreaAddress))
+			textAreaAddress.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textAreaAddress.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validatePhoneField() {
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isPhoneCorrect(textPhone))
+			textPhone.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textPhone.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateEmailField() {
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isEmailCorrect(textEmail))
+			textEmail.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			textEmail.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private void validateAllFields() {
+		comboBoxGender.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		validateBankAccount();
+		validateNationalityField();
+		validateBirthDateField();
+		validateAddressField();
+		validatePhoneField();
+		validateEmailField();
+	}
+
+	private boolean areAllFieldsCorrect() {
+		boolean ret = false;
+		if (controller == null)
+			controller = new Controller();
+		
+		if (controller.isLetterStringCorrect(textNationality) && controller.isDateCorrect(textBirthDate)
+				&& controller.isEmptyTextArea(textAreaAddress) && controller.isPhoneCorrect(textPhone)
+				&& controller.isEmailCorrect(textEmail))
+			ret = true;
+
+		return ret;
+	}
+
+	private void checkAllInformationFields(Client client) {
+		if (controller == null)
+			controller = new Controller();
+
+		if (areAllFieldsCorrect()) {
+			if (textBankAccount.isEnabled()) {
+				if (controller.isLengthCorrect(textBankAccount, 20)) {
+					doUpdateClient(client);
+				} else {
+					validateAllFields();
+					WindowUtils.errorPane("Revisa los campos incorrectos marcados de color rojo.", "Error");
+				}
+			} else {
+				doUpdateClient(client);
+			}
+		} else {
+			validateAllFields();
+			WindowUtils.errorPane("Revisa los campos incorrectos marcados de color rojo.", "Error");
+		}
+	}
+
+	private void validatePasswdField(JPasswordField passwdField) {
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isLengthCorrectInPasswdField(passwdField, 10))
+			passwdField.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			passwdField.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
+		boolean ret = false;
+		String pass1 = String.valueOf(passwd1.getPassword());
+		String pass2 = String.valueOf(passwd2.getPassword());
+
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isLengthCorrectInPasswdField(passwd1, 10) && controller.isLengthCorrectInPasswdField(passwd2, 10)
+				&& pass1.equals(pass2)) {
+			ret = true;
+		}
+
+		return ret;
 	}
 }

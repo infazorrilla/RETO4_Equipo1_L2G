@@ -360,7 +360,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return ret;
 	}
 
-	public void changeSubscription(int clientId, String bankNumber, String actualSubscription, String newSubscription)
+	public void changeSubscription(int clientId, String bankNumber, String newSubscription)
 			throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -370,14 +370,13 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "CALL changeSubscription(?, ?, ?, ?)";
+			String sql = "CALL changeSubscription(?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setInt(1, clientId);
 			preparedStatement.setString(2, bankNumber);
-			preparedStatement.setString(3, actualSubscription);
-			preparedStatement.setString(4, newSubscription);
+			preparedStatement.setString(3, newSubscription);
 
 			preparedStatement.execute();
 

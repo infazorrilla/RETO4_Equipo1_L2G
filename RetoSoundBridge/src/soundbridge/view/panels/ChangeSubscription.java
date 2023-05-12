@@ -373,15 +373,13 @@ public class ChangeSubscription extends JPanel {
 					String bankNumber = WindowUtils.inputPaneWithIcon("Introduzca su número de cuenta:", "Plan de pago",
 							"img/icon/money.png");
 
-					controller.changeClientSubscription(client, bankNumber, actualSubscription, newSubscription);
+					controller.changeClientSubscription(client, bankNumber, newSubscription);
 				} else if (actualSubscription.equalsIgnoreCase("premium")) {
 					ClientP clientP = controller.getPremiumClient(client);
-					controller.changeClientSubscription(client, clientP.getBankAccount(), actualSubscription,
-							newSubscription);
+					controller.changeClientSubscription(client, clientP.getBankAccount(), newSubscription);
 				} else if (actualSubscription.equalsIgnoreCase("premium plus")) {
 					ClientPP clientPP = controller.getPremiumPlusClient(client);
-					controller.changeClientSubscription(client, clientPP.getBankAccount(), actualSubscription,
-							newSubscription);
+					controller.changeClientSubscription(client, clientPP.getBankAccount(), newSubscription);
 				}
 
 				WindowUtils.confirmationPane("Su suscripción a cambiado a " + newSubscription + ".", "Actualización");
