@@ -15,6 +15,7 @@ import soundbridge.view.panels.AlbumView;
 import soundbridge.view.panels.ArtistProfile;
 import soundbridge.view.panels.ChangeSubscription;
 import soundbridge.view.panels.ClientsReviews;
+import soundbridge.view.panels.CreatePlaylist;
 import soundbridge.view.panels.EmployeeMenu;
 import soundbridge.view.panels.EmployeeProfile;
 import soundbridge.view.panels.EmployeeReviews;
@@ -23,7 +24,7 @@ import soundbridge.view.panels.GroupProfile;
 import soundbridge.view.panels.Library;
 import soundbridge.view.panels.Login;
 import soundbridge.view.panels.ManageClients;
-
+import soundbridge.view.panels.PlayList;
 import soundbridge.view.panels.Profile;
 import soundbridge.view.panels.SignUp;
 import soundbridge.view.panels.SingleView;
@@ -51,6 +52,8 @@ public class PanelFactory {
 	public static final String CLIENTS_REVIEWS = "CLIENTS_REVIEWS";
 	public static final String WRITE_REVIEW = "WRITE_REVIEW";
 	public static final String FAVOURITE_SONGS = "FAVOURITE_SONGS";
+	public static final String CREATE_PLAYLIST = "CREATE_PLAYLIST";
+	public static final String PLAYLIST = "PLAYLIST";
 	
 	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist, ArtGroup artGroup,
 			Album album, Song song,Playlist playlist) {
@@ -91,6 +94,10 @@ public class PanelFactory {
 			return new WriteReview(frame, client, album, artist, artGroup);
 		case FAVOURITE_SONGS:
 			return new FavouriteSongs(frame, client);
+		case PLAYLIST:
+			return new PlayList(frame, client,playlist);
+		case CREATE_PLAYLIST:
+			return new CreatePlaylist(frame, client);
 		default:
 			return null;
 		}

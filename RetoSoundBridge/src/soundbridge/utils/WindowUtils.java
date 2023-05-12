@@ -1,6 +1,7 @@
 package soundbridge.utils;
 
 import java.awt.Color;
+
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -8,8 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
@@ -144,28 +143,7 @@ public class WindowUtils {
 
 		return ret;
 	}
-	public static String createPlaylistWithIcon(String message,String message2, String title, String path) {
-		UIManager.put("OptionPane.background", Color.BLACK);
-		UIManager.put("OptionPane.messagebackground", Color.BLACK);
-		UIManager.put("Panel.background", Color.BLACK);
-		UIManager.put("Button.background", Color.WHITE);
-		UIManager.put("Button.foreground", Color.BLACK);
-
-		ImageIcon icon = new ImageIcon(path);
-		Image img = icon.getImage();
-		Image resizedImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-		icon.setImage(resizedImg);
-
-		JTextArea jTextArea = new JTextArea();
-		JTextField textField = new JTextField();
-		JScrollPane jscrollpane= new JScrollPane();
-		jscrollpane.setViewportView(jTextArea);
 	
-		
-		Object[] components = { "<html><font color='white'>" + message + "</font></html>", textField, message,jTextArea };
-		JOptionPane.showMessageDialog(null, components, title, JOptionPane.PLAIN_MESSAGE, icon);
-
-		return textField.getText();
-	}
+	
 
 }
