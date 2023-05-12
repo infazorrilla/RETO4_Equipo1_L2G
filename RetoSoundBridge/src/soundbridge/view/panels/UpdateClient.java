@@ -407,10 +407,10 @@ public class UpdateClient extends JPanel {
 			WindowUtils.errorPane(
 					"<html>Sus contraseñas no coinciden o tienen<br>una longitud menor de 10 caracteres.</html>",
 					"Error");
-			passwd1.setBorder(new LineBorder(Color.WHITE, 2));
-			passwd2.setBorder(new LineBorder(Color.WHITE, 2));
 		}
-
+		passwd1.setBorder(new LineBorder(Color.WHITE, 2));
+		passwd2.setBorder(new LineBorder(Color.WHITE, 2));
+		
 		passwd1.setText("");
 		passwd2.setText("");
 	}

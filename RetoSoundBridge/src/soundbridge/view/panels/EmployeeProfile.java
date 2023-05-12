@@ -6,8 +6,8 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -29,6 +29,7 @@ import javax.swing.JPasswordField;
 public class EmployeeProfile extends JPanel {
 
 	private static final long serialVersionUID = 9048482263295991631L;
+	private Controller controller = null;
 	
 	public EmployeeProfile(JFrame frame, Employee employee) {
 		initialize(frame, employee);
@@ -209,15 +210,10 @@ public class EmployeeProfile extends JPanel {
 		passwordField1.setBorder(new LineBorder(Color.WHITE, 2));
 		passwordField1.setBounds(51, 250, 200, 35);
 		add(passwordField1);
-		passwordField1.addFocusListener(new FocusAdapter() {
+		passwordField1.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				passwordField1.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				passwordField1.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validatePasswdField(passwordField1);
 			}
 		});
 		
@@ -231,15 +227,10 @@ public class EmployeeProfile extends JPanel {
 		passwordField2.setBorder(new LineBorder(Color.WHITE, 2));
 		passwordField2.setBounds(51, 310, 200, 35);
 		add(passwordField2);
-		passwordField2.addFocusListener(new FocusAdapter() {
+		passwordField2.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				passwordField2.setBorder(new LineBorder(new Color(244, 135, 244), 2));
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				passwordField2.setBorder(new LineBorder(Color.WHITE, 2));
+			public void keyReleased(KeyEvent e) {
+				validatePasswdField(passwordField2);
 			}
 		});
 		
@@ -270,20 +261,11 @@ public class EmployeeProfile extends JPanel {
 		frame.repaint();
 	}
 	
-	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
-		boolean ret = false;
-		String pass1 = String.valueOf(passwd1.getPassword());
-		String pass2 = String.valueOf(passwd2.getPassword());
-
-		if (pass1.equals(pass2) && (pass1.length() >= 9)) {
-			ret = true;
+	private void doChangePasswd(Employee employee, JPasswordField passwd1, JPasswordField passwd2) {
+		if (null == controller) {
+			controller = new Controller();
 		}
 
-		return ret;
-	}
-	
-	private void doChangePasswd(Employee employee, JPasswordField passwd1, JPasswordField passwd2) {
-		Controller controller = new Controller();
 		if (isPasswdOk(passwd1, passwd2)) {
 			try {
 				controller.changePasswdEmployee(employee, passwd1, passwd2);
@@ -298,8 +280,37 @@ public class EmployeeProfile extends JPanel {
 					"<html>Sus contraseñas no coinciden o tienen<br>una longitud menor de 10 caracteres.</html>",
 					"Error");
 		}
+		
+		passwd1.setBorder(new LineBorder(Color.WHITE, 2));
+		passwd2.setBorder(new LineBorder(Color.WHITE, 2));
 
 		passwd1.setText("");
 		passwd2.setText("");
+	}
+	
+	private void validatePasswdField(JPasswordField passwdField) {
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isLengthCorrectInPasswdField(passwdField, 10))
+			passwdField.setBorder(new LineBorder(new Color(0, 205, 20), 2));
+		else
+			passwdField.setBorder(new LineBorder(new Color(255, 40, 40), 2));
+	}
+
+	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
+		boolean ret = false;
+		String pass1 = String.valueOf(passwd1.getPassword());
+		String pass2 = String.valueOf(passwd2.getPassword());
+
+		if (controller == null)
+			controller = new Controller();
+
+		if (controller.isLengthCorrectInPasswdField(passwd1, 10) && controller.isLengthCorrectInPasswdField(passwd2, 10)
+				&& pass1.equals(pass2)) {
+			ret = true;
+		}
+
+		return ret;
 	}
 }
