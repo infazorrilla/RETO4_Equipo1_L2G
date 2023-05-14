@@ -24,8 +24,8 @@ import soundbridge.view.factory.PanelFactory;
 import javax.swing.JLabel;
 
 /**
- * Panel where the client can see her playlists and choose in which he want to
- * put the song.
+ * Panel where the client can see his playlists and choose in which one he wants
+ * add the song.
  */
 public class AddSongPlaylist extends JPanel {
 	private JPanel panelGridAddSong;
@@ -39,6 +39,10 @@ public class AddSongPlaylist extends JPanel {
 	 * @param client logged client
 	 */
 	public AddSongPlaylist(JFrame frame, Client client) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+
 		initialize(frame, client);
 	}
 
@@ -50,10 +54,6 @@ public class AddSongPlaylist extends JPanel {
 	 */
 
 	public void initialize(JFrame frame, Client client) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setBounds(252, 65, 91, 14);
@@ -103,7 +103,7 @@ public class AddSongPlaylist extends JPanel {
 	}
 
 	/**
-	 * Gets all the playlist of a client
+	 * Gets all the playlist of a client.
 	 * 
 	 * @param client the client to take the playlists.
 	 * 
@@ -123,7 +123,7 @@ public class AddSongPlaylist extends JPanel {
 	 * 
 	 * @return
 	 */
-	
+
 	private JPanel createPanel() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 115, 115);
@@ -133,6 +133,7 @@ public class AddSongPlaylist extends JPanel {
 
 		return panel;
 	}
+
 	/**
 	 * Creates a label that is meant be added to the specified panel. An image will
 	 * be printed on it.
@@ -152,7 +153,7 @@ public class AddSongPlaylist extends JPanel {
 	 * 
 	 * @return the created panel
 	 */
-	
+
 	private JPanel createPanelToFitGrid() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 115, 115);
@@ -201,13 +202,14 @@ public class AddSongPlaylist extends JPanel {
 			}
 		}
 	}
+
 	/**
 	 * Creates a listener for the panel. When it is clicked it takes the client to
 	 * the playlist panel.
 	 * 
-	 * @param frame  frame where the panel is added
-	 * @param panel  panel to which the listener is being created
-	 * @param client logged client
+	 * @param frame    frame where the panel is added
+	 * @param panel    panel to which the listener is being created
+	 * @param client   logged client
 	 * @param playlist playlist the choosen playlist
 	 */
 	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlist) {
