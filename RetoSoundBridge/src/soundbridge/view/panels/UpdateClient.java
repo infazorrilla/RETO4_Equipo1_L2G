@@ -34,6 +34,10 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 import javax.swing.JComboBox;
 
+/**
+ * Panel that enables a logged client to change his password and update personal
+ * information.
+ */
 public class UpdateClient extends JPanel {
 
 	private static final long serialVersionUID = 2091925243705072798L;
@@ -46,16 +50,27 @@ public class UpdateClient extends JPanel {
 	private JTextField textEmail;
 	private JComboBox<String> comboBoxGender;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	public UpdateClient(JFrame frame, Client client) {
-		initialize(frame, client);
-
-	}
-
-	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
 
+		initialize(frame, client);
+	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void initialize(JFrame frame, Client client) {
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -64,11 +79,7 @@ public class UpdateClient extends JPanel {
 		panelBackIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goBack(frame, client);
 			}
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -356,6 +367,26 @@ public class UpdateClient extends JPanel {
 		enableBankAccount(client);
 	}
 
+	/**
+	 * Takes the client back to his profile.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goBack(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Enables or disables the bank account field depending on the client's
+	 * subscription.
+	 * 
+	 * @param client logged client
+	 */
 	private void enableBankAccount(Client client) {
 		if (client instanceof ClientP || client instanceof ClientPP) {
 			textBankAccount.setEnabled(true);
@@ -370,6 +401,11 @@ public class UpdateClient extends JPanel {
 		}
 	}
 
+	/**
+	 * Updates the client's personal information.
+	 * 
+	 * @param client logged client
+	 */
 	private void doUpdateClient(Client client) {
 
 		if (null == controller) {
@@ -389,6 +425,13 @@ public class UpdateClient extends JPanel {
 		}
 	}
 
+	/**
+	 * Changes the password of the client if it's valid.
+	 * 
+	 * @param client  logged client
+	 * @param passwd1 field that the client needs to fill with the new password
+	 * @param passwd2 field that the client needs repeat the new password
+	 */
 	private void doChangePasswd(Client client, JPasswordField passwd1, JPasswordField passwd2) {
 		if (null == controller) {
 			controller = new Controller();
@@ -410,23 +453,29 @@ public class UpdateClient extends JPanel {
 		}
 		passwd1.setBorder(new LineBorder(Color.WHITE, 2));
 		passwd2.setBorder(new LineBorder(Color.WHITE, 2));
-		
+
 		passwd1.setText("");
 		passwd2.setText("");
 	}
 
+	/**
+	 * Validates the bank account field, which must have 20 numbers.
+	 */
 	private void validateBankAccount() {
 		if (textBankAccount.isEnabled()) {
 			if (controller == null)
 				controller = new Controller();
 
-			if (controller.isLengthCorrect(textBankAccount, 20))
+			if (controller.isLengthCorrectInBankAccount(textBankAccount, 20))
 				textBankAccount.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 			else
 				textBankAccount.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 		}
 	}
 
+	/**
+	 * Validates the nationality field, which must not contain numbers. 
+	 */
 	private void validateNationalityField() {
 		if (controller == null)
 			controller = new Controller();
@@ -491,7 +540,7 @@ public class UpdateClient extends JPanel {
 		boolean ret = false;
 		if (controller == null)
 			controller = new Controller();
-		
+
 		if (controller.isLetterStringCorrect(textNationality) && controller.isDateCorrect(textBirthDate)
 				&& controller.isEmptyTextArea(textAreaAddress) && controller.isPhoneCorrect(textPhone)
 				&& controller.isEmailCorrect(textEmail))

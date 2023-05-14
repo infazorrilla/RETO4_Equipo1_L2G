@@ -16,28 +16,43 @@ import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Panel that contains the edition menu allowing an employee to manage clients,
+ * reviews or content.
+ */
 public class EmployeeMenu extends JPanel {
 
 	private static final long serialVersionUID = -5540530709811898264L;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
 	public EmployeeMenu(JFrame frame, Employee employee) {
+		setBounds(0, 0, 1000, 672);
+		setBackground(Color.black);
+		setLayout(null);
 
 		initialize(frame, employee);
 
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
 	private void initialize(JFrame frame, Employee employee) {
-
-		setBounds(0, 0, 1000, 672);
-		setBackground(Color.black);
-		setLayout(null);
 
 		JLabel lblTitle = new JLabel("¿Qué desea gestionar?");
 		lblTitle.setForeground(Color.WHITE);
 		lblTitle.setFont(new Font("Dialog", Font.PLAIN, 22));
 		lblTitle.setBounds(380, 44, 250, 36);
 		add(lblTitle);
-		
+
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(903, 45, 50, 50);
 		add(panelProfileIcon);
@@ -65,11 +80,7 @@ public class EmployeeMenu extends JPanel {
 		panelManageClients.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.MANAGE_CLIENTS, frame, null, employee,
-						null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToManageClients(frame, employee);
 			}
 		});
 		panelManageClients.setBounds(108, 150, 100, 100);
@@ -80,7 +91,7 @@ public class EmployeeMenu extends JPanel {
 
 		JLabel lblManageClientsIcon = new JLabel("");
 		panelManageClients.add(lblManageClientsIcon, BorderLayout.CENTER);
-		
+
 		JPanel panelReviews = new JPanel();
 		panelReviews.setOpaque(false);
 		panelReviews.setBounds(108, 279, 100, 100);
@@ -90,32 +101,62 @@ public class EmployeeMenu extends JPanel {
 		panelReviews.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_REVIEWS, frame, null, employee,
-						null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToReviews(frame, employee);
 			}
 		});
-		
+
 		JLabel lblReviewIcon = new JLabel("");
 		panelReviews.add(lblReviewIcon, BorderLayout.CENTER);
-		
+
 		JLabel lblReviews = new JLabel("Valoraciones");
 		lblReviews.setForeground(Color.WHITE);
 		lblReviews.setFont(new Font("Dialog", Font.PLAIN, 17));
 		lblReviews.setBounds(220, 315, 119, 29);
 		add(lblReviews);
-		
+
 		WindowUtils.addImage(panelManageClients, lblManageClientsIcon, "img/icon/clients.png");
 		WindowUtils.addImage(panelReviews, lblReviewIcon, "img/icon/review.png");
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 	}
-	
+
+	/**
+	 * Takes the employee to the panel that enables managing clients.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
+	private void goToManageClients(JFrame frame, Employee employee) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.MANAGE_CLIENTS, frame, null, employee, null,
+				null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the employee to the panel that enables managing clients' reviews.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
+	private void goToReviews(JFrame frame, Employee employee) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_REVIEWS, frame, null, employee, null,
+				null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the employee to his profile.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
 	private void goToProfile(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_PROFILE, frame, null, employee, null, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_PROFILE, frame, null, employee, null,
+				null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

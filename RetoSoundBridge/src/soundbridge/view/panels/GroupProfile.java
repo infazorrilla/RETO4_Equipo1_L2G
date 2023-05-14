@@ -24,6 +24,10 @@ import soundbridge.database.pojos.Song;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
+/**
+ * Panel that shows the profile of an art group. A logged client can select an
+ * album or single.
+ */
 public class GroupProfile extends JPanel {
 
 	private static final long serialVersionUID = -5060067084701215720L;
@@ -34,15 +38,29 @@ public class GroupProfile extends JPanel {
 	private JLabel lblSingles;
 	private Controller controller = null;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artGroup selected art group
+	 */
 	public GroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
-		initialize(frame, client, artGroup);
-	}
-
-	private void initialize(JFrame frame, Client client, ArtGroup artGroup) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
 
+		initialize(frame, client, artGroup);
+	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artGroup selected art group
+	 */
+	private void initialize(JFrame frame, Client client, ArtGroup artGroup) {
 		JPanel panelGroupImage = new JPanel();
 		panelGroupImage.setBounds(40, 40, 250, 250);
 		add(panelGroupImage);
@@ -60,11 +78,7 @@ public class GroupProfile extends JPanel {
 		panelHomeIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goBack(frame, client);
 			}
 		});
 		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -101,7 +115,7 @@ public class GroupProfile extends JPanel {
 		panelGridAlbums = new JPanel();
 		panelGridAlbums.setBounds(40, 360, 920, 115);
 		add(panelGridAlbums);
-		panelGridAlbums.setLayout(new GridLayout(1, 5, 69, 0));
+		panelGridAlbums.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridAlbums.setOpaque(false);
 
 		lblSingles = new JLabel("Singles");
@@ -113,16 +127,37 @@ public class GroupProfile extends JPanel {
 		panelGridSingles = new JPanel();
 		panelGridSingles.setBounds(40, 528, 920, 115);
 		add(panelGridSingles);
-		panelGridSingles.setLayout(new GridLayout(1, 5, 69, 0));
+		panelGridSingles.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridSingles.setOpaque(false);
 
-		doAddImagesToAlbums(frame, client, artGroup);
-		doAddImagesToSingles(frame, client, artGroup);
+		doCreateFunctionalAlbumPanels(frame, client, artGroup);
+		doCreateFunctionalSinglePanels(frame, client, artGroup);
 	}
 
-	private void doAddImagesToAlbums(JFrame frame, Client client, ArtGroup artGroup) {
+	/**
+	 * Takes the client back to his library.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goBack(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Creates the corresponding panel for each album.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artGroup art group whose profile is shown
+	 */
+	private void doCreateFunctionalAlbumPanels(JFrame frame, Client client, ArtGroup artGroup) {
 		try {
-			addImagesToAlbums(frame, client, artGroup);
+			createFunctionalAlbumPanels(frame, client, artGroup);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se han podido cargar los álbumes.", "Error en la base de datos");
 		} catch (Exception e) {
@@ -130,9 +165,16 @@ public class GroupProfile extends JPanel {
 		}
 	}
 
-	private void doAddImagesToSingles(JFrame frame, Client client, ArtGroup artGroup) {
+	/**
+	 * Creates the corresponding panel for each single.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artGroup art group whose profile is shown
+	 */
+	private void doCreateFunctionalSinglePanels(JFrame frame, Client client, ArtGroup artGroup) {
 		try {
-			addImagesToSingles(frame, client, artGroup);
+			createFunctionalSinglePanels(frame, client, artGroup);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se han podido cargar los singles.", "Error en la base de datos");
 		} catch (Exception e) {
@@ -140,6 +182,14 @@ public class GroupProfile extends JPanel {
 		}
 	}
 
+	/**
+	 * Returns every album that belongs to the art group.
+	 * 
+	 * @param artGroup art group whose profile is shown
+	 * @return albums of the art group
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private ArrayList<Album> getAlbums(ArtGroup artGroup) throws SQLException, Exception {
 		if (null == controller)
 			controller = new Controller();
@@ -147,6 +197,15 @@ public class GroupProfile extends JPanel {
 
 	}
 
+	/**
+	 * Returns every song that belongs to the album.
+	 * 
+	 * @param album    album that contains the songs
+	 * @param artGroup art group whose profile is shown
+	 * @return songs of the album
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private ArrayList<Song> getSongsOfAlbum(Album album, ArtGroup artGroup) throws SQLException, Exception {
 		if (null == controller)
 			controller = new Controller();
@@ -154,12 +213,22 @@ public class GroupProfile extends JPanel {
 
 	}
 
-	private void addImagesToAlbums(JFrame frame, Client client, ArtGroup artGroup) throws SQLException, Exception {
+	/**
+	 * Creates a maximum of 6 panels that correspond to the albums of the art group.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artGroup art group whose profile is shown
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	private void createFunctionalAlbumPanels(JFrame frame, Client client, ArtGroup artGroup)
+			throws SQLException, Exception {
 
 		albums = getAlbums(artGroup);
 
 		if (null != albums) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 6; i++) {
 				if (i < albums.size()) {
 					Album album = albums.get(i);
 					String image = album.getCover();
@@ -186,6 +255,11 @@ public class GroupProfile extends JPanel {
 		}
 	}
 
+	/**
+	 * Creates a panel to fit the grid dimensions, but it is not shown.
+	 * 
+	 * @return the created panel
+	 */
 	private JPanel createPanelToFitGrid() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 115, 115);
@@ -194,6 +268,11 @@ public class GroupProfile extends JPanel {
 		return panel;
 	}
 
+	/**
+	 * Creates a panel that is meant to be added to the grid.
+	 * 
+	 * @return
+	 */
 	private JPanel createPanel() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 115, 115);
@@ -204,6 +283,13 @@ public class GroupProfile extends JPanel {
 		return panel;
 	}
 
+	/**
+	 * Creates a label that is meant be added to the specified panel. An image will
+	 * be printed on it.
+	 * 
+	 * @param panel panel where the label is placed
+	 * @return the label that is placed in the panel
+	 */
 	private JLabel createLabel(JPanel panel) {
 		JLabel label = new JLabel("");
 		panel.add(label, BorderLayout.CENTER);
@@ -211,6 +297,16 @@ public class GroupProfile extends JPanel {
 
 	}
 
+	/**
+	 * Creates a listener for the panel. When it is clicked it takes the client to
+	 * the album panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param panel    panel to which the listener is being created
+	 * @param client   logged client
+	 * @param artGroup art group whose profile is shown
+	 * @param album    related album
+	 */
 	private void createAlbumPanelListener(JFrame frame, JPanel panel, Client client, ArtGroup artGroup, Album album) {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -224,12 +320,30 @@ public class GroupProfile extends JPanel {
 		});
 	}
 
+	/**
+	 * Returns the songs that are not included in any album.
+	 * 
+	 * @param artGroup art group whose profile is shown
+	 * @return songs that have no related album
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private ArrayList<Song> getSingles(ArtGroup artGroup) throws SQLException, Exception {
 		if (null == controller)
 			controller = new Controller();
 		return controller.getSinglesByGroup(artGroup);
 	}
 
+	/**
+	 * Creates a listener for the single. When it is clicked it takes the client to
+	 * the single panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param panel    panel to which the listener is being created
+	 * @param client   logged client
+	 * @param artGroup art group whose profile is shown
+	 * @param song     related song
+	 */
 	private void createSinglePanelListener(JPanel panel, JFrame frame, Client client, ArtGroup artGroup, Song song) {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -243,11 +357,22 @@ public class GroupProfile extends JPanel {
 		});
 	}
 
-	private void addImagesToSingles(JFrame frame, Client client, ArtGroup artGroup) throws SQLException, Exception {
+	/**
+	 * Creates a maximum of 6 panels that correspond to the singles of the art
+	 * group.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artGroup art group whose profile is shown
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	private void createFunctionalSinglePanels(JFrame frame, Client client, ArtGroup artGroup)
+			throws SQLException, Exception {
 		singles = getSingles(artGroup);
 
 		if (null != singles) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 6; i++) {
 				if (i < singles.size()) {
 					Song song = singles.get(i);
 					String image = song.getCover();

@@ -26,20 +26,36 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 import javax.swing.JPasswordField;
 
+/**
+ * Panel that contains an employee's information. It allows to log out and
+ * change the password.
+ */
 public class EmployeeProfile extends JPanel {
 
 	private static final long serialVersionUID = 9048482263295991631L;
 	private Controller controller = null;
-	
+
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
 	public EmployeeProfile(JFrame frame, Employee employee) {
-		initialize(frame, employee);
-	}
-	
-	private void initialize(JFrame frame, Employee employee) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
+		initialize(frame, employee);
+	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
+	private void initialize(JFrame frame, Employee employee) {
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(30, 30, 150, 150);
 		add(panelProfileIcon);
@@ -57,11 +73,7 @@ public class EmployeeProfile extends JPanel {
 		panelHomeIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goBack(frame, employee);
 			}
 		});
 		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -96,7 +108,7 @@ public class EmployeeProfile extends JPanel {
 		btnLogOut.setBorder(new LineBorder(Color.black, 0));
 		btnLogOut.setOpaque(false);
 		btnLogOut.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		JLabel lblInfo = new JLabel("Datos de la cuenta:");
 		lblInfo.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		lblInfo.setBounds(446, 200, 301, 27);
@@ -193,13 +205,13 @@ public class EmployeeProfile extends JPanel {
 		lblEmailValue.setBounds(576, 550, 301, 20);
 		lblEmailValue.setForeground(Color.white);
 		add(lblEmailValue);
-		
+
 		JLabel lblPasswdTitle = new JLabel("Cambio de contraseña:");
 		lblPasswdTitle.setForeground(Color.WHITE);
 		lblPasswdTitle.setFont(new Font("Dialog", Font.PLAIN, 18));
 		lblPasswdTitle.setBounds(51, 200, 301, 27);
 		add(lblPasswdTitle);
-		
+
 		JPasswordField passwordField1 = new JPasswordField();
 		passwordField1.setOpaque(false);
 		passwordField1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -216,7 +228,7 @@ public class EmployeeProfile extends JPanel {
 				validatePasswdField(passwordField1);
 			}
 		});
-		
+
 		JPasswordField passwordField2 = new JPasswordField();
 		passwordField2.setOpaque(false);
 		passwordField2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -233,8 +245,7 @@ public class EmployeeProfile extends JPanel {
 				validatePasswdField(passwordField2);
 			}
 		});
-		
-		
+
 		JButton btnChangePasswd = new JButton("Confirmar");
 		btnChangePasswd.setOpaque(true);
 		btnChangePasswd.setForeground(Color.BLACK);
@@ -248,11 +259,30 @@ public class EmployeeProfile extends JPanel {
 				doChangePasswd(employee, passwordField1, passwordField2);
 			}
 		});
-		
+
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 	}
-	
+
+	/**
+	 * Takes the employee back to the edition menu.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
+	private void goBack(JFrame frame, Employee employee) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null,
+				null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the employee to the log in panel.
+	 * 
+	 * @param frame frame where the panel is added
+	 */
 	private void logOut(JFrame frame) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
@@ -260,7 +290,14 @@ public class EmployeeProfile extends JPanel {
 		frame.revalidate();
 		frame.repaint();
 	}
-	
+
+	/**
+	 * Changes the password of the employee if it's valid.
+	 * 
+	 * @param employee logged employee
+	 * @param passwd1  field that the employee needs to fill with the new password
+	 * @param passwd2  field that the employee needs repeat the new password
+	 */
 	private void doChangePasswd(Employee employee, JPasswordField passwd1, JPasswordField passwd2) {
 		if (null == controller) {
 			controller = new Controller();
@@ -280,14 +317,19 @@ public class EmployeeProfile extends JPanel {
 					"<html>Sus contraseñas no coinciden o tienen<br>una longitud menor de 10 caracteres.</html>",
 					"Error");
 		}
-		
+
 		passwd1.setBorder(new LineBorder(Color.WHITE, 2));
 		passwd2.setBorder(new LineBorder(Color.WHITE, 2));
 
 		passwd1.setText("");
 		passwd2.setText("");
 	}
-	
+
+	/**
+	 * Validation for the password field.
+	 * 
+	 * @param passwdField validated field
+	 */
 	private void validatePasswdField(JPasswordField passwdField) {
 		if (controller == null)
 			controller = new Controller();
@@ -298,6 +340,13 @@ public class EmployeeProfile extends JPanel {
 			passwdField.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Checks if the password is valid, which must have at least 10 characters.
+	 * 
+	 * @param passwd1 field that the employee needs to fill with the new password
+	 * @param passwd2 field that the employee needs repeat the new password
+	 * @return true if both passwords are the same and have at least 10 characters
+	 */
 	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
 		boolean ret = false;
 		String pass1 = String.valueOf(passwd1.getPassword());

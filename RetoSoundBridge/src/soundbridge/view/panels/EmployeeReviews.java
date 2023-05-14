@@ -30,24 +30,37 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import java.awt.GridLayout;
 
+/**
+ * Panel that contains the non validated reviews written by clients. It enables
+ * an employee to validate or delete the selected reviews.
+ */
 public class EmployeeReviews extends JPanel {
 
 	private static final long serialVersionUID = -2335885884396696647L;
 	private ArrayList<Review> nonValidatedReviews = null;
 	private ArrayList<Review> selectedReviews = null;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
 	public EmployeeReviews(JFrame frame, Employee employee) {
-
-		initialize(frame, employee);
-
-	}
-
-	private void initialize(JFrame frame, Employee employee) {
-
 		setBounds(0, 0, 1000, 672);
 		setBackground(Color.black);
 		setLayout(null);
 
+		initialize(frame, employee);
+	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
+	private void initialize(JFrame frame, Employee employee) {
 		JLabel lblTitle = new JLabel("Revisión de valoraciones");
 		lblTitle.setForeground(Color.WHITE);
 		lblTitle.setFont(new Font("Dialog", Font.BOLD, 22));
@@ -81,7 +94,7 @@ public class EmployeeReviews extends JPanel {
 		panelGridList.setBounds(0, 105, 1000, 40);
 		add(panelGridList);
 		panelGridList.setLayout(new GridLayout(1, 0, 0, 0));
-		
+
 		JScrollPane scrollPane = new JScrollPane(panelGridReviews, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(50, 150, 900, 500);
@@ -118,7 +131,6 @@ public class EmployeeReviews extends JPanel {
 			}
 		});
 
-
 		JButton btnValidate = new JButton("Validar selección");
 		btnValidate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -147,19 +159,27 @@ public class EmployeeReviews extends JPanel {
 		btnReject.setOpaque(true);
 		btnReject.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		
 		getAllNonValidatedReviews();
 		createReviewPanel(panelGridReviews, scrollPane);
 	}
 
+	/**
+	 * Takes the employee back to the edition menu.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
 	private void goBack(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null,
+				null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
 
+	/**
+	 * Gets all non validated reviews.
+	 */
 	private void getAllNonValidatedReviews() {
 		ReviewManager reviewManager = new ReviewManager();
 		try {
@@ -167,10 +187,16 @@ public class EmployeeReviews extends JPanel {
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se han podido cargar las valoraciones.", "Error en la base de datos");
 		} catch (Exception e) {
-			WindowUtils.errorPane("No se han podido cargar las valoraciones.", "Error en la base de datos");
+			WindowUtils.errorPane("No se han podido cargar las valoraciones.", "Error general");
 		}
 	}
 
+	/**
+	 * Creates a panel for every review with a checkbox.
+	 * 
+	 * @param panel      main panel where the review panel is added
+	 * @param scrollPane scrollpane where the main panel is placed
+	 */
 	private void createReviewPanel(JPanel panel, JScrollPane scrollPane) {
 		if (null != nonValidatedReviews) {
 			int height = 400;
@@ -204,6 +230,13 @@ public class EmployeeReviews extends JPanel {
 		}
 	}
 
+	/**
+	 * Validates the selected reviews, removes every review panel from the main
+	 * panel and updates the panel with the new non validated review panels.
+	 * 
+	 * @param panel      main panel where the review panels are added
+	 * @param scrollPane scrollpane where the main panel is placed
+	 */
 	private void doValidate(JPanel panel, JScrollPane scrollPane) {
 		if (null != selectedReviews) {
 			try {
@@ -223,6 +256,12 @@ public class EmployeeReviews extends JPanel {
 		}
 	}
 
+	/**
+	 * Updates the selected reviews to be validated in the database.
+	 * 
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private void validateSelectedReviews() throws SQLException, Exception {
 		if (selectedReviews != null) {
 			ReviewManager reviewManager = new ReviewManager();
@@ -233,6 +272,13 @@ public class EmployeeReviews extends JPanel {
 		}
 	}
 
+	/**
+	 * Deletes the selected reviews, removes every review panel from the main panel
+	 * and updates the panel with the new non validated review panels.
+	 * 
+	 * @param panel      main panel where the review panels are added
+	 * @param scrollPane scrollpane where the main panel is placed
+	 */
 	private void doDelete(JPanel panel, JScrollPane scrollPane) {
 		if (null != selectedReviews) {
 			try {
@@ -252,10 +298,15 @@ public class EmployeeReviews extends JPanel {
 		}
 	}
 
+	/**
+	 * Removes the selected reviews from the database.
+	 * 
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private void deleteSelectedReviews() throws SQLException, Exception {
 		ReviewManager reviewManager = new ReviewManager();
 		for (Review review : selectedReviews) {
-			review.setValidated(true);
 			reviewManager.delete(review);
 		}
 	}

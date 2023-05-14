@@ -16,6 +16,10 @@ import java.awt.BorderLayout;
 
 import javax.swing.JCheckBox;
 
+/**
+ * Panel that contains all the information of an album review written by a
+ * client.
+ */
 public class ReviewPanel extends JPanel {
 
 	private static final long serialVersionUID = -7552632715076935682L;
@@ -23,18 +27,28 @@ public class ReviewPanel extends JPanel {
 	private ArrayList<JLabel> labels = null;
 	public JCheckBox checkBox;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param review review of the client
+	 */
 	public ReviewPanel(Review review) {
+		setBounds(0, 0, 900, 400);
+		setBackground(Color.black);
+		setLayout(null);
+
 		panels = new ArrayList<JPanel>();
 		labels = new ArrayList<JLabel>();
 		initialize(review);
 		showStars(review);
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param review review of the client
+	 */
 	private void initialize(Review review) {
-		setBounds(0, 0, 900, 400);
-		setBackground(Color.black);
-		setLayout(null);
-
 		JLabel lblTitle = new JLabel(review.getTitle());
 		lblTitle.setFont(new Font("Dialog", Font.PLAIN, 16));
 		lblTitle.setForeground(Color.WHITE);
@@ -150,6 +164,11 @@ public class ReviewPanel extends JPanel {
 		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, review.getAlbum().getCover());
 	}
 
+	/**
+	 * Shows the corresponding star image, depending on the review's stars.
+	 * 
+	 * @param review review of the client
+	 */
 	private void showStars(Review review) {
 		int stars = review.getStars();
 		String path = "img/icon/star";
