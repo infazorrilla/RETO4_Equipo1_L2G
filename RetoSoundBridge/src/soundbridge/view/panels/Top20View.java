@@ -29,7 +29,7 @@ import soundbridge.controller.Controller;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
-
+import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Play;
 
 import soundbridge.database.pojos.Song;
@@ -38,6 +38,7 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
 import java.awt.Font;
+import java.awt.Frame;
 import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -154,7 +155,7 @@ public class Top20View extends JPanel {
 		tableSongsTop20.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(client);
+				playSelectedSong(client,frame);
 			}
 		});
 		tableSongsTop20.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -299,7 +300,7 @@ public class Top20View extends JPanel {
 		table.getColumnModel().getColumn(5).setMinWidth(160);
 	}
 
-	private void playSelectedSong(Client client) {
+	private void playSelectedSong(Client client,JFrame frame) {
 
 		indexx = tableSongsTop20.getSelectedColumn();
 		if (indexx == 0) {
@@ -317,7 +318,14 @@ public class Top20View extends JPanel {
 			doInsertPlay(client, song);
 			panelPauseIcon.setVisible(true);
 		}
+		if (indexx == 6) {
+			if(client instanceof ClientPP) {
+			goToAddSong(frame,client);
+			}
+		}
 	}
+
+	
 
 	private void stopMusic() {
 		if (isPlayerRunning)
@@ -375,7 +383,14 @@ public class Top20View extends JPanel {
 	public void setTableSongsTop20(JTable tableSongsTop20) {
 		this.tableSongsTop20 = tableSongsTop20;
 	}
-
+	private void goToAddSong(JFrame frame,Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+		
+	}
 	
 
 }

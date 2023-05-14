@@ -1,6 +1,8 @@
 package soundbridge.view.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,12 +12,15 @@ import soundbridge.database.pojos.Client;
 
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Playlist;
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
 public class CreatePlaylist extends JPanel {
@@ -53,8 +58,33 @@ public class CreatePlaylist extends JPanel {
 		textField_1.setBounds(51, 209, 86, 20);
 		add(textField_1);
 		textField_1.setColumns(10);
+		
+		JPanel panelBackIcon = new JPanel();
+		panelBackIcon.setBounds(900, 45, 50, 50);
+		add(panelBackIcon);
+		panelBackIcon.setLayout(new BorderLayout(0, 0));
+		panelBackIcon.setOpaque(false);
+		panelBackIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane()
+						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		
+		
+		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelBackIcon.setToolTipText("Volver a mi perfil.");
 
+		JLabel lblBackIcon = new JLabel("");
+		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
+		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 		JButton btnEnviarCrearPlaylist = new JButton("New button");
+		
+		
 		
 		btnEnviarCrearPlaylist.addActionListener(new ActionListener() {
 			Playlist playlist = new Playlist();
@@ -87,4 +117,5 @@ public class CreatePlaylist extends JPanel {
 		btnEnviarCrearPlaylist.setBounds(48, 256, 89, 23);
 		add(btnEnviarCrearPlaylist);
 	}
+	
 }
