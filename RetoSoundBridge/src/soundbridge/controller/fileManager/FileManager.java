@@ -19,7 +19,6 @@ public class FileManager {
 	public void crearTicket(String RUTA_FICHERO) {
 
 		final String NOMBRE_FICHERO = "Ticket.txt";
-		
 
 		File fichero = new File(RUTA_FICHERO + NOMBRE_FICHERO);
 
@@ -66,40 +65,32 @@ public class FileManager {
 			}
 		}
 	}
+
 	public String read(String RUTA_FICHERO) throws IOException {
 		File archivo = null;
-	      FileReader fr = null;
-	      BufferedReader br = null;
-	      String linea = null;
-	      try {
-	        
-	         archivo = new File (RUTA_FICHERO);
-	         fr = new FileReader (archivo);
-	         br = new BufferedReader(fr);
+		FileReader fr = null;
+		BufferedReader br = null;
+		String linea = null;
+		try {
 
-	         // Lectura del fichero
-	         
-	         
-	        	 linea=br.readLine();
-	         
-	            
-	      }
-	      catch(Exception e){
-	         e.printStackTrace();
-	      }finally{
-	         // En el finally cerramos el fichero, para asegurarnos
-	         // que se cierra tanto si todo va bien como si salta 
-	         // una excepcion.
-	         try{                    
-	            if( null != fr ){   
-	               fr.close();     
-	            }                  
-	         }catch (Exception e2){ 
-	            e2.printStackTrace();
-	         }
-	      }
+			archivo = new File(RUTA_FICHERO);
+			fr = new FileReader(archivo);
+			br = new BufferedReader(fr);
+
+			linea = br.readLine();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != fr) {
+					fr.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 		return linea;
-	   }
-
+	}
 
 }
