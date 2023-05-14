@@ -379,7 +379,7 @@ public class Controller {
 
 		return (ArrayList<Song>) songMan.selectFavouriteSongOfClientP(client);
 	}
-	
+
 	public boolean isLetterStringCorrect(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -387,14 +387,14 @@ public class Controller {
 		if (str.isBlank()) {
 			ret = false;
 		} else {
-			if (!str.matches("^[A-Za-zÑñÁÉÍÓÚÜáéíóúü\s]*$"))
+			if (!str.matches("^[\\D\\s]*$"))
 				ret = false;
 		}
 
 		return ret;
 	}
 
-	public boolean isEmptyText(JTextField textField) {
+	public boolean isNotEmptyText(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
 
@@ -404,8 +404,8 @@ public class Controller {
 
 		return ret;
 	}
-	
-	public boolean isEmptyTextArea(JTextArea textArea) {
+
+	public boolean isNotEmptyTextArea(JTextArea textArea) {
 		boolean ret = true;
 		String str = textArea.getText();
 
@@ -415,15 +415,15 @@ public class Controller {
 
 		return ret;
 	}
-	
-	public boolean isLengthCorrectInBankAccount(JTextField textField, int length) {
+
+	public boolean isLengthCorrectNumeric(JTextField textField, int length) {
 		boolean ret = true;
 		String str = textField.getText();
 
 		if (str.isBlank()) {
 			ret = false;
 		} else {
-			if ((str.length() < length) && (!str.matches("^\\d{20}$"))) {
+			if ((str.length() < length) || (!str.matches("^\\d{" + length + "}$"))) {
 				ret = false;
 			}
 		}
@@ -446,6 +446,21 @@ public class Controller {
 		return ret;
 	}
 	
+	public boolean isLengthCorrectNumericSeconds(JTextField textField, int minLength) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if ((str.length() < minLength) || (!str.matches("^\\d{2,3}$"))) {
+				ret = false;
+			}
+		}
+
+		return ret;
+	}
+
 	public boolean isLengthCorrectInPasswdField(JPasswordField passwdField, int length) {
 		boolean ret = true;
 		String str = String.valueOf(passwdField.getPassword());
@@ -534,6 +549,40 @@ public class Controller {
 		}
 
 		return ret;
+	}
+
+	public ArrayList<Object> artistsAndGroups() throws SQLException, Exception {
+		ArtistManager artistManager = new ArtistManager();
+		ArtGroupManager artGroupManager = new ArtGroupManager();
+
+		ArrayList<Artist> artists = null;
+		ArrayList<ArtGroup> groups = null;
+		ArrayList<Object> allArtists = new ArrayList<Object>();
+
+		artists = (ArrayList<Artist>) artistManager.doSelectAll();
+		if (artists != null) {
+			for (Artist artist : artists) {
+				if (artist.getArtGroup() == null) {
+					allArtists.add(artist);
+				}
+			}
+		}
+
+		groups = (ArrayList<ArtGroup>) artGroupManager.doSelectAll();
+		if (groups != null) {
+			for (ArtGroup group : groups) {
+				allArtists.add(group);
+			}
+		}
+		
+		return allArtists;
+	}
+	
+	public void insertSong(Song song) throws SQLException, Exception {
+		if (songManager == null)
+			songManager = new SongManager();
+
+		songManager.insert(song);
 	}
 
 }

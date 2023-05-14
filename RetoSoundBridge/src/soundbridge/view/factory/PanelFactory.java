@@ -22,6 +22,7 @@ import soundbridge.view.panels.EmployeeProfile;
 import soundbridge.view.panels.EmployeeReviews;
 import soundbridge.view.panels.FavouriteSongs;
 import soundbridge.view.panels.GroupProfile;
+import soundbridge.view.panels.InsertSong;
 import soundbridge.view.panels.Library;
 import soundbridge.view.panels.Login;
 import soundbridge.view.panels.ManageClients;
@@ -59,6 +60,7 @@ public class PanelFactory {
 	public static final String CREATE_PLAYLIST = "CREATE_PLAYLIST";
 	public static final String PLAYLIST = "PLAYLIST";
 	public static final String ADDSONGPLAYLIST = "ADDSONGPLAYLIST";
+	public static final String INSERT_SONG = "INSERT_SONG";
 
 	/**
 	 * Returns the corresponding panel with the needed information.
@@ -119,6 +121,8 @@ public class PanelFactory {
 			return new CreatePlaylist(frame, client);
 		case ADDSONGPLAYLIST:
 			return new AddSongPlaylist(frame, client);
+		case INSERT_SONG:
+			return new InsertSong(frame, employee);
 		default:
 			return null;
 		}
