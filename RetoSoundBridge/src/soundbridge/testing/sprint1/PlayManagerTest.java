@@ -17,8 +17,8 @@ import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
 
 /**
- * Comprueba los métodos de la clase PlayManager. Se especifica un orden para el
- * correcto funcionamiento de las pruebas.
+ * Check the methods of the PlayManager class. An order is specified for the
+ * correct functioning of the tests.
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -26,15 +26,18 @@ public class PlayManagerTest {
 
 	private static PlayManager playManager = null;
 
+	/**
+	 * Class preparation.
+	 */
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		playManager = new PlayManager();
 	}
 
 	/**
-	 * Comprobación de que una reproducción se inserta en la base de datos y las
-	 * reproducciones se cargan correctamente en un ArrayList. Se compara el tamaño
-	 * del array antes de la inserción y después.
+	 * Checks the insert of a play into the database. Also checks the loading of
+	 * plays into an ArrayList and the inclusion of the previously inserted play.
+	 * Compares the ArrayList size before and after the insert.
 	 */
 	@Test
 	public void testAInsertAndSelectAllPlay() {
@@ -84,24 +87,24 @@ public class PlayManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una reproducción se actualiza en la base de datos.
+	 * Checks the update of a play in the database.
 	 */
 	@Test
 	public void testBUpdatePlay() {
 		boolean thrown = false;
 		boolean isUpdated = true;
-		
+
 		ArrayList<Play> plays = null;
 		Play insertedPlay = null;
-		
+
 		try {
 			plays = (ArrayList<Play>) playManager.selectAll();
 
 			insertedPlay = plays.get(plays.size() - 1);
 			insertedPlay.getClient().setId(2);
-			
+
 			playManager.update(insertedPlay);
-			
+
 			plays = (ArrayList<Play>) playManager.selectAll();
 			for (Play play : plays) {
 				if (play.getId() == insertedPlay.getId()) {
@@ -126,7 +129,7 @@ public class PlayManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una reproducción se elimina de la base de datos.
+	 * Checks the deletion of a play in the database.
 	 */
 	@Test
 	public void testDeletePlay() {
@@ -135,7 +138,7 @@ public class PlayManagerTest {
 
 		ArrayList<Play> plays = null;
 		Play insertedPlay = null;
-		
+
 		int arraySizeBefore = 0;
 		int arraySizeAfter = 0;
 
@@ -150,7 +153,7 @@ public class PlayManagerTest {
 			plays = (ArrayList<Play>) playManager.doSelectAll();
 			if (plays != null)
 				arraySizeAfter = plays.size();
-			
+
 			if (arraySizeAfter < arraySizeBefore)
 				isDeleted = true;
 

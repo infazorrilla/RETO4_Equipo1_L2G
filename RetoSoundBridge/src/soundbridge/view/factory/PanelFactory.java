@@ -33,6 +33,9 @@ import soundbridge.view.panels.Top20View;
 import soundbridge.view.panels.UpdateClient;
 import soundbridge.view.panels.WriteReview;
 
+/**
+ * Panel factory that returns the specified panel.
+ */
 public class PanelFactory {
 
 	public static final String LOGIN = "LOGIN";
@@ -56,10 +59,23 @@ public class PanelFactory {
 	public static final String CREATE_PLAYLIST = "CREATE_PLAYLIST";
 	public static final String PLAYLIST = "PLAYLIST";
 	public static final String ADDSONGPLAYLIST = "ADDSONGPLAYLIST";
-	
-	
-	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist, ArtGroup artGroup,
-			Album album, Song song,Playlist playlist) {
+
+	/**
+	 * Returns the corresponding panel with the needed information.
+	 * 
+	 * @param panelName name of the panel
+	 * @param frame     frame where the panel is added
+	 * @param client    logged client
+	 * @param employee  logged employee
+	 * @param artist    artist on the platform
+	 * @param artGroup  art group on the platform
+	 * @param album     album that belongs either to an artist or an artgroup
+	 * @param song      song that belongs either to an artist or an artgroup
+	 * @param playlist  playlist of a client
+	 * @return panel that corresponds to the given name
+	 */
+	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist,
+			ArtGroup artGroup, Album album, Song song, Playlist playlist) {
 		switch (panelName) {
 		case LOGIN:
 			return new Login(frame);
@@ -98,7 +114,7 @@ public class PanelFactory {
 		case FAVOURITE_SONGS:
 			return new FavouriteSongs(frame, client);
 		case PLAYLIST:
-			return new PlayList(frame, client,playlist);
+			return new PlayList(frame, client, playlist);
 		case CREATE_PLAYLIST:
 			return new CreatePlaylist(frame, client);
 		case ADDSONGPLAYLIST:

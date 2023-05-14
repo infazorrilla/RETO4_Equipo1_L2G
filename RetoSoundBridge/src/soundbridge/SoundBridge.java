@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 
 import soundbridge.view.MainFrame;
 
+/**
+ * Class that loads the application.
+ */
 public class SoundBridge {
 
 	public static void main(String[] args) {
@@ -19,4 +22,3 @@ public class SoundBridge {
 		});
 	}
 }
- 

@@ -1,5 +1,8 @@
 package soundbridge.utils;
 
+/**
+ * Class to connect with the database.
+ */
 public class DBUtils {
 
 	public static final String URL = "jdbc:mysql://localhost/soundBridge";

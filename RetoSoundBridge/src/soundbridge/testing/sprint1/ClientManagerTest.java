@@ -2,7 +2,6 @@ package soundbridge.testing.sprint1;
 
 import static org.junit.Assert.*;
 
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -16,17 +15,16 @@ import soundbridge.database.managers.ClientManager;
 import soundbridge.database.pojos.Client;
 
 /**
- * Comprueba los métodos de la clase ClientManager. Se especifica un orden
- * para el correcto funcionamiento de las pruebas.
- *
+ * Check the methods of the ClientManager class. An order is specified for the
+ * correct functioning of the tests.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClientManagerTest {
-	
+
 	private static ClientManager clientManager = null;
 
 	/**
-	 * Preparación de la clase.
+	 * Class preparation.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -34,7 +32,7 @@ public class ClientManagerTest {
 	}
 
 	/**
-	 * Comprobación de que un cliente se inserta en la base de datos.
+	 * Checks the insert of a client into the database.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
@@ -65,10 +63,10 @@ public class ClientManagerTest {
 
 		assertFalse(thrown);
 	}
-	
+
 	/**
-	 * Comprobación de que los clientes se cargan correctamente en un ArrayList y
-	 * que el cliente anteriormente insertado está incluido.
+	 * Checks the loading of clients into an ArrayList and the inclusion of the
+	 * previously inserted client.
 	 */
 	@Test
 	public void testBSelectAllClients() {
@@ -102,7 +100,7 @@ public class ClientManagerTest {
 	}
 
 	/**
-	 * Comprobación de que un cliente se actualiza en la base de datos.
+	 * Checks the update of a client in the database.
 	 */
 	@Test
 	public void testCUpdateClient() {
@@ -143,7 +141,7 @@ public class ClientManagerTest {
 	}
 
 	/**
-	 * Comprobación de que un cliente se elimina de la base de datos.
+	 * Checks the deletion of a client in the database.
 	 */
 	@Test
 	public void testDDeleteClient() {
