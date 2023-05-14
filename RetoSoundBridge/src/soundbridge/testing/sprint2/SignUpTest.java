@@ -15,9 +15,8 @@ import soundbridge.database.managers.ClientManager;
 import soundbridge.database.pojos.Client;
 
 /**
- * Comprueba que un cliente se inserta en la base de datos. Se especifica un
- * orden para el correcto funcionamiento de las pruebas.
- *
+ * Checks that a client can register. An order is specified for the correct
+ * functioning of the tests.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SignUpTest {
@@ -25,7 +24,7 @@ public class SignUpTest {
 	private static ClientManager clientManager = null;
 
 	/**
-	 * Preparación de la clase.
+	 * Class preparation.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -33,7 +32,7 @@ public class SignUpTest {
 	}
 
 	/**
-	 * Comprobación de que un cliente se inserta en la base de datos.
+	 * Checks the insert of a client into the database.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
@@ -66,8 +65,8 @@ public class SignUpTest {
 	}
 
 	/**
-	 * Comprobación de que los clientes se cargan correctamente en un ArrayList y
-	 * que el cliente anteriormente insertado está incluido.
+	 * Checks the loading of clients into an ArrayList and the inclusion of the
+	 * previously inserted client.
 	 */
 	@Test
 	public void testBSelectAllClients() {
@@ -101,7 +100,7 @@ public class SignUpTest {
 	}
 
 	/**
-	 * Reestablece la base de datos, eliminando el cliente insertado.
+	 * Resets the database, removing the inserted client.
 	 */
 	@Test
 	public void testCDeleteClient() {
