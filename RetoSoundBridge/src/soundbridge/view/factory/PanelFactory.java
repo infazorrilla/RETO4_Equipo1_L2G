@@ -20,7 +20,7 @@ import soundbridge.view.panels.CreatePlaylist;
 import soundbridge.view.panels.EmployeeMenu;
 import soundbridge.view.panels.EmployeeProfile;
 import soundbridge.view.panels.EmployeeReviews;
-import soundbridge.view.panels.FavouriteSongs;
+import soundbridge.view.panels.FavoriteSongs;
 import soundbridge.view.panels.GroupProfile;
 import soundbridge.view.panels.InsertSong;
 import soundbridge.view.panels.Library;
@@ -56,7 +56,7 @@ public class PanelFactory {
 	public static final String EMPLOYEE_REVIEWS = "EMPLOYEE_REVIEWS";
 	public static final String CLIENTS_REVIEWS = "CLIENTS_REVIEWS";
 	public static final String WRITE_REVIEW = "WRITE_REVIEW";
-	public static final String FAVOURITE_SONGS = "FAVOURITE_SONGS";
+	public static final String FAVORITE_SONGS = "FAVORITE_SONGS";
 	public static final String CREATE_PLAYLIST = "CREATE_PLAYLIST";
 	public static final String PLAYLIST = "PLAYLIST";
 	public static final String ADDSONGPLAYLIST = "ADDSONGPLAYLIST";
@@ -113,8 +113,8 @@ public class PanelFactory {
 			return new ClientsReviews(frame, client, album, artist, artGroup);
 		case WRITE_REVIEW:
 			return new WriteReview(frame, client, album, artist, artGroup);
-		case FAVOURITE_SONGS:
-			return new FavouriteSongs(frame, client);
+		case FAVORITE_SONGS:
+			return new FavoriteSongs(frame, client);
 		case PLAYLIST:
 			return new PlayList(frame, client, playlist);
 		case CREATE_PLAYLIST:

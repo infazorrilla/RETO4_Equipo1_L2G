@@ -2,7 +2,6 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 
-
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -135,31 +134,31 @@ public class Library extends JPanel {
 		lblTop20.setBounds(90, 295, 115, 27);
 		add(lblTop20);
 
-		JPanel panelFavourites = new JPanel();
-		panelFavourites.addMouseListener(new MouseAdapter() {
+		JPanel panelFavorites = new JPanel();
+		panelFavorites.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				goToFvourites(frame, client);
+				goToFavorites(frame, client);
 			}
 
 		});
-		panelFavourites.setBounds(230, 170, 115, 115);
-		add(panelFavourites);
-		panelFavourites.setLayout(new BorderLayout(0, 0));
-		panelFavourites.setOpaque(false);
-		panelFavourites.setVisible(false);
+		panelFavorites.setBounds(230, 170, 115, 115);
+		add(panelFavorites);
+		panelFavorites.setLayout(new BorderLayout(0, 0));
+		panelFavorites.setOpaque(false);
+		panelFavorites.setVisible(false);
 
-		JLabel lblFavouritesImg = new JLabel("");
-		panelFavourites.add(lblFavouritesImg, BorderLayout.CENTER);
+		JLabel lblFavoritesImg = new JLabel("");
+		panelFavorites.add(lblFavoritesImg, BorderLayout.CENTER);
 
-		JLabel lblFavourites = new JLabel("");
-		lblFavourites.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFavourites.setForeground(Color.white);
-		lblFavourites.setBounds(230, 295, 115, 27);
-		add(lblFavourites);
+		JLabel lblFavorites = new JLabel("");
+		lblFavorites.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFavorites.setForeground(Color.white);
+		lblFavorites.setBounds(230, 295, 115, 27);
+		add(lblFavorites);
 
-		JPanel panelImagePlus = new JPanel();
-		panelImagePlus.addMouseListener(new MouseAdapter() {
+		JPanel panelAddPlaylist = new JPanel();
+		panelAddPlaylist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
@@ -169,26 +168,24 @@ public class Library extends JPanel {
 				frame.repaint();
 			}
 		});
-		add(panelImagePlus);
-		panelImagePlus.setBounds(823, 166, 50, 40);
-		panelImagePlus.setLayout(new BorderLayout(0, 0));
-
-		JLabel lblPlusIcon = new JLabel("       +");
-		lblPlusIcon.setForeground(new Color(255, 255, 255));
-		panelImagePlus.add(lblPlusIcon, BorderLayout.CENTER);
+		add(panelAddPlaylist);
+		panelAddPlaylist.setBounds(785, 45, 50, 50);
+		panelAddPlaylist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelAddPlaylist.setToolTipText("Crear nueva lista de reproducción.");
+		panelAddPlaylist.setOpaque(false);
 
 		if (client instanceof ClientPP) {
-			panelImagePlus.setVisible(true);
+			panelAddPlaylist.setVisible(true);
 		}
-		
+
 		if (client instanceof ClientP) {
-			panelImagePlus.setVisible(false);
+			panelAddPlaylist.setVisible(false);
 		}
 
 		WindowUtils.addImage(panelTop20, lblTop20Img, "img/icon/top_icon.png");
-		WindowUtils.addImage(panelFavourites, lblFavouritesImg, "img/icon/fav_icon.png");
+		WindowUtils.addImage(panelFavorites, lblFavoritesImg, "img/icon/fav_icon.png");
 		doAddPossibilitiesToSearchBar(searchBar);
-		showFavourites(client, panelFavourites, lblFavourites);
+		showFavorites(client, panelFavorites, lblFavorites);
 
 		panelGridPlaylist = new JPanel();
 		panelGridPlaylist.setBounds(90, 386, 920, 115);
@@ -199,19 +196,18 @@ public class Library extends JPanel {
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
-		panelBackground.setLayout(null);
+		panelBackground.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblBackground = new JLabel("");
-		lblBackground.setBounds(-73, 0, 1000, 672);
-		panelBackground.add(lblBackground);
+		panelBackground.add(lblBackground, BorderLayout.CENTER);
+		
+		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.png");
 
-		panelFavourites.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelFavourites.setToolTipText("Ir a canciones favoritas.");
+		panelFavorites.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelFavorites.setToolTipText("Ir a canciones favoritas.");
 
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
-		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
 
-	
 		try {
 			addImagesToAlbums(frame, client);
 		} catch (Exception e1) {
@@ -234,9 +230,9 @@ public class Library extends JPanel {
 		}
 	}
 
-	private void showFavourites(Client client, JPanel favourites, JLabel favLbl) {
+	private void showFavorites(Client client, JPanel favorites, JLabel favLbl) {
 		if (client instanceof ClientPP || client instanceof ClientP) {
-			favourites.setVisible(true);
+			favorites.setVisible(true);
 			favLbl.setText("Favoritos");
 		}
 	}
@@ -301,9 +297,9 @@ public class Library extends JPanel {
 		frame.repaint();
 	}
 
-	private void goToFvourites(JFrame frame, Client client) {
+	private void goToFavorites(JFrame frame, Client client) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.FAVOURITE_SONGS, frame, client, null, null, null,
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.FAVORITE_SONGS, frame, client, null, null, null,
 				null, null, null));
 		frame.revalidate();
 		frame.repaint();
@@ -374,7 +370,7 @@ public class Library extends JPanel {
 			}
 		}
 	}
-	
+
 	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlist) {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override

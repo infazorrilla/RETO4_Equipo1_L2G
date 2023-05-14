@@ -47,7 +47,7 @@ import java.awt.event.MouseEvent;
 /**
  * Panel where are the songs that the client choose as his favorites.
  */
-public class FavouriteSongs extends JPanel {
+public class FavoriteSongs extends JPanel {
 	private ArrayList<Song> favouriteSongs;
 
 	public JTable tableFavouriteSongs;
@@ -64,7 +64,7 @@ public class FavouriteSongs extends JPanel {
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
 	 */
-	public FavouriteSongs(JFrame frame, Client client) {
+	public FavoriteSongs(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
 
@@ -115,7 +115,7 @@ public class FavouriteSongs extends JPanel {
 		lblTitle.setBounds(327, 70, 584, 39);
 		add(lblTitle);
 
-		JLabel lblCreator = new JLabel(client.getUsername().toString());
+		JLabel lblCreator = new JLabel("@" + client.getUsername().toString());
 		lblCreator.setFont(new Font("Dialog", Font.BOLD, 16));
 		lblCreator.setForeground(new Color(244, 135, 244));
 		lblCreator.setBounds(327, 110, 584, 39);
