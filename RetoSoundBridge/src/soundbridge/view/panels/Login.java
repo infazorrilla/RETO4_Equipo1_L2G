@@ -27,7 +27,10 @@ import soundbridge.database.pojos.Employee;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
-
+/**
+ * Panel that allows the client to log in in the application. It
+ * validates if the username and the password is correct.
+ */
 public class Login extends JPanel {
 
 	private static final long serialVersionUID = -3238378133872295962L;
@@ -36,6 +39,11 @@ public class Login extends JPanel {
 	private Employee employee;
 	private JLabel lblBackground;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame		frame where the panel is added
+	 */
 	public Login(JFrame frame) {
 		initialize(frame);
 
@@ -43,6 +51,12 @@ public class Login extends JPanel {
 
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame		frame where the panel is added
+	 */
+	
 	private void initialize(JFrame frame) {
 
 		setBounds(0, 0, 1000, 672);
@@ -161,6 +175,14 @@ public class Login extends JPanel {
 		WindowUtils.addImage(panelLogo, lblLogo, "img/panel/logo_login.png");
 
 	}
+	
+	/**
+	 * Validates if the person who is doing the log in is a client and if it is locked.
+	 * 
+	 * @param frame		frame where the panel is added
+	 * @param textFieldUserLogIn		text field of the username
+	 * @param passwordFieldLogIn		text field of the password
+	 */
 
 	private void logInClient(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
 		String username = textFieldUserLogIn.getText();
@@ -194,6 +216,14 @@ public class Login extends JPanel {
 			
 		}
 	}
+	
+	/**
+	 * Validates if the person who is doing the log in is a employee.
+	 * 
+	 * @param frame		frame where the panel is added
+	 * @param textFieldUserLogIn		text field of the username
+	 * @param passwordFieldLogIn		text field of the password
+	 */
 
 	private void logInEmployee(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
 		String username = textFieldUserLogIn.getText();
@@ -221,6 +251,14 @@ public class Login extends JPanel {
 		}
 	}
 
+	/**
+	 * Validates the password and username of the clients and the employees and does the log in if it is 
+	 * correct.
+	 * 
+	 * @param frame		frame where the panel is added
+	 * @param textFieldUserLogIn		text field of the username
+	 * @param passwordFieldLogIn		text field of the password
+	 */
 	private void doLogIn(JFrame frame, JTextField textFieldUserLogIn, JPasswordField passwordFieldLogIn) {
 		if (null == controller)
 			controller = new Controller();
@@ -247,7 +285,11 @@ public class Login extends JPanel {
 			System.out.println(e);
 		}
 	}
-
+/**
+ * Allows the person who is using the application to go to sign up panel.
+ * 
+ * @param frame		frame where the panel is added
+ */
 	private void goToSignUp(JFrame frame) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
@@ -255,19 +297,35 @@ public class Login extends JPanel {
 		frame.revalidate();
 		frame.repaint();
 	}
-
+/**
+ * Gets the client.
+ * 
+ * @return		returns the client.
+ */
 	public Client getClient() {
 		return client;
 	}
-
+/**
+ * Sets the client.
+ * 
+ * @param client		a client to do set
+ */
 	public void setClient(Client client) {
 		this.client = client;
 	}
-
+/**
+ * Gets the employee.
+ * 
+ * @return 		returns the employee
+ */
 	public Employee getEmployee() {
 		return employee;
 	}
-
+/**
+ * Sets the employee.
+ * 
+ * @param employee		a employee to do set
+ */
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
