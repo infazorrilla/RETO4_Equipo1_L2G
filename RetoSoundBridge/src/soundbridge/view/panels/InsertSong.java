@@ -1,6 +1,7 @@
 package soundbridge.view.panels;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +29,8 @@ import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Employee;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.WindowUtils;
+import soundbridge.view.factory.PanelFactory;
+
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
@@ -74,6 +79,23 @@ public class InsertSong extends JPanel {
 		lblTitle.setFont(new Font("Dialog", Font.PLAIN, 22));
 		lblTitle.setBounds(380, 44, 250, 36);
 		add(lblTitle);
+		
+		JPanel panelBackIcon = new JPanel();
+		panelBackIcon.setBounds(900, 45, 50, 50);
+		add(panelBackIcon);
+		panelBackIcon.setLayout(new BorderLayout(0, 0));
+		panelBackIcon.setOpaque(false);
+		panelBackIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				goBack(frame, employee);
+			}
+		});
+		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelBackIcon.setToolTipText("Volver");
+		
+		JLabel lblBackIcon = new JLabel("");
+		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
 		JPanel panelArtistImage = new JPanel();
 		panelArtistImage.setOpaque(false);
@@ -300,6 +322,8 @@ public class InsertSong extends JPanel {
 		addArtistsNamesToCombo();
 
 		selectedArtist(comboArtist);
+		
+		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 	}
 
 	private void getAllArtists() throws SQLException, Exception {
@@ -511,21 +535,39 @@ public class InsertSong extends JPanel {
 		return ret;
 	}
 	
+	private void resetFields() {
+		textTitle.setText("");
+		textTitle.setBorder(new LineBorder(Color.WHITE, 2));
+		textDuration.setText("");
+		textDuration.setBorder(new LineBorder(Color.WHITE, 2));
+		textFile.setText("");
+		textFile.setBorder(new LineBorder(Color.WHITE, 2));
+		textLanguage.setText("");
+		textLanguage.setBorder(new LineBorder(Color.WHITE, 2));
+		textGenre.setText("");
+		textGenre.setBorder(new LineBorder(Color.WHITE, 2));
+		textYear.setText("");
+		textYear.setBorder(new LineBorder(Color.WHITE, 2));
+	}
+	
 	private void doInsertNewSong() {
 		if (controller == null)
 			controller = new Controller();
 
 		if (areAllFieldsCorrect()) {
 			doInsertSong();
-			textTitle.setText("");
-			textDuration.setText("");
-			textFile.setText("");
-			textLanguage.setText("");
-			textGenre.setText("");
-			textYear.setText("");
+			resetFields();
 		} else {
 			validateAllFields();
 			WindowUtils.errorPane("Revisa los campos incorrectos marcados de color rojo.", "Error");
 		}
+	}
+	
+	private void goBack(JFrame frame, Employee employee) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 }
