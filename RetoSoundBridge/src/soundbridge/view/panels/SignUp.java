@@ -37,7 +37,11 @@ import java.awt.BorderLayout;
 import javax.swing.JRadioButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+/**
+ * This is a panel that allows the client to sign up in
+ * the application. It validates all the fields and 
+ * there are different types of subscriptions.
+ */
 public class SignUp extends JPanel {
 	private JTextField textFieldName;
 	private JTextField textFieldLastName;
@@ -55,11 +59,22 @@ public class SignUp extends JPanel {
 	private int suscription = 0;
 	private static final long serialVersionUID = -2586474039198890631L;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame		frame where the panel is added
+	 */
 	public SignUp(JFrame frame) {
 
 		initialize(frame);
 
 	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame		frame where the panel is added
+	 */
 
 	private void initialize(JFrame frame) {
 		setBounds(0, 0, 1000, 672);
@@ -377,8 +392,8 @@ public class SignUp extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
+				frame.getContentPane().add(
+						PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -500,6 +515,12 @@ public class SignUp extends JPanel {
 		btnGroup.add(rdbtnBasic);
 	}
 
+	/**
+	 * Sign up the client asking him for the bank account 
+	 * if it is necessary.
+	 * 
+	 * @param frame		frame where the panel is added
+	 */
 	private void registerUser(JFrame frame) {
 		Client client = null;
 		if (null == controller)
@@ -542,8 +563,8 @@ public class SignUp extends JPanel {
 
 				WindowUtils.confirmationPane("El registro ha ocurrido de forma exitosa.", "Registrado");
 				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
+				frame.getContentPane().add(
+						PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			} else {
@@ -561,6 +582,11 @@ public class SignUp extends JPanel {
 
 	}
 
+	/**
+	 * Signs up the premium clients.
+	 * 
+	 * @param frame		frame where the panel is added
+	 */
 	private void registerUserP(JFrame frame) {
 		if (null == controller)
 			controller = new Controller();
@@ -585,6 +611,11 @@ public class SignUp extends JPanel {
 		}
 	}
 
+	/**
+	 * Signs up the premium plus clients.
+	 * 
+	 * @param frame		frame where the panel is added
+	 */
 	private void registerUserPP(JFrame frame) {
 		ClientPP clientpp = new ClientPP();
 		if (null == controller)
@@ -607,12 +638,22 @@ public class SignUp extends JPanel {
 		}
 	}
 
-	private Date stringToDate(String fecha) throws ParseException {
+	/**
+	 * Changes a String into Date type.
+	 * 
+	 * @param date		date that you want to retype.		
+	 * @return			the date in Date type.
+	 * @throws ParseException
+	 */
+	private Date stringToDate(String date) throws ParseException {
 		String pattern = "dd/MM/yyyy";
 		SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.ENGLISH);
-		return formatter.parse(fecha);
+		return formatter.parse(date);
 	}
 
+	/**
+	 * Validates the name field setting green if it is correct and red if it is not.
+	 */
 	private void validateNameField() {
 		if (controller == null)
 			controller = new Controller();
@@ -623,6 +664,9 @@ public class SignUp extends JPanel {
 			textFieldName.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the last name field setting green if it is correct and red if it is not.
+	 */
 	private void validateLastNameField() {
 		if (controller == null)
 			controller = new Controller();
@@ -633,6 +677,9 @@ public class SignUp extends JPanel {
 			textFieldLastName.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the username field setting green if it is correct and red if it is not.
+	 */
 	private void validateUserField() {
 		if (controller == null)
 			controller = new Controller();
@@ -643,6 +690,9 @@ public class SignUp extends JPanel {
 			textFieldUsername.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the password field setting green if it is correct and red if it is not.
+	 */
 	private void validatePasswdField() {
 		if (controller == null)
 			controller = new Controller();
@@ -653,6 +703,9 @@ public class SignUp extends JPanel {
 			textFieldPasswd.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the personalId field setting green if it is correct and red if it is not.
+	 */
 	private void validatePersonalIdField() {
 		if (controller == null)
 			controller = new Controller();
@@ -663,6 +716,8 @@ public class SignUp extends JPanel {
 			textFieldPersonalId.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**Validates the gender field setting green if it is correct and red if it is not.
+	 */
 	private void validateGenderField() {
 		if (controller == null)
 			controller = new Controller();
@@ -673,6 +728,9 @@ public class SignUp extends JPanel {
 			textFieldGender.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the nationality field setting green if it is correct and red if it is not.
+	 */
 	private void validateNationalityField() {
 		if (controller == null)
 			controller = new Controller();
@@ -683,6 +741,9 @@ public class SignUp extends JPanel {
 			textFieldNationality.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the birth date field setting green if it is correct and red if it is not.
+	 */
 	private void validateBirthDateField() {
 		if (controller == null)
 			controller = new Controller();
@@ -693,6 +754,9 @@ public class SignUp extends JPanel {
 			textFieldBirthDate.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the address field setting green if it is correct and red if it is not.
+	 */
 	private void validateAddressField() {
 		if (controller == null)
 			controller = new Controller();
@@ -703,6 +767,9 @@ public class SignUp extends JPanel {
 			textFieldAddress.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the telephone field setting green if it is correct and red if it is not.
+	 */
 	private void validatePhoneField() {
 		if (controller == null)
 			controller = new Controller();
@@ -713,6 +780,9 @@ public class SignUp extends JPanel {
 			textFieldPhoneNumber.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the email field setting green if it is correct and red if it is not.
+	 */
 	private void validateEmailField() {
 		if (controller == null)
 			controller = new Controller();
@@ -722,7 +792,10 @@ public class SignUp extends JPanel {
 		else
 			textFieldEmail.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
-	
+
+	/**
+	 * Validates all fields setting green if it is correct and red if it is not.
+	 */
 	private void validateAllFields() {
 		validateNameField();
 		validateLastNameField();
@@ -737,31 +810,38 @@ public class SignUp extends JPanel {
 		validateEmailField();
 	}
 
+	/**
+	 * Validates all the fields.
+	 * 
+	 * @return		true if all are correct and false if they are not.
+	 */
 	private boolean areAllFieldsCorrect() {
 		boolean ret = false;
 		if (controller == null)
 			controller = new Controller();
-		
-		if (controller.isLetterStringCorrect(textFieldName)
-				&& controller.isLetterStringCorrect(textFieldLastName)
-				&& controller.isLengthCorrect(textFieldUsername, 5)
-				&& controller.isLengthCorrect(textFieldPasswd, 10)
-				&& controller.isPersonalIdCorrect(textFieldPersonalId)
-				&& controller.isGenderCorrect(textFieldGender)
+
+		if (controller.isLetterStringCorrect(textFieldName) && controller.isLetterStringCorrect(textFieldLastName)
+				&& controller.isLengthCorrect(textFieldUsername, 5) && controller.isLengthCorrect(textFieldPasswd, 10)
+				&& controller.isPersonalIdCorrect(textFieldPersonalId) && controller.isGenderCorrect(textFieldGender)
 				&& controller.isLetterStringCorrect(textFieldNationality)
 				&& controller.isDateCorrect(textFieldBirthDate) && controller.isEmptyText(textFieldAddress)
-				&& controller.isPhoneCorrect(textFieldPhoneNumber)
-				&& controller.isEmailCorrect(textFieldEmail)) {
+				&& controller.isPhoneCorrect(textFieldPhoneNumber) && controller.isEmailCorrect(textFieldEmail)) {
 			ret = true;
 		}
-		
+
 		return ret;
 	}
-	
+
+	/**
+	 * Takes the information of "areAllFieldsCorrect" and if it is true sign up the user,
+	 * if it is not, show an error message.
+	 * 
+	 * @param frame		the frame where the panel is added
+	 */
 	private void checkAllFields(JFrame frame) {
 		if (areAllFieldsCorrect()) {
 			registerUser(frame);
-		} else {	
+		} else {
 			validateAllFields();
 			WindowUtils.errorPane("Revisa los campos incorrectos marcados de color rojo.", "Error");
 		}
