@@ -2,6 +2,7 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -364,7 +365,7 @@ public class Library extends JPanel {
 					// ArrayList<Song> songsOfAlbum = getSongsOfAlbum(playlist, artist);
 					// playlist.setSongs(songsOfAlbum);
 
-					// createSinglePanelListener(frame, panelAlbum, client, artist, playlist);
+					createPlaylistPanelListener(frame, panelAlbum, client, playlist);
 
 				} else {
 					JPanel panelToFitGrid = createPanelToFitGrid();
@@ -372,5 +373,18 @@ public class Library extends JPanel {
 				}
 			}
 		}
+	}
+	
+	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlist) {
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null,
+						null, null, null, playlist));
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
 	}
 }

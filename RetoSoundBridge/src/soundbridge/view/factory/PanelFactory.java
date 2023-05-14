@@ -11,6 +11,7 @@ import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Employee;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
+import soundbridge.view.panels.AddSongPlaylist;
 import soundbridge.view.panels.AlbumView;
 import soundbridge.view.panels.ArtistProfile;
 import soundbridge.view.panels.ChangeSubscription;
@@ -54,6 +55,8 @@ public class PanelFactory {
 	public static final String FAVOURITE_SONGS = "FAVOURITE_SONGS";
 	public static final String CREATE_PLAYLIST = "CREATE_PLAYLIST";
 	public static final String PLAYLIST = "PLAYLIST";
+	public static final String ADDSONGPLAYLIST = "ADDSONGPLAYLIST";
+	
 	
 	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist, ArtGroup artGroup,
 			Album album, Song song,Playlist playlist) {
@@ -98,6 +101,8 @@ public class PanelFactory {
 			return new PlayList(frame, client,playlist);
 		case CREATE_PLAYLIST:
 			return new CreatePlaylist(frame, client);
+		case ADDSONGPLAYLIST:
+			return new AddSongPlaylist(frame, client);
 		default:
 			return null;
 		}
