@@ -25,19 +25,36 @@ import soundbridge.database.pojos.ClientPP;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
+/**
+ * Panel that contains the information of the logged client. It enables to
+ * update his subscription, personal information and password. The logged client
+ * can also log out or delete his account.
+ */
 public class Profile extends JPanel {
 
 	private static final long serialVersionUID = -6645561962016339329L;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	public Profile(JFrame frame, Client client) {
-		initialize(frame, client);
-	}
-
-	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
+		initialize(frame, client);
+	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void initialize(JFrame frame, Client client) {
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(30, 30, 150, 150);
 		add(panelProfileIcon);
@@ -55,11 +72,7 @@ public class Profile extends JPanel {
 		panelHomeIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToLibrary(frame, client);
 			}
 		});
 		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -103,11 +116,7 @@ public class Profile extends JPanel {
 		panelEditSubscriptionIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null,
-						null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToChangeSubscription(frame, client);
 			}
 		});
 		panelEditSubscriptionIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -155,11 +164,7 @@ public class Profile extends JPanel {
 		panelEditInfoIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null, null,
-						null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToUpdateClient(frame, client);
 			}
 		});
 		panelEditInfoIcon.setToolTipText("Editar datos de mi cuenta.");
@@ -271,6 +276,53 @@ public class Profile extends JPanel {
 		addSubscriptionImage(client, panelSubscriptionIcon, lblSubscriptionIcon);
 	}
 
+	/**
+	 * Takes the client back to the library.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToLibrary(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the client to the panel where the subscription can be updated.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToChangeSubscription(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null, null,
+				null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the client to the panel where the personal information can be updated.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToUpdateClient(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(
+				PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the client to the log in.
+	 * 
+	 * @param frame frame where the panel is added
+	 */
 	private void logOut(JFrame frame) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
@@ -279,6 +331,13 @@ public class Profile extends JPanel {
 		frame.repaint();
 	}
 
+	/**
+	 * Adds the corresponding subscription image, which depends on the client.
+	 * 
+	 * @param client logged client
+	 * @param panel  panel that contains the image
+	 * @param lbl    label where the image is placed
+	 */
 	private void addSubscriptionImage(Client client, JPanel panel, JLabel lbl) {
 		if (client instanceof ClientPP) {
 			WindowUtils.addImage(panel, lbl, "img/icon/sbpp.png");
@@ -289,12 +348,23 @@ public class Profile extends JPanel {
 		}
 	}
 
+	/**
+	 * Asks the client to confirm the removal of his account.
+	 * 
+	 * @return reply of the client
+	 */
 	private int askToConfirmDeletion() {
 		int reply = WindowUtils.yesOrNoPaneWithIcon("¿Desea eliminar la cuenta?", "Eliminar Cuenta",
 				"img/icon/alert.png");
 		return reply;
 	}
 
+	/**
+	 * Deletes the account of the logged client after confirmation.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	private void doDeleteAccount(JFrame frame, Client client) {
 		Controller controller = new Controller();
 		int reply = askToConfirmDeletion();
@@ -313,6 +383,11 @@ public class Profile extends JPanel {
 		}
 	}
 
+	/**
+	 * Takes the client to the login.
+	 * 
+	 * @param frame frame where the panel is added
+	 */
 	private void goToLogin(JFrame frame) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()

@@ -415,6 +415,21 @@ public class Controller {
 
 		return ret;
 	}
+	
+	public boolean isLengthCorrectInBankAccount(JTextField textField, int length) {
+		boolean ret = true;
+		String str = textField.getText();
+
+		if (str.isBlank()) {
+			ret = false;
+		} else {
+			if ((str.length() < length) && (!str.matches("^\\d{20}$"))) {
+				ret = false;
+			}
+		}
+
+		return ret;
+	}
 
 	public boolean isLengthCorrect(JTextField textField, int length) {
 		boolean ret = true;

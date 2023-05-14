@@ -41,28 +41,28 @@ public class ClientsReviews extends JPanel {
 	/**
 	 * Initializes the panel.
 	 * 
-	 * @param frame		frame where panel is added
-	 * @param client	logged client
-	 * @param album		selected album
-	 * @param artist	owner of the album if not null
-	 * @param artGroup	owner of the album if not null
+	 * @param frame    frame where panel is added
+	 * @param client   logged client
+	 * @param album    selected album
+	 * @param artist   owner of the album if not null
+	 * @param artGroup owner of the album if not null
 	 */
 	public ClientsReviews(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		setBounds(0, 0, 1000, 672);
 		setBackground(Color.black);
 		setLayout(null);
-		
+
 		initialize(frame, client, album, artist, artGroup);
 	}
 
 	/**
 	 * Initializes the components of the panel.
 	 * 
-	 * @param frame		frame where panel is added
-	 * @param client	logged client
-	 * @param album		selected album
-	 * @param artist	owner of the album if not null
-	 * @param artGroup	owner of the album if not null
+	 * @param frame    frame where panel is added
+	 * @param client   logged client
+	 * @param album    selected album
+	 * @param artist   owner of the album if not null
+	 * @param artGroup owner of the album if not null
 	 */
 	private void initialize(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		JLabel lblTitle = new JLabel("Valoraciones");
@@ -138,11 +138,11 @@ public class ClientsReviews extends JPanel {
 	/**
 	 * Takes the client back to the album panel.
 	 * 
-	 * @param frame		frame where panel is added
-	 * @param client	logged client
-	 * @param album		selected album
-	 * @param artist	owner of the album if not null
-	 * @param artGroup	owner of the album if not null
+	 * @param frame    frame where panel is added
+	 * @param client   logged client
+	 * @param album    selected album
+	 * @param artist   owner of the album if not null
+	 * @param artGroup owner of the album if not null
 	 */
 	private void goBack(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
@@ -160,6 +160,11 @@ public class ClientsReviews extends JPanel {
 		}
 	}
 
+	/**
+	 * Gets all validated reviews of an album.
+	 * 
+	 * @param album selected album
+	 */
 	private void getAllValidatedReviews(Album album) {
 		ReviewManager reviewManager = new ReviewManager();
 		try {
@@ -171,6 +176,12 @@ public class ClientsReviews extends JPanel {
 		}
 	}
 
+	/**
+	 * Creates a panel for every review, containing all the information.
+	 * 
+	 * @param panel      main panel where the review panels are added
+	 * @param scrollPane scrollpane where the main panel is placed
+	 */
 	private void createReviewPanel(JPanel panel, JScrollPane scrollPane) {
 		if (null != validatedReviews) {
 			int height = 400;

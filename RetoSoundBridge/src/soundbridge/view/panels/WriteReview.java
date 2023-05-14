@@ -32,6 +32,10 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
 
+/**
+ * Panel where a Premium Plus client can write a review of an album. If he has
+ * already written one, it will be loaded to be edited.
+ */
 public class WriteReview extends JPanel {
 
 	private static final long serialVersionUID = 8019879665852364145L;
@@ -41,17 +45,35 @@ public class WriteReview extends JPanel {
 	private int selectedStars = 0;
 	private Review previousReview = null;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param album    album to be reviewed
+	 * @param artist   artist owner of the album if not null
+	 * @param artGroup art group owner of the album if not null
+	 */
 	public WriteReview(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+
 		panels = new ArrayList<JPanel>();
 		labels = new ArrayList<JLabel>();
 		initialize(frame, client, album, artist, artGroup);
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param album    album to be reviewed
+	 * @param artist   artist owner of the album if not null
+	 * @param artGroup art group owner of the album if not null
+	 */
 	private void initialize(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		JLabel lblTitle = new JLabel("Mi reseña");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setForeground(Color.WHITE);
@@ -259,22 +281,34 @@ public class WriteReview extends JPanel {
 		showStars();
 	}
 
+	/**
+	 * Takes the client back to album panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param album    album to be reviewed
+	 * @param artist   artist owner of the album if not null
+	 * @param artGroup art group owner of the album if not null
+	 */
 	private void goBack(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artist, null, album, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, artist,
+					null, album, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null, artGroup, album, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ALBUM_VIEW, frame, client, null, null,
+					artGroup, album, null, null));
 			frame.revalidate();
 			frame.repaint();
 		}
 	}
 
+	/**
+	 * Changes the star's image when needed.
+	 */
 	private void showStars() {
 		String path = "img/icon/star";
 
@@ -345,6 +379,12 @@ public class WriteReview extends JPanel {
 		}
 	}
 
+	/**
+	 * Checks if the client has already written a review of the selected album.
+	 * 
+	 * @param client logged client
+	 * @param album  album to be reviewed
+	 */
 	private void checkPreviousReview(Client client, Album album) {
 		ReviewManager reviewManager = new ReviewManager();
 		try {
@@ -358,6 +398,12 @@ public class WriteReview extends JPanel {
 		}
 	}
 
+	/**
+	 * Adds the previously written review by the client.
+	 * 
+	 * @param title   field where the title will be printed
+	 * @param opinion field where the opinion will be printed
+	 */
 	private void addPreviousReview(JTextArea title, JTextArea opinion) {
 		if (previousReview != null) {
 			title.setText(previousReview.getTitle());
@@ -366,6 +412,13 @@ public class WriteReview extends JPanel {
 		}
 	}
 
+	/**
+	 * Checks if the fields are not empty and the stars not zero.
+	 * 
+	 * @param title   field containing the title
+	 * @param opinion field containing the opinion
+	 * @return true if fields are not empty and the stars not zero
+	 */
 	private boolean isReviewCorrect(JTextArea title, JTextArea opinion) {
 		if (title.getText().isBlank() || opinion.getText().isBlank() || selectedStars == 0)
 			return false;
@@ -373,6 +426,14 @@ public class WriteReview extends JPanel {
 			return true;
 	}
 
+	/**
+	 * If the review is valid, it is send to be validated.
+	 * 
+	 * @param album   reviewed album
+	 * @param client  logged client
+	 * @param title   field containing the title
+	 * @param opinion field containing the opinion
+	 */
 	private void sendReview(Album album, Client client, JTextArea title, JTextArea opinion) {
 		ReviewManager reviewManager = new ReviewManager();
 		if (isReviewCorrect(title, opinion)) {

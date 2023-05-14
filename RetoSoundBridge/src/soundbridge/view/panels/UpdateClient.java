@@ -34,6 +34,10 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 import javax.swing.JComboBox;
 
+/**
+ * Panel that enables a logged client to change his password and update personal
+ * information.
+ */
 public class UpdateClient extends JPanel {
 
 	private static final long serialVersionUID = 2091925243705072798L;
@@ -46,16 +50,27 @@ public class UpdateClient extends JPanel {
 	private JTextField textEmail;
 	private JComboBox<String> comboBoxGender;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	public UpdateClient(JFrame frame, Client client) {
-		initialize(frame, client);
-
-	}
-
-	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
 
+		initialize(frame, client);
+	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void initialize(JFrame frame, Client client) {
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -64,11 +79,7 @@ public class UpdateClient extends JPanel {
 		panelBackIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goBack(frame, client);
 			}
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -315,7 +326,7 @@ public class UpdateClient extends JPanel {
 		JButton btnUpdateInfo = new JButton("Actualizar");
 		btnUpdateInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				checkAllInformationFields(client);
+				updateClientPersonalInformation(client);
 			}
 		});
 		btnUpdateInfo.setBounds(235, 597, 200, 40);
@@ -356,6 +367,26 @@ public class UpdateClient extends JPanel {
 		enableBankAccount(client);
 	}
 
+	/**
+	 * Takes the client back to his profile.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goBack(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Enables or disables the bank account field depending on the client's
+	 * subscription.
+	 * 
+	 * @param client logged client
+	 */
 	private void enableBankAccount(Client client) {
 		if (client instanceof ClientP || client instanceof ClientPP) {
 			textBankAccount.setEnabled(true);
@@ -370,6 +401,11 @@ public class UpdateClient extends JPanel {
 		}
 	}
 
+	/**
+	 * Updates the client's personal information.
+	 * 
+	 * @param client logged client
+	 */
 	private void doUpdateClient(Client client) {
 
 		if (null == controller) {
@@ -389,6 +425,13 @@ public class UpdateClient extends JPanel {
 		}
 	}
 
+	/**
+	 * Changes the password of the client if it's valid.
+	 * 
+	 * @param client  logged client
+	 * @param passwd1 field that the client needs to fill with the new password
+	 * @param passwd2 field that the client needs repeat the new password
+	 */
 	private void doChangePasswd(Client client, JPasswordField passwd1, JPasswordField passwd2) {
 		if (null == controller) {
 			controller = new Controller();
@@ -410,23 +453,29 @@ public class UpdateClient extends JPanel {
 		}
 		passwd1.setBorder(new LineBorder(Color.WHITE, 2));
 		passwd2.setBorder(new LineBorder(Color.WHITE, 2));
-		
+
 		passwd1.setText("");
 		passwd2.setText("");
 	}
 
+	/**
+	 * Validates the bank account field, which must have 20 numbers.
+	 */
 	private void validateBankAccount() {
 		if (textBankAccount.isEnabled()) {
 			if (controller == null)
 				controller = new Controller();
 
-			if (controller.isLengthCorrect(textBankAccount, 20))
+			if (controller.isLengthCorrectInBankAccount(textBankAccount, 20))
 				textBankAccount.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 			else
 				textBankAccount.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 		}
 	}
 
+	/**
+	 * Validates the nationality field, which must not contain numbers.
+	 */
 	private void validateNationalityField() {
 		if (controller == null)
 			controller = new Controller();
@@ -437,6 +486,9 @@ public class UpdateClient extends JPanel {
 			textNationality.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the birth date, wich must follow a pattern like dd/MM/yyy.
+	 */
 	private void validateBirthDateField() {
 		if (controller == null)
 			controller = new Controller();
@@ -447,6 +499,9 @@ public class UpdateClient extends JPanel {
 			textBirthDate.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the address field, which must not be empty.
+	 */
 	private void validateAddressField() {
 		if (controller == null)
 			controller = new Controller();
@@ -457,6 +512,10 @@ public class UpdateClient extends JPanel {
 			textAreaAddress.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the phone field, which must have the character + followed by 11
+	 * numbers.
+	 */
 	private void validatePhoneField() {
 		if (controller == null)
 			controller = new Controller();
@@ -467,6 +526,9 @@ public class UpdateClient extends JPanel {
 			textPhone.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the email field.
+	 */
 	private void validateEmailField() {
 		if (controller == null)
 			controller = new Controller();
@@ -477,6 +539,9 @@ public class UpdateClient extends JPanel {
 			textEmail.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates every field.
+	 */
 	private void validateAllFields() {
 		comboBoxGender.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 		validateBankAccount();
@@ -487,11 +552,16 @@ public class UpdateClient extends JPanel {
 		validateEmailField();
 	}
 
+	/**
+	 * Checks if all fields are correct.
+	 * 
+	 * @return true if all fields are correct
+	 */
 	private boolean areAllFieldsCorrect() {
 		boolean ret = false;
 		if (controller == null)
 			controller = new Controller();
-		
+
 		if (controller.isLetterStringCorrect(textNationality) && controller.isDateCorrect(textBirthDate)
 				&& controller.isEmptyTextArea(textAreaAddress) && controller.isPhoneCorrect(textPhone)
 				&& controller.isEmailCorrect(textEmail))
@@ -500,13 +570,18 @@ public class UpdateClient extends JPanel {
 		return ret;
 	}
 
-	private void checkAllInformationFields(Client client) {
+	/**
+	 * Updates the client's personal information if every field is correct.
+	 * 
+	 * @param client logged client
+	 */
+	private void updateClientPersonalInformation(Client client) {
 		if (controller == null)
 			controller = new Controller();
 
 		if (areAllFieldsCorrect()) {
 			if (textBankAccount.isEnabled()) {
-				if (controller.isLengthCorrect(textBankAccount, 20)) {
+				if (controller.isLengthCorrectInBankAccount(textBankAccount, 20)) {
 					doUpdateClient(client);
 				} else {
 					validateAllFields();
@@ -521,6 +596,11 @@ public class UpdateClient extends JPanel {
 		}
 	}
 
+	/**
+	 * Validates the password field, which must have at least 10 characters.
+	 * 
+	 * @param passwdField validated field
+	 */
 	private void validatePasswdField(JPasswordField passwdField) {
 		if (controller == null)
 			controller = new Controller();
@@ -531,6 +611,13 @@ public class UpdateClient extends JPanel {
 			passwdField.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Checks if the password is valid, which must have at least 10 characters.
+	 * 
+	 * @param passwd1 field that the employee needs to fill with the new password
+	 * @param passwd2 field that the employee needs repeat the new password
+	 * @return true if both passwords are the same and have at least 10 characters
+	 */
 	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
 		boolean ret = false;
 		String pass1 = String.valueOf(passwd1.getPassword());

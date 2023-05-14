@@ -34,23 +34,45 @@ import soundbridge.database.pojos.Song;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
+/**
+ * Panel that contains the song not belonging to any album. A logged client can
+ * play the single.
+ */
 public class SingleView extends JPanel {
 
 	private static final long serialVersionUID = -611767121036203376L;
 	private Player player;
 	private boolean isPlayerRunning = false;
 	private JPanel panelPauseIcon;
-	private JTable tableSongs;
+	private JTable tableSong;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param song     selected single
+	 * @param artist   single's owner if not null
+	 * @param artGroup single's owner if not null
+	 */
 	public SingleView(JFrame frame, Client client, Song song, Artist artist, ArtGroup artGroup) {
-		initialize(frame, client, song, artist, artGroup);
-	}
-
-	public void initialize(JFrame frame, Client client, Song song, Artist artist, ArtGroup artGroup) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
+		initialize(frame, client, song, artist, artGroup);
+	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param song     selected single
+	 * @param artist   single's owner if not null
+	 * @param artGroup single's owner if not null
+	 */
+	public void initialize(JFrame frame, Client client, Song song, Artist artist, ArtGroup artGroup) {
 		panelPauseIcon = new JPanel();
 		panelPauseIcon.setBounds(115, 115, 100, 100);
 		add(panelPauseIcon);
@@ -119,20 +141,20 @@ public class SingleView extends JPanel {
 		scrollPaneSongs.getViewport().setOpaque(false);
 		scrollPaneSongs.setBorder(BorderFactory.createEmptyBorder());
 
-		tableSongs = new JTable();
-		tableSongs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableSongs.setDefaultEditor(Object.class, null);
-		scrollPaneSongs.setViewportView(tableSongs);
-		tableSongs.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		tableSongs.setShowGrid(false);
-		tableSongs.setBackground(Color.black);
-		tableSongs.setForeground(Color.white);
-		tableSongs.setSelectionForeground(new Color(244, 135, 244));
-		tableSongs.setRowHeight(35);
-		tableSongs.setSelectionBackground(Color.black);
-		tableSongs.setBorder(null);
-		tableSongs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		tableSongs.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+		tableSong = new JTable();
+		tableSong.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableSong.setDefaultEditor(Object.class, null);
+		scrollPaneSongs.setViewportView(tableSong);
+		tableSong.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		tableSong.setShowGrid(false);
+		tableSong.setBackground(Color.black);
+		tableSong.setForeground(Color.white);
+		tableSong.setSelectionForeground(new Color(244, 135, 244));
+		tableSong.setRowHeight(35);
+		tableSong.setSelectionBackground(Color.black);
+		tableSong.setBorder(null);
+		tableSong.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		tableSong.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 			private static final long serialVersionUID = 1852554938143426518L;
 
 			@Override
@@ -144,20 +166,20 @@ public class SingleView extends JPanel {
 				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			}
 		});
-		tableSongs.addMouseListener(new MouseAdapter() {
+		tableSong.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				playSelectedSong(song, client);
 			}
 		});
-		scrollPaneSongs.setViewportView(tableSongs);
+		scrollPaneSongs.setViewportView(tableSong);
 
-		tableSongs.getTableHeader().setBackground(Color.black);
-		tableSongs.getTableHeader().setPreferredSize(new Dimension(scrollPaneSongs.getWidth(), 50));
-		tableSongs.getTableHeader().setReorderingAllowed(false);
+		tableSong.getTableHeader().setBackground(Color.black);
+		tableSong.getTableHeader().setPreferredSize(new Dimension(scrollPaneSongs.getWidth(), 50));
+		tableSong.getTableHeader().setReorderingAllowed(false);
 
-		TableCellRenderer renderer = tableSongs.getTableHeader().getDefaultRenderer();
-		tableSongs.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+		TableCellRenderer renderer = tableSong.getTableHeader().getDefaultRenderer();
+		tableSong.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -177,16 +199,23 @@ public class SingleView extends JPanel {
 		DefaultTableModel tableModelSongs = new DefaultTableModel();
 		tableModelSongs.setColumnCount(6);
 		tableModelSongs.setColumnIdentifiers(columnsSongs);
-		tableSongs.setModel(tableModelSongs);
+		tableSong.setModel(tableModelSongs);
 
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 		WindowUtils.addImage(panelAlbumCover, lblAlbumCover, song.getCover());
 		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause.png");
 		addSongToTable(song, tableModelSongs);
-		adjustColumnsWidth(tableSongs);
+		adjustColumnsWidth();
 		addArtistOrGroupName(lblArtistName, artist, artGroup);
 	}
 
+	/**
+	 * Prints the artist or art group name.
+	 * 
+	 * @param label    label where the name is printed
+	 * @param artist   artist whose name is printed if not null
+	 * @param artGroup art group whose name is printed if not null
+	 */
 	private void addArtistOrGroupName(JLabel label, Artist artist, ArtGroup artGroup) {
 		if (artist != null) {
 			label.setText(artist.getName());
@@ -195,6 +224,12 @@ public class SingleView extends JPanel {
 		}
 	}
 
+	/**
+	 * Adds the single to the table.
+	 * 
+	 * @param song  single
+	 * @param model table's default model
+	 */
 	private void addSongToTable(Song song, DefaultTableModel model) {
 		String number = "1.";
 		String title = song.getName();
@@ -209,21 +244,32 @@ public class SingleView extends JPanel {
 
 	}
 
-	private void adjustColumnsWidth(JTable table) {
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		table.getColumnModel().getColumn(0).setMaxWidth(50);
-		table.getColumnModel().getColumn(1).setMaxWidth(50);
-		table.getColumnModel().getColumn(2).setMinWidth(300);
-		table.getColumnModel().getColumn(3).setMinWidth(100);
-		table.getColumnModel().getColumn(4).setMinWidth(200);
+	/**
+	 * Adjusts widths of a table's columns.
+	 */
+	private void adjustColumnsWidth() {
+		tableSong.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		tableSong.getColumnModel().getColumn(0).setMaxWidth(50);
+		tableSong.getColumnModel().getColumn(1).setMaxWidth(50);
+		tableSong.getColumnModel().getColumn(2).setMinWidth(300);
+		tableSong.getColumnModel().getColumn(3).setMinWidth(100);
+		tableSong.getColumnModel().getColumn(4).setMinWidth(200);
 	}
 
+	/**
+	 * Takes the client back to the artist or art group's profile.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artist   artist whose single is displayed if it is not null
+	 * @param artGroup art group whose single is displayed if it is not null
+	 */
 	private void goBack(JFrame frame, Client client, Artist artist, ArtGroup artGroup) {
 		this.stop();
 		if (artist != null) {
 			frame.getContentPane().removeAll();
-			frame.getContentPane().add(
-					PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist, null, null, null, null));
+			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist,
+					null, null, null, null));
 			frame.revalidate();
 			frame.repaint();
 		} else if (artGroup != null) {
@@ -235,6 +281,12 @@ public class SingleView extends JPanel {
 		}
 	}
 
+	/**
+	 * Plays the song that has been selected on a table and adds a reproduction.
+	 * 
+	 * @param song   single
+	 * @param client logged client
+	 */
 	private void playSelectedSong(Song song, Client client) {
 		if (isPlayerRunning)
 			this.stop();
@@ -243,14 +295,23 @@ public class SingleView extends JPanel {
 		doInsertPlay(client, song);
 		panelPauseIcon.setVisible(true);
 	}
-	
+
+	/**
+	 * Stops the music if a song is playing.
+	 */
 	private void stopMusic() {
 		if (isPlayerRunning)
 			this.stop();
 		panelPauseIcon.setVisible(false);
-		tableSongs.getSelectionModel().clearSelection();
+		tableSong.getSelectionModel().clearSelection();
 	}
 
+	/**
+	 * Inserts a reproduction every time a song is played.
+	 * 
+	 * @param client logged client
+	 * @param song   selected song
+	 */
 	private void doInsertPlay(Client client, Song song) {
 		Controller controller = new Controller();
 		Play play = new Play();
@@ -267,6 +328,11 @@ public class SingleView extends JPanel {
 
 	}
 
+	/**
+	 * Starts the player given the song at path. Path cannot be null.
+	 * 
+	 * @param path path of the music file
+	 */
 	private void play(String path) {
 		new Thread() {
 			@Override
@@ -284,6 +350,9 @@ public class SingleView extends JPanel {
 		isPlayerRunning = true;
 	}
 
+	/**
+	 * Stops the player.
+	 */
 	public void stop() {
 		if (player != null) {
 			player.close();

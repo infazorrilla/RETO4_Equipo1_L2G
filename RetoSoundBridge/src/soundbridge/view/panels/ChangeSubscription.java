@@ -49,7 +49,7 @@ public class ChangeSubscription extends JPanel {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
-		
+
 		initialize(frame, client);
 		addBackgroundGif();
 	}

@@ -133,17 +133,17 @@ public class ArtistProfile extends JPanel {
 		doCreateFunctionalAlbumPanels(frame, client, artist);
 		doCreateFunctionalSinglePanels(frame, client, artist);
 	}
-	
+
 	/**
 	 * Takes the client back to the library panel.
 	 * 
-	 * @param frame		frame where the panel is added
-	 * @param client	logged client
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
 	 */
 	private void goToLibrary(JFrame frame, Client client) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
-				null, null, null));
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -214,7 +214,7 @@ public class ArtistProfile extends JPanel {
 	}
 
 	/**
-	 * Creates a maximum of five panels that correspond to the albums of the artist.
+	 * Creates a maximum of 6 panels that correspond to the albums of the artist.
 	 * 
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
@@ -222,7 +222,8 @@ public class ArtistProfile extends JPanel {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	private void createFunctionalAlbumPanels(JFrame frame, Client client, Artist artist) throws SQLException, Exception {
+	private void createFunctionalAlbumPanels(JFrame frame, Client client, Artist artist)
+			throws SQLException, Exception {
 
 		albums = getAlbums(artist);
 
@@ -300,11 +301,11 @@ public class ArtistProfile extends JPanel {
 	 * Creates a listener for the panel. When it is clicked it takes the client to
 	 * the album panel.
 	 * 
-	 * @param frame		frame where the panel is added
-	 * @param panel		panel to which the listener is being created
-	 * @param client	logged client
-	 * @param artist	artist whose profile is shown
-	 * @param album		related album
+	 * @param frame  frame where the panel is added
+	 * @param panel  panel to which the listener is being created
+	 * @param client logged client
+	 * @param artist artist whose profile is shown
+	 * @param album  related album
 	 */
 	private void createAlbumPanelListener(JFrame frame, JPanel panel, Client client, Artist artist, Album album) {
 		panel.addMouseListener(new MouseAdapter() {
@@ -322,8 +323,8 @@ public class ArtistProfile extends JPanel {
 	/**
 	 * Returns the songs that are not included in any album.
 	 * 
-	 * @param artist	artist whose profile is shown
-	 * @return			songs that have no related album
+	 * @param artist artist whose profile is shown
+	 * @return songs that have no related album
 	 * @throws SQLException
 	 * @throws Exception
 	 */
@@ -337,11 +338,11 @@ public class ArtistProfile extends JPanel {
 	 * Creates a listener for the single. When it is clicked it takes the client to
 	 * the single panel.
 	 * 
-	 * @param frame		frame where the panel is added
-	 * @param panel		panel to which the listener is being created
-	 * @param client	logged client
-	 * @param artist	artist whose profile is shown
-	 * @param song		related song
+	 * @param frame  frame where the panel is added
+	 * @param panel  panel to which the listener is being created
+	 * @param client logged client
+	 * @param artist artist whose profile is shown
+	 * @param song   related song
 	 */
 	private void createSinglePanelListener(JFrame frame, JPanel panel, Client client, Artist artist, Song song) {
 		panel.addMouseListener(new MouseAdapter() {
@@ -357,7 +358,7 @@ public class ArtistProfile extends JPanel {
 	}
 
 	/**
-	 * Creates a maximum of five panels that correspond to the singles of the artist.
+	 * Creates a maximum of 6 panels that correspond to the singles of the artist.
 	 * 
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
@@ -365,7 +366,8 @@ public class ArtistProfile extends JPanel {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	private void createFunctionalSinglePanels(JFrame frame, Client client, Artist artist) throws SQLException, Exception {
+	private void createFunctionalSinglePanels(JFrame frame, Client client, Artist artist)
+			throws SQLException, Exception {
 		singles = getSingles(artist);
 
 		if (null != singles) {
