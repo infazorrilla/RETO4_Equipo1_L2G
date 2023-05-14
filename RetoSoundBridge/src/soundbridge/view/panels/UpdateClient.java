@@ -326,7 +326,7 @@ public class UpdateClient extends JPanel {
 		JButton btnUpdateInfo = new JButton("Actualizar");
 		btnUpdateInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				checkAllInformationFields(client);
+				updateClientPersonalInformation(client);
 			}
 		});
 		btnUpdateInfo.setBounds(235, 597, 200, 40);
@@ -474,7 +474,7 @@ public class UpdateClient extends JPanel {
 	}
 
 	/**
-	 * Validates the nationality field, which must not contain numbers. 
+	 * Validates the nationality field, which must not contain numbers.
 	 */
 	private void validateNationalityField() {
 		if (controller == null)
@@ -486,6 +486,9 @@ public class UpdateClient extends JPanel {
 			textNationality.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the birth date, wich must follow a pattern like dd/MM/yyy.
+	 */
 	private void validateBirthDateField() {
 		if (controller == null)
 			controller = new Controller();
@@ -496,6 +499,9 @@ public class UpdateClient extends JPanel {
 			textBirthDate.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the address field, which must not be empty.
+	 */
 	private void validateAddressField() {
 		if (controller == null)
 			controller = new Controller();
@@ -506,6 +512,10 @@ public class UpdateClient extends JPanel {
 			textAreaAddress.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the phone field, which must have the character + followed by 11
+	 * numbers.
+	 */
 	private void validatePhoneField() {
 		if (controller == null)
 			controller = new Controller();
@@ -516,6 +526,9 @@ public class UpdateClient extends JPanel {
 			textPhone.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the email field.
+	 */
 	private void validateEmailField() {
 		if (controller == null)
 			controller = new Controller();
@@ -526,6 +539,9 @@ public class UpdateClient extends JPanel {
 			textEmail.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates every field.
+	 */
 	private void validateAllFields() {
 		comboBoxGender.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 		validateBankAccount();
@@ -536,6 +552,11 @@ public class UpdateClient extends JPanel {
 		validateEmailField();
 	}
 
+	/**
+	 * Checks if all fields are correct.
+	 * 
+	 * @return true if all fields are correct
+	 */
 	private boolean areAllFieldsCorrect() {
 		boolean ret = false;
 		if (controller == null)
@@ -549,13 +570,18 @@ public class UpdateClient extends JPanel {
 		return ret;
 	}
 
-	private void checkAllInformationFields(Client client) {
+	/**
+	 * Updates the client's personal information if every field is correct.
+	 * 
+	 * @param client logged client
+	 */
+	private void updateClientPersonalInformation(Client client) {
 		if (controller == null)
 			controller = new Controller();
 
 		if (areAllFieldsCorrect()) {
 			if (textBankAccount.isEnabled()) {
-				if (controller.isLengthCorrect(textBankAccount, 20)) {
+				if (controller.isLengthCorrectInBankAccount(textBankAccount, 20)) {
 					doUpdateClient(client);
 				} else {
 					validateAllFields();
@@ -570,6 +596,11 @@ public class UpdateClient extends JPanel {
 		}
 	}
 
+	/**
+	 * Validates the password field, which must have at least 10 characters.
+	 * 
+	 * @param passwdField validated field
+	 */
 	private void validatePasswdField(JPasswordField passwdField) {
 		if (controller == null)
 			controller = new Controller();
@@ -580,6 +611,13 @@ public class UpdateClient extends JPanel {
 			passwdField.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Checks if the password is valid, which must have at least 10 characters.
+	 * 
+	 * @param passwd1 field that the employee needs to fill with the new password
+	 * @param passwd2 field that the employee needs repeat the new password
+	 * @return true if both passwords are the same and have at least 10 characters
+	 */
 	private boolean isPasswdOk(JPasswordField passwd1, JPasswordField passwd2) {
 		boolean ret = false;
 		String pass1 = String.valueOf(passwd1.getPassword());
