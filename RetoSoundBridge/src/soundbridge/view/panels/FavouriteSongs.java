@@ -44,6 +44,9 @@ import java.util.ArrayList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Panel where are the songs that the client choose as his favorites.
+ */
 public class FavouriteSongs extends JPanel {
 	private ArrayList<Song> favouriteSongs;
 
@@ -55,10 +58,22 @@ public class FavouriteSongs extends JPanel {
 	private Controller controller;
 	private int indexx = 0;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	public FavouriteSongs(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	private static final long serialVersionUID = -5073547141433278673L;
 
 	public void initialize(JFrame frame, Client client) {
@@ -238,7 +253,11 @@ public class FavouriteSongs extends JPanel {
 	}
 
 
-
+	/**
+	 * The amount of columns and each width.
+	 * 
+	 * @param table table which is adjusted
+	 */
 	private void adjustColumnsWidth(JTable table) {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -249,6 +268,11 @@ public class FavouriteSongs extends JPanel {
 		table.getColumnModel().getColumn(5).setMinWidth(160);
 	}
 
+	/**
+	 * Reproduce the selected song using the index of the table.
+	 * 
+	 * @param client the client that had done the log in
+	 */
 	private void playSelectedSong(Client client) {
 
 		indexx = tableFavouriteSongs.getSelectedColumn();
@@ -268,14 +292,21 @@ public class FavouriteSongs extends JPanel {
 			panelPauseIcon.setVisible(true);
 		}
 	}
-
+	/**
+	 * Stops the music.
+	 */
 	private void stopMusic() {
 		if (isPlayerRunning)
 			this.stop();
 		panelPauseIcon.setVisible(false);
 		tableFavouriteSongs.getSelectionModel().clearSelection();
 	}
-
+	/**
+	 * Insert on the date base when a song plays.
+	 * 
+	 * @param client logged client
+	 * @param song   song that is being played.
+	 */
 	private void doInsertPlay(Client client, Song song) {
 		if (null == controller)
 			controller = new Controller();
@@ -292,7 +323,11 @@ public class FavouriteSongs extends JPanel {
 		}
 
 	}
-
+	/**
+	 * Plays the music.
+	 * 
+	 * @param path path of the song to play
+	 */
 	private void play(String path) {
 		new Thread() {
 			@Override
@@ -309,7 +344,9 @@ public class FavouriteSongs extends JPanel {
 
 		isPlayerRunning = true;
 	}
-
+	/**
+	 * Stops the song.
+	 */
 	public void stop() {
 		if (player != null) {
 			player.close();
@@ -317,6 +354,13 @@ public class FavouriteSongs extends JPanel {
 
 		isPlayerRunning = false;
 	}
+	
+	/**
+	 * Takes the favorite songs of a client of the data base and shows it on a table.
+	 * 
+	 * @param model the model of the table to insert the info
+	 * @param client the client to take his favorite songs
+	 */
 	private void addSongsToTable(DefaultTableModel model,Client client) {
 
 		if (null == controller)

@@ -23,17 +23,32 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
+/**
+ * Pnale to create a playlist for a client. Here the client is able to choose
+ * the name and the description of the playlist that is going to create.
+ */
 public class CreatePlaylist extends JPanel {
 
 	private static final long serialVersionUID = -2776809426213236020L;
 	private JTextField textField;
 	private JTextField textField_1;
-	
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	public CreatePlaylist(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -58,7 +73,7 @@ public class CreatePlaylist extends JPanel {
 		textField_1.setBounds(51, 209, 86, 20);
 		add(textField_1);
 		textField_1.setColumns(10);
-		
+
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -68,14 +83,13 @@ public class CreatePlaylist extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
+						null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
 		});
-		
-		
+
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver a mi perfil.");
 
@@ -83,33 +97,30 @@ public class CreatePlaylist extends JPanel {
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 		JButton btnEnviarCrearPlaylist = new JButton("New button");
-		
-		
-		
+
 		btnEnviarCrearPlaylist.addActionListener(new ActionListener() {
 			Playlist playlist = new Playlist();
-			
+
 			public void actionPerformed(ActionEvent e) {
 				PlaylistManager playMan = new PlaylistManager();
 				ClientPP clientPP = new ClientPP();
 				playlist.setName(textField.getText());
 				playlist.setDescription(textField_1.getText());
-				
+
 				if (client instanceof ClientPP) {
-				clientPP.setId(client.getId());
-				playlist.setClientPP(clientPP);
-				try {
-					playMan.insertPlaylistClienPP(playlist);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					clientPP.setId(client.getId());
+					playlist.setClientPP(clientPP);
+					try {
+						playMan.insertPlaylistClienPP(playlist);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-				}
-			
-				
+
 				frame.getContentPane().removeAll();
-				frame.getContentPane().add(
-						PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null, null, null, null, playlist));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null,
+						null, null, null, playlist));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -117,5 +128,5 @@ public class CreatePlaylist extends JPanel {
 		btnEnviarCrearPlaylist.setBounds(48, 256, 89, 23);
 		add(btnEnviarCrearPlaylist);
 	}
-	
+
 }
