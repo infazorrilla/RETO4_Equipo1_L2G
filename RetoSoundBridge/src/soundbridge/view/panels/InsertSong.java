@@ -35,6 +35,10 @@ import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 
+/**
+ * Panel that enables an employee to add new songs belonging to the already
+ * existing artists and albums.
+ */
 public class InsertSong extends JPanel {
 
 	private static final long serialVersionUID = -7791300318343389694L;
@@ -64,7 +68,6 @@ public class InsertSong extends JPanel {
 		setLayout(null);
 
 		initialize(frame, employee);
-
 	}
 
 	/**
@@ -79,7 +82,7 @@ public class InsertSong extends JPanel {
 		lblTitle.setFont(new Font("Dialog", Font.PLAIN, 22));
 		lblTitle.setBounds(380, 44, 250, 36);
 		add(lblTitle);
-		
+
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -93,7 +96,7 @@ public class InsertSong extends JPanel {
 		});
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver");
-		
+
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 
@@ -124,7 +127,7 @@ public class InsertSong extends JPanel {
 		comboAlbum.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (null != comboAlbum.getSelectedItem()) {
-					selectedAlbum(comboAlbum);
+					selectedAlbum();
 					WindowUtils.addImage(panelAlbumImage, lblAlbumImage, selectedAlbum.getCover());
 				}
 			}
@@ -140,7 +143,7 @@ public class InsertSong extends JPanel {
 		comboArtist.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (null != comboArtist.getSelectedItem()) {
-					selectedArtist(comboArtist);
+					selectedArtist();
 					addArtistImageAndAlbums(panelArtistImage, lblArtistImage);
 				}
 			}
@@ -321,11 +324,17 @@ public class InsertSong extends JPanel {
 
 		addArtistsNamesToCombo();
 
-		selectedArtist(comboArtist);
-		
+		selectedArtist();
+
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 	}
 
+	/**
+	 * Gets all artists and groups from database.
+	 * 
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private void getAllArtists() throws SQLException, Exception {
 		if (null == controller)
 			controller = new Controller();
@@ -333,6 +342,12 @@ public class InsertSong extends JPanel {
 		allArtists = controller.artistsAndGroups();
 	}
 
+	/**
+	 * Gets all albums of the selected artist.
+	 * 
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private void getAlbumsByArtist() throws SQLException, Exception {
 		if (null == controller)
 			controller = new Controller();
@@ -340,6 +355,12 @@ public class InsertSong extends JPanel {
 		allAlbums = controller.getAlbumsByArtist((Artist) selectedArt);
 	}
 
+	/**
+	 * Gets all albums of the selected art group.
+	 * 
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private void getAlbumsByGroup() throws SQLException, Exception {
 		if (null == controller)
 			controller = new Controller();
@@ -347,6 +368,9 @@ public class InsertSong extends JPanel {
 		allAlbums = controller.getAlbumsByGroup((ArtGroup) selectedArt);
 	}
 
+	/**
+	 * Adds artist's albums to a ComboBox.
+	 */
 	private void addArtistAlbumsToCombo() {
 		try {
 			getAlbumsByArtist();
@@ -363,6 +387,9 @@ public class InsertSong extends JPanel {
 		}
 	}
 
+	/**
+	 * Adds group's albums to a ComboBox.
+	 */
 	private void addGroupAlbumsToCombo() {
 		try {
 			getAlbumsByGroup();
@@ -379,6 +406,9 @@ public class InsertSong extends JPanel {
 		}
 	}
 
+	/**
+	 * Adds artists' and groups' names to a ComboBox.
+	 */
 	private void addArtistsNamesToCombo() {
 		try {
 			getAllArtists();
@@ -398,16 +428,28 @@ public class InsertSong extends JPanel {
 		}
 	}
 
-	private void selectedArtist(JComboBox<String> combo) {
-		int index = combo.getSelectedIndex();
+	/**
+	 * Stores the selected artist or group.
+	 */
+	private void selectedArtist() {
+		int index = comboArtist.getSelectedIndex();
 		selectedArt = allArtists.get(index);
 	}
 
-	private void selectedAlbum(JComboBox<String> combo) {
-		int index = combo.getSelectedIndex();
+	/**
+	 * Stores the selected album.
+	 */
+	private void selectedAlbum() {
+		int index = comboAlbum.getSelectedIndex();
 		selectedAlbum = allAlbums.get(index);
 	}
 
+	/**
+	 * Prints artists' and groups' images.
+	 * 
+	 * @param panel panel containing a label
+	 * @param lbl   label where the image is printed
+	 */
 	private void addArtistImageAndAlbums(JPanel panel, JLabel lbl) {
 		comboAlbum.removeAllItems();
 		if (selectedArt instanceof Artist) {
@@ -419,6 +461,9 @@ public class InsertSong extends JPanel {
 		}
 	}
 
+	/**
+	 * Validates the entered text for the song's title, which must not be empty.
+	 */
 	private void validateTitleField() {
 		if (controller == null)
 			controller = new Controller();
@@ -429,6 +474,9 @@ public class InsertSong extends JPanel {
 			textTitle.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the entered text for the song's duration in seconds.
+	 */
 	private void validateDurationField() {
 		if (controller == null)
 			controller = new Controller();
@@ -439,6 +487,9 @@ public class InsertSong extends JPanel {
 			textDuration.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the entered text for the song's file path.
+	 */
 	private void validateFileField() {
 		if (controller == null)
 			controller = new Controller();
@@ -449,6 +500,9 @@ public class InsertSong extends JPanel {
 			textFile.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the entered text for the song's language.
+	 */
 	private void validateLanguageField() {
 		if (controller == null)
 			controller = new Controller();
@@ -459,6 +513,9 @@ public class InsertSong extends JPanel {
 			textLanguage.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the entered text for the song's genre.
+	 */
 	private void validateGenreField() {
 		if (controller == null)
 			controller = new Controller();
@@ -469,6 +526,9 @@ public class InsertSong extends JPanel {
 			textGenre.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Validates the entered text for the song's release year.
+	 */
 	private void validateYearField() {
 		if (controller == null)
 			controller = new Controller();
@@ -479,6 +539,12 @@ public class InsertSong extends JPanel {
 			textYear.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
+	/**
+	 * Inserts a new song into the database.
+	 * 
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private void insertNewSong() throws SQLException, Exception {
 		Song song = new Song();
 		song.setAlbum(selectedAlbum);
@@ -502,6 +568,9 @@ public class InsertSong extends JPanel {
 		controller.insertSong(song);
 	}
 
+	/**
+	 * Inserts a song into the database, controlling the exceptions.
+	 */
 	private void doInsertSong() {
 		try {
 			insertNewSong();
@@ -513,6 +582,9 @@ public class InsertSong extends JPanel {
 		}
 	}
 
+	/**
+	 * Validates every text field.
+	 */
 	private void validateAllFields() {
 		validateTitleField();
 		validateDurationField();
@@ -522,6 +594,11 @@ public class InsertSong extends JPanel {
 		validateYearField();
 	}
 
+	/**
+	 * Checks if every field is correct.
+	 * 
+	 * @return true if all fields are correct
+	 */
 	private boolean areAllFieldsCorrect() {
 		boolean ret = false;
 		if (controller == null)
@@ -534,7 +611,10 @@ public class InsertSong extends JPanel {
 
 		return ret;
 	}
-	
+
+	/**
+	 * Resets every text field.
+	 */
 	private void resetFields() {
 		textTitle.setText("");
 		textTitle.setBorder(new LineBorder(Color.WHITE, 2));
@@ -549,7 +629,10 @@ public class InsertSong extends JPanel {
 		textYear.setText("");
 		textYear.setBorder(new LineBorder(Color.WHITE, 2));
 	}
-	
+
+	/**
+	 * Inserts a new song into the database if all text fields are valid.
+	 */
 	private void doInsertNewSong() {
 		if (controller == null)
 			controller = new Controller();
@@ -562,11 +645,17 @@ public class InsertSong extends JPanel {
 			WindowUtils.errorPane("Revisa los campos incorrectos marcados de color rojo.", "Error");
 		}
 	}
-	
+
+	/**
+	 * Takes the employee back to the edition menu.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
 	private void goBack(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null,
+				null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
