@@ -114,8 +114,31 @@ public class EmployeeMenu extends JPanel {
 		lblReviews.setBounds(220, 315, 119, 29);
 		add(lblReviews);
 
+		JPanel panelSongs = new JPanel();
+		panelSongs.setOpaque(false);
+		panelSongs.setBounds(108, 410, 100, 100);
+		panelSongs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		add(panelSongs);
+		panelSongs.setLayout(new BorderLayout(0, 0));
+		panelSongs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				goToInsertSongs(frame, employee);
+			}
+		});
+
+		JLabel lblSongsIcon = new JLabel("New label");
+		panelSongs.add(lblSongsIcon, BorderLayout.CENTER);
+
+		JLabel lblSongs = new JLabel("Canciones");
+		lblSongs.setForeground(Color.WHITE);
+		lblSongs.setFont(new Font("Dialog", Font.PLAIN, 17));
+		lblSongs.setBounds(220, 445, 119, 29);
+		add(lblSongs);
+
 		WindowUtils.addImage(panelManageClients, lblManageClientsIcon, "img/icon/clients.png");
 		WindowUtils.addImage(panelReviews, lblReviewIcon, "img/icon/review.png");
+		WindowUtils.addImage(panelSongs, lblSongsIcon, "img/icon/music.png");
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 	}
 
@@ -157,6 +180,20 @@ public class EmployeeMenu extends JPanel {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_PROFILE, frame, null, employee, null,
 				null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the employee to the panel that enables adding new songs.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param employee logged employee
+	 */
+	private void goToInsertSongs(JFrame frame, Employee employee) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(
+				PanelFactory.getJPanel(PanelFactory.INSERT_SONG, frame, null, employee, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}

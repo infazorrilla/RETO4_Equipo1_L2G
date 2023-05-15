@@ -13,22 +13,24 @@ import soundbridge.database.views.managers.Top20ViewManager;
 import soundbridge.view.panels.Top20View;
 
 /**
- * Comprueba que en el panel Top20View se cargan correctamente las canciones.
- *
+ * Checks that the songs are loaded correctly in the Top20View panel table.
  */
 public class ArrayListToWindowTest {
 
 	private static Top20ViewManager top20Manager = null;
 
+	/**
+	 * Class preparation.
+	 */
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		top20Manager = new Top20ViewManager();
 	}
 
 	/**
-	 * Comprobación de que las canciones que conforman el top 20 se cargan
-	 * correctamente en un ArrayList y que se muestran en la tabla del panel
-	 * Top20View.
+	 * Checks that songs of the top 20 are uploaded correctly in an ArrayList and
+	 * displayed in the table of the Top20View panel. Compares the size of the
+	 * ArrayList and the row count of the table.
 	 */
 	@Test
 	public void testArrayListToTable() {

@@ -466,7 +466,7 @@ public class UpdateClient extends JPanel {
 			if (controller == null)
 				controller = new Controller();
 
-			if (controller.isLengthCorrectInBankAccount(textBankAccount, 20))
+			if (controller.isLengthCorrectNumeric(textBankAccount, 20))
 				textBankAccount.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 			else
 				textBankAccount.setBorder(new LineBorder(new Color(255, 40, 40), 2));
@@ -506,7 +506,7 @@ public class UpdateClient extends JPanel {
 		if (controller == null)
 			controller = new Controller();
 
-		if (controller.isEmptyTextArea(textAreaAddress))
+		if (controller.isNotEmptyTextArea(textAreaAddress))
 			textAreaAddress.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 		else
 			textAreaAddress.setBorder(new LineBorder(new Color(255, 40, 40), 2));
@@ -563,7 +563,7 @@ public class UpdateClient extends JPanel {
 			controller = new Controller();
 
 		if (controller.isLetterStringCorrect(textNationality) && controller.isDateCorrect(textBirthDate)
-				&& controller.isEmptyTextArea(textAreaAddress) && controller.isPhoneCorrect(textPhone)
+				&& controller.isNotEmptyTextArea(textAreaAddress) && controller.isPhoneCorrect(textPhone)
 				&& controller.isEmailCorrect(textEmail))
 			ret = true;
 
@@ -581,7 +581,7 @@ public class UpdateClient extends JPanel {
 
 		if (areAllFieldsCorrect()) {
 			if (textBankAccount.isEnabled()) {
-				if (controller.isLengthCorrectInBankAccount(textBankAccount, 20)) {
+				if (controller.isLengthCorrectNumeric(textBankAccount, 20)) {
 					doUpdateClient(client);
 				} else {
 					validateAllFields();

@@ -761,7 +761,7 @@ public class SignUp extends JPanel {
 		if (controller == null)
 			controller = new Controller();
 
-		if (controller.isEmptyText(textFieldAddress))
+		if (controller.isNotEmptyText(textFieldAddress))
 			textFieldAddress.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 		else
 			textFieldAddress.setBorder(new LineBorder(new Color(255, 40, 40), 2));
@@ -824,7 +824,7 @@ public class SignUp extends JPanel {
 				&& controller.isLengthCorrect(textFieldUsername, 5) && controller.isLengthCorrect(textFieldPasswd, 10)
 				&& controller.isPersonalIdCorrect(textFieldPersonalId) && controller.isGenderCorrect(textFieldGender)
 				&& controller.isLetterStringCorrect(textFieldNationality)
-				&& controller.isDateCorrect(textFieldBirthDate) && controller.isEmptyText(textFieldAddress)
+				&& controller.isDateCorrect(textFieldBirthDate) && controller.isNotEmptyText(textFieldAddress)
 				&& controller.isPhoneCorrect(textFieldPhoneNumber) && controller.isEmailCorrect(textFieldEmail)) {
 			ret = true;
 		}

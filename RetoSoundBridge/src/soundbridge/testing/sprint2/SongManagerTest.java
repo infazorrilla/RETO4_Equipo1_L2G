@@ -17,18 +17,18 @@ import soundbridge.database.managers.SongManager;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Song;
+
 /**
- * Comprueba los métodos de la clase SongManager. Se especifica un orden
- * para el correcto funcionamiento de las pruebas.
- *
+ * Check the methods of the SongManager class. An order is specified for the
+ * correct functioning of the tests.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SongManagerTest {
-	
+
 	private static SongManager songManager = null;
 
 	/**
-	 * Preparación de la clase.
+	 * Class preparation.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -36,7 +36,7 @@ public class SongManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una canción se inserta en la base de datos.
+	 * Checks the insert of a song into the database.
 	 */
 	@Test
 	public void testAInsertSong() {
@@ -47,7 +47,7 @@ public class SongManagerTest {
 		try {
 			song.setReleaseYear(new SimpleDateFormat("yyyy").parse("2021"));
 		} catch (ParseException e1) {
-			
+
 		}
 		song.setDuration(200);
 		song.setLang("Español");
@@ -69,10 +69,10 @@ public class SongManagerTest {
 
 		assertFalse(thrown);
 	}
-	
+
 	/**
-	 * Comprobación de que las canciones se cargan correctamente en un ArrayList y
-	 * que la canción anteriormente insertada está incluida.
+	 * Checks the loading of songs into an ArrayList and the inclusion of the
+	 * previously inserted song.
 	 */
 	@Test
 	public void testBSelectAllSongs() {
@@ -104,9 +104,9 @@ public class SongManagerTest {
 		assertFalse(thrown);
 		assertTrue(isInserted);
 	}
-	
+
 	/**
-	 * Comprobación de que una canción se actualiza en la base de datos.
+	 * Checks the update of a song in the database.
 	 */
 	@Test
 	public void testCUpdateSong() {
@@ -145,9 +145,9 @@ public class SongManagerTest {
 		assertFalse(thrown);
 		assertTrue(250 == insertedSong.getDuration());
 	}
-	
+
 	/**
-	 * Comprobación de que una canción se elimina de la base de datos.
+	 * Checks the deletion of a song in the database.
 	 */
 	@Test
 	public void testDDeleteSong() {

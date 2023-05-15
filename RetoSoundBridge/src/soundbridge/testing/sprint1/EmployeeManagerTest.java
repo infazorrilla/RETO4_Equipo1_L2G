@@ -15,9 +15,8 @@ import soundbridge.database.managers.EmployeeManager;
 import soundbridge.database.pojos.Employee;
 
 /**
- * Comprueba los métodos de la clase EmployeeManager. Se especifica un orden
- * para el correcto funcionamiento de las pruebas.
- *
+ * Check the methods of the EmployeeManager class. An order is specified for the
+ * correct functioning of the tests.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class EmployeeManagerTest {
@@ -25,7 +24,7 @@ public class EmployeeManagerTest {
 	private static EmployeeManager employeeManager;
 
 	/**
-	 * Preparación de la clase.
+	 * Class preparation.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -33,7 +32,7 @@ public class EmployeeManagerTest {
 	}
 
 	/**
-	 * Comprobación de que un empleado se inserta en la base de datos.
+	 * Checks the insert of an employee into the database.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
@@ -70,8 +69,8 @@ public class EmployeeManagerTest {
 	}
 
 	/**
-	 * Comprobación de que los empleados se cargan correctamente en un ArrayList y
-	 * que el empleado anteriormente insertado está incluido.
+	 * Checks the loading of employees into an ArrayList and the inclusion of the
+	 * previously inserted client.
 	 */
 	@Test
 	public void testBSelectAllEmployees() {
@@ -103,7 +102,7 @@ public class EmployeeManagerTest {
 	}
 
 	/**
-	 * Comprobación de que un empleado se actualiza en la base de datos.
+	 * Checks the update of an employee in the database.
 	 */
 	@Test
 	public void testCUpdateEmployee() {
@@ -145,7 +144,7 @@ public class EmployeeManagerTest {
 	}
 
 	/**
-	 * Comprobación de que un empleado se elimina de la base de datos.
+	 * Checks the deletion of an employee in the database.
 	 */
 	@Test
 	public void testDDeleteEmployee() {

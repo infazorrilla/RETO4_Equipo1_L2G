@@ -17,10 +17,9 @@ import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.Employee;
 
 /**
- * Comprueba que se obtienen todos los empleados y clientes con sus respectivos
- * perfiles de usuario. Se especifica un orden para el correcto funcionamiento
- * de las pruebas.
- *
+ * Check that all employees and customers are obtained with their respective
+ * user profiles from database. An order is specified for the correct
+ * functioning of the tests.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GetUsersFromDBTest {
@@ -35,7 +34,7 @@ public class GetUsersFromDBTest {
 	}
 
 	/**
-	 * Comprobación de que un empleado se inserta en la base de datos.
+	 * Checks the insert of an employee into the database.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
@@ -72,8 +71,8 @@ public class GetUsersFromDBTest {
 	}
 
 	/**
-	 * Comprobación de que los empleados se cargan correctamente en un ArrayList y
-	 * que el empleado anteriormente insertado está incluido.
+	 * Checks the loading of employees into an ArrayList and the inclusion of the
+	 * previously inserted employee.
 	 */
 	@Test
 	public void testBSelectAllEmployees() {
@@ -105,7 +104,7 @@ public class GetUsersFromDBTest {
 	}
 
 	/**
-	 * Comprobación de que un cliente se inserta en la base de datos.
+	 * Checks the insert of a client into the database.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
@@ -138,8 +137,8 @@ public class GetUsersFromDBTest {
 	}
 
 	/**
-	 * Comprobación de que los clientes se cargan correctamente en un ArrayList y
-	 * que el cliente anteriormente insertado está incluido.
+	 * Checks the loading of clients into an ArrayList and the inclusion of the
+	 * previously inserted client.
 	 */
 	@Test
 	public void testDSelectAllClients() {
@@ -173,7 +172,7 @@ public class GetUsersFromDBTest {
 	}
 
 	/**
-	 * Reestablece la base de datos, eliminando el empleado y cliente insertados.
+	 * Resets the database, removing the inserted employee and client.
 	 */
 	@Test
 	public void testEDelete() {

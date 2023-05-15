@@ -20,8 +20,9 @@ import soundbridge.view.panels.CreatePlaylist;
 import soundbridge.view.panels.EmployeeMenu;
 import soundbridge.view.panels.EmployeeProfile;
 import soundbridge.view.panels.EmployeeReviews;
-import soundbridge.view.panels.FavouriteSongs;
+import soundbridge.view.panels.FavoriteSongs;
 import soundbridge.view.panels.GroupProfile;
+import soundbridge.view.panels.InsertSong;
 import soundbridge.view.panels.Library;
 import soundbridge.view.panels.Login;
 import soundbridge.view.panels.ManageClients;
@@ -33,6 +34,9 @@ import soundbridge.view.panels.Top20View;
 import soundbridge.view.panels.UpdateClient;
 import soundbridge.view.panels.WriteReview;
 
+/**
+ * Panel factory that returns the specified panel.
+ */
 public class PanelFactory {
 
 	public static final String LOGIN = "LOGIN";
@@ -52,14 +56,28 @@ public class PanelFactory {
 	public static final String EMPLOYEE_REVIEWS = "EMPLOYEE_REVIEWS";
 	public static final String CLIENTS_REVIEWS = "CLIENTS_REVIEWS";
 	public static final String WRITE_REVIEW = "WRITE_REVIEW";
-	public static final String FAVOURITE_SONGS = "FAVOURITE_SONGS";
+	public static final String FAVORITE_SONGS = "FAVORITE_SONGS";
 	public static final String CREATE_PLAYLIST = "CREATE_PLAYLIST";
 	public static final String PLAYLIST = "PLAYLIST";
 	public static final String ADDSONGPLAYLIST = "ADDSONGPLAYLIST";
-	
-	
-	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist, ArtGroup artGroup,
-			Album album, Song song,Playlist playlist) {
+	public static final String INSERT_SONG = "INSERT_SONG";
+
+	/**
+	 * Returns the corresponding panel with the needed information.
+	 * 
+	 * @param panelName name of the panel
+	 * @param frame     frame where the panel is added
+	 * @param client    logged client
+	 * @param employee  logged employee
+	 * @param artist    artist on the platform
+	 * @param artGroup  art group on the platform
+	 * @param album     album that belongs either to an artist or an artgroup
+	 * @param song      song that belongs either to an artist or an artgroup
+	 * @param playlist  playlist of a client
+	 * @return panel that corresponds to the given name
+	 */
+	public static JPanel getJPanel(String panelName, JFrame frame, Client client, Employee employee, Artist artist,
+			ArtGroup artGroup, Album album, Song song, Playlist playlist) {
 		switch (panelName) {
 		case LOGIN:
 			return new Login(frame);
@@ -95,14 +113,16 @@ public class PanelFactory {
 			return new ClientsReviews(frame, client, album, artist, artGroup);
 		case WRITE_REVIEW:
 			return new WriteReview(frame, client, album, artist, artGroup);
-		case FAVOURITE_SONGS:
-			return new FavouriteSongs(frame, client);
+		case FAVORITE_SONGS:
+			return new FavoriteSongs(frame, client);
 		case PLAYLIST:
-			return new PlayList(frame, client,playlist);
+			return new PlayList(frame, client, playlist);
 		case CREATE_PLAYLIST:
 			return new CreatePlaylist(frame, client);
 		case ADDSONGPLAYLIST:
 			return new AddSongPlaylist(frame, client);
+		case INSERT_SONG:
+			return new InsertSong(frame, employee);
 		default:
 			return null;
 		}

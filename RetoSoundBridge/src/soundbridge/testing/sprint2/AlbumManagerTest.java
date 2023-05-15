@@ -17,22 +17,25 @@ import soundbridge.database.managers.AlbumManager;
 import soundbridge.database.pojos.Album;
 
 /**
- * Comprueba los métodos de la clase AlbumManager. Se especifica un orden
- * para el correcto funcionamiento de las pruebas.
+ * Check the methods of the AlbumManager class. An order is specified for the
+ * correct functioning of the tests.
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AlbumManagerTest {
-	
+
 	private static AlbumManager albumManager = null;
 
+	/**
+	 * Class preparation.
+	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		albumManager = new AlbumManager();
 	}
 
 	/**
-	 * Comprobación de que un álbum se inserta en la base de datos.
+	 * Checks the insert of an album into the database.
 	 */
 	@Test
 	public void testAInsertAlbum() {
@@ -43,11 +46,11 @@ public class AlbumManagerTest {
 		try {
 			album.setReleaseYear(new SimpleDateFormat("yyyy").parse("2019"));
 		} catch (ParseException e1) {
-			
+
 		}
-		
+
 		album.setCover("img/cover/sensaciones.png");
-		
+
 		try {
 			albumManager.insert(album);
 		} catch (SQLException sqle) {
@@ -59,10 +62,10 @@ public class AlbumManagerTest {
 
 		assertFalse(thrown);
 	}
-	
+
 	/**
-	 * Comprobación de que los álbumes se cargan correctamente en un ArrayList y
-	 * que el álbum anteriormente insertado está incluida.
+	 * Checks the loading of albums into an ArrayList and the inclusion of the
+	 * previously inserted album.
 	 */
 	@Test
 	public void testBSelectAllAlbums() {
@@ -94,9 +97,9 @@ public class AlbumManagerTest {
 		assertFalse(thrown);
 		assertTrue(isInserted);
 	}
-	
+
 	/**
-	 * Comprobación de que un álbum se actualiza en la base de datos.
+	 * Checks the update of an album in the database.
 	 */
 	@Test
 	public void testCUpdateAlbum() {
@@ -135,9 +138,9 @@ public class AlbumManagerTest {
 		assertFalse(thrown);
 		assertTrue(("img/cover/sensaciones_sensenra.png").equalsIgnoreCase(insertedAlbum.getCover()));
 	}
-	
+
 	/**
-	 * Comprobación de que un álbum se elimina de la base de datos.
+	 * Checks the deletion of an album in the database.
 	 */
 	@Test
 	public void testDDeleteSong() {
