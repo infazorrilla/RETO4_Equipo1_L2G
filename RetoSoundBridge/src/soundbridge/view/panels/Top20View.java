@@ -332,24 +332,24 @@ public class Top20View extends JPanel {
 	private void playSelectedSong(Client client, JFrame frame) {
 
 		indexx = tableSongsTop20.getSelectedColumn();
+		int index = tableSongsTop20.getSelectedRow();
 		if (indexx == 0) {
 			if (null == controller)
 				controller = new Controller();
 
 			controller.addToFavourites(client, top20songs, tableSongsTop20);
-		}
-		if (indexx == 1 || indexx == 2 || indexx == 3 || indexx == 4) {
+		} else if (indexx >= 1 && indexx <= 4) {
 			if (isPlayerRunning)
 				this.stop();
-			int index = tableSongsTop20.getSelectedRow();
+			
 			Song song = top20songs.get(index);
 			this.play(song.getSource());
 			doInsertPlay(client, song);
 			panelPauseIcon.setVisible(true);
-		}
-		if (indexx == 6) {
+		} else if (indexx == 6) {
 			if (client instanceof ClientPP) {
-				goToAddSong(frame, client);
+				Song song = top20songs.get(index);
+				goToAddSong(frame, client,song);
 			}
 		}
 	}
@@ -444,10 +444,10 @@ public class Top20View extends JPanel {
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
 	 */
-	private void goToAddSong(JFrame frame, Client client) {
+	private void goToAddSong(JFrame frame, Client client,Song song) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
-				null, null, null));
+				null, song, null));
 		frame.revalidate();
 		frame.repaint();
 

@@ -120,7 +120,7 @@ public class PanelFactory {
 		case CREATE_PLAYLIST:
 			return new CreatePlaylist(frame, client);
 		case ADDSONGPLAYLIST:
-			return new AddSongPlaylist(frame, client);
+			return new AddSongPlaylist(frame, client,song);
 		case INSERT_SONG:
 			return new InsertSong(frame, employee);
 		default:

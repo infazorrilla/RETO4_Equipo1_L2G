@@ -236,7 +236,75 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		if (playlists != null) {
 			ret = new ArrayList<Playlist>();
 			for (Playlist playlist : playlists) {
-				if (playlist.getClientPP().getId() == client.getId()) {
+				if (playlist.getClientPP().getId() == client.getId() && playlist.getName().equalsIgnoreCase("Favoritos")) {
+
+					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
+					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
+
+					for (Contain contain : contains) {
+						if (playlist.getId() == contain.getPlaylist().getId()) {
+							for (Song song : songs) {
+								if (song.getId() == contain.getSong().getId()) {
+									contain.setSong(song);
+								}
+							}
+							playlistContains.add(contain);
+						}
+					}
+					playlist.setContains(playlistContains);
+					ret.add(playlist);
+				}
+			}
+		}
+
+		return ret;
+	}
+	public ArrayList<Playlist> selectPlaylistsOfClientPPById(Client client) throws SQLException, Exception {
+		ArrayList<Playlist> ret = null;
+		ArrayList<Playlist> playlists = (ArrayList<Playlist>) doSelectAll();
+		ArrayList<Contain> playlistContains = new ArrayList<Contain>();
+
+		ContainManager containManager = new ContainManager();
+		SongManager songManager = new SongManager();
+
+		if (playlists != null) {
+			ret = new ArrayList<Playlist>();
+			for (Playlist playlist : playlists) {
+				if (playlist.getClientPP().getId() == client.getId() && (!playlist.getName().equalsIgnoreCase("Favoritos"))) {
+
+					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
+					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
+
+					for (Contain contain : contains) {
+						if (playlist.getId() == contain.getPlaylist().getId()) {
+							for (Song song : songs) {
+								if (song.getId() == contain.getSong().getId()) {
+									contain.setSong(song);
+								}
+							}
+							playlistContains.add(contain);
+						}
+					}
+					playlist.setContains(playlistContains);
+					ret.add(playlist);
+				}
+			}
+		}
+
+		return ret;
+	}
+	public ArrayList<Playlist> selectPlaylistsOfClientPById(Client client) throws SQLException, Exception {
+		ArrayList<Playlist> ret = null;
+		ArrayList<Playlist> playlists = (ArrayList<Playlist>) doSelectAll();
+		ArrayList<Contain> playlistContains = new ArrayList<Contain>();
+
+		ContainManager containManager = new ContainManager();
+		SongManager songManager = new SongManager();
+
+		if (playlists != null) {
+			ret = new ArrayList<Playlist>();
+			for (Playlist playlist : playlists) {
+				if (playlist.getClientP().getId() == client.getId() && (!playlist.getName().equalsIgnoreCase("Favoritos"))) {
 
 					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
 					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
@@ -260,6 +328,7 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		return ret;
 	}
 
+
 	public ArrayList<Playlist> getPlaylistsOfClientPById(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
 		ArrayList<Playlist> playlists = (ArrayList<Playlist>) doSelectAll();
@@ -271,7 +340,7 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		if (playlists != null) {
 			ret = new ArrayList<Playlist>();
 			for (Playlist playlist : playlists) {
-				if (playlist.getClientP().getId() == client.getId()) {
+				if (playlist.getClientP().getId() == client.getId() && playlist.getName().equalsIgnoreCase("Favoritos")) {
 
 					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
 					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();

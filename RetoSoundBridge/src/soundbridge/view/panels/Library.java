@@ -173,7 +173,7 @@ public class Library extends JPanel {
 		lblFavorites.setForeground(Color.white);
 		lblFavorites.setBounds(230, 295, 115, 27);
 		add(lblFavorites);
-
+		
 		JPanel panelAddPlaylist = new JPanel();
 		panelAddPlaylist.addMouseListener(new MouseAdapter() {
 			@Override
@@ -190,6 +190,7 @@ public class Library extends JPanel {
 		panelAddPlaylist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelAddPlaylist.setToolTipText("Crear nueva lista de reproducción.");
 		panelAddPlaylist.setOpaque(false);
+
 
 		if (client instanceof ClientPP) {
 			panelAddPlaylist.setVisible(true);

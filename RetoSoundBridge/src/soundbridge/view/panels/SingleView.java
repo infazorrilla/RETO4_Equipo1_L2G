@@ -45,7 +45,7 @@ public class SingleView extends JPanel {
 	private boolean isPlayerRunning = false;
 	private JPanel panelPauseIcon;
 	private JTable tableSong;
-
+	private Controller controller;
 	/**
 	 * Initializes the panel.
 	 * 
@@ -290,7 +290,13 @@ public class SingleView extends JPanel {
 	private void playSelectedSong(Song song, Client client) {
 		if (isPlayerRunning)
 			this.stop();
+		int index = tableSong.getSelectedColumn();
+		if (index == 0) {
+			if (null == controller)
+				controller = new Controller();
 
+			controller.addToFavourites2(client, song, tableSong);
+		}
 		this.play(song.getSource());
 		doInsertPlay(client, song);
 		panelPauseIcon.setVisible(true);

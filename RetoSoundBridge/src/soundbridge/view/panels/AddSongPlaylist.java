@@ -14,14 +14,18 @@ import javax.swing.JFrame;
 
 import javax.swing.JPanel;
 
+import soundbridge.database.managers.ContainManager;
 import soundbridge.database.managers.PlaylistManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Playlist;
+import soundbridge.database.pojos.Song;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
 import javax.swing.JLabel;
+import java.awt.Font;
 
 /**
  * Panel where the client can see his playlists and choose in which one he wants
@@ -38,12 +42,12 @@ public class AddSongPlaylist extends JPanel {
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
 	 */
-	public AddSongPlaylist(JFrame frame, Client client) {
+	public AddSongPlaylist(JFrame frame, Client client,Song song) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
 
-		initialize(frame, client);
+		initialize(frame, client,song);
 	}
 
 	/**
@@ -53,7 +57,7 @@ public class AddSongPlaylist extends JPanel {
 	 * @param client logged client
 	 */
 
-	public void initialize(JFrame frame, Client client) {
+	public void initialize(JFrame frame, Client client,Song song) {
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setBounds(252, 65, 91, 14);
@@ -88,13 +92,19 @@ public class AddSongPlaylist extends JPanel {
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
 
 		panelGridAddSong = new JPanel();
-		panelGridAddSong.setBounds(90, 386, 920, 115);
+		panelGridAddSong.setBounds(90, 250, 920, 115);
 		add(panelGridAddSong);
 		panelGridAddSong.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridAddSong.setOpaque(false);
+		
+		JLabel lblNewLabel_2 = new JLabel("Elije a que playlist añadirla");
+		lblNewLabel_2.setForeground(new Color(255, 255, 255));
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblNewLabel_2.setBounds(163, 45, 323, 34);
+		add(lblNewLabel_2);
 
 		try {
-			addImagesToAlbums(frame, client);
+			addImagesToAlbums(frame, client,song);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -170,7 +180,7 @@ public class AddSongPlaylist extends JPanel {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	private void addImagesToAlbums(JFrame frame, Client client) throws SQLException, Exception {
+	private void addImagesToAlbums(JFrame frame, Client client,Song song) throws SQLException, Exception {
 
 		if (client instanceof ClientPP)
 			playlists = getPlaylistsOfClientPP(client);
@@ -193,7 +203,7 @@ public class AddSongPlaylist extends JPanel {
 					// ArrayList<Song> songsOfAlbum = getSongsOfAlbum(playlist, artist);
 					// playlist.setSongs(songsOfAlbum);
 
-					createPlaylistPanelListener(frame, panelAlbum, client, playlist);
+					createPlaylistPanelListener(frame, panelAlbum, client, playlist,song);
 
 				} else {
 					JPanel panelToFitGrid = createPanelToFitGrid();
@@ -212,17 +222,26 @@ public class AddSongPlaylist extends JPanel {
 	 * @param client   logged client
 	 * @param playlist playlist the choosen playlist
 	 */
-	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlist) {
+	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlistt,Song songg) {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null,
-						null, null, null, playlist));
-				frame.revalidate();
-				frame.repaint();
+				ContainManager contMan = new ContainManager();
+				Contain contain = new Contain();
+				Playlist playlist= new Playlist();
+				Song song = new Song();
+				song.setId(songg.getId());
+				playlist.setId(playlistt.getId());
+				contain.setPlaylist(playlist);
+				contain.setSong(song);
+				try {
+					contMan.insert(contain);
+					WindowUtils.messagePaneWithIcon(TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 	}
-
 }
