@@ -2,7 +2,6 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 
-
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -36,6 +35,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.GridLayout;
 
+/**
+ * Panel that contains a menu with the top 20 most listened songs and the
+ * favorite songs of the client, also the possibility to go to the profile panel
+ * and the search bar to search for any artist or group.
+ */
 public class Library extends JPanel {
 
 	private static final long serialVersionUID = -2776809426213236020L;
@@ -43,10 +47,22 @@ public class Library extends JPanel {
 	private JPanel panelGridPlaylist;
 	private ArrayList<Playlist> playlists = null;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	public Library(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	private void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -180,7 +196,7 @@ public class Library extends JPanel {
 		if (client instanceof ClientPP) {
 			panelImagePlus.setVisible(true);
 		}
-		
+
 		if (client instanceof ClientP) {
 			panelImagePlus.setVisible(false);
 		}
@@ -211,7 +227,6 @@ public class Library extends JPanel {
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
 
-	
 		try {
 			addImagesToAlbums(frame, client);
 		} catch (Exception e1) {
@@ -221,6 +236,11 @@ public class Library extends JPanel {
 
 	}
 
+	/**
+	 * Autocomplete the text field of the artists and groups.
+	 * 
+	 * @param text the written text
+	 */
 	private void doAddPossibilitiesToSearchBar(AutoCompleteTextField text) {
 		if (null == controller)
 			controller = new Controller();
@@ -234,6 +254,13 @@ public class Library extends JPanel {
 		}
 	}
 
+	/**
+	 * Set the playlist of favorites visible if the client is able to have it.
+	 * 
+	 * @param client     logged client
+	 * @param favourites panel of the favorite songs playlist
+	 * @param favLbl     label of the favorite songs playlist
+	 */
 	private void showFavourites(Client client, JPanel favourites, JLabel favLbl) {
 		if (client instanceof ClientPP || client instanceof ClientP) {
 			favourites.setVisible(true);
@@ -241,6 +268,12 @@ public class Library extends JPanel {
 		}
 	}
 
+	/**
+	 * Get the artist using what the client had written in the search bar.
+	 * 
+	 * @param search what the client had written in the search bar
+	 * @return the artist that the client want
+	 */
 	private Artist doSearchedArtist(String search) {
 		if (null == controller)
 			controller = new Controller();
@@ -257,6 +290,12 @@ public class Library extends JPanel {
 		return artist;
 	}
 
+	/**
+	 * Get the group using what the client had written in the search bar.
+	 * 
+	 * @param search what the client had written in the search bar
+	 * @return the group that the client want
+	 */
 	private ArtGroup doSearchedGroup(String search) {
 		if (null == controller)
 			controller = new Controller();
@@ -273,6 +312,15 @@ public class Library extends JPanel {
 		return group;
 	}
 
+	/**
+	 * Using the information of "doSearchedArtist" and "doSearchedGroup" takes the
+	 * client to the profile of the artist or group searched or show an error
+	 * message.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 * @param search what the client had written in the search bar
+	 */
 	private void executeSearch(JFrame frame, Client client, String search) {
 		Artist searchedArtist = doSearchedArtist(search);
 		ArtGroup searchedArtGroup = doSearchedGroup(search);
@@ -285,6 +333,13 @@ public class Library extends JPanel {
 			WindowUtils.messagePaneWithIcon("No hay resultados.", "Sin resultados", "img/icon/no_results.png");
 	}
 
+	/**
+	 * Takes the client to the artist profile.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 * @param artist artist whose album is displayed if it is not null
+	 */
 	private void goToArtistProfile(JFrame frame, Client client, Artist artist) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ARTIST_PROFILE, frame, client, null, artist,
@@ -293,6 +348,13 @@ public class Library extends JPanel {
 		frame.repaint();
 	}
 
+	/**
+	 * Takes the client art group's profile.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param artGroup art group whose album is displayed if it is not null
+	 */
 	private void goToGroupProfile(JFrame frame, Client client, ArtGroup artGroup) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.GROUP_PROFILE, frame, client, null, null,
@@ -301,6 +363,12 @@ public class Library extends JPanel {
 		frame.repaint();
 	}
 
+	/**
+	 * Takes the client to favorite songs playlist.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	private void goToFvourites(JFrame frame, Client client) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.FAVOURITE_SONGS, frame, client, null, null, null,
@@ -310,6 +378,14 @@ public class Library extends JPanel {
 
 	}
 
+	/**
+	 * Gets all the playlists of a client premium plus.
+	 * 
+	 * @param client logged client
+	 * @return list with all the client's playlists
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private ArrayList<Playlist> getPlaylistsOfClientPP(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
 
@@ -317,6 +393,11 @@ public class Library extends JPanel {
 
 	}
 
+	/**
+	 * Creates a panel that is meant to be added to the grid.
+	 * 
+	 * @return
+	 */
 	private JPanel createPanel() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 115, 115);
@@ -327,6 +408,13 @@ public class Library extends JPanel {
 		return panel;
 	}
 
+	/**
+	 * Creates a label that is meant be added to the specified panel. An image will
+	 * be printed on it.
+	 * 
+	 * @param panel panel where the label is placed
+	 * @return the label that is placed in the panel
+	 */
 	private JLabel createLabel(JPanel panel) {
 		JLabel label = new JLabel("");
 		panel.add(label, BorderLayout.CENTER);
@@ -334,6 +422,11 @@ public class Library extends JPanel {
 
 	}
 
+	/**
+	 * Creates a panel to fit the grid dimensions, but it is not shown.
+	 * 
+	 * @return the created panel
+	 */
 	private JPanel createPanelToFitGrid() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 115, 115);
@@ -342,6 +435,14 @@ public class Library extends JPanel {
 		return panel;
 	}
 
+	/**
+	 * Creates a maximum of 6 panels that correspond to the playlist of the client.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	private void addImagesToAlbums(JFrame frame, Client client) throws SQLException, Exception {
 
 		if (client instanceof ClientPP)
@@ -374,7 +475,16 @@ public class Library extends JPanel {
 			}
 		}
 	}
-	
+
+	/**
+	 * Creates a listener for the panel. When it is clicked it takes the client to
+	 * the playlist panel.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param panel    panel to which the listener is being created
+	 * @param client   logged client
+	 * @param playlist playlist the choosen playlist
+	 */
 	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlist) {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override

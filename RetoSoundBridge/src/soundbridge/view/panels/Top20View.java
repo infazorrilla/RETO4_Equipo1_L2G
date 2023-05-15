@@ -2,7 +2,6 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -38,16 +37,21 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
 import java.awt.Font;
-import java.awt.Frame;
 import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Panel that contains a top of the 20 most eared songs, which is always
+ * updated.
+ * 
+ *
+ */
 public class Top20View extends JPanel {
 	private ArrayList<Song> top20songs;
-	
+
 	public JTable tableSongsTop20;
 	private DefaultTableModel modelTop20Songs = null;
 	private boolean isPlayerRunning = false;
@@ -55,12 +59,20 @@ public class Top20View extends JPanel {
 	private JPanel panelPauseIcon;
 	private Controller controller;
 	private int indexx = 0;
+
 	public Top20View(JFrame frame, Client client) {
 		initialize(frame, client);
 	}
 
 	private static final long serialVersionUID = -5073547141433278673L;
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 * 
+	 */
 	public void initialize(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
@@ -155,7 +167,7 @@ public class Top20View extends JPanel {
 		tableSongsTop20.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(client,frame);
+				playSelectedSong(client, frame);
 			}
 		});
 		tableSongsTop20.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -221,8 +233,8 @@ public class Top20View extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				stop();
 				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
+						null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -237,6 +249,11 @@ public class Top20View extends JPanel {
 		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause_black.png");
 	}
 
+	/**
+	 * Takes the most eared 20 songs of the data base and show it on a table.
+	 * 
+	 * @param model the model of the table
+	 */
 	private void addSongsToTable(DefaultTableModel model) {
 
 		if (null == controller)
@@ -290,6 +307,11 @@ public class Top20View extends JPanel {
 		}
 	}
 
+	/**
+	 * The amount of columns and each width.
+	 * 
+	 * @param table table which is adjusted
+	 */
 	private void adjustColumnsWidth(JTable table) {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -300,14 +322,21 @@ public class Top20View extends JPanel {
 		table.getColumnModel().getColumn(5).setMinWidth(160);
 	}
 
-	private void playSelectedSong(Client client,JFrame frame) {
+	/**
+	 * Reproduce the selected song using the index of the table.
+	 * 
+	 * @param client the client that had done the log in
+	 * @param frame  frame where the panel is added
+	 */
+
+	private void playSelectedSong(Client client, JFrame frame) {
 
 		indexx = tableSongsTop20.getSelectedColumn();
 		if (indexx == 0) {
 			if (null == controller)
 				controller = new Controller();
-			
-			controller.addToFavourites(client,top20songs,tableSongsTop20);
+
+			controller.addToFavourites(client, top20songs, tableSongsTop20);
 		}
 		if (indexx == 1 || indexx == 2 || indexx == 3 || indexx == 4) {
 			if (isPlayerRunning)
@@ -319,14 +348,15 @@ public class Top20View extends JPanel {
 			panelPauseIcon.setVisible(true);
 		}
 		if (indexx == 6) {
-			if(client instanceof ClientPP) {
-			goToAddSong(frame,client);
+			if (client instanceof ClientPP) {
+				goToAddSong(frame, client);
 			}
 		}
 	}
 
-	
-
+	/**
+	 * Stops the music.
+	 */
 	private void stopMusic() {
 		if (isPlayerRunning)
 			this.stop();
@@ -334,6 +364,12 @@ public class Top20View extends JPanel {
 		tableSongsTop20.getSelectionModel().clearSelection();
 	}
 
+	/**
+	 * Insert on the date base when a song plays.
+	 * 
+	 * @param client logged client
+	 * @param song   song that is being played.
+	 */
 	private void doInsertPlay(Client client, Song song) {
 		if (null == controller)
 			controller = new Controller();
@@ -351,6 +387,11 @@ public class Top20View extends JPanel {
 
 	}
 
+	/**
+	 * Plays the music.
+	 * 
+	 * @param path path of the song to play
+	 */
 	private void play(String path) {
 		new Thread() {
 			@Override
@@ -368,6 +409,9 @@ public class Top20View extends JPanel {
 		isPlayerRunning = true;
 	}
 
+	/**
+	 * Stops the song.
+	 */
 	public void stop() {
 		if (player != null) {
 			player.close();
@@ -376,21 +420,37 @@ public class Top20View extends JPanel {
 		isPlayerRunning = false;
 	}
 
+	/**
+	 * Gets the table of the songs.
+	 * 
+	 * @return the table of the top 20
+	 */
 	public JTable getTableSongsTop20() {
 		return tableSongsTop20;
 	}
 
+	/**
+	 * Sets the table.
+	 * 
+	 * @param recives a table to set
+	 */
 	public void setTableSongsTop20(JTable tableSongsTop20) {
 		this.tableSongsTop20 = tableSongsTop20;
 	}
-	private void goToAddSong(JFrame frame,Client client) {
+
+	/**
+	 * Goes to an other panel to add song to a playlist.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToAddSong(JFrame frame, Client client) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
+				null, null, null));
 		frame.revalidate();
 		frame.repaint();
-		
+
 	}
-	
 
 }
