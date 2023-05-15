@@ -127,7 +127,7 @@ public class EmployeeMenu extends JPanel {
 			}
 		});
 
-		JLabel lblSongsIcon = new JLabel("New label");
+		JLabel lblSongsIcon = new JLabel("");
 		panelSongs.add(lblSongsIcon, BorderLayout.CENTER);
 
 		JLabel lblSongs = new JLabel("Canciones");

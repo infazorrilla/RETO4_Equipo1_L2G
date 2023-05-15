@@ -487,6 +487,7 @@ public class AlbumView extends JPanel {
 	 * @param artGroup art group whose album is displayed if it is not null
 	 */
 	private void goToReviews(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+		this.stop();
 		if (lblStars.getText().equals("0.0")) {
 			WindowUtils.errorPane("No hay valoraciones.", "Error");
 		} else {
@@ -517,6 +518,7 @@ public class AlbumView extends JPanel {
 	 * @param artGroup art group whose album is displayed if it is not null
 	 */
 	private void goToWriteReview(JFrame frame, Client client, Album album, Artist artist, ArtGroup artGroup) {
+		this.stop();
 		if (artist != null) {
 			frame.getContentPane().removeAll();
 			frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.WRITE_REVIEW, frame, client, null, artist,
