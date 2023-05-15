@@ -2,10 +2,6 @@ package soundbridge.testing.sprint1;
 
 import static org.junit.Assert.*;
 
-
-
-
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -20,19 +16,18 @@ import soundbridge.database.managers.ClientPPManager;
 
 import soundbridge.database.pojos.ClientPP;
 
-
 /**
- * Comprueba los métodos de la clase ClientManager. Se especifica un orden
- * para el correcto funcionamiento de las pruebas.
+ * Check the methods of the ClientPPManager class. An order is specified for the
+ * correct functioning of the tests.
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClientPPManagerTest {
-	
+
 	private static ClientPPManager clientppManager = null;
 
 	/**
-	 * Preparación de la clase.
+	 * Class preparation
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -40,7 +35,7 @@ public class ClientPPManagerTest {
 	}
 
 	/**
-	 * Comprobación de que un cliente se inserta en la base de datos.
+	 * Checks the insert of an clientPP into the database.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
@@ -74,6 +69,10 @@ public class ClientPPManagerTest {
 
 		assertFalse(thrown);
 	}
+	/**
+	 * Checks the loading of clientsPP into an ArrayList and the inclusion of the
+	 * previously inserted client.
+	 */
 	@Test
 	public void testBSelectAllClientPPs() {
 		boolean thrown = false;
@@ -101,6 +100,9 @@ public class ClientPPManagerTest {
 		assertFalse(thrown);
 		assertTrue(isInserted);
 	}
+	/**
+	 * Checks the deletion of an clientPP in the database.
+	 */
 	@Test
 	public void testDDeleteClientPP() {
 		boolean thrown = false;
@@ -143,7 +145,9 @@ public class ClientPPManagerTest {
 		assertFalse(thrown);
 		assertTrue(isDeleted);
 	}
-	
+	/**
+	 * Checks the update of an clientPP in the database.
+	 */
 	@Test
 	public void testCUpdateClientPP() {
 		boolean thrown = false;

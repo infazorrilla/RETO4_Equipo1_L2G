@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 /**
  * Pnale to create a playlist for a client. Here the client is able to choose
@@ -54,23 +55,25 @@ public class CreatePlaylist extends JPanel {
 		setLayout(null);
 		setBackground(Color.black);
 
-		JLabel lblNewLabel = new JLabel("Nombre");
+		JLabel lblNewLabel = new JLabel("Nombre de la playlist a crear");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setBounds(51, 87, 46, 14);
+		lblNewLabel.setBounds(265, 114, 411, 31);
 		add(lblNewLabel);
 
 		textField = new JTextField();
-		textField.setBounds(51, 122, 86, 20);
+		textField.setBounds(265, 177, 411, 31);
 		add(textField);
 		textField.setColumns(10);
 
-		JLabel lblNewLabel_1 = new JLabel("Descripcion");
+		JLabel lblNewLabel_1 = new JLabel("Descripción de la playlist a crear");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(51, 172, 86, 14);
+		lblNewLabel_1.setBounds(265, 284, 437, 26);
 		add(lblNewLabel_1);
 
 		textField_1 = new JTextField();
-		textField_1.setBounds(51, 209, 86, 20);
+		textField_1.setBounds(265, 352, 411, 50);
 		add(textField_1);
 		textField_1.setColumns(10);
 
@@ -96,7 +99,7 @@ public class CreatePlaylist extends JPanel {
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-		JButton btnEnviarCrearPlaylist = new JButton("New button");
+		JButton btnEnviarCrearPlaylist = new JButton("CREAR PLAYLIST");
 
 		btnEnviarCrearPlaylist.addActionListener(new ActionListener() {
 			Playlist playlist = new Playlist();
@@ -125,7 +128,7 @@ public class CreatePlaylist extends JPanel {
 				frame.repaint();
 			}
 		});
-		btnEnviarCrearPlaylist.setBounds(48, 256, 89, 23);
+		btnEnviarCrearPlaylist.setBounds(404, 481, 133, 41);
 		add(btnEnviarCrearPlaylist);
 	}
 
