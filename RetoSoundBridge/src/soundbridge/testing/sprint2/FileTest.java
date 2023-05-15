@@ -16,18 +16,28 @@ import soundbridge.database.pojos.Client;
  */
 public class FileTest {
 	ArrayList<Client> allClients = null;
-	final String RUTA_FICHERO = "C:\\Users\\in1dw3\\git\\RETO4_Equipo1_L2G1\\RetoSoundBridge\\src\\soundbridge\\testing\\sprint2\\";
-	final String RUTA_FICHERO_LEER = "C:\\Users\\in1dw3\\git\\RETO4_Equipo1_L2G1\\RetoSoundBridge\\src\\soundbridge\\testing\\sprint2\\Ticket.txt";
+	final String FILE_PATH = "C:\\Users\\in1dw3\\git\\RETO4_Equipo1_L2G1\\RetoSoundBridge\\src\\soundbridge\\testing\\sprint2\\";
+	final String FILE_PATH_COMPLETE = "C:\\Users\\in1dw3\\git\\RETO4_Equipo1_L2G1\\RetoSoundBridge\\src\\soundbridge\\testing\\sprint2\\LOG.txt";
 
 	@Test
 	public void test() {
 		boolean correct = false;
 		FileManager fileManager = new FileManager();
 		ClientManager clientManager = new ClientManager();
-		fileManager.crearTicket(RUTA_FICHERO);
 		try {
 			allClients = (ArrayList<Client>) clientManager.doSelectAll();
-			String linea = fileManager.read(RUTA_FICHERO_LEER);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		fileManager.write(FILE_PATH, "LOG.txt", allClients.toString());
+		try {
+			allClients = (ArrayList<Client>) clientManager.doSelectAll();
+			String linea = fileManager.read(FILE_PATH_COMPLETE);
 			if (allClients.toString().equals(linea)) {
 				correct = true;
 			}

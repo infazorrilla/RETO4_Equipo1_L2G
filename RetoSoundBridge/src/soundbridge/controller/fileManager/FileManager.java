@@ -6,25 +6,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
-import soundbridge.database.managers.ClientManager;
-import soundbridge.database.pojos.Client;
-
+/**
+ * 
+ */
 public class FileManager {
 
-	ArrayList<Client> allClients = null;
-
-	public void crearTicket(String RUTA_FICHERO) {
-
-		final String NOMBRE_FICHERO = "Ticket.txt";
-
-		File fichero = new File(RUTA_FICHERO + NOMBRE_FICHERO);
+	public void write(String path, String name, String text) {
+		File file = new File(path + name);
 
 		try {
 
-			if (fichero.createNewFile())
+			if (file.createNewFile())
 				System.out.println("El fichero se ha creado correctamente");
 			else
 				System.out.println("No ha podido ser creado el fichero");
@@ -37,24 +30,13 @@ public class FileManager {
 
 		try {
 
-			fileWriter = new FileWriter(RUTA_FICHERO + NOMBRE_FICHERO);
+			fileWriter = new FileWriter(path + name);
 
 			printWriter = new PrintWriter(fileWriter);
-			ClientManager clientManager = new ClientManager();
-			try {
-				allClients = (ArrayList<Client>) clientManager.doSelectAll();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			String texto = allClients.toString();
-			printWriter.println(texto);
+			printWriter.println(text);
 
 		} catch (IOException e) {
-			System.out.println("IOException - Error de escritura en el fichero " + RUTA_FICHERO + NOMBRE_FICHERO);
+			System.out.println("IOException - Error de escritura en el fichero " + path + name);
 		} finally {
 			printWriter.close();
 			try {
@@ -66,18 +48,18 @@ public class FileManager {
 		}
 	}
 
-	public String read(String RUTA_FICHERO) throws IOException {
-		File archivo = null;
+	public String read(String path) throws IOException {
+		File file = null;
 		FileReader fr = null;
 		BufferedReader br = null;
-		String linea = null;
+		String line = null;
 		try {
 
-			archivo = new File(RUTA_FICHERO);
-			fr = new FileReader(archivo);
+			file = new File(path);
+			fr = new FileReader(file);
 			br = new BufferedReader(fr);
 
-			linea = br.readLine();
+			line = br.readLine();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,7 +72,7 @@ public class FileManager {
 				e2.printStackTrace();
 			}
 		}
-		return linea;
+		return line;
 	}
 
 }

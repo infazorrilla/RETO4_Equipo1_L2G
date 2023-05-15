@@ -3,6 +3,9 @@ package soundbridge.database.pojos;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes a Premium Client of the database.
+ */
 public class ClientP extends Client {
 
 	private static final long serialVersionUID = 4111478646411618913L;

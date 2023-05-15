@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Describes a client of the database.
+ */
 public class Client extends Person implements Serializable {
 
 	private static final long serialVersionUID = -2513971403121032275L;

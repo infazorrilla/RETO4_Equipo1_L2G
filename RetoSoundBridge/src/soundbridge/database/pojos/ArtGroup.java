@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Describes an art group of the database.
+ */
 public class ArtGroup implements Serializable {
 
 	private static final long serialVersionUID = 4045356093574099733L;

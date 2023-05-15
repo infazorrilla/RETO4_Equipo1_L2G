@@ -3,6 +3,9 @@ package soundbridge.database.pojos;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Describes the contain table of the database.
+ */
 public class Contain implements Serializable {
 
 	private static final long serialVersionUID = 2875787677995476551L;
