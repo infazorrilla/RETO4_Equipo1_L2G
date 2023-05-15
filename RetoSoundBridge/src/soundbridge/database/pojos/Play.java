@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes the play table of the database.
+ */
 public class Play implements Serializable {
 
 	private static final long serialVersionUID = 3973834720207596222L;

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes a song of the database.
+ */
 public class Song implements Serializable {
 
 	private static final long serialVersionUID = 4944962431162757875L;

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes a playlist of the database.
+ */
 public class Playlist implements Serializable {
 
 	private static final long serialVersionUID = 4521317969846887938L;

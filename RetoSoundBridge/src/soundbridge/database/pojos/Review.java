@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes a review of the database.
+ */
 public class Review implements Serializable {
 
 	private static final long serialVersionUID = 8061478950534136455L;
