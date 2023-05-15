@@ -15,8 +15,20 @@ import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Client table on database.
+ */
 public class ClientManager extends ManagerAbstract<Client> {
 
+	/**
+	 * Returns all instances of clients in database or null if there are not
+	 * artists.
+	 * 
+	 * @return list of clients or null
+	 * @throws SQLException if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception if there is a generic error
+	 */
 	@Override
 	public List<Client> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Client> ret = (ArrayList<Client>) doSelectAll();
@@ -28,6 +40,14 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of clients in database or null if there are not
+	 * artists.
+	 * 
+	 * @return list of clients or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception if there is a generic error
+	 */
 	public List<Client> doSelectAll() throws SQLException, Exception {
 		ArrayList<Client> ret = null;
 		String sql = "SELECT * FROM Client";

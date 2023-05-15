@@ -14,8 +14,20 @@ import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Artist table on database.
+ */
 public class ArtistManager extends ManagerAbstract<Artist> {
 
+	/**
+	 * Returns all instances of artists in database or null if there are not
+	 * artists. Throws the NotFoundException.
+	 * 
+	 * @return list of artists or null
+	 * @throws SQLException if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception if there is a generic error
+	 */
 	@Override
 	public List<Artist> selectAll() throws SQLException, NotFoundException, Exception {
 
@@ -28,6 +40,13 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 		return ret;
 	}
 
+	/**
+	 * Selects all artists of the database.
+	 * 
+	 * @return list of all the artists
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	public List<Artist> doSelectAll() throws SQLException, Exception {
 		ArrayList<Artist> ret = null;
 		String sql = "SELECT * FROM Artist";
@@ -61,7 +80,7 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 				String description = resultSet.getString("description");
 				String image = resultSet.getString("image");
 				String role = resultSet.getString("role");
-				
+
 				java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
 				java.util.Date birthDate = null;
 				if (null != sqlBirthDate) {
@@ -77,7 +96,7 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 				artist.setDescription(description);
 				artist.setImage(image);
 				artist.setRole(role);
-				
+
 				if (idGroup != 0) {
 					artist.setArtGroup(new ArtGroup());
 					artist.getArtGroup().setId(idGroup);
@@ -116,6 +135,13 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an artist into the database.
+	 * 
+	 * @param artist artist to be inserted
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	@Override
 	public void insert(Artist artist) throws SQLException, Exception {
 		Connection connection = null;
@@ -153,6 +179,13 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 	}
 
+	/**
+	 * Updates an artist by id in the database.
+	 * 
+	 * @param artist artist to be updated
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	@Override
 	public void update(Artist artist) throws SQLException, Exception {
 		Connection connection = null;
@@ -196,6 +229,13 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 	}
 
+	/**
+	 * Deletes an artist from the database.
+	 * 
+	 * @param artist artist to be deleted
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	@Override
 	public void delete(Artist artist) throws SQLException, Exception {
 		Connection connection = null;
@@ -233,6 +273,14 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 	}
 
+	/**
+	 * Selects an artist by the name.
+	 * 
+	 * @param nameOfArtist given name of the artist
+	 * @return artist with the given name
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	public Artist getArtistByName(String nameOfArtist) throws SQLException, Exception {
 		Artist ret = null;
 
@@ -249,6 +297,15 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 		return ret;
 	}
+
+	/**
+	 * Selects an artist by id.
+	 * 
+	 * @param id given id for the artist
+	 * @return artist with the given id
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	public Artist selectArtistById(int id) throws SQLException, Exception {
 		Artist ret = null;
 		String sql = "SELECT * FROM Artist where id=?";
@@ -283,7 +340,7 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 				String description = resultSet.getString("description");
 				String image = resultSet.getString("image");
 				String role = resultSet.getString("role");
-				
+
 				java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
 				java.util.Date birthDate = null;
 				if (null != sqlBirthDate) {
@@ -300,8 +357,6 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 				artist.setDescription(description);
 				artist.setImage(image);
 				artist.setRole(role);
-				
-				
 
 				ret = artist;
 			}
@@ -335,8 +390,5 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 		return ret;
 	}
-	
-	
-
 
 }

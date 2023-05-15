@@ -13,8 +13,19 @@ import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the ArtGroup table on database.
+ */
 public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
+	/**
+	 * Selects all art groups of the database and throws the NotFoundException.
+	 * 
+	 * @return list of all the art groups
+	 * @throws SQLException
+	 * @throws NotFoundException
+	 * @throws Exception
+	 */
 	@Override
 	public List<ArtGroup> selectAll() throws SQLException, NotFoundException, Exception {
 
@@ -27,6 +38,13 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 		return ret;
 	}
 
+	/**
+	 * Selects all art groups of the database.
+	 * 
+	 * @return list of all the art groups
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	public List<ArtGroup> doSelectAll() throws SQLException, Exception {
 		ArrayList<ArtGroup> ret = null;
 		String sql = "SELECT * FROM ArtGroup";
@@ -94,6 +112,13 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an art group into the database.
+	 * 
+	 * @param artGroup art group to be inserted
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	@Override
 	public void insert(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
@@ -130,6 +155,13 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 	}
 
+	/**
+	 * Updates an art group by id in the database.
+	 * 
+	 * @param artGroup art group to be updated
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	@Override
 	public void update(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
@@ -172,6 +204,13 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 	}
 
+	/**
+	 * Deletes an art group from the database.
+	 * 
+	 * @param artGroup art group to be deleted
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	@Override
 	public void delete(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
@@ -208,7 +247,15 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 		}
 
 	}
-	
+
+	/**
+	 * Selects an art group by the name.
+	 * 
+	 * @param nameOfGroup name of the art group
+	 * @return art group with the given name
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	public ArtGroup getArtGroupByName(String nameOfGroup) throws SQLException, Exception {
 		ArtGroup ret = null;
 
@@ -225,7 +272,15 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 		return ret;
 	}
-	
+
+	/**
+	 * Selects an art group by id.
+	 * 
+	 * @param id given id of the art group
+	 * @return art group with the given id
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	public ArtGroup selectGroupById(int id) throws SQLException, Exception {
 		ArtGroup ret = null;
 		String sql = "SELECT * FROM ArtGroup where id=?";
@@ -234,7 +289,6 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
-
 
 		try {
 			Class.forName(DBUtils.DRIVER);
@@ -262,7 +316,7 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 				artGroup.setDescription(description);
 				artGroup.setImage(image);
 
-				ret=(artGroup);
+				ret = (artGroup);
 			}
 		} catch (SQLException sqle) {
 			throw sqle;

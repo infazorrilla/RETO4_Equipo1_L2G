@@ -8,10 +8,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 
+ * Manages the creation of files. Also manages how to write and read files.
  */
 public class FileManager {
 
+	/**
+	 * Creates a file of the given name in the given path with the text written
+	 * inside.
+	 * 
+	 * @param path given path of the file
+	 * @param name given name of the file
+	 * @param text text to write inside the file
+	 */
 	public void write(String path, String name, String text) {
 		File file = new File(path + name);
 
@@ -48,6 +56,13 @@ public class FileManager {
 		}
 	}
 
+	/**
+	 * Reads the file of the given path.
+	 * 
+	 * @param path given path of the file
+	 * @return text written inside the file
+	 * @throws IOException
+	 */
 	public String read(String path) throws IOException {
 		File file = null;
 		FileReader fr = null;

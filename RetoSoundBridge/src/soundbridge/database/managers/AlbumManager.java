@@ -15,7 +15,20 @@ import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Album table on database.
+ */
 public class AlbumManager extends ManagerAbstract<Album> {
+
+	/**
+	 * Returns all instances of albums in database or null if there are not albums.
+	 * 
+	 * @return list of albums or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
+	@Override
 	public List<Album> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Album> ret = (ArrayList<Album>) doSelectAll();
 		if (null == ret) {
@@ -24,6 +37,13 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of albums in database or null if there are not albums.
+	 * 
+	 * @return list of albums or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Album> doSelectAll() throws SQLException, Exception {
 		ArrayList<Album> ret = null;
 		String sql = "SELECT * FROM Album";
@@ -78,6 +98,13 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance album into database.
+	 * 
+	 * @param album album to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Album album) throws SQLException, Exception {
 		Connection connection = null;
@@ -85,8 +112,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		try {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "INSERT INTO Album (name, releaseYear, cover) "
-					+ "VALUES (?, ?, ?)";
+			String sql = "INSERT INTO Album (name, releaseYear, cover) " + "VALUES (?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -116,6 +142,13 @@ public class AlbumManager extends ManagerAbstract<Album> {
 
 	}
 
+	/**
+	 * Updates an instance of album on database by id.
+	 * 
+	 * @param album album to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Album album) throws SQLException, Exception {
 
@@ -153,6 +186,13 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		}
 	}
 
+	/**
+	 * Deletes an instance of album from database by id.
+	 * 
+	 * @param album album to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Album album) throws SQLException, Exception {
 
@@ -184,7 +224,15 @@ public class AlbumManager extends ManagerAbstract<Album> {
 			;
 		}
 	}
-	
+
+	/**
+	 * Returns all instances of albums of an artist.
+	 * 
+	 * @param artist owner of albums
+	 * @return list of albums belonging to the artist
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Album> albumsByArtist(Artist artist) throws SQLException, Exception {
 		ArrayList<Album> ret = null;
 		Connection connection = null;
@@ -193,13 +241,12 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			
+
 			String sql = "SELECT DISTINCT A.* FROM Album A JOIN Song S ON A.id = S.idAlbum WHERE S.idArtist = ?";
-			
+
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, artist.getId());
 			resultSet = preparedStatement.executeQuery();
-
 
 			while (resultSet.next()) {
 				if (null == ret)
@@ -216,7 +263,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 				album.setCover(cover);
 				album.setReleaseYear(releaseYear);
 				ret.add(album);
-				
+
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -244,7 +291,15 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		}
 		return ret;
 	}
-	
+
+	/**
+	 * Returns all instances of albums of an art group.
+	 * 
+	 * @param artGroup owner of albums
+	 * @return list of albums belonging to the art group
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Album> albumsByArtGroup(ArtGroup artGroup) throws SQLException, Exception {
 		ArrayList<Album> ret = null;
 		Connection connection = null;
@@ -253,13 +308,12 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			
+
 			String sql = "SELECT DISTINCT A.* FROM Album A JOIN Song S ON A.id = S.idAlbum WHERE S.idGroup = ?";
-			
+
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, artGroup.getId());
 			resultSet = preparedStatement.executeQuery();
-
 
 			while (resultSet.next()) {
 				if (null == ret)
@@ -276,7 +330,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 				album.setCover(cover);
 				album.setReleaseYear(releaseYear);
 				ret.add(album);
-				
+
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
@@ -304,7 +358,15 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		}
 		return ret;
 	}
-	
+
+	/**
+	 * Returns the instance of an album by id.
+	 * 
+	 * @param idAlbum id of album
+	 * @return album with the given id
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Album albumById(int idAlbum) throws SQLException, Exception {
 		Album ret = null;
 		Connection connection = null;
@@ -313,18 +375,17 @@ public class AlbumManager extends ManagerAbstract<Album> {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			
+
 			String sql = "SELECT * FROM Album WHERE id = ?";
-			
+
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, idAlbum);
 			resultSet = preparedStatement.executeQuery();
 
-
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new Album();
-				
+
 				int id = resultSet.getInt("id");
 				String name = resultSet.getString("name");
 				String cover = resultSet.getString("cover");
@@ -335,7 +396,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 				ret.setName(name);
 				ret.setCover(cover);
 				ret.setReleaseYear(releaseYear);
-				
+
 			}
 		} catch (SQLException sqle) {
 			throw sqle;
