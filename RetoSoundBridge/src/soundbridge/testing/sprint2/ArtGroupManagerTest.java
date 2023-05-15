@@ -17,8 +17,8 @@ import soundbridge.database.managers.ArtGroupManager;
 import soundbridge.database.pojos.ArtGroup;
 
 /**
- * Comprueba los métodos de la clase SongManager. Se especifica un orden para el
- * correcto funcionamiento de las pruebas.
+ * Check the methods of the ArtGroupManager class. An order is specified for the
+ * correct functioning of the tests.
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -27,7 +27,7 @@ public class ArtGroupManagerTest {
 	private static ArtGroupManager artgroupmanager = null;
 
 	/**
-	 * Preparación de la clase.
+	 * Class preparation.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -35,7 +35,7 @@ public class ArtGroupManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una canción se inserta en la base de datos.
+	 * Checks the insert of an art group into the database.
 	 */
 	@Test
 	public void testAInsertArtGroup() {
@@ -60,8 +60,8 @@ public class ArtGroupManagerTest {
 	}
 
 	/**
-	 * Comprobación de que las canciones se cargan correctamente en un ArrayList y
-	 * que la canción anteriormente insertada está incluida.
+	 * Checks the loading of art group into an ArrayList and the inclusion of the
+	 * previously inserted album.
 	 */
 	@Test
 	public void testBSelectAllArtGroups() {
@@ -95,7 +95,7 @@ public class ArtGroupManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una canción se actualiza en la base de datos.
+	 * Checks the update of an art group in the database.
 	 */
 	@Test
 	public void testCUpdateArtGroups() {
@@ -137,7 +137,7 @@ public class ArtGroupManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una canción se elimina de la base de datos.
+	 * Checks the deletion of an art group in the database.
 	 */
 	@Test
 	public void testDDeleteArtGroups() {

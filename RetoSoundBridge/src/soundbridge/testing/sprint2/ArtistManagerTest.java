@@ -18,8 +18,8 @@ import soundbridge.database.managers.ArtistManager;
 import soundbridge.database.pojos.Artist;
 
 /**
- * Comprueba los métodos de la clase SongManager. Se especifica un orden para el
- * correcto funcionamiento de las pruebas.
+ * Check the methods of the ArtistManager class. An order is specified for the
+ * correct functioning of the tests.
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -28,7 +28,7 @@ public class ArtistManagerTest {
 	private static ArtistManager artistManager = null;
 
 	/**
-	 * Preparación de la clase.
+	 * Class preparation.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -36,7 +36,7 @@ public class ArtistManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una canción se inserta en la base de datos.
+	 * Checks the insert of an artist into the database.
 	 */
 	@Test
 	public void testAInsertArtist() {
@@ -68,8 +68,8 @@ public class ArtistManagerTest {
 	}
 
 	/**
-	 * Comprobación de que las canciones se cargan correctamente en un ArrayList y
-	 * que la canción anteriormente insertada está incluida.
+	 * Checks the loading of artists into an ArrayList and the inclusion of the
+	 * previously inserted album.
 	 */
 	@Test
 	public void testBSelectAllArtists() {
@@ -103,7 +103,7 @@ public class ArtistManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una canción se actualiza en la base de datos.
+	 * Checks the update of an artist in the database.
 	 */
 	@Test
 	public void testCUpdateArtist() {
@@ -145,7 +145,7 @@ public class ArtistManagerTest {
 	}
 
 	/**
-	 * Comprobación de que una canción se elimina de la base de datos.
+	 * Checks the deletion of an artist in the database.
 	 */
 	@Test
 	public void testDDeleteArtist() {

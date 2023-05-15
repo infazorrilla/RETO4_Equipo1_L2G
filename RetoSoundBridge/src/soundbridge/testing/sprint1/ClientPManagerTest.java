@@ -22,8 +22,8 @@ import soundbridge.database.pojos.ClientP;
 
 
 /**
- * Comprueba los métodos de la clase ClientManager. Se especifica un orden
- * para el correcto funcionamiento de las pruebas.
+ * Check the methods of the ClientPManager class. An order is specified for the
+ * correct functioning of the tests.
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -32,7 +32,7 @@ public class ClientPManagerTest {
 	private static ClientPManager clientpManager = null;
 
 	/**
-	 * Preparación de la clase.
+	 * Class preparation
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -40,7 +40,7 @@ public class ClientPManagerTest {
 	}
 
 	/**
-	 * Comprobación de que un cliente se inserta en la base de datos.
+	 * Checks the insert of an clientP into the database.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
@@ -72,6 +72,10 @@ public class ClientPManagerTest {
 
 		assertFalse(thrown);
 	}
+	/**
+	 * Checks the loading of clientsP into an ArrayList and the inclusion of the
+	 * previously inserted client.
+	 */
 	@Test
 	public void testBSelectAllClientPs() {
 		boolean thrown = false;
@@ -99,6 +103,9 @@ public class ClientPManagerTest {
 		assertFalse(thrown);
 		assertTrue(isInserted);
 	}
+	/**
+	 * Checks the deletion of an clientP in the database.
+	 */
 	@Test
 	public void testDDeleteClientP() {
 		boolean thrown = false;
@@ -141,7 +148,9 @@ public class ClientPManagerTest {
 		assertFalse(thrown);
 		assertTrue(isDeleted);
 	}
-	
+	/**
+	 * Checks the update of an clientP in the database.
+	 */
 	@Test
 	public void testCUpdateClientP() {
 		boolean thrown = false;

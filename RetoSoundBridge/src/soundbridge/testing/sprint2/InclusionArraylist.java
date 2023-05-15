@@ -10,7 +10,9 @@ import org.junit.Test;
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.managers.ArtistManager;
 import soundbridge.database.pojos.Artist;
-
+/**
+ * Checks that the information that is introduced on a list using the date base is correct.
+ */
 public class InclusionArraylist {
 	
 	@Test
