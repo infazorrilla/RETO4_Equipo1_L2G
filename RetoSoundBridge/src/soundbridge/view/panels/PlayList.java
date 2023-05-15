@@ -19,15 +19,30 @@ import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
 import javax.swing.JLabel;
-
+/**
+ * Panel that shows the normal playlist, with the title,description and songs dynamically.
+ */
 public class PlayList extends JPanel {
 
 	private static final long serialVersionUID = -3405591680500453035L;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 * @param playlist selected playlist
+	 */
 	public PlayList(JFrame frame, Client client, Playlist playlist) {
 		initialize(frame, client, playlist);
 	}
-
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 * @param playlist selected playlist
+	 */
 	public void initialize(JFrame frame, Client client, Playlist playlist) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);

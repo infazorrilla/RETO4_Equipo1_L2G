@@ -37,7 +37,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
+/**
+ * Panel that allows to the employee to manage the client. The employee is able to see 
+ * the list of the clients, all the clients that are signed in the application. The employee
+ * can also lock and unlock the clients and see the list of locked clients.
 
+ */
 public class ManageClients extends JPanel {
 
 	private static final long serialVersionUID = -6622744341750440365L;
@@ -45,12 +50,24 @@ public class ManageClients extends JPanel {
 	private DefaultTableModel modelClients = null;
 	private Controller controller = null;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param employee logged employee
+	 */
 	public ManageClients(JFrame frame, Employee employee) {
 
 		initialize(frame, employee);
 
 	}
 
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param employee logged employee
+	 */
 	private void initialize(JFrame frame, Employee employee) {
 
 		setBounds(0, 0, 1000, 672);
@@ -281,7 +298,10 @@ public class ManageClients extends JPanel {
 		btnDesBlockClient.setOpaque(true);
 		btnDesBlockClient.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
-
+/**
+ * Removes all the rows of the table and insert the new ones, is inserted the information of 
+ * all the clients.
+ */
 	private void showClients() {
 		if (null == controller)
 			controller = new Controller();
@@ -310,7 +330,12 @@ public class ManageClients extends JPanel {
 		}
 
 	}
-
+/**
+ * Takes the employee back to the employee menu.
+ * 
+ * @param frame  frame where the panel is added
+	 * @param employee logged employee
+ */
 	private void goBack(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
@@ -318,7 +343,9 @@ public class ManageClients extends JPanel {
 		frame.revalidate();
 		frame.repaint();
 	}
-
+/**
+ * Locks the selected client in the table. The locked clients can not log in in the application.
+ */
 	private void blockUser() {
 
 		if (null == controller)
