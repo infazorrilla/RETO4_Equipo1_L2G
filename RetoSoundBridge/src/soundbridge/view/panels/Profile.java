@@ -373,7 +373,7 @@ public class Profile extends JPanel {
 				controller.deleteAccount(client);
 				WindowUtils.messagePaneWithIcon("Su cuenta ha sido eliminada.", "Confirmación", "img/icon/bye.png");
 
-				goToLogin(frame);
+				logOut(frame);
 
 			} catch (SQLException e) {
 				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error en la base de datos");
@@ -381,19 +381,6 @@ public class Profile extends JPanel {
 				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error general");
 			}
 		}
-	}
-
-	/**
-	 * Takes the client to the login.
-	 * 
-	 * @param frame frame where the panel is added
-	 */
-	private void goToLogin(JFrame frame) {
-		frame.getContentPane().removeAll();
-		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
-		frame.revalidate();
-		frame.repaint();
 	}
 
 }

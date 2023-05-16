@@ -20,11 +20,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import soundbridge.controller.Controller;
+import soundbridge.database.managers.ContainManager;
+import soundbridge.database.managers.PlaylistManager;
 import soundbridge.database.managers.SongManager;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
@@ -34,6 +37,7 @@ import soundbridge.view.factory.PanelFactory;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -55,8 +59,8 @@ public class PlayList extends JPanel {
 	private DefaultTableModel modelSongsPlaylist = null;
 	private Player player;
 	private Controller controller;
-	private int indexx = 0;
 	private boolean isPlayerRunning = false;
+	private JPanel panelPauseIcon;
 
 	/**
 	 * Initializes the panel.
@@ -81,15 +85,74 @@ public class PlayList extends JPanel {
 		setBackground(Color.black);
 		setLayout(null);
 
-		JLabel lblNewLabel = new JLabel(playlist.getName());
-		lblNewLabel.setBounds(252, 65, 91, 14);
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		add(lblNewLabel);
+		JPanel panelRemovePlaylist = new JPanel();
+		panelRemovePlaylist.setToolTipText("Eliminar playlist.");
+		panelRemovePlaylist.setOpaque(false);
+		panelRemovePlaylist.setBounds(240, 55, 40, 40);
+		add(panelRemovePlaylist);
+		panelRemovePlaylist.setLayout(new BorderLayout(0, 0));
+		panelRemovePlaylist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelRemovePlaylist.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				removePlaylist(playlist, frame, client);
+			}
+		});
 
-		JLabel lblNewLabel_1 = new JLabel(playlist.getDescription());
-		lblNewLabel_1.setBounds(252, 130, 148, 46);
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		add(lblNewLabel_1);
+		JLabel lblRemoveIcon = new JLabel("");
+		panelRemovePlaylist.add(lblRemoveIcon, BorderLayout.CENTER);
+
+		WindowUtils.addImage(panelRemovePlaylist, lblRemoveIcon, "img/icon/remove.png");
+
+		panelPauseIcon = new JPanel();
+		panelPauseIcon.setBounds(115, 115, 100, 100);
+		add(panelPauseIcon);
+		panelPauseIcon.setLayout(new BorderLayout(0, 0));
+		panelPauseIcon.setOpaque(false);
+		panelPauseIcon.setVisible(false);
+		panelPauseIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelPauseIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				stopMusic();
+			}
+		});
+
+		JLabel lblPauseIcon = new JLabel("");
+		panelPauseIcon.add(lblPauseIcon, BorderLayout.CENTER);
+
+		JPanel panelPlaylistCover = new JPanel();
+		panelPlaylistCover.setBounds(40, 40, 250, 250);
+		add(panelPlaylistCover);
+		panelPlaylistCover.setLayout(new BorderLayout(0, 0));
+		panelPlaylistCover.setOpaque(false);
+
+		JLabel lblPlayListCover = new JLabel("");
+		panelPlaylistCover.add(lblPlayListCover, BorderLayout.CENTER);
+
+		WindowUtils.addImage(panelPlaylistCover, lblPlayListCover, "img/icon/playlist_icon.png");
+
+		JLabel lblTitle = new JLabel(playlist.getName());
+		lblTitle.setFont(new Font("Dialog", Font.BOLD, 25));
+		lblTitle.setForeground(new Color(255, 255, 255));
+		lblTitle.setBounds(327, 70, 584, 39);
+		add(lblTitle);
+
+		JLabel lblCreator = new JLabel("@" + client.getUsername().toString());
+		lblCreator.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblCreator.setForeground(new Color(244, 135, 244));
+		lblCreator.setBounds(327, 110, 584, 39);
+		add(lblCreator);
+
+		JTextArea textBio = new JTextArea(playlist.getDescription());
+		textBio.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		textBio.setEditable(false);
+		textBio.setOpaque(false);
+		textBio.setForeground(Color.white);
+		textBio.setBounds(327, 160, 487, 128);
+		add(textBio);
+		textBio.setLineWrap(true);
+		textBio.setWrapStyleWord(true);
 
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
@@ -99,16 +162,12 @@ public class PlayList extends JPanel {
 		panelBackIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
-						null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToLibrary(frame, client);
 			}
 		});
 
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelBackIcon.setToolTipText("Volver a mi perfil.");
+		panelBackIcon.setToolTipText("Volver a mi biblioteca.");
 
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
@@ -152,14 +211,14 @@ public class PlayList extends JPanel {
 		tableSongsPlaylist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(client, frame);
+				playSelectedSong(client, frame, playlist, modelSongsPlaylist);
 			}
 		});
 		tableSongsPlaylist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableSongsPlaylist.setDefaultEditor(Object.class, null);
 		scrollPanePlaylist.setViewportView(tableSongsPlaylist);
 		tableSongsPlaylist.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "Artista", "" };
+		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "Artista", "", "" };
 
 		tableSongsPlaylist.setShowGrid(false);
 		tableSongsPlaylist.setBackground(Color.black);
@@ -205,31 +264,105 @@ public class PlayList extends JPanel {
 		modelSongsPlaylist = new DefaultTableModel();
 		modelSongsPlaylist.setColumnIdentifiers(columnsSongs);
 		tableSongsPlaylist.setModel(modelSongsPlaylist);
-		adjustColumnsWidth(tableSongsPlaylist);
+		adjustColumnsWidth();
 		addSongsToTable(modelSongsPlaylist, playlist);
+
+		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause_black.png");
 
 	}
 
-	private void playSelectedSong(Client client, JFrame frame) {
+	/**
+	 * Asks the client to confirm the removal of his playlist.
+	 * 
+	 * @return reply of the client
+	 */
+	private int askToConfirmDeletion() {
+		int reply = WindowUtils.yesOrNoPaneWithIcon("¿Desea eliminar la lista actual?", "Eliminar Lista",
+				"img/icon/alert.png");
+		return reply;
+	}
 
-		indexx = tableSongsPlaylist.getSelectedColumn();
-		if (indexx == 0) {
-			if (null == controller)
-				controller = new Controller();
-
-			controller.addToFavourites(client, playlistSongs, tableSongsPlaylist);
+	/**
+	 * Deletes the actual playlist if client confirms the removal. Then takes the
+	 * client to library.
+	 * 
+	 * @param playlist playlist to be deleted
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 */
+	private void removePlaylist(Playlist playlist, JFrame frame, Client client) {
+		int reply = askToConfirmDeletion();
+		if (reply == 0) {
+			PlaylistManager playlistManager = new PlaylistManager();
+			try {
+				playlistManager.delete(playlist);
+				WindowUtils.confirmationPane("Su lista ha sido eliminada.", "Confirmación");
+				goToLibrary(frame, client);
+			} catch (SQLException e) {
+				WindowUtils.errorPane("No se ha podido eliminar la lista.", "Error en la base de datos");
+			} catch (Exception e) {
+				WindowUtils.errorPane("No se ha podido eliminar la lista.", "Error genérico");
+			}
 		}
-		if (indexx == 1 || indexx == 2 || indexx == 3 || indexx == 4) {
+
+	}
+
+	/**
+	 * Reproduce the selected song using the index of the table.
+	 * 
+	 * @param client the client that had done the log in
+	 * @param frame  frame where the panel is added
+	 */
+	private void playSelectedSong(Client client, JFrame frame, Playlist playlist, DefaultTableModel model) {
+
+		int indexColumn = tableSongsPlaylist.getSelectedColumn();
+		int indexRow = tableSongsPlaylist.getSelectedRow();
+
+		if (null == controller)
+			controller = new Controller();
+
+		if (indexColumn == 0) {
+			controller.addToFavourites(client, playlistSongs, tableSongsPlaylist);
+		} else if (indexColumn >= 1 && indexColumn <= 5) {
 			if (isPlayerRunning)
 				this.stop();
-			int index = tableSongsPlaylist.getSelectedRow();
-			Song song = playlistSongs.get(index);
+
+			Song song = playlistSongs.get(indexRow);
 			this.play(song.getSource());
 			doInsertPlay(client, song);
-		}
-		if (indexx == 6) {
+			panelPauseIcon.setVisible(true);
+		} else if (indexColumn == 6) {
 			if (client instanceof ClientPP) {
-				goToAddSong(frame, client);
+				ArrayList<Playlist> playlists = null;
+				try {
+					playlists = controller.getPlaylistsOfClientPP(client);
+				} catch (SQLException e) {
+					WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
+				} catch (Exception e) {
+					WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error genérico");
+				}
+				if (null != playlists) {
+					Song song = playlistSongs.get(indexRow);
+					goToAddSong(frame, client, song);
+				} else {
+					WindowUtils.errorPane("Primero debe crear una lista.", "Error");
+				}
+			}
+		} else if (indexColumn == 7) {
+			Song song = playlistSongs.get(indexRow);
+			ContainManager containManager = new ContainManager();
+			Contain contain = new Contain();
+			contain.setPlaylist(playlist);
+			contain.setSong(song);
+			try {
+				containManager.delete(contain);
+				WindowUtils.confirmationPane("Se ha eliminado la canción " + song.getName() + ".", "Confirmación");
+				modelSongsPlaylist.setRowCount(0);
+				addSongsToTable(model, playlist);
+			} catch (SQLException e) {
+				WindowUtils.errorPane("No se ha podido eliminar la canción de la lista.", "Error en la base de datos");
+			} catch (Exception e) {
+				WindowUtils.errorPane("No se ha podido eliminar la canción de la lista.", "Error genérico");
 			}
 		}
 	}
@@ -290,14 +423,17 @@ public class PlayList extends JPanel {
 		isPlayerRunning = false;
 	}
 
-	private void adjustColumnsWidth(JTable table) {
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		table.getColumnModel().getColumn(0).setMaxWidth(50);
-		table.getColumnModel().getColumn(1).setMinWidth(30);
-		table.getColumnModel().getColumn(2).setMinWidth(300);
-		table.getColumnModel().getColumn(3).setMinWidth(100);
-		table.getColumnModel().getColumn(4).setMinWidth(200);
-		table.getColumnModel().getColumn(5).setMinWidth(160);
+	/**
+	 * Adjust column widths.
+	 */
+	private void adjustColumnsWidth() {
+		tableSongsPlaylist.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		tableSongsPlaylist.getColumnModel().getColumn(0).setMaxWidth(50);
+		tableSongsPlaylist.getColumnModel().getColumn(1).setMinWidth(30);
+		tableSongsPlaylist.getColumnModel().getColumn(2).setMinWidth(300);
+		tableSongsPlaylist.getColumnModel().getColumn(3).setMinWidth(100);
+		tableSongsPlaylist.getColumnModel().getColumn(4).setMinWidth(200);
+		tableSongsPlaylist.getColumnModel().getColumn(5).setMinWidth(160);
 	}
 
 	private void addSongsToTable(DefaultTableModel model, Playlist playlist) {
@@ -346,9 +482,11 @@ public class PlayList extends JPanel {
 				String genre = song.getGenre();
 
 				if (artista != null)
-					model.addRow(new String[] { "\u2661", number, title, duration, genre, artista.getName(), "+" });
+					model.addRow(
+							new String[] { "\u2661", number, title, duration, genre, artista.getName(), "+", "-" });
 				if (arttGroup != null)
-					model.addRow(new String[] { "\u2661", number, title, duration, genre, arttGroup.getName(), "+" });
+					model.addRow(
+							new String[] { "\u2661", number, title, duration, genre, arttGroup.getName(), "+", "-" });
 			}
 		}
 	}
@@ -358,13 +496,38 @@ public class PlayList extends JPanel {
 	 * 
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
+	 * @param song   to be added
 	 */
-	private void goToAddSong(JFrame frame, Client client) {
+	private void goToAddSong(JFrame frame, Client client, Song song) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
-				null, null, null));
+				null, song, null));
 		frame.revalidate();
 		frame.repaint();
 
+	}
+
+	/**
+	 * Stops the music.
+	 */
+	private void stopMusic() {
+		if (isPlayerRunning)
+			this.stop();
+		panelPauseIcon.setVisible(false);
+		tableSongsPlaylist.getSelectionModel().clearSelection();
+	}
+
+	/**
+	 * Takes the client back to the library.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToLibrary(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 }
