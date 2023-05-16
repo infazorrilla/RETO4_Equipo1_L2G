@@ -636,10 +636,9 @@ public class Controller {
 				controller.insertSongPLayList(contain);
 				WindowUtils.confirmationPane("La canción se ha añadido correctamente a favoritos.", "Canción añadida");
 			} catch (Exception e) {
-				WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
+				WindowUtils.errorPane("No se ha podido añadir a favoritos.", "Error en la base de datos");
 			}
-		}
-		if (client instanceof ClientP) {
+		} else if (client instanceof ClientP) {
 			Controller controller = new Controller();
 			Contain contain = new Contain();
 			ArrayList<Playlist> songsById;
@@ -654,9 +653,9 @@ public class Controller {
 				song.setId(songs.get(table.getSelectedRow()).getId());
 				contain.setSong(song);
 				controller.insertSongPLayList(contain);
-				WindowUtils.confirmationPane("Se ha añadido correctamente", "Canción añadida");
+				WindowUtils.confirmationPane("La canción se ha añadido correctamente a favoritos.", "Canción añadida");
 			} catch (Exception e) {
-				WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
+				WindowUtils.errorPane("No se ha podido añadir a favoritos.", "Error en la base de datos");
 			}
 		}
 	}

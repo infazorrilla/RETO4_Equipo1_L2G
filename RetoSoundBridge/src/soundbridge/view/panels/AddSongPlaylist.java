@@ -42,6 +42,7 @@ public class AddSongPlaylist extends JPanel {
 	 * 
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
+	 * @param song   selected song
 	 */
 	public AddSongPlaylist(JFrame frame, Client client, Song song) {
 		setBounds(0, 0, 1000, 672);
@@ -56,19 +57,10 @@ public class AddSongPlaylist extends JPanel {
 	 * 
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
+	 * @param song   selected song
 	 */
 
 	public void initialize(JFrame frame, Client client, Song song) {
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setBounds(252, 65, 91, 14);
-		add(lblNewLabel);
-
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(252, 130, 148, 46);
-		add(lblNewLabel_1);
-
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -242,16 +234,14 @@ public class AddSongPlaylist extends JPanel {
 	 * @param panel    panel to which the listener is being created
 	 * @param client   logged client
 	 * @param playlist playlist the choosen playlist
+	 * @param song     selected song
 	 */
-	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlist,
-			Song songg) {
+	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlist, Song song) {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ContainManager contMan = new ContainManager();
 				Contain contain = new Contain();
-				Song song = new Song();
-				song.setId(songg.getId());
 				contain.setPlaylist(playlist);
 				contain.setSong(song);
 				try {
@@ -264,11 +254,11 @@ public class AddSongPlaylist extends JPanel {
 			}
 		});
 	}
-	
+
 	private void goToPlaylist(JFrame frame, Client client, Playlist playlist) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null,
-				null, null, null, playlist));
+		frame.getContentPane().add(
+				PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null, null, null, null, playlist));
 		frame.revalidate();
 		frame.repaint();
 	}

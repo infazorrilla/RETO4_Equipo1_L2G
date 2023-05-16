@@ -400,7 +400,6 @@ public class AlbumView extends JPanel {
 
 		if (indexColumn == 0) {
 			controller.addToFavourites(client, songs, tableSongs);
-			WindowUtils.confirmationPane("Se ha añadido correctamente", "Canción añadida");
 		} else if (indexColumn >= 1 && indexColumn <= 4) {
 			if (isPlayerRunning)
 				this.stop();
