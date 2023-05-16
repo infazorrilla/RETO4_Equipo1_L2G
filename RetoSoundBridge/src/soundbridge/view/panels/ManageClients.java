@@ -233,10 +233,10 @@ public class ManageClients extends JPanel {
 					}
 				} catch (SQLException e1) {
 					WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error en la base de datos");
-					e1.printStackTrace();
+					
 				} catch (Exception e1) {
 					WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
-					e1.printStackTrace();
+					
 				}
 			}
 		});
@@ -326,10 +326,10 @@ public class ManageClients extends JPanel {
 			}
 		} catch (SQLException e1) {
 			WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error en la base de datos");
-			e1.printStackTrace();
+			
 		} catch (Exception e1) {
 			WindowUtils.errorPane("No se ha seleccionado ningún cliente", "Error general");
-			e1.printStackTrace();
+			
 		}
 
 	}
