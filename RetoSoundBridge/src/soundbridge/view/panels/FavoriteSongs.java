@@ -2,7 +2,6 @@ package soundbridge.view.panels;
 
 import java.awt.BorderLayout;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -25,11 +24,13 @@ import javax.swing.table.TableCellRenderer;
 
 import javazoom.jl.player.Player;
 import soundbridge.controller.Controller;
-
+import soundbridge.database.managers.ContainManager;
+import soundbridge.database.managers.PlaylistManager;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
@@ -120,8 +121,7 @@ public class FavoriteSongs extends JPanel {
 		lblCreator.setBounds(327, 110, 584, 39);
 		add(lblCreator);
 
-		JTextArea textBio = new JTextArea(
-				"Listado de las canciones que te han gustado.");
+		JTextArea textBio = new JTextArea("Listado de las canciones que te han gustado.");
 		textBio.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		textBio.setEditable(false);
 		textBio.setOpaque(false);
@@ -176,7 +176,7 @@ public class FavoriteSongs extends JPanel {
 		tableFavouriteSongs.setDefaultEditor(Object.class, null);
 		scrollPaneTop20.setViewportView(tableFavouriteSongs);
 		tableFavouriteSongs.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "Artista", "" };
+		Object[] columnsSongs = { "", "", "Título", "Duración", "Género", "Artista", "", "" };
 
 		tableFavouriteSongs.setShowGrid(false);
 		tableFavouriteSongs.setBackground(Color.black);
@@ -223,7 +223,7 @@ public class FavoriteSongs extends JPanel {
 		modelFavouriteSongs.setColumnIdentifiers(columnsSongs);
 		tableFavouriteSongs.setModel(modelFavouriteSongs);
 		adjustColumnsWidth(tableFavouriteSongs);
-		addSongsToTable(modelFavouriteSongs,client);
+		addSongsToTable(modelFavouriteSongs, client);
 
 		JPanel panelHomeIcon = new JPanel();
 		panelHomeIcon.setBounds(900, 45, 50, 50);
@@ -235,8 +235,8 @@ public class FavoriteSongs extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				stop();
 				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
+						null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
@@ -250,7 +250,6 @@ public class FavoriteSongs extends JPanel {
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause_black.png");
 	}
-
 
 	/**
 	 * The amount of columns and each width.
@@ -271,8 +270,9 @@ public class FavoriteSongs extends JPanel {
 	 * Reproduces the selected song using the index of the table.
 	 * 
 	 * @param client the client that had done the log in
+	 * @param frame  frame where the panel is added
 	 */
-	private void playSelectedSong(Client client, JFrame frame) {	
+	private void playSelectedSong(Client client, JFrame frame) {
 		int indexColumn = tableFavouriteSongs.getSelectedColumn();
 		int indexRow = tableFavouriteSongs.getSelectedRow();
 
@@ -306,10 +306,29 @@ public class FavoriteSongs extends JPanel {
 					WindowUtils.errorPane("Primero debe crear una lista.", "Error");
 				}
 			}
+		} else if (indexColumn == 7) {
+			Song song = favouriteSongs.get(indexRow);
+			ContainManager containManager = new ContainManager();
+			Contain contain = new Contain();
+			PlaylistManager playMan = new PlaylistManager();
+			Playlist playlist = null;
+			try {
+				playlist = ((ArrayList<Playlist>) playMan.getPlaylistsOfClientPPById(client)).get(0);
+				contain.setPlaylist(playlist);
+				contain.setSong(song);
+				containManager.delete(contain);
+				WindowUtils.confirmationPane("Se ha eliminado la canción " + song.getName() + ".", "Confirmación");
+				modelFavouriteSongs.setRowCount(0);
+				addSongsToTable(modelFavouriteSongs, client);
+			} catch (SQLException e) {
+				WindowUtils.errorPane("No se ha podido eliminar la canción de la lista.", "Error en la base de datos");
+			} catch (Exception e) {
+				WindowUtils.errorPane("No se ha podido eliminar la canción de la lista.", "Error genérico");
+			}
 		}
 
 	}
-	
+
 	/**
 	 * Goes to an other panel to add song to a playlist.
 	 * 
@@ -324,7 +343,7 @@ public class FavoriteSongs extends JPanel {
 		frame.repaint();
 
 	}
-	
+
 	/**
 	 * Stops the music.
 	 */
@@ -334,6 +353,7 @@ public class FavoriteSongs extends JPanel {
 		panelPauseIcon.setVisible(false);
 		tableFavouriteSongs.getSelectionModel().clearSelection();
 	}
+
 	/**
 	 * Insert on the date base when a song plays.
 	 * 
@@ -356,6 +376,7 @@ public class FavoriteSongs extends JPanel {
 		}
 
 	}
+
 	/**
 	 * Plays the music.
 	 * 
@@ -377,6 +398,7 @@ public class FavoriteSongs extends JPanel {
 
 		isPlayerRunning = true;
 	}
+
 	/**
 	 * Stops the song.
 	 */
@@ -387,14 +409,15 @@ public class FavoriteSongs extends JPanel {
 
 		isPlayerRunning = false;
 	}
-	
+
 	/**
-	 * Takes the favorite songs of a client of the data base and shows it on a table.
+	 * Takes the favorite songs of a client of the data base and shows it on a
+	 * table.
 	 * 
-	 * @param model the model of the table to insert the info
+	 * @param model  the model of the table to insert the info
 	 * @param client the client to take his favorite songs
 	 */
-	private void addSongsToTable(DefaultTableModel model,Client client) {
+	private void addSongsToTable(DefaultTableModel model, Client client) {
 
 		if (null == controller)
 			controller = new Controller();
@@ -402,11 +425,10 @@ public class FavoriteSongs extends JPanel {
 		try {
 			if (client instanceof ClientPP) {
 				favouriteSongs = controller.selectFavouriteSongOfClientPP(client);
-			}
-			else {
+			} else {
 				favouriteSongs = controller.selectFavouriteSongOfClientP(client);
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -446,9 +468,11 @@ public class FavoriteSongs extends JPanel {
 				String genre = song.getGenre();
 
 				if (artista != null)
-					model.addRow(new String[] { "\u2661", number, title, duration, genre, artista.getName(), "+" });
+					model.addRow(
+							new String[] { "\u2661", number, title, duration, genre, artista.getName(), "+", "-" });
 				if (arttGroup != null)
-					model.addRow(new String[] { "\u2661", number, title, duration, genre, arttGroup.getName(), "+" });
+					model.addRow(
+							new String[] { "\u2661", number, title, duration, genre, arttGroup.getName(), "+", "-" });
 			}
 		}
 	}

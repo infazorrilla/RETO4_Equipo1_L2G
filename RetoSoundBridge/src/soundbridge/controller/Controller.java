@@ -634,7 +634,7 @@ public class Controller {
 				song.setId(songs.get(table.getSelectedRow()).getId());
 				contain.setSong(song);
 				controller.insertSongPLayList(contain);
-				WindowUtils.confirmationPane("Se ha añadido correctamente", "Canción añadida");
+				WindowUtils.confirmationPane("La canción se ha añadido correctamente a favoritos.", "Canción añadida");
 			} catch (Exception e) {
 				WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
 			}
@@ -660,6 +660,7 @@ public class Controller {
 			}
 		}
 	}
+
 	public void addToFavouritesSingleView(Client client, Song songg, JTable table) {
 
 		if (client instanceof ClientPP) {
@@ -1139,7 +1140,7 @@ public class Controller {
 
 		return reviewManager.validatedReviewsWithAllInformation(album);
 	}
-	
+
 	/**
 	 * Gets all the playlists of a client premium plus.
 	 * 
@@ -1154,6 +1155,7 @@ public class Controller {
 		return playMan.selectPlaylistOfCLientPP(client);
 
 	}
+
 	/**
 	 * Gets all the playlists of a client premium plus.
 	 * 

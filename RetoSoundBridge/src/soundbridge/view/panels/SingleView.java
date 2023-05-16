@@ -50,6 +50,7 @@ public class SingleView extends JPanel {
 	private JPanel panelPauseIcon;
 	private JTable tableSong;
 	private Controller controller;
+
 	/**
 	 * Initializes the panel.
 	 * 
@@ -173,7 +174,7 @@ public class SingleView extends JPanel {
 		tableSong.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(frame,song, client);
+				playSelectedSong(frame, song, client);
 			}
 		});
 		scrollPaneSongs.setViewportView(tableSong);
@@ -291,7 +292,7 @@ public class SingleView extends JPanel {
 	 * @param song   single
 	 * @param client logged client
 	 */
-	private void playSelectedSong(JFrame frame,Song song, Client client) {
+	private void playSelectedSong(JFrame frame, Song song, Client client) {
 		if (isPlayerRunning)
 			this.stop();
 		int index = tableSong.getSelectedColumn();
@@ -300,12 +301,12 @@ public class SingleView extends JPanel {
 				controller = new Controller();
 
 			controller.addToFavouritesSingleView(client, song, tableSong);
-			
-		}else if (index >= 1 && index <= 3) {
-		this.play(song.getSource());
-		doInsertPlay(client, song);
-		panelPauseIcon.setVisible(true);
-		}else if (index == 4) {
+
+		} else if (index >= 1 && index <= 4) {
+			this.play(song.getSource());
+			doInsertPlay(client, song);
+			panelPauseIcon.setVisible(true);
+		} else if (index == 5) {
 			if (client instanceof ClientPP) {
 				ArrayList<Playlist> playlists = null;
 				try {
@@ -388,6 +389,7 @@ public class SingleView extends JPanel {
 
 		isPlayerRunning = false;
 	}
+
 	private void goToAddSong(JFrame frame, Client client, Song song) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,

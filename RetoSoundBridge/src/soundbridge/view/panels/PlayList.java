@@ -211,7 +211,7 @@ public class PlayList extends JPanel {
 		tableSongsPlaylist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(client, frame, playlist, modelSongsPlaylist);
+				playSelectedSong(client, frame, playlist);
 			}
 		});
 		tableSongsPlaylist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -310,10 +310,11 @@ public class PlayList extends JPanel {
 	/**
 	 * Reproduce the selected song using the index of the table.
 	 * 
-	 * @param client the client that had done the log in
-	 * @param frame  frame where the panel is added
+	 * @param client   the client that had done the log in
+	 * @param frame    frame where the panel is added
+	 * @param playlist playlist containing the song
 	 */
-	private void playSelectedSong(Client client, JFrame frame, Playlist playlist, DefaultTableModel model) {
+	private void playSelectedSong(Client client, JFrame frame, Playlist playlist) {
 
 		int indexColumn = tableSongsPlaylist.getSelectedColumn();
 		int indexRow = tableSongsPlaylist.getSelectedRow();
@@ -358,7 +359,7 @@ public class PlayList extends JPanel {
 				containManager.delete(contain);
 				WindowUtils.confirmationPane("Se ha eliminado la canción " + song.getName() + ".", "Confirmación");
 				modelSongsPlaylist.setRowCount(0);
-				addSongsToTable(model, playlist);
+				addSongsToTable(modelSongsPlaylist, playlist);
 			} catch (SQLException e) {
 				WindowUtils.errorPane("No se ha podido eliminar la canción de la lista.", "Error en la base de datos");
 			} catch (Exception e) {
