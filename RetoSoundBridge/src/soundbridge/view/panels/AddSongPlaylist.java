@@ -97,7 +97,7 @@ public class AddSongPlaylist extends JPanel {
 		panelGridAddSong.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridAddSong.setOpaque(false);
 		
-		JLabel lblNewLabel_2 = new JLabel("Elije a que playlist añadirla");
+		JLabel lblNewLabel_2 = new JLabel("Elige a que playlist añadirla");
 		lblNewLabel_2.setForeground(new Color(255, 255, 255));
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblNewLabel_2.setBounds(163, 45, 323, 34);

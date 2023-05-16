@@ -6,6 +6,7 @@ import java.awt.Cursor;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import soundbridge.database.managers.PlaylistManager;
 import soundbridge.database.pojos.Client;
@@ -13,12 +14,17 @@ import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.utils.WindowUtils;
+import soundbridge.view.components.TextPrompt;
 import soundbridge.view.factory.PanelFactory;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
@@ -31,8 +37,8 @@ import java.awt.Font;
 public class CreatePlaylist extends JPanel {
 
 	private static final long serialVersionUID = -2776809426213236020L;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textFieldName;
+	private JTextArea textAreaDescription;
 
 	/**
 	 * Initializes the panel.
@@ -41,6 +47,10 @@ public class CreatePlaylist extends JPanel {
 	 * @param client logged client
 	 */
 	public CreatePlaylist(JFrame frame, Client client) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+
 		initialize(frame, client);
 	}
 
@@ -51,31 +61,79 @@ public class CreatePlaylist extends JPanel {
 	 * @param client logged client
 	 */
 	private void initialize(JFrame frame, Client client) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
+		JPanel panelPlaylistCover = new JPanel();
+		panelPlaylistCover.setBounds(40, 40, 250, 250);
+		add(panelPlaylistCover);
+		panelPlaylistCover.setLayout(new BorderLayout(0, 0));
+		panelPlaylistCover.setOpaque(false);
 
-		JLabel lblNewLabel = new JLabel("Nombre de la playlist a crear");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setBounds(265, 114, 411, 31);
-		add(lblNewLabel);
+		JLabel lblPlayListCover = new JLabel("");
+		panelPlaylistCover.add(lblPlayListCover, BorderLayout.CENTER);
 
-		textField = new JTextField();
-		textField.setBounds(265, 177, 411, 31);
-		add(textField);
-		textField.setColumns(10);
+		WindowUtils.addImage(panelPlaylistCover, lblPlayListCover, "img/icon/playlist_icon.png");
 
-		JLabel lblNewLabel_1 = new JLabel("Descripción de la playlist a crear");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(265, 284, 437, 26);
-		add(lblNewLabel_1);
+		textFieldName = new JTextField();
+		textFieldName.setBounds(327, 45, 500, 40);
+		add(textFieldName);
+		textFieldName.setColumns(10);
+		textFieldName.setForeground(Color.white);
+		textFieldName.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		textFieldName.setBorder(new LineBorder(Color.WHITE, 2));
+		textFieldName.setCaretColor(Color.WHITE);
+		textFieldName.setOpaque(false);
+		textFieldName.setHorizontalAlignment(SwingConstants.LEFT);
+		textFieldName.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				textFieldName.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+			}
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(265, 352, 411, 50);
-		add(textField_1);
-		textField_1.setColumns(10);
+			@Override
+			public void focusLost(FocusEvent e) {
+				textFieldName.setBorder(new LineBorder(Color.WHITE, 2));
+			}
+		});
+
+		TextPrompt placeholderName = new TextPrompt("Nombre de la lista", textFieldName);
+		placeholderName.changeAlpha(0.8f);
+		placeholderName.changeStyle(Font.BOLD + Font.ITALIC);
+		placeholderName.setHorizontalAlignment(SwingConstants.LEFT);
+
+		JLabel lblCreator = new JLabel("@" + client.getUsername().toString());
+		lblCreator.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblCreator.setForeground(new Color(244, 135, 244));
+		lblCreator.setBounds(327, 97, 584, 39);
+		add(lblCreator);
+
+		textAreaDescription = new JTextArea("");
+		textAreaDescription.setOpaque(false);
+		textAreaDescription.setForeground(Color.WHITE);
+		textAreaDescription.setFont(new Font("Dialog", Font.PLAIN, 15));
+		textAreaDescription.setColumns(10);
+		textAreaDescription.setCaretColor(Color.WHITE);
+		textAreaDescription.setBorder(new LineBorder(Color.WHITE, 2));
+		textAreaDescription.setBounds(327, 147, 500, 65);
+		add(textAreaDescription);
+		textAreaDescription.setLineWrap(true);
+		textAreaDescription.setWrapStyleWord(true);
+		textAreaDescription.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				textAreaDescription.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				textAreaDescription.setBorder(new LineBorder(Color.WHITE, 2));
+			}
+		});
+
+		TextPrompt placeholderDescription = new TextPrompt("Escribe una breve descripción de la lista...",
+				textAreaDescription);
+		placeholderDescription.setVerticalAlignment(SwingConstants.TOP);
+		placeholderDescription.changeAlpha(0.8f);
+		placeholderDescription.changeStyle(Font.BOLD + Font.ITALIC);
+		placeholderDescription.setHorizontalAlignment(SwingConstants.LEFT);
 
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
@@ -99,16 +157,15 @@ public class CreatePlaylist extends JPanel {
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-		JButton btnEnviarCrearPlaylist = new JButton("CREAR PLAYLIST");
 
-		btnEnviarCrearPlaylist.addActionListener(new ActionListener() {
-			Playlist playlist = new Playlist();
-
+		JButton btnCreatePlaylist = new JButton("CREAR LISTA DE REPRODUCCIÓN");
+		btnCreatePlaylist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Playlist playlist = new Playlist();
 				PlaylistManager playMan = new PlaylistManager();
 				ClientPP clientPP = new ClientPP();
-				playlist.setName(textField.getText());
-				playlist.setDescription(textField_1.getText());
+				playlist.setName(textFieldName.getText());
+				playlist.setDescription(textAreaDescription.getText());
 
 				if (client instanceof ClientPP) {
 					clientPP.setId(client.getId());
@@ -127,9 +184,26 @@ public class CreatePlaylist extends JPanel {
 				frame.revalidate();
 				frame.repaint();
 			}
+
 		});
-		btnEnviarCrearPlaylist.setBounds(404, 481, 133, 41);
-		add(btnEnviarCrearPlaylist);
+		btnCreatePlaylist.setBounds(327, 230, 500, 50);
+		add(btnCreatePlaylist);
+		btnCreatePlaylist.setForeground(Color.white);
+		btnCreatePlaylist.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		btnCreatePlaylist.setBackground(new Color(244, 135, 244, 20));
+		btnCreatePlaylist.setBorder(new LineBorder(new Color(244, 135, 244), 2));
+		btnCreatePlaylist.setOpaque(false);
+		btnCreatePlaylist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBounds(0, 0, 1000, 672);
+		add(panelBackground);
+		panelBackground.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblBackground = new JLabel("");
+		panelBackground.add(lblBackground, BorderLayout.CENTER);
+
+		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/create_playlist_bg.jpeg");
 	}
 
 }

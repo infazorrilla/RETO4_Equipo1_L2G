@@ -124,7 +124,7 @@ public class WriteReview extends JPanel {
 		TextPrompt placeholderOpinion = new TextPrompt("Escribe tú opinión...", textAreaOpinion);
 		placeholderOpinion.setVerticalAlignment(SwingConstants.TOP);
 		placeholderOpinion.changeAlpha(0.8f);
-		placeholderOpinion.changeStyle(Font.ITALIC);
+		placeholderOpinion.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderOpinion.setHorizontalAlignment(SwingConstants.LEFT);
 
 		JTextArea textAreaTitle = new JTextArea();
@@ -151,7 +151,7 @@ public class WriteReview extends JPanel {
 
 		TextPrompt placeholderTitle = new TextPrompt("Título", textAreaTitle);
 		placeholderTitle.changeAlpha(0.8f);
-		placeholderTitle.changeStyle(Font.ITALIC);
+		placeholderTitle.changeStyle(Font.BOLD + Font.ITALIC);
 		placeholderTitle.setHorizontalAlignment(SwingConstants.LEFT);
 
 		JPanel panelStar1 = new JPanel();
