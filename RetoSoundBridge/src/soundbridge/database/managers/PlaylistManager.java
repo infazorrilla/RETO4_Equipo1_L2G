@@ -523,7 +523,7 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 	 */
 	public ArrayList<Playlist> selectPlaylistOfCLientPP(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
-		String sql = "select * from playlist where idClientPP=? and name !='Favoritos'";
+		String sql = "select * from playlist where idClientPp=? and name !='Favoritos'";
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;

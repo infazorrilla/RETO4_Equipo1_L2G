@@ -6,11 +6,13 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -29,7 +31,9 @@ import soundbridge.controller.Controller;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
+import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Play;
+import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
@@ -169,7 +173,7 @@ public class SingleView extends JPanel {
 		tableSong.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(song, client);
+				playSelectedSong(frame,song, client);
 			}
 		});
 		scrollPaneSongs.setViewportView(tableSong);
@@ -287,7 +291,7 @@ public class SingleView extends JPanel {
 	 * @param song   single
 	 * @param client logged client
 	 */
-	private void playSelectedSong(Song song, Client client) {
+	private void playSelectedSong(JFrame frame,Song song, Client client) {
 		if (isPlayerRunning)
 			this.stop();
 		int index = tableSong.getSelectedColumn();
@@ -295,11 +299,29 @@ public class SingleView extends JPanel {
 			if (null == controller)
 				controller = new Controller();
 
-			controller.addToFavourites2(client, song, tableSong);
-		}
+			controller.addToFavouritesSingleView(client, song, tableSong);
+			
+		}else if (index >= 1 && index <= 3) {
 		this.play(song.getSource());
 		doInsertPlay(client, song);
 		panelPauseIcon.setVisible(true);
+		}else if (index == 4) {
+			if (client instanceof ClientPP) {
+				ArrayList<Playlist> playlists = null;
+				try {
+					playlists = controller.selectPlaylistsOfClientPPById(client);
+				} catch (SQLException e) {
+					WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
+				} catch (Exception e) {
+					WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error genérico");
+				}
+				if (null != playlists) {
+					goToAddSong(frame, client, song);
+				} else {
+					WindowUtils.errorPane("Primero debe crear una lista.", "Error");
+				}
+			}
+		}
 	}
 
 	/**
@@ -365,5 +387,13 @@ public class SingleView extends JPanel {
 		}
 
 		isPlayerRunning = false;
+	}
+	private void goToAddSong(JFrame frame, Client client, Song song) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
+				null, song, null));
+		frame.revalidate();
+		frame.repaint();
+
 	}
 }
