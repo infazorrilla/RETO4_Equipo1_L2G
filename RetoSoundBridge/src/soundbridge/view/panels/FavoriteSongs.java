@@ -122,7 +122,7 @@ public class FavoriteSongs extends JPanel {
 		add(lblCreator);
 
 		JTextArea textBio = new JTextArea(
-				"Listado de las canciones que te han gustado");
+				"Listado de las canciones que te han gustado.");
 		textBio.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		textBio.setEditable(false);
 		textBio.setOpaque(false);
