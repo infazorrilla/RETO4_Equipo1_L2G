@@ -441,11 +441,10 @@ public class FavoriteSongs extends JPanel {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			WindowUtils.errorPane("No se ha podido añadir la canción.", "Error");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			WindowUtils.errorPane("No se ha podido añadir la canción.", "Error");
 		}
 		if (favouriteSongs != null) {
 
@@ -463,11 +462,9 @@ public class FavoriteSongs extends JPanel {
 						arttGroup = controller.getGroupById(song.getArtGroup().getId());
 
 				} catch (SQLException e) {
-					System.out.println(e);
-					e.printStackTrace();
+					WindowUtils.errorPane("No se ha podido añadir la canción.", "Error");
 				} catch (Exception e) {
-					System.out.println(e);
-					e.printStackTrace();
+					WindowUtils.errorPane("No se ha podido añadir la canción.", "Error");
 				}
 				String number = (i + 1) + ".";
 				String title = song.getName();

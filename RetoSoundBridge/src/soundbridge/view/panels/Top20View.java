@@ -261,11 +261,9 @@ public class Top20View extends JPanel {
 		try {
 			top20songs = controller.getTop20Songs();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			WindowUtils.errorPane("No se ha podido añadir la canción.", "Error");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			WindowUtils.errorPane("No se ha podido añadir la canción.", "Error");
 		}
 		if (top20songs != null) {
 
@@ -283,11 +281,9 @@ public class Top20View extends JPanel {
 						arttGroup = controller.getGroupById(song.getArtGroup().getId());
 
 				} catch (SQLException e) {
-					System.out.println(e);
-					e.printStackTrace();
+					WindowUtils.errorPane("No se ha podido añadir la canción.", "Error");
 				} catch (Exception e) {
-					System.out.println(e);
-					e.printStackTrace();
+					WindowUtils.errorPane("No se ha podido añadir la canción.", "Error");
 				}
 				String number = (i + 1) + ".";
 				String title = song.getName();
