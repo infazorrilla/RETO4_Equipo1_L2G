@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes a person.
+ */
 public abstract class Person implements Serializable {
 	
 private static final long serialVersionUID = 6087647728383804140L;

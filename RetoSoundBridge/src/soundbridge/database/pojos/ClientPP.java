@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes a Premium Plus Client of the database.
+ */
 public class ClientPP extends Client {
 
 	private static final long serialVersionUID = -7048604268786892326L;

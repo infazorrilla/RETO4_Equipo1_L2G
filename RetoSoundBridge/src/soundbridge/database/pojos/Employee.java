@@ -3,6 +3,9 @@ package soundbridge.database.pojos;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes an employee of the database.
+ */
 public class Employee extends Person {
 
 	private static final long serialVersionUID = 9069804610454523019L;

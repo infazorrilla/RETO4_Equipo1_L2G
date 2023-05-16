@@ -13,10 +13,22 @@ import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Contain table on database.
+ */
 public class ContainManager extends ManagerAbstract<Contain> {
 
+	/**
+	 * Returns all instances of contains in database or null if there are not
+	 * contains instances.
+	 * 
+	 * @return list of contains or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<Contain> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Contain> ret = (ArrayList<Contain>) doSelectAll();
@@ -28,6 +40,14 @@ public class ContainManager extends ManagerAbstract<Contain> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of contains in database or null if there are not
+	 * contains instances.
+	 * 
+	 * @return list of contains or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Contain> doSelectAll() throws SQLException, Exception {
 		ArrayList<Contain> ret = null;
 		String sql = "SELECT * FROM Contain";
@@ -54,13 +74,11 @@ public class ContainManager extends ManagerAbstract<Contain> {
 
 				int idPlaylist = resultSet.getInt("playlistId");
 				int idSong = resultSet.getInt("songId");
-				
 
 				contain.setPlaylist(new Playlist());
-				contain.getPlaylist().setId(idPlaylist);	
+				contain.getPlaylist().setId(idPlaylist);
 				contain.setSong(new Song());
-				contain.getSong().setId(idSong);	
-				
+				contain.getSong().setId(idSong);
 
 				ret.add(contain);
 			}
@@ -95,6 +113,13 @@ public class ContainManager extends ManagerAbstract<Contain> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of contain into database.
+	 * 
+	 * @param contain contain to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Contain contain) throws SQLException, Exception {
 		Connection connection = null;
@@ -105,8 +130,8 @@ public class ContainManager extends ManagerAbstract<Contain> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO Contain (playlistId, songId) VALUES ("
-					+ contain.getPlaylist().getId() + ", " +  contain.getSong().getId() + "')";
+			String sql = "INSERT INTO Contain (playlistId, songId) VALUES (" + contain.getPlaylist().getId() + ", "
+					+ contain.getSong().getId() + ")";
 
 			statement.executeUpdate(sql);
 
@@ -131,6 +156,13 @@ public class ContainManager extends ManagerAbstract<Contain> {
 
 	}
 
+	/**
+	 * Updates an instance of contain on database by id.
+	 * 
+	 * @param contain contain to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Contain contain) throws SQLException, Exception {
 		Connection connection = null;
@@ -147,7 +179,6 @@ public class ContainManager extends ManagerAbstract<Contain> {
 
 			preparedStatement.setInt(1, contain.getPlaylist().getId());
 			preparedStatement.setInt(2, contain.getSong().getId());
-	
 
 			preparedStatement.executeUpdate();
 
@@ -172,6 +203,13 @@ public class ContainManager extends ManagerAbstract<Contain> {
 
 	}
 
+	/**
+	 * Deletes an instance of contain from database by id.
+	 * 
+	 * @param contain contain to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Contain contain) throws SQLException, Exception {
 		Connection connection = null;

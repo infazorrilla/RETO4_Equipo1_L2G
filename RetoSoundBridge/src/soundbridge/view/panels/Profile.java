@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,32 +11,50 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import soundbridge.database.managers.ClientManager;
-import soundbridge.database.managers.ClientPManager;
-import soundbridge.database.managers.ClientPPManager;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.factory.PanelFactory;
 
+/**
+ * Panel that contains the information of the logged client. It enables to
+ * update his subscription, personal information and password. The logged client
+ * can also log out or delete his account.
+ */
 public class Profile extends JPanel {
 
 	private static final long serialVersionUID = -6645561962016339329L;
 
+	/**
+	 * Initializes the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
 	public Profile(JFrame frame, Client client) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
 
+		initialize(frame, client);
+	}
+
+	/**
+	 * Initializes the components of the panel.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void initialize(JFrame frame, Client client) {
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(30, 30, 150, 150);
 		add(panelProfileIcon);
@@ -55,13 +72,11 @@ public class Profile extends JPanel {
 		panelHomeIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client));
-				frame.revalidate();
-				frame.repaint();
+				goToLibrary(frame, client);
 			}
 		});
 		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelHomeIcon.setToolTipText("Volver a mi biblioteca.");
 
 		JLabel lblHomeIcon = new JLabel("");
 		panelHomeIcon.add(lblHomeIcon, BorderLayout.CENTER);
@@ -75,22 +90,22 @@ public class Profile extends JPanel {
 		JLabel lblUsername = new JLabel("@" + client.getUsername());
 		lblUsername.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 		lblUsername.setBounds(200, 90, 301, 27);
-		lblUsername.setForeground(Color.white);
+		lblUsername.setForeground(new Color(244, 135, 244));
 		add(lblUsername);
 
 		JButton btnLogOut = new JButton("Cerrar Sesión");
+		btnLogOut.setHorizontalAlignment(SwingConstants.LEFT);
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				logOut(frame);
 			}
 		});
-		btnLogOut.setBounds(200, 130, 100, 30);
+		btnLogOut.setBounds(200, 130, 113, 30);
 		add(btnLogOut);
-		btnLogOut.setForeground(Color.white);
-		btnLogOut.setFont(new Font("Lucida Grande", Font.ITALIC, 15));
-		btnLogOut.setBackground(new Color(0, 0, 0, 0));
+		btnLogOut.setForeground(Color.WHITE);
+		btnLogOut.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 15));
 		btnLogOut.setBorder(new LineBorder(Color.black, 0));
-		btnLogOut.setOpaque(true);
+		btnLogOut.setOpaque(false);
 		btnLogOut.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JPanel panelEditSubscriptionIcon = new JPanel();
@@ -101,13 +116,11 @@ public class Profile extends JPanel {
 		panelEditSubscriptionIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client));
-				frame.revalidate();
-				frame.repaint();
+				goToChangeSubscription(frame, client);
 			}
 		});
 		panelEditSubscriptionIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelEditSubscriptionIcon.setToolTipText("Cambiar mi suscripción.");
 
 		JLabel lblEditSubscriptionIcon = new JLabel("");
 		panelEditSubscriptionIcon.add(lblEditSubscriptionIcon, BorderLayout.CENTER);
@@ -130,7 +143,7 @@ public class Profile extends JPanel {
 		JButton btnAcceptLogIn = new JButton("Eliminar cuenta");
 		btnAcceptLogIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteAccount(frame, client);
+				doDeleteAccount(frame, client);
 			}
 		});
 		btnAcceptLogIn.setBounds(50, 520, 200, 50);
@@ -143,20 +156,18 @@ public class Profile extends JPanel {
 		btnAcceptLogIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		JPanel panelEditInfoIcon = new JPanel();
+		panelEditInfoIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelEditInfoIcon.setBounds(310, 200, 25, 25);
-		add(panelEditInfoIcon);
 		panelEditInfoIcon.setLayout(new BorderLayout(0, 0));
+		add(panelEditInfoIcon);
 		panelEditInfoIcon.setOpaque(false);
 		panelEditInfoIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client));
-				frame.revalidate();
-				frame.repaint();
+				goToUpdateClient(frame, client);
 			}
 		});
-		panelEditInfoIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelEditInfoIcon.setToolTipText("Editar datos de mi cuenta.");
 
 		JLabel lblEditInfoIcon = new JLabel("");
 		panelEditInfoIcon.add(lblEditInfoIcon, BorderLayout.CENTER);
@@ -213,7 +224,7 @@ public class Profile extends JPanel {
 		lblBirthDate.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblBirthDate);
 
-		JLabel lblBirthDateValue = new JLabel((new SimpleDateFormat("dd-MM-yyyy")).format(client.getBirthDate()));
+		JLabel lblBirthDateValue = new JLabel((new SimpleDateFormat("dd/MM/yyyy")).format(client.getBirthDate()));
 		lblBirthDateValue.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		lblBirthDateValue.setBounds(480, 400, 301, 20);
 		lblBirthDateValue.setForeground(Color.white);
@@ -258,85 +269,116 @@ public class Profile extends JPanel {
 		lblEmailValue.setForeground(Color.white);
 		add(lblEmailValue);
 
-		addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
-		addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
-		addImage(panelEditSubscriptionIcon, lblEditSubscriptionIcon, "img/icon/pen.png");
-		addImage(panelEditInfoIcon, lblEditInfoIcon, "img/icon/pen.png");
+		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
+		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
+		WindowUtils.addImage(panelEditSubscriptionIcon, lblEditSubscriptionIcon, "img/icon/pen.png");
+		WindowUtils.addImage(panelEditInfoIcon, lblEditInfoIcon, "img/icon/pen.png");
 		addSubscriptionImage(client, panelSubscriptionIcon, lblSubscriptionIcon);
 	}
 
-	private void addImage(JPanel panel, JLabel label, String path) {
-		ImageIcon icon = new ImageIcon(path);
-		Image img = icon.getImage();
-		Image resizedImg = img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
-		icon.setImage(resizedImg);
-		label.setIcon(icon);
-	}
-
-	private void logOut(JFrame frame) {
+	/**
+	 * Takes the client back to the library.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToLibrary(JFrame frame, Client client) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
 
+	/**
+	 * Takes the client to the panel where the subscription can be updated.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToChangeSubscription(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CHANGE_SUBSCRIPTION, frame, client, null, null,
+				null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the client to the panel where the personal information can be updated.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToUpdateClient(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(
+				PanelFactory.getJPanel(PanelFactory.UPDATE_CLIENT, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the client to the log in.
+	 * 
+	 * @param frame frame where the panel is added
+	 */
+	private void logOut(JFrame frame) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Adds the corresponding subscription image, which depends on the client.
+	 * 
+	 * @param client logged client
+	 * @param panel  panel that contains the image
+	 * @param lbl    label where the image is placed
+	 */
 	private void addSubscriptionImage(Client client, JPanel panel, JLabel lbl) {
 		if (client instanceof ClientPP) {
-			addImage(panel, lbl, "img/icon/sbpp.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbpp.png");
 		} else if (client instanceof ClientP) {
-			addImage(panel, lbl, "img/icon/sbp.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbp.png");
 		} else {
-			addImage(panel, lbl, "img/icon/sbbasic.png");
+			WindowUtils.addImage(panel, lbl, "img/icon/sbbasic.png");
 		}
 	}
 
-	public int askToConfirmDeletion() {
-		JFrame frame = new JFrame();
-		String[] options = new String[2];
-		options[0] = "Sí";
-		options[1] = "No";
-
-		String titulo = "Eliminar Cuenta";
-
-		String msg = "¿Desea eliminar la cuenta?";
-
-		int ret = JOptionPane.showOptionDialog(frame.getContentPane(), msg, titulo, 0, JOptionPane.INFORMATION_MESSAGE,
-				null, options, null);
-
-		return ret;
+	/**
+	 * Asks the client to confirm the removal of his account.
+	 * 
+	 * @return reply of the client
+	 */
+	private int askToConfirmDeletion() {
+		int reply = WindowUtils.yesOrNoPaneWithIcon("¿Desea eliminar la cuenta?", "Eliminar Cuenta",
+				"img/icon/alert.png");
+		return reply;
 	}
 
-	private void deleteAccount(JFrame frame, Client client) {
+	/**
+	 * Deletes the account of the logged client after confirmation.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void doDeleteAccount(JFrame frame, Client client) {
+		Controller controller = new Controller();
 		int reply = askToConfirmDeletion();
 		if (reply == 0) {
-
-			ClientManager clientManager = new ClientManager();
-			ClientPManager clientPManager = new ClientPManager();
-			ClientPPManager clientPPManager = new ClientPPManager();
-
 			try {
+				controller.deleteAccount(client);
+				WindowUtils.messagePaneWithIcon("Su cuenta ha sido eliminada.", "Confirmación", "img/icon/bye.png");
 
-				if (client instanceof ClientP) {
-					clientPManager.delete((ClientP) client);
-				} else if (client instanceof ClientPP) {
-					clientPPManager.delete((ClientPP) client);
-				}
-
-				clientManager.delete(client);
-
-				JOptionPane.showMessageDialog(null, "Su cuenta ha sido eliminada.", "Confirmación",
-						JOptionPane.INFORMATION_MESSAGE);
-
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null));
-				frame.revalidate();
-				frame.repaint();
+				logOut(frame);
 
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "No se ha podido eliminar su cuenta.", "Error",
-						JOptionPane.ERROR_MESSAGE);
+				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error en la base de datos");
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Error general.", "Error", JOptionPane.ERROR_MESSAGE);
+				WindowUtils.errorPane("No se ha podido eliminar su cuenta.", "Error general");
 			}
 		}
 	}

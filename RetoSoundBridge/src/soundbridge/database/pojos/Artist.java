@@ -3,6 +3,9 @@ package soundbridge.database.pojos;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Describes an artist of the database.
+ */
 public class Artist extends Person {
 
 	private static final long serialVersionUID = 5040901852828729717L;

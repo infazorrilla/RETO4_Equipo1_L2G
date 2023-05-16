@@ -11,22 +11,42 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.ArtGroup;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the ArtGroup table on database.
+ */
 public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
+	/**
+	 * Returns all instances of art groups in database or null if there are not art
+	 * groups.
+	 * 
+	 * @return list of art groups or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<ArtGroup> selectAll() throws SQLException, NotFoundException, Exception {
 
 		ArrayList<ArtGroup> ret = (ArrayList<ArtGroup>) doSelectAll();
 
 		if (null == ret) {
-			throw new NotFoundException("There are no Group of artists");
+			throw new NotFoundException("There are no group of artists");
 		}
 
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of art groups in database or null if there are not art
+	 * groups.
+	 * 
+	 * @return list of art groups or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<ArtGroup> doSelectAll() throws SQLException, Exception {
 		ArrayList<ArtGroup> ret = null;
 		String sql = "SELECT * FROM ArtGroup";
@@ -94,6 +114,13 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of art group into database.
+	 * 
+	 * @param artGroup art group to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
@@ -130,6 +157,13 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 	}
 
+	/**
+	 * Updates an instance of art group on database by id.
+	 * 
+	 * @param artGroup art group to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
@@ -144,10 +178,10 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 			preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setInt(1, artGroup.getId());
-			preparedStatement.setString(2, artGroup.getName());
-			preparedStatement.setString(13, artGroup.getDescription());
-			preparedStatement.setString(13, artGroup.getImage());
+			preparedStatement.setInt(4, artGroup.getId());
+			preparedStatement.setString(1, artGroup.getName());
+			preparedStatement.setString(2, artGroup.getDescription());
+			preparedStatement.setString(3, artGroup.getImage());
 
 			preparedStatement.executeUpdate();
 
@@ -172,6 +206,13 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 	}
 
+	/**
+	 * Deletes an instance of art group from database by id.
+	 * 
+	 * @param artGroup art group to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(ArtGroup artGroup) throws SQLException, Exception {
 		Connection connection = null;
@@ -207,6 +248,107 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 			;
 		}
 
+	}
+
+	/**
+	 * Returns an instance of art group by the name.
+	 * 
+	 * @param nameOfGroup name of the art group
+	 * @return art group with the given name
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public ArtGroup getArtGroupByName(String nameOfGroup) throws SQLException, Exception {
+		ArtGroup ret = null;
+
+		ArrayList<ArtGroup> groups = (ArrayList<ArtGroup>) doSelectAll();
+
+		if (groups != null) {
+			for (ArtGroup group : groups) {
+				if (group.getName().equalsIgnoreCase(nameOfGroup)) {
+					ret = group;
+					break;
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	/**
+	 * Returns an instance of art group by id.
+	 * 
+	 * @param id given id of the art group
+	 * @return art group with the given id
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public ArtGroup selectGroupById(int id) throws SQLException, Exception {
+		ArtGroup ret = null;
+		String sql = "SELECT * FROM ArtGroup where id=?";
+
+		Connection connection = null;
+
+		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+
+				if (null == ret)
+					ret = new ArtGroup();
+
+				ArtGroup artGroup = new ArtGroup();
+
+				int idGroup = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String description = resultSet.getString("description");
+				String image = resultSet.getString("image");
+
+				artGroup.setId(idGroup);
+				artGroup.setName(name);
+				artGroup.setDescription(description);
+				artGroup.setImage(image);
+
+				ret = (artGroup);
+			}
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+
+			}
+			;
+		}
+
+		return ret;
 	}
 
 }

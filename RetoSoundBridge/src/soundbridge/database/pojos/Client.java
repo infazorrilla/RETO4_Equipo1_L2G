@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Describes a client of the database.
+ */
 public class Client extends Person implements Serializable {
 
 	private static final long serialVersionUID = -2513971403121032275L;
@@ -14,6 +17,7 @@ public class Client extends Person implements Serializable {
 	protected String telephone = null;
 	protected String address = null;
 	protected String email = null;
+	protected boolean isBlocked = false;
 
 	protected ArrayList<Play> plays = null;
 
@@ -65,6 +69,14 @@ public class Client extends Person implements Serializable {
 		this.email = email;
 	}
 
+	public boolean isBlocked() {
+		return isBlocked;
+	}
+
+	public void setBlocked(boolean isBlocked) {
+		this.isBlocked = isBlocked;
+	}
+
 	public ArrayList<Play> getPlays() {
 		return plays;
 	}
@@ -81,7 +93,8 @@ public class Client extends Person implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(address, email, passwd, personalId, plays, telephone, username);
+		result = prime * result
+				+ Objects.hash(address, email, isBlocked, passwd, personalId, plays, telephone, username);
 		return result;
 	}
 
@@ -95,17 +108,17 @@ public class Client extends Person implements Serializable {
 			return false;
 		Client other = (Client) obj;
 		return Objects.equals(address, other.address) && Objects.equals(email, other.email)
-				&& Objects.equals(passwd, other.passwd) && Objects.equals(personalId, other.personalId)
-				&& Objects.equals(plays, other.plays) && Objects.equals(telephone, other.telephone)
-				&& Objects.equals(username, other.username);
+				&& isBlocked == other.isBlocked && Objects.equals(passwd, other.passwd)
+				&& Objects.equals(personalId, other.personalId) && Objects.equals(plays, other.plays)
+				&& Objects.equals(telephone, other.telephone) && Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
 		return "Client [username=" + username + ", passwd=" + passwd + ", personalId=" + personalId + ", telephone="
-				+ telephone + ", address=" + address + ", email=" + email + ", plays=" + plays + ", id=" + id
-				+ ", name=" + name + ", lastName=" + lastName + ", nationality=" + nationality + ", gender=" + gender
-				+ ", birthDate=" + birthDate + "]";
+				+ telephone + ", address=" + address + ", email=" + email + ", isBlocked=" + isBlocked + ", plays="
+				+ plays + ", id=" + id + ", name=" + name + ", lastName=" + lastName + ", nationality=" + nationality
+				+ ", gender=" + gender + ", birthDate=" + birthDate + "]";
 	}
 
 }

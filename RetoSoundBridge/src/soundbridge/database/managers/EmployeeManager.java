@@ -11,10 +11,22 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Employee;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Employee table on database.
+ */
 public class EmployeeManager extends ManagerAbstract<Employee> {
 
+	/**
+	 * Returns all instances of employees in database or null if there are not
+	 * employees.
+	 * 
+	 * @return list of employees or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<Employee> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Employee> ret = (ArrayList<Employee>) doSelectAll();
@@ -26,6 +38,14 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of employees in database or null if there are not
+	 * employees.
+	 * 
+	 * @return list of employees or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Employee> doSelectAll() throws SQLException, Exception {
 		ArrayList<Employee> ret = null;
 		String sql = "SELECT * FROM Employee";
@@ -120,6 +140,13 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of employee into database.
+	 * 
+	 * @param employee employee to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Employee employee) throws SQLException, Exception {
 		Connection connection = null;
@@ -161,6 +188,13 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 
 	}
 
+	/**
+	 * Updates an instance of employee on database by id.
+	 * 
+	 * @param employee employee to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Employee employee) throws SQLException, Exception {
 		Connection connection = null;
@@ -216,6 +250,13 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 
 	}
 
+	/**
+	 * Deletes an instance of employee from database by id.
+	 * 
+	 * @param employee employee to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Employee employee) throws SQLException, Exception {
 		Connection connection = null;
@@ -252,7 +293,18 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 		}
 
 	}
-	public boolean askForEmployeeUsingIdAndPasswd(String username, String passwd) {
+
+	/**
+	 * Checks if an instance of employee exists on database with given username and
+	 * password.
+	 * 
+	 * @param username given username for the employee
+	 * @param passwd   given username for the employee
+	 * @return true if instance exists, otherwise false
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public boolean askForEmployeeUsingIdAndPasswd(String username, String passwd) throws SQLException, Exception {
 
 		String sql = "select * from employee where username=? and passwd=?";
 
@@ -278,9 +330,9 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 
 			}
 		} catch (SQLException sqle) {
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
+			throw sqle;
 		} catch (Exception e) {
-			System.out.println("Error generico - " + e.getMessage());
+			throw e;
 		} finally {
 
 			try {
@@ -307,8 +359,16 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 		}
 		return false;
 	}
-	
-	public Employee doSelectAllUsingUsername(String username) throws SQLException, Exception {
+
+	/**
+	 * Returns an instance of employee on database with given username.
+	 * 
+	 * @param username given username for the employee
+	 * @return employee with the given username
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public Employee getEmployeeByUsername(String username) throws SQLException, Exception {
 		Employee ret = null;
 		ArrayList<Employee> employees = (ArrayList<Employee>) doSelectAll();
 		for (Employee employee : employees) {
@@ -319,6 +379,5 @@ public class EmployeeManager extends ManagerAbstract<Employee> {
 		}
 		return ret;
 	}
-
 
 }

@@ -13,10 +13,22 @@ import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
 
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the ClientPP table on database.
+ */
 public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
+	/**
+	 * Returns all instances of premium plus clients in database or null if there
+	 * are not premium plus clients.
+	 * 
+	 * @return list of premium plus clients or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<ClientPP> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<ClientPP> ret = (ArrayList<ClientPP>) doSelectAll();
@@ -28,6 +40,14 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of premium plus clients in database or null if there
+	 * are not premium plus clients.
+	 * 
+	 * @return list of premium plus clients or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<ClientPP> doSelectAll() throws SQLException, Exception {
 		ArrayList<ClientPP> ret = null;
 		String sql = "SELECT * FROM ClientPP";
@@ -52,7 +72,6 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 				ClientPP clientpp = new ClientPP();
 
-				
 				int idClient = resultSet.getInt("idClient");
 				String bankAccount = resultSet.getString("bankAccount");
 				java.sql.Date sqlsuscriptionDate = resultSet.getDate("suscriptionDate");
@@ -95,6 +114,14 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of premium plus client into database, when a client
+	 * already exists in client table.
+	 * 
+	 * @param clientpp premium plus client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(ClientPP clientpp) throws SQLException, Exception {
 		Connection connection = null;
@@ -116,9 +143,8 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 					idClient = client.getId();
 			}
 
-			String sql = "INSERT INTO ClientPP (idClient,suscriptionDate,bankAccount) VALUES ( " + idClient + ", '"
-					+ new java.sql.Date((clientpp.getSuscriptionDate()).getTime()) + "','" + clientpp.getBankAccount()
-					+ "')";
+			String sql = "INSERT INTO ClientPP (idClient,bankAccount) VALUES ( " + idClient + ", '"
+					+ clientpp.getBankAccount() + "')";
 
 			statement.executeUpdate(sql);
 
@@ -145,6 +171,13 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 	}
 
+	/**
+	 * Updates an instance of premium plus client on database by id.
+	 * 
+	 * @param clientpp premium plus client to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(ClientPP clientpp) throws SQLException, Exception {
 		Connection connection = null;
@@ -160,7 +193,6 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setString(1, clientpp.getBankAccount());
-
 
 			preparedStatement.executeUpdate();
 
@@ -185,6 +217,13 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 	}
 
+	/**
+	 * Deletes an instance of premium plus client from database by id.
+	 * 
+	 * @param clientpp premium plus client to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(ClientPP clientpp) throws SQLException, Exception {
 		Connection connection = null;
@@ -195,7 +234,7 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			String sql = "DELETE FROM ClientPP WHERE id = ?";
+			String sql = "DELETE FROM ClientPP WHERE idClient = ?";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, clientpp.getId());
 
@@ -221,19 +260,73 @@ public class ClientPPManager extends ManagerAbstract<ClientPP> {
 		}
 
 	}
-	
+
+	/**
+	 * Returns an instance of premium plus client on database by id.
+	 * 
+	 * @param idClient given id of client
+	 * @return premium plus client
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ClientPP getClientPPById(int idClient) throws SQLException, Exception {
 		ClientPP ret = null;
-		
+
 		ArrayList<ClientPP> clientPPs = (ArrayList<ClientPP>) doSelectAll();
-		for (ClientPP clientPP : clientPPs) {
-			if (clientPP.getId() == idClient) {
-				ret = clientPP;
-				break;
+		if (clientPPs != null) {
+			for (ClientPP clientPP : clientPPs) {
+				if (clientPP.getId() == idClient) {
+					ret = clientPP;
+					break;
+				}
 			}
 		}
-		
+
 		return ret;
+	}
+
+	/**
+	 * Inserts an instance of premium plus client into database.
+	 * 
+	 * @param clientp premium plus client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public void insertReal(ClientPP clientpp) throws SQLException, Exception {
+		Connection connection = null;
+		Statement statement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			statement = connection.createStatement();
+
+			String sql = "INSERT INTO ClientPP (idClient,bankAccount) VALUES ( " + clientpp.getId() + ",'"
+					+ clientpp.getBankAccount() + "')";
+
+			statement.executeUpdate(sql);
+
+		} catch (SQLException sqle) {
+
+			throw sqle;
+		} catch (Exception e) {
+
+			throw e;
+		} finally {
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
 	}
 
 }

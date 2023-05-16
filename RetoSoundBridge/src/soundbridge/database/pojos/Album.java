@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Describes an album of the database.
+ */
 public class Album implements Serializable {
 
 	private static final long serialVersionUID = -4101493757142816718L;

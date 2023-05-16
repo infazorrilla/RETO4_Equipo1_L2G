@@ -9,17 +9,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import soundbridge.database.exception.NotFoundException;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.ClientPP;
-import soundbridge.database.utils.DBUtils;
+import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Client table on database.
+ */
 public class ClientManager extends ManagerAbstract<Client> {
 
+	/**
+	 * Returns all instances of clients in database or null if there are not
+	 * clients. Clients are returned with their corresponding type.
+	 * 
+	 * @return list of clients or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<Client> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Client> ret = (ArrayList<Client>) doSelectAll();
@@ -31,6 +40,14 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of clients in database or null if there are not
+	 * clients. Clients are returned with their corresponding type.
+	 * 
+	 * @return list of clients or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Client> doSelectAll() throws SQLException, Exception {
 		ArrayList<Client> ret = null;
 		String sql = "SELECT * FROM Client";
@@ -79,6 +96,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 				String address = resultSet.getString("address");
 				String username = resultSet.getString("username");
 				String passwd = resultSet.getString("passwd");
+				boolean isBlocked = resultSet.getBoolean("isBlocked");
 
 				client.setId(id);
 				client.setName(name);
@@ -92,11 +110,28 @@ public class ClientManager extends ManagerAbstract<Client> {
 				client.setAddress(address);
 				client.setUsername(username);
 				client.setPasswd(passwd);
+				client.setBlocked(isBlocked);
+
+				if (client instanceof ClientP) {
+					ClientPManager clientPManager = new ClientPManager();
+					ClientP clientP = clientPManager.getClientPById(id);
+					if (clientP != null) {
+						((ClientP) client).setBankAccount(clientP.getBankAccount());
+						((ClientP) client).setSuscriptionDate(clientP.getSuscriptionDate());
+					}
+				} else if (client instanceof ClientPP) {
+					ClientPPManager clientPPManager = new ClientPPManager();
+					ClientPP clientPP = clientPPManager.getClientPPById(id);
+					if (clientPP != null) {
+						((ClientPP) client).setBankAccount(clientPP.getBankAccount());
+						((ClientPP) client).setSuscriptionDate(clientPP.getSuscriptionDate());
+					}
+				}
 
 				ret.add(client);
 			}
 		} catch (SQLException sqle) {
-			
+
 			throw sqle;
 		} catch (Exception e) {
 			throw e;
@@ -127,6 +162,13 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of client into database.
+	 * 
+	 * @param client client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Client client) throws SQLException, Exception {
 		Connection connection = null;
@@ -137,19 +179,30 @@ public class ClientManager extends ManagerAbstract<Client> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO Client (name, lastName, nationality, gender, birthDate, personalId, telephone, email, address, username, passwd) VALUES ('"
+			String type = null;
+
+			if (client instanceof ClientP) {
+				type = "Premium";
+			} else if (client instanceof ClientPP) {
+				type = "Premium Plus";
+			} else {
+				type = "Basic";
+			}
+
+			String sql = "INSERT INTO Client (name, lastName, nationality, gender, birthDate, personalId, telephone, email, address, username, passwd, type) VALUES ('"
 					+ client.getName() + "', '" + client.getLastName() + "', '" + client.getNationality() + "', '"
 					+ client.getGender() + "', '" + new java.sql.Date((client.getBirthDate()).getTime()) + "', '"
 					+ client.getPersonalId() + "', '" + client.getTelephone() + "', '" + client.getEmail() + "', '"
-					+ client.getAddress() + "', '" + client.getUsername() + "', '" + client.getPasswd() + "')";
+					+ client.getAddress() + "', '" + client.getUsername() + "', '" + client.getPasswd() + "', '" + type
+					+ "')";
 
 			statement.executeUpdate(sql);
 
 		} catch (SQLException sqle) {
-			
+
 			throw sqle;
 		} catch (Exception e) {
-		
+
 			throw e;
 		} finally {
 			try {
@@ -169,6 +222,13 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	}
 
+	/**
+	 * Updates an instance of client on database by id.
+	 * 
+	 * @param client client to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Client client) throws SQLException, Exception {
 		Connection connection = null;
@@ -181,7 +241,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 			String sql = "UPDATE Client SET name = ?, lastName = ?, nationality = ?, gender = ?, birthDate = ?, "
 					+ "personalId = ?, telephone = ?, email = ?, address = ?, "
-					+ "username = ?, passwd = ?, type = ? where id = ?";
+					+ "username = ?, passwd = ?, type = ?, isBlocked = ? where id = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -196,7 +256,8 @@ public class ClientManager extends ManagerAbstract<Client> {
 			preparedStatement.setString(9, client.getAddress());
 			preparedStatement.setString(10, client.getUsername());
 			preparedStatement.setString(11, client.getPasswd());
-			preparedStatement.setInt(13, client.getId());
+			preparedStatement.setBoolean(13, client.isBlocked());
+			preparedStatement.setInt(14, client.getId());
 
 			if (client instanceof ClientP)
 				preparedStatement.setString(12, "Premium");
@@ -228,6 +289,13 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	}
 
+	/**
+	 * Deletes an instance of client from database by id.
+	 * 
+	 * @param client client to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Client client) throws SQLException, Exception {
 		Connection connection = null;
@@ -265,7 +333,17 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	}
 
-	public boolean askForClientUsingIdAndPasswd(String username, String passwd) {
+	/**
+	 * Checks if an instance of client exists on database with given username and
+	 * password.
+	 * 
+	 * @param username given username for the client
+	 * @param passwd   given username for the client
+	 * @return true if instance exists, otherwise false
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public boolean askForClientUsingIdAndPasswd(String username, String passwd) throws SQLException, Exception {
 
 		String sql = "select * from client where username=? and passwd=?";
 
@@ -291,9 +369,9 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 			}
 		} catch (SQLException sqle) {
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
+			throw sqle;
 		} catch (Exception e) {
-			System.out.println("Error generico - " + e.getMessage());
+			throw e;
 		} finally {
 
 			try {
@@ -321,7 +399,15 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return false;
 	}
 
-	public Client doSelectAllUsingUsername(String username) throws SQLException, Exception {
+	/**
+	 * Returns an instance of client on database with given username.
+	 * 
+	 * @param username given username for the client
+	 * @return client with the given username
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public Client getClientByUsername(String username) throws SQLException, Exception {
 		Client ret = null;
 		ArrayList<Client> clients = (ArrayList<Client>) doSelectAll();
 		for (Client client : clients) {
@@ -330,7 +416,170 @@ public class ClientManager extends ManagerAbstract<Client> {
 				break;
 			}
 		}
+
 		return ret;
+	}
+
+	/**
+	 * Calls changeSubscription procedure from database which updates a client's
+	 * subscription.
+	 * 
+	 * @param clientId        id of client
+	 * @param bankNumber      bank number of client if new subscription is paid,
+	 *                        otherwise null
+	 * @param newSubscription name of new subscription
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public void changeSubscription(int clientId, String bankNumber, String newSubscription)
+			throws SQLException, Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			String sql = "CALL changeSubscription(?, ?, ?)";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1, clientId);
+			preparedStatement.setString(2, bankNumber);
+			preparedStatement.setString(3, newSubscription);
+
+			preparedStatement.execute();
+
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+	}
+
+	/**
+	 * Returns an instance of client on database by id.
+	 * 
+	 * @param idClient given id of client
+	 * @return client with given id
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public Client clientById(int idClient) throws SQLException, Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Client ret = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			String sql = "SELECT * FROM Client WHERE id = ?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, idClient);
+
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+
+				if (null == ret)
+					ret = new Client();
+
+				String type = resultSet.getString("type");
+				if (type.equalsIgnoreCase("basic")) {
+					ret = new Client();
+				} else if (type.equalsIgnoreCase("premium")) {
+					ret = new ClientP();
+				} else if (type.equalsIgnoreCase("premium plus")) {
+					ret = new ClientPP();
+				}
+
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String lastName = resultSet.getString("lastName");
+				String nationality = resultSet.getString("nationality");
+				String gender = resultSet.getString("gender");
+
+				java.sql.Date sqlBirthDate = resultSet.getDate("birthDate");
+				java.util.Date birthDate = new java.util.Date(sqlBirthDate.getTime());
+
+				String personalId = resultSet.getString("personalId");
+				String telephone = resultSet.getString("telephone");
+				String email = resultSet.getString("email");
+				String address = resultSet.getString("address");
+				String username = resultSet.getString("username");
+				String passwd = resultSet.getString("passwd");
+				boolean isBlocked = resultSet.getBoolean("isBlocked");
+
+				ret.setId(id);
+				ret.setName(name);
+				ret.setLastName(lastName);
+				ret.setNationality(nationality);
+				ret.setGender(gender);
+				ret.setBirthDate(birthDate);
+				ret.setPersonalId(personalId);
+				ret.setTelephone(telephone);
+				ret.setEmail(email);
+				ret.setAddress(address);
+				ret.setUsername(username);
+				ret.setPasswd(passwd);
+				ret.setBlocked(isBlocked);
+
+				if (ret instanceof ClientP) {
+					ClientPManager clientPManager = new ClientPManager();
+					ClientP clientP = clientPManager.getClientPById(id);
+					if (clientP != null) {
+						((ClientP) ret).setBankAccount(clientP.getBankAccount());
+						((ClientP) ret).setSuscriptionDate(clientP.getSuscriptionDate());
+					}
+				} else if (ret instanceof ClientPP) {
+					ClientPPManager clientPPManager = new ClientPPManager();
+					ClientPP clientPP = clientPPManager.getClientPPById(id);
+					if (clientPP != null) {
+						((ClientPP) ret).setBankAccount(clientPP.getBankAccount());
+						((ClientPP) ret).setSuscriptionDate(clientPP.getSuscriptionDate());
+					}
+				}
+			}
+
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			;
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+			;
+		}
+
+		return ret;
+
 	}
 
 }
