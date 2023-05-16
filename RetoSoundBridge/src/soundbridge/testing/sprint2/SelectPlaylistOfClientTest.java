@@ -13,7 +13,10 @@ import soundbridge.database.managers.PlaylistManager;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Playlist;
-
+/**
+ * Checks if the playlist which is inserted has the correct information and the method to check
+ * the playlist information works correctly.
+ */
 public class SelectPlaylistOfClientTest {
 
 	@Test
