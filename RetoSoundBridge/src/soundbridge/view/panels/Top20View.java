@@ -339,7 +339,7 @@ public class Top20View extends JPanel {
 		if (indexColumn == 0) {
 			
 			controller.addToFavourites(client, top20songs, tableSongsTop20);
-			WindowUtils.confirmationPane("Se ha añadido correctamente", "Canción añadida");
+			
 		} else if (indexColumn >= 1 && indexColumn <= 5) {
 			if (isPlayerRunning)
 				this.stop();
