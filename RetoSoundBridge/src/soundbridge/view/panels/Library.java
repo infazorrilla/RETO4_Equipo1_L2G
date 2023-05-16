@@ -54,6 +54,10 @@ public class Library extends JPanel {
 	 * @param client logged client
 	 */
 	public Library(JFrame frame, Client client) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+		
 		initialize(frame, client);
 	}
 
@@ -64,10 +68,6 @@ public class Library extends JPanel {
 	 * @param client logged client
 	 */
 	private void initialize(JFrame frame, Client client) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(903, 45, 50, 50);
 		add(panelProfileIcon);

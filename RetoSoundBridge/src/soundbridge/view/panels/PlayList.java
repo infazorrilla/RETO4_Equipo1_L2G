@@ -70,6 +70,10 @@ public class PlayList extends JPanel {
 	 * @param playlist selected playlist
 	 */
 	public PlayList(JFrame frame, Client client, Playlist playlist) {
+		setBounds(0, 0, 1000, 672);
+		setBackground(Color.black);
+		setLayout(null);
+		
 		initialize(frame, client, playlist);
 	}
 
@@ -81,10 +85,6 @@ public class PlayList extends JPanel {
 	 * @param playlist selected playlist
 	 */
 	public void initialize(JFrame frame, Client client, Playlist playlist) {
-		setBounds(0, 0, 1000, 672);
-		setBackground(Color.black);
-		setLayout(null);
-
 		JPanel panelRemovePlaylist = new JPanel();
 		panelRemovePlaylist.setToolTipText("Eliminar playlist.");
 		panelRemovePlaylist.setOpaque(false);

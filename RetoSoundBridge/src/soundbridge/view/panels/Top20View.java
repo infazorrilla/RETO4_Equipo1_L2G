@@ -60,6 +60,10 @@ public class Top20View extends JPanel {
 	private Controller controller;
 
 	public Top20View(JFrame frame, Client client) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+		
 		initialize(frame, client);
 	}
 
@@ -73,10 +77,6 @@ public class Top20View extends JPanel {
 	 * 
 	 */
 	public void initialize(JFrame frame, Client client) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		panelPauseIcon = new JPanel();
 		panelPauseIcon.setBounds(115, 115, 100, 100);
 		add(panelPauseIcon);

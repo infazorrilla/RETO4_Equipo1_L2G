@@ -65,7 +65,10 @@ public class SignUp extends JPanel {
 	 * @param frame frame where the panel is added
 	 */
 	public SignUp(JFrame frame) {
-
+		setBounds(0, 0, 1000, 672);
+		setBackground(Color.black);
+		setLayout(null);
+		
 		initialize(frame);
 
 	}
@@ -77,10 +80,6 @@ public class SignUp extends JPanel {
 	 */
 
 	private void initialize(JFrame frame) {
-		setBounds(0, 0, 1000, 672);
-		setBackground(Color.black);
-		setLayout(null);
-
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(30, 30, 150, 150);
 		panelProfileIcon.setOpaque(false);

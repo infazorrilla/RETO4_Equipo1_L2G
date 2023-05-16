@@ -59,9 +59,11 @@ public class ManageClients extends JPanel {
 	 * @param employee logged employee
 	 */
 	public ManageClients(JFrame frame, Employee employee) {
-
+		setBounds(0, 0, 1000, 672);
+		setBackground(Color.black);
+		setLayout(null);
+		
 		initialize(frame, employee);
-
 	}
 
 	/**
@@ -71,11 +73,6 @@ public class ManageClients extends JPanel {
 	 * @param employee logged employee
 	 */
 	private void initialize(JFrame frame, Employee employee) {
-
-		setBounds(0, 0, 1000, 672);
-		setBackground(Color.black);
-		setLayout(null);
-
 		JLabel lblTitle = new JLabel("Gestión de clientes");
 		lblTitle.setForeground(Color.WHITE);
 		lblTitle.setFont(new Font("Dialog", Font.BOLD, 22));

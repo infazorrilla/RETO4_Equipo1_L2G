@@ -46,6 +46,10 @@ public class Login extends JPanel {
 	 * @param frame frame where the panel is added
 	 */
 	public Login(JFrame frame) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+		
 		initialize(frame);
 
 		WindowUtils.addGif(lblBackground, "img/panel/new_smoke.gif");
@@ -59,11 +63,6 @@ public class Login extends JPanel {
 	 */
 
 	private void initialize(JFrame frame) {
-
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		JTextField textFieldUserLogIn = new JTextField();
 		textFieldUserLogIn.setBounds(700, 200, 200, 50);
 		add(textFieldUserLogIn);
