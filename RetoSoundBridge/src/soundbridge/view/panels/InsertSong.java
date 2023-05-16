@@ -481,7 +481,7 @@ public class InsertSong extends JPanel {
 		if (controller == null)
 			controller = new Controller();
 
-		if (controller.isLengthCorrectNumericSeconds(textDuration, 2))
+		if (controller.isLengthCorrectNumericSeconds(textDuration))
 			textDuration.setBorder(new LineBorder(new Color(0, 205, 20), 2));
 		else
 			textDuration.setBorder(new LineBorder(new Color(255, 40, 40), 2));
@@ -604,7 +604,7 @@ public class InsertSong extends JPanel {
 		if (controller == null)
 			controller = new Controller();
 
-		if (controller.isNotEmptyText(textTitle) && controller.isLengthCorrectNumericSeconds(textDuration, 2)
+		if (controller.isNotEmptyText(textTitle) && controller.isLengthCorrectNumericSeconds(textDuration)
 				&& controller.isNotEmptyText(textFile) && controller.isLetterStringCorrect(textLanguage)
 				&& controller.isLetterStringCorrect(textGenre) && controller.isLengthCorrectNumeric(textYear, 4))
 			ret = true;

@@ -396,6 +396,14 @@ public class Controller {
 		clientManager.changeSubscription(client.getId(), bankNumber, newSubscription);
 	}
 
+	/**
+	 * Returns a premium client by logged client's id.
+	 * 
+	 * @param client logged client
+	 * @return premium client
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ClientP getPremiumClient(Client client) throws SQLException, Exception {
 		if (null == clientPManager)
 			clientPManager = new ClientPManager();
@@ -403,6 +411,14 @@ public class Controller {
 		return clientPManager.getClientPById(client.getId());
 	}
 
+	/**
+	 * Returns a premium plus client by logged client's id.
+	 * 
+	 * @param client logged client
+	 * @return premium plus client
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ClientPP getPremiumPlusClient(Client client) throws SQLException, Exception {
 		if (null == clientPPManager)
 			clientPPManager = new ClientPPManager();
@@ -410,6 +426,14 @@ public class Controller {
 		return clientPPManager.getClientPPById(client.getId());
 	}
 
+	/**
+	 * Returns an artist with given name if exists in database.
+	 * 
+	 * @param search searched name of artist
+	 * @return artist with given name
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Artist searchedArtist(String search) throws SQLException, Exception {
 		if (null == artistManager)
 			artistManager = new ArtistManager();
@@ -417,6 +441,14 @@ public class Controller {
 		return artistManager.getArtistByName(search);
 	}
 
+	/**
+	 * Returns an art group with given name if exists in database.
+	 * 
+	 * @param search searched name of art group
+	 * @return art group with given name
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArtGroup searchedGroup(String search) throws SQLException, Exception {
 		if (null == artGroupManager)
 			artGroupManager = new ArtGroupManager();
@@ -424,70 +456,166 @@ public class Controller {
 		return artGroupManager.getArtGroupByName(search);
 	}
 
+	/**
+	 * Inserts a new basic client into database.
+	 * 
+	 * @param client basic client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void insertClient(Client client) throws SQLException, Exception {
 		ClientManager clientManager = new ClientManager();
 		clientManager.insert(client);
 	}
 
+	/**
+	 * Inserts a new premium client into database.
+	 * 
+	 * @param client premium client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void insertClientP(ClientP clientp) throws SQLException, Exception {
 		ClientPManager clientpManager = new ClientPManager();
 		clientpManager.insertReal(clientp);
 	}
 
+	/**
+	 * Inserts a new premium plus client into database.
+	 * 
+	 * @param client premium plus client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void insertClientPP(ClientPP clientpp) throws SQLException, Exception {
 		ClientPPManager clientppManager = new ClientPPManager();
 		clientppManager.insertReal(clientpp);
 	}
 
+	/**
+	 * Updates a client on database.
+	 * 
+	 * @param client client to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void updateClient(Client client) throws SQLException, Exception {
 		ClientManager clientManager = new ClientManager();
 		clientManager.update(client);
 	}
 
+	/**
+	 * Returns a client by username.
+	 * 
+	 * @param username given username
+	 * @return client with given username
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Client getClientByUsername(String username) throws SQLException, Exception {
 		ClientManager clientManager = new ClientManager();
 		return clientManager.getClientByUsername(username);
 	}
 
+	/**
+	 * Returns all clients from database.
+	 * 
+	 * @return array list of all clients
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Client> getAllClients() throws SQLException, Exception {
 		ClientManager clientManager = new ClientManager();
 
 		return (ArrayList<Client>) clientManager.doSelectAll();
 	}
 
+	/**
+	 * Returns all songs of the Top 20.
+	 * 
+	 * @return array list of songs included in the Top 20
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getTop20Songs() throws SQLException, Exception {
 		Top20ViewManager top20manager = new Top20ViewManager();
 
 		return (ArrayList<Song>) top20manager.selectViewTop20AndSongs();
 	}
 
+	/**
+	 * Returns an artist by id.
+	 * 
+	 * @param id id of the artist
+	 * @return artist with given id
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Artist getArtistById(int id) throws SQLException, Exception {
 		ArtistManager artman = new ArtistManager();
 		return artman.selectArtistById(id);
 	}
 
+	/**
+	 * Returns an art group by id.
+	 * 
+	 * @param id id of the art group
+	 * @return art group with given id
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArtGroup getGroupById(int id) throws SQLException, Exception {
 		ArtGroupManager artGroup = new ArtGroupManager();
 		return artGroup.selectGroupById(id);
 	}
 
+	/**
+	 * Inserts a song into a playlist.
+	 * 
+	 * @param contain contain to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void insertSongPLayList(Contain contain) throws SQLException, Exception {
 		ContainManager contMan = new ContainManager();
 		contMan.insert(contain);
 	}
 
+	/**
+	 * Returns all playlists of a premium plus client.
+	 * 
+	 * @param client client owner of playlists
+	 * @return playlists of client
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Playlist> getPlaylistsOfClientPPById(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
 
 		return (ArrayList<Playlist>) playMan.getPlaylistsOfClientPPById(client);
 	}
 
+	/**
+	 * Returns all playlists of a premium client.
+	 * 
+	 * @param client client owner of playlists
+	 * @return playlists of client
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Playlist> getPlaylistsOfClientPById(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
 
 		return (ArrayList<Playlist>) playMan.getPlaylistsOfClientPById(client);
 	}
 
+	/**
+	 * Adds a song to favorite playlist.
+	 * 
+	 * @param client logged client
+	 * @param songs  songs displayed on the table
+	 * @param table  table containing songs
+	 */
 	public void addToFavourites(Client client, ArrayList<Song> songs, JTable table) {
 
 		if (client instanceof ClientPP) {
@@ -534,18 +662,43 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Returns all songs included into the favorite playlist of the logged premium
+	 * plus client.
+	 * 
+	 * @param client logged client
+	 * @return array list of songs in favorites
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> selectFavouriteSongOfClientPP(Client client) throws SQLException, Exception {
 		SongManager songMan = new SongManager();
 
 		return (ArrayList<Song>) songMan.selectFavouriteSongOfClientPP(client);
 	}
 
+	/**
+	 * Returns all songs included into the favorite playlist of the logged premium
+	 * client.
+	 * 
+	 * @param client logged client
+	 * @return array list of songs in favorites
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> selectFavouriteSongOfClientP(Client client) throws SQLException, Exception {
 		SongManager songMan = new SongManager();
 
 		return (ArrayList<Song>) songMan.selectFavouriteSongOfClientP(client);
 	}
 
+	/**
+	 * Checks if content of a field doesn't contain numeric values.
+	 * 
+	 * @param textField field to be validated
+	 * @return true if field isn't empty and doesn't contain numeric values,
+	 *         otherwise false
+	 */
 	public boolean isLetterStringCorrect(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -560,6 +713,12 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if content of a field isn't empty.
+	 * 
+	 * @param textField field to be validated
+	 * @return true if field isn¡t empty, otherwise false
+	 */
 	public boolean isNotEmptyText(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -571,6 +730,12 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if content of a text area isn't empty.
+	 * 
+	 * @param textArea area to be validated
+	 * @return true if field isn¡t empty, otherwise false
+	 */
 	public boolean isNotEmptyTextArea(JTextArea textArea) {
 		boolean ret = true;
 		String str = textArea.getText();
@@ -582,6 +747,15 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if content of a field contains just numeric values and length is
+	 * correct.
+	 * 
+	 * @param textField field to be validated
+	 * @param length    given length of string
+	 * @return true if field isn't empty, has correct length and contains just
+	 *         numbers, otherwise false
+	 */
 	public boolean isLengthCorrectNumeric(JTextField textField, int length) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -597,6 +771,13 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if content of a field has the correct length.
+	 * 
+	 * @param textField field to be validated
+	 * @param length    given length of string
+	 * @return true if field isn't empty and has correct length, otherwise false
+	 */
 	public boolean isLengthCorrect(JTextField textField, int length) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -612,14 +793,21 @@ public class Controller {
 		return ret;
 	}
 
-	public boolean isLengthCorrectNumericSeconds(JTextField textField, int minLength) {
+	/**
+	 * Checks if content of a field contains between 2 and 3 numbers.
+	 * 
+	 * @param textField field to be validated
+	 * @return true if field isn't empty and contains 2 or 3 numbers, otherwise
+	 *         false
+	 */
+	public boolean isLengthCorrectNumericSeconds(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
 
 		if (str.isBlank()) {
 			ret = false;
 		} else {
-			if ((str.length() < minLength) || (!str.matches("^\\d{2,3}$"))) {
+			if ((str.length() < 2) || (!str.matches("^\\d{2,3}$"))) {
 				ret = false;
 			}
 		}
@@ -627,6 +815,14 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if content of a password field has correct length.
+	 * 
+	 * @param passwdField password field to be validated
+	 * @param length      given length
+	 * @return true if field isn't empty and has at least the specified length,
+	 *         otherwise false
+	 */
 	public boolean isLengthCorrectInPasswdField(JPasswordField passwdField, int length) {
 		boolean ret = true;
 		String str = String.valueOf(passwdField.getPassword());
@@ -642,6 +838,12 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if content of a field follows the pattern of a personal id.
+	 * 
+	 * @param textField field to be validated
+	 * @return true if field isn't empty and follows the pattern, otherwise false
+	 */
 	public boolean isPersonalIdCorrect(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -660,6 +862,13 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if a content of a field corresponds to specified values.
+	 * 
+	 * @param textField field to be validated
+	 * @return true if field isn't empty and contains one of the specified values,
+	 *         otherwise false
+	 */
 	public boolean isGenderCorrect(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -675,6 +884,12 @@ public class Controller {
 
 	}
 
+	/**
+	 * Checks if content of a field follows the specified date pattern (dd/MM/yyyy).
+	 * 
+	 * @param textField field to be validated
+	 * @return true if field isn't empty and follows the pattern, otherwise false
+	 */
 	public boolean isDateCorrect(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -689,6 +904,12 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if content of a field follows the specified phone number pattern.
+	 * 
+	 * @param textField field to be validated
+	 * @return true if field isn't empty and follows the pattern, otherwise false
+	 */
 	public boolean isPhoneCorrect(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -703,6 +924,13 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Checks if content of a field follows an email pattern.
+	 * 
+	 * @param textField field to be validated
+	 * @return true if field isn't empty and follows an email pattern, otherwise
+	 *         false
+	 */
 	public boolean isEmailCorrect(JTextField textField) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -717,6 +945,13 @@ public class Controller {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of artists and groups on database.
+	 * 
+	 * @return array list of object containing all artists and groups
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Object> artistsAndGroups() throws SQLException, Exception {
 		ArtistManager artistManager = new ArtistManager();
 		ArtGroupManager artGroupManager = new ArtGroupManager();
@@ -744,6 +979,13 @@ public class Controller {
 		return allArtists;
 	}
 
+	/**
+	 * Inserts a new song into database.
+	 * 
+	 * @param song song to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void insertSong(Song song) throws SQLException, Exception {
 		if (songManager == null)
 			songManager = new SongManager();
