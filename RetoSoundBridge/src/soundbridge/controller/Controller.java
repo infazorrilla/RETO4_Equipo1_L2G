@@ -1101,5 +1101,20 @@ public class Controller {
 
 		return reviewManager.validatedReviewsWithAllInformation(album);
 	}
+	
+	/**
+	 * Gets all the playlists of a client premium plus.
+	 * 
+	 * @param client logged client
+	 * @return list with all the client's playlists
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public ArrayList<Playlist> getPlaylistsOfClientPP(Client client) throws SQLException, Exception {
+		PlaylistManager playMan = new PlaylistManager();
+
+		return playMan.selectPlaylistOfCLientPP(client);
+
+	}
 
 }

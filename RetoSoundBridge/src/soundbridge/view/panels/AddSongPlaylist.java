@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import soundbridge.database.managers.ContainManager;
 import soundbridge.database.managers.PlaylistManager;
@@ -85,11 +86,11 @@ public class AddSongPlaylist extends JPanel {
 		});
 
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelBackIcon.setToolTipText("Volver a mi perfil.");
+		panelBackIcon.setToolTipText("Volver a mi biblioteca.");
 
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
-		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
+		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/home.png");
 
 		panelGridAddSong = new JPanel();
 		panelGridAddSong.setBounds(90, 250, 920, 115);
@@ -97,11 +98,12 @@ public class AddSongPlaylist extends JPanel {
 		panelGridAddSong.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridAddSong.setOpaque(false);
 		
-		JLabel lblNewLabel_2 = new JLabel("Elige a que playlist añadirla");
-		lblNewLabel_2.setForeground(new Color(255, 255, 255));
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblNewLabel_2.setBounds(163, 45, 323, 34);
-		add(lblNewLabel_2);
+		JLabel lblTitle = new JLabel("Selecciona una lista");
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setForeground(Color.WHITE);
+		lblTitle.setFont(new Font("Dialog", Font.BOLD, 22));
+		lblTitle.setBounds(365, 44, 300, 36);
+		add(lblTitle);
 
 		try {
 			addImagesToAlbums(frame, client,song);
@@ -109,6 +111,16 @@ public class AddSongPlaylist extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBounds(0, 0, 1000, 672);
+		add(panelBackground);
+		panelBackground.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblBackground = new JLabel("");
+		panelBackground.add(lblBackground, BorderLayout.CENTER);
+
+		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/create_playlist_bg.jpeg");
 
 	}
 
@@ -236,10 +248,9 @@ public class AddSongPlaylist extends JPanel {
 				contain.setSong(song);
 				try {
 					contMan.insert(contain);
-					WindowUtils.messagePaneWithIcon(TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY);
+					WindowUtils.confirmationPane("La canción se ha añadido a la lista.", "Confirmación");
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					WindowUtils.errorPane("No se ha podido añadir a la lista.", "Error");
 				}
 			}
 		});

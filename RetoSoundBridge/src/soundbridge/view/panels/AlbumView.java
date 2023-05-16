@@ -33,6 +33,7 @@ import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Play;
+import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.pojos.AverageStars;
 import soundbridge.utils.WindowUtils;
@@ -201,7 +202,7 @@ public class AlbumView extends JPanel {
 		tableSongs.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				playSelectedSong(client);
+				playSelectedSong(client, frame);
 			}
 		});
 		scrollPaneSongs.setViewportView(tableSongs);
@@ -388,26 +389,59 @@ public class AlbumView extends JPanel {
 	 * list.
 	 * 
 	 * @param client logged client
+	 * @param frame frame where the panel is added
 	 */
-	private void playSelectedSong(Client client) {
+	private void playSelectedSong(Client client, JFrame frame) {
 		int indexColumn = tableSongs.getSelectedColumn();
-		if (indexColumn == 0) {
-			if (null == controller)
-				controller = new Controller();
+		int indexRow = tableSongs.getSelectedRow();
 
+		if (null == controller)
+			controller = new Controller();
+
+		if (indexColumn == 0) {
 			controller.addToFavourites(client, songs, tableSongs);
-		}
-		if (isPlayerRunning)
-			this.stop();
-		if (indexColumn == 1 || indexColumn == 2 || indexColumn == 3 || indexColumn == 4) {
+		} else if (indexColumn >= 1 && indexColumn <= 4) {
 			if (isPlayerRunning)
 				this.stop();
-			int indexRow = tableSongs.getSelectedRow();
+
 			Song song = songs.get(indexRow);
 			this.play(song.getSource());
 			doInsertPlay(client, song);
 			panelPauseIcon.setVisible(true);
+		} else if (indexColumn == 5) {
+			if (client instanceof ClientPP) {
+				ArrayList<Playlist> playlists = null;
+				try {
+					playlists = controller.getPlaylistsOfClientPP(client);
+				} catch (SQLException e) {
+					WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
+				} catch (Exception e) {
+					WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error genérico");
+				}
+				
+				if (null != playlists) {
+					Song song = songs.get(indexRow);
+					goToAddSong(frame, client, song);
+				} else {
+					WindowUtils.errorPane("Primero debe crear una lista.", "Error");
+				}
+			}
 		}
+
+	}
+	
+	/**
+	 * Goes to an other panel to add song to a playlist.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToAddSong(JFrame frame, Client client, Song song) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
+				null, song, null));
+		frame.revalidate();
+		frame.repaint();
 
 	}
 

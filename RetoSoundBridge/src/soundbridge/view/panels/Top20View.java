@@ -30,7 +30,7 @@ import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Client;
 import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Play;
-
+import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 
 import soundbridge.utils.WindowUtils;
@@ -58,7 +58,6 @@ public class Top20View extends JPanel {
 	private Player player;
 	private JPanel panelPauseIcon;
 	private Controller controller;
-	private int indexx = 0;
 
 	public Top20View(JFrame frame, Client client) {
 		initialize(frame, client);
@@ -331,25 +330,38 @@ public class Top20View extends JPanel {
 
 	private void playSelectedSong(Client client, JFrame frame) {
 
-		indexx = tableSongsTop20.getSelectedColumn();
-		int index = tableSongsTop20.getSelectedRow();
-		if (indexx == 0) {
-			if (null == controller)
-				controller = new Controller();
+		int indexColumn = tableSongsTop20.getSelectedColumn();
+		int indexRow = tableSongsTop20.getSelectedRow();
 
+		if (null == controller)
+			controller = new Controller();
+
+		if (indexColumn == 0) {
 			controller.addToFavourites(client, top20songs, tableSongsTop20);
-		} else if (indexx >= 1 && indexx <= 4) {
+		} else if (indexColumn >= 1 && indexColumn <= 5) {
 			if (isPlayerRunning)
 				this.stop();
-			
-			Song song = top20songs.get(index);
+
+			Song song = top20songs.get(indexRow);
 			this.play(song.getSource());
 			doInsertPlay(client, song);
 			panelPauseIcon.setVisible(true);
-		} else if (indexx == 6) {
+		} else if (indexColumn == 6) {
 			if (client instanceof ClientPP) {
-				Song song = top20songs.get(index);
-				goToAddSong(frame, client,song);
+				ArrayList<Playlist> playlists = null;
+				try {
+					playlists = controller.getPlaylistsOfClientPP(client);
+				} catch (SQLException e) {
+					WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
+				} catch (Exception e) {
+					WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error genérico");
+				}
+				if (null != playlists) {
+					Song song = top20songs.get(indexRow);
+					goToAddSong(frame, client, song);
+				} else {
+					WindowUtils.errorPane("Primero debe crear una lista.", "Error");
+				}
 			}
 		}
 	}
@@ -444,7 +456,7 @@ public class Top20View extends JPanel {
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
 	 */
-	private void goToAddSong(JFrame frame, Client client,Song song) {
+	private void goToAddSong(JFrame frame, Client client, Song song) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
 				null, song, null));
