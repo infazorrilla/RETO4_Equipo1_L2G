@@ -573,7 +573,7 @@ public class SignUp extends JPanel {
 			WindowUtils.errorPane("Formato de fecha incorrecto.", "Error");
 
 		} catch (SQLException e) {
-			WindowUtils.errorPane("Debe rellenar todos los datos correctamente y ser mayor de 18 años.", "Error");
+			WindowUtils.errorPane("Debe rellenar todos los datos correctamente.", "Error");
 
 		} catch (Exception e) {
 			WindowUtils.errorPane("Error en el registro.", "Error");
