@@ -22,6 +22,7 @@ import soundbridge.database.managers.ContainManager;
 import soundbridge.database.managers.EmployeeManager;
 import soundbridge.database.managers.PlayManager;
 import soundbridge.database.managers.PlaylistManager;
+import soundbridge.database.managers.ReviewManager;
 import soundbridge.database.managers.SongManager;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
@@ -33,6 +34,7 @@ import soundbridge.database.pojos.Contain;
 import soundbridge.database.pojos.Employee;
 import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Playlist;
+import soundbridge.database.pojos.Review;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.managers.AverageStarsManager;
 import soundbridge.database.views.managers.Top20ViewManager;
@@ -53,6 +55,7 @@ public class Controller {
 	private ClientPPManager clientPPManager = null;
 	private ArtistManager artistManager = null;
 	private ArtGroupManager artGroupManager = null;
+	private ReviewManager reviewManager = null;
 
 	/**
 	 * Checks if the logged user is an employee.
@@ -746,6 +749,115 @@ public class Controller {
 			songManager = new SongManager();
 
 		songManager.insert(song);
+	}
+
+	/**
+	 * Returns a review of the album witten by logged client.
+	 * 
+	 * @param client logged client
+	 * @param album  album to be reviewed
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public Review checkPreviousReview(Client client, Album album) throws SQLException, Exception {
+		if (reviewManager == null)
+			reviewManager = new ReviewManager();
+
+		return reviewManager.getReviewByClientPPAndAlbum((ClientPP) client, album);
+	}
+
+	/**
+	 * Updates a review already written on database.
+	 * 
+	 * @param previousReview review to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public void updateWrittenReview(Review previousReview) throws SQLException, Exception {
+		if (reviewManager == null)
+			reviewManager = new ReviewManager();
+
+		reviewManager.update(previousReview);
+	}
+
+	/**
+	 * Inserts a new review into database.
+	 * 
+	 * @param review review to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public void insertNewReview(Review review) throws SQLException, Exception {
+		if (reviewManager == null)
+			reviewManager = new ReviewManager();
+
+		reviewManager.insert(review);
+	}
+
+	/**
+	 * Deletes the selected reviews from database.
+	 * 
+	 * @param selectedReviews reviews to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public void deleteSelectedReviews(ArrayList<Review> selectedReviews) throws SQLException, Exception {
+		if (reviewManager == null)
+			reviewManager = new ReviewManager();
+
+		if (selectedReviews != null) {
+			for (Review review : selectedReviews) {
+				reviewManager.delete(review);
+			}
+		}
+	}
+
+	/**
+	 * Updates the selected reviews from database to be validated.
+	 * 
+	 * @param selectedReviews reviews to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public void validateSelectedReviews(ArrayList<Review> selectedReviews) throws SQLException, Exception {
+		if (reviewManager == null)
+			reviewManager = new ReviewManager();
+
+		if (selectedReviews != null) {
+			for (Review review : selectedReviews) {
+				review.setValidated(true);
+				reviewManager.update(review);
+			}
+		}
+	}
+
+	/**
+	 * Returns all non validated reviews from database.
+	 * 
+	 * @return array list of non validated reviews
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public ArrayList<Review> nonValidatedReviews() throws SQLException, Exception {
+		if (reviewManager == null)
+			reviewManager = new ReviewManager();
+
+		return reviewManager.nonValidatedReviewsWithAllInformation();
+	}
+
+	/**
+	 * Returns all validated reviews from database.
+	 * 
+	 * @param album reviewed album
+	 * @return array list of validated reviews
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public ArrayList<Review> validatedReviews(Album album) throws SQLException, Exception {
+		if (reviewManager == null)
+			reviewManager = new ReviewManager();
+
+		return reviewManager.validatedReviewsWithAllInformation(album);
 	}
 
 }

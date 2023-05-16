@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import soundbridge.database.managers.ReviewManager;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
@@ -166,9 +166,10 @@ public class ClientsReviews extends JPanel {
 	 * @param album selected album
 	 */
 	private void getAllValidatedReviews(Album album) {
-		ReviewManager reviewManager = new ReviewManager();
+		Controller controller = new Controller();
+		
 		try {
-			validatedReviews = reviewManager.validatedReviewsWithAllInformation(album);
+			validatedReviews = controller.validatedReviews(album);
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se han podido cargar las valoraciones.", "Error en la base de datos");
 		} catch (Exception e) {

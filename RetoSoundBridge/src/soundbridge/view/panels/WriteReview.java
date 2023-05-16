@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import soundbridge.database.managers.ReviewManager;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Album;
 import soundbridge.database.pojos.ArtGroup;
 import soundbridge.database.pojos.Artist;
@@ -44,6 +44,7 @@ public class WriteReview extends JPanel {
 	private ArrayList<JLabel> labels = null;
 	private int selectedStars = 0;
 	private Review previousReview = null;
+	private Controller controller = null;
 
 	/**
 	 * Initializes the panel.
@@ -386,15 +387,15 @@ public class WriteReview extends JPanel {
 	 * @param album  album to be reviewed
 	 */
 	private void checkPreviousReview(Client client, Album album) {
-		ReviewManager reviewManager = new ReviewManager();
+		if (null == controller)
+			controller = new Controller();
+
 		try {
-			previousReview = reviewManager.getReviewByClientPPAndAlbum((ClientPP) client, album);
+			previousReview = controller.checkPreviousReview(client, album);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			WindowUtils.errorPane("No se ha podido cargar la reseña.", "Error en la base de datos");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			WindowUtils.errorPane("No se ha podido cargar la reseña.", "Error genérico");
 		}
 	}
 
@@ -435,22 +436,22 @@ public class WriteReview extends JPanel {
 	 * @param opinion field containing the opinion
 	 */
 	private void sendReview(Album album, Client client, JTextArea title, JTextArea opinion) {
-		ReviewManager reviewManager = new ReviewManager();
 		if (isReviewCorrect(title, opinion)) {
+			if (null == controller)
+				controller = new Controller();
+
 			if (previousReview != null) {
 				previousReview.setOpinion(opinion.getText());
 				previousReview.setTitle(title.getText());
 				previousReview.setStars(selectedStars);
 				previousReview.setValidated(false);
 				try {
-					reviewManager.update(previousReview);
+					controller.updateWrittenReview(previousReview);
 					WindowUtils.confirmationPane("Su reseña ha sido actualizada.", "Confirmación");
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					WindowUtils.errorPane("Su reseña no se ha podido actualizar.", "Error en la base de datos");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					WindowUtils.errorPane("Su reseña no se ha podido actualizar.", "Error genérico");
 				}
 			} else {
 				Review newReview = new Review();
@@ -460,15 +461,13 @@ public class WriteReview extends JPanel {
 				newReview.setTitle(title.getText());
 				newReview.setStars(selectedStars);
 				try {
-					reviewManager.insert(newReview);
+					controller.insertNewReview(newReview);
 					WindowUtils.confirmationPane("Su reseña ha sido enviada.", "Confirmación");
 					checkPreviousReview(client, album);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					WindowUtils.errorPane("Su reseña no ha podido ser enviada.", "Error en la base de datos");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					WindowUtils.errorPane("Su reseña no ha podido ser enviada.", "Error genérico");
 				}
 			}
 		} else {

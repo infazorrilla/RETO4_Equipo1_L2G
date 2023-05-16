@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import soundbridge.database.managers.ReviewManager;
+import soundbridge.controller.Controller;
 import soundbridge.database.pojos.Employee;
 import soundbridge.database.pojos.Review;
 import soundbridge.utils.WindowUtils;
@@ -39,6 +39,7 @@ public class EmployeeReviews extends JPanel {
 	private static final long serialVersionUID = -2335885884396696647L;
 	private ArrayList<Review> nonValidatedReviews = null;
 	private ArrayList<Review> selectedReviews = null;
+	private Controller controller = null;
 
 	/**
 	 * Initializes the panel.
@@ -181,9 +182,11 @@ public class EmployeeReviews extends JPanel {
 	 * Gets all non validated reviews.
 	 */
 	private void getAllNonValidatedReviews() {
-		ReviewManager reviewManager = new ReviewManager();
+		if (null == controller)
+			controller = new Controller();
+
 		try {
-			nonValidatedReviews = reviewManager.nonValidatedReviewsWithAllInformation();
+			nonValidatedReviews = controller.nonValidatedReviews();
 		} catch (SQLException e) {
 			WindowUtils.errorPane("No se han podido cargar las valoraciones.", "Error en la base de datos");
 		} catch (Exception e) {
@@ -240,8 +243,7 @@ public class EmployeeReviews extends JPanel {
 	private void doValidate(JPanel panel, JScrollPane scrollPane) {
 		if (null != selectedReviews) {
 			try {
-
-				validateSelectedReviews();
+				validateReviews();
 				WindowUtils.confirmationPane("Se han validado las valoraciones seleccionadas.", "Confirmación");
 			} catch (Exception e) {
 				WindowUtils.errorPane("No se han podido validar las valoraciones.", "Error");
@@ -262,14 +264,11 @@ public class EmployeeReviews extends JPanel {
 	 * @throws SQLException if there is an error on database
 	 * @throws Exception    if there is a generic error
 	 */
-	private void validateSelectedReviews() throws SQLException, Exception {
-		if (selectedReviews != null) {
-			ReviewManager reviewManager = new ReviewManager();
-			for (Review review : selectedReviews) {
-				review.setValidated(true);
-				reviewManager.update(review);
-			}
-		}
+	private void validateReviews() throws SQLException, Exception {
+		if (null == controller)
+			controller = new Controller();
+
+		controller.validateSelectedReviews(selectedReviews);
 	}
 
 	/**
@@ -282,7 +281,7 @@ public class EmployeeReviews extends JPanel {
 	private void doDelete(JPanel panel, JScrollPane scrollPane) {
 		if (null != selectedReviews) {
 			try {
-				deleteSelectedReviews();
+				deleteReviews();
 				WindowUtils.confirmationPane("Se han eliminado las valoraciones seleccionadas.", "Confirmación");
 			} catch (Exception e) {
 				WindowUtils.errorPane("No se han podido eliminar las valoraciones.", "Error");
@@ -304,10 +303,10 @@ public class EmployeeReviews extends JPanel {
 	 * @throws SQLException if there is an error on database
 	 * @throws Exception    if there is a generic error
 	 */
-	private void deleteSelectedReviews() throws SQLException, Exception {
-		ReviewManager reviewManager = new ReviewManager();
-		for (Review review : selectedReviews) {
-			reviewManager.delete(review);
-		}
+	private void deleteReviews() throws SQLException, Exception {
+		if (null == controller)
+			controller = new Controller();
+
+		controller.deleteSelectedReviews(selectedReviews);
 	}
 }
