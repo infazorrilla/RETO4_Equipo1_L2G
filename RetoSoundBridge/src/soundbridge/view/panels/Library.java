@@ -173,7 +173,7 @@ public class Library extends JPanel {
 		lblFavorites.setForeground(Color.white);
 		lblFavorites.setBounds(230, 295, 115, 27);
 		add(lblFavorites);
-		
+
 		JPanel panelAddPlaylist = new JPanel();
 		panelAddPlaylist.addMouseListener(new MouseAdapter() {
 			@Override
@@ -190,15 +190,6 @@ public class Library extends JPanel {
 		panelAddPlaylist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelAddPlaylist.setToolTipText("Crear nueva lista de reproducción.");
 		panelAddPlaylist.setOpaque(false);
-
-
-		if (client instanceof ClientPP) {
-			panelAddPlaylist.setVisible(true);
-		}
-
-		if (client instanceof ClientP) {
-			panelAddPlaylist.setVisible(false);
-		}
 
 		WindowUtils.addImage(panelTop20, lblTop20Img, "img/icon/top_icon.png");
 		WindowUtils.addImage(panelFavorites, lblFavoritesImg, "img/icon/fav_icon.png");
@@ -218,13 +209,13 @@ public class Library extends JPanel {
 
 		JLabel lblBackground = new JLabel("");
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
-		
-		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.png");
 
 		panelFavorites.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelFavorites.setToolTipText("Ir a canciones favoritas.");
 
 		WindowUtils.addImage(panelProfileIcon, lblProfileIcon, "img/icon/profile.png");
+
+		showAddPlaylistPanel(client, panelAddPlaylist, panelBackground, lblBackground);
 
 		try {
 			addImagesToAlbums(frame, client);
@@ -236,9 +227,28 @@ public class Library extends JPanel {
 	}
 
 	/**
+	 * Shows add playlist panel if client is premium plus, otherwise hides it.
+	 * 
+	 * @param client           logged client
+	 * @param panelAddPlaylist panel to add new playlists
+	 * @param panelBackground  background panel containing a label
+	 * @param lblBackground    label where background image is printed
+	 */
+	private void showAddPlaylistPanel(Client client, JPanel panelAddPlaylist, JPanel panelBackground,
+			JLabel lblBackground) {
+		if (client instanceof ClientPP) {
+			panelAddPlaylist.setVisible(true);
+			WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.png");
+		} else {
+			panelAddPlaylist.setVisible(false);
+			WindowUtils.addImage(panelBackground, lblBackground, "img/panel/library_bg.jpeg");
+		}
+	}
+
+	/**
 	 * Autocomplete the text field of the artists and groups.
 	 * 
-	 * @param text the written text
+	 * @param text field containing the autocomplete feature
 	 */
 	private void doAddPossibilitiesToSearchBar(AutoCompleteTextField text) {
 		if (null == controller)
@@ -253,7 +263,6 @@ public class Library extends JPanel {
 		}
 	}
 
-
 	/**
 	 * Set the playlist of favorites visible if the client is able to have it.
 	 * 
@@ -261,7 +270,6 @@ public class Library extends JPanel {
 	 * @param favourites panel of the favorite songs playlist
 	 * @param favLbl     label of the favorite songs playlist
 	 */
-
 
 	private void showFavorites(Client client, JPanel favorites, JLabel favLbl) {
 
@@ -366,7 +374,6 @@ public class Library extends JPanel {
 		frame.repaint();
 	}
 
-
 	/**
 	 * Takes the client to favorite songs playlist.
 	 * 
@@ -374,12 +381,11 @@ public class Library extends JPanel {
 	 * @param client logged client
 	 */
 
-
 	private void goToFavorites(JFrame frame, Client client) {
 
 		frame.getContentPane().removeAll();
-		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.FAVORITE_SONGS, frame, client, null, null, null,
-				null, null, null));
+		frame.getContentPane().add(
+				PanelFactory.getJPanel(PanelFactory.FAVORITE_SONGS, frame, client, null, null, null, null, null, null));
 		frame.revalidate();
 		frame.repaint();
 
@@ -482,7 +488,6 @@ public class Library extends JPanel {
 			}
 		}
 	}
-
 
 	/**
 	 * Creates a listener for the panel. When it is clicked it takes the client to
