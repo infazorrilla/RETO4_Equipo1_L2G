@@ -43,12 +43,12 @@ public class AddSongPlaylist extends JPanel {
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
 	 */
-	public AddSongPlaylist(JFrame frame, Client client,Song song) {
+	public AddSongPlaylist(JFrame frame, Client client, Song song) {
 		setBounds(0, 0, 1000, 672);
 		setLayout(null);
 		setBackground(Color.black);
 
-		initialize(frame, client,song);
+		initialize(frame, client, song);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class AddSongPlaylist extends JPanel {
 	 * @param client logged client
 	 */
 
-	public void initialize(JFrame frame, Client client,Song song) {
+	public void initialize(JFrame frame, Client client, Song song) {
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setBounds(252, 65, 91, 14);
@@ -77,11 +77,7 @@ public class AddSongPlaylist extends JPanel {
 		panelBackIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
-						null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToLibrary(frame, client);
 			}
 		});
 
@@ -97,7 +93,7 @@ public class AddSongPlaylist extends JPanel {
 		add(panelGridAddSong);
 		panelGridAddSong.setLayout(new GridLayout(1, 6, 0, 0));
 		panelGridAddSong.setOpaque(false);
-		
+
 		JLabel lblTitle = new JLabel("Selecciona una lista");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setForeground(Color.WHITE);
@@ -106,12 +102,11 @@ public class AddSongPlaylist extends JPanel {
 		add(lblTitle);
 
 		try {
-			addImagesToAlbums(frame, client,song);
+			addImagesToAlbums(frame, client, song);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			WindowUtils.errorPane("No se han podido añadir las playlists.", "Error");
 		}
-		
+
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1000, 672);
 		add(panelBackground);
@@ -192,7 +187,7 @@ public class AddSongPlaylist extends JPanel {
 	 * @throws SQLException if there is an error on database
 	 * @throws Exception    if there is a generic error
 	 */
-	private void addImagesToAlbums(JFrame frame, Client client,Song song) throws SQLException, Exception {
+	private void addImagesToAlbums(JFrame frame, Client client, Song song) throws SQLException, Exception {
 
 		if (client instanceof ClientPP)
 			playlists = getPlaylistsOfClientPP(client);
@@ -215,7 +210,7 @@ public class AddSongPlaylist extends JPanel {
 					// ArrayList<Song> songsOfAlbum = getSongsOfAlbum(playlist, artist);
 					// playlist.setSongs(songsOfAlbum);
 
-					createPlaylistPanelListener(frame, panelAlbum, client, playlist,song);
+					createPlaylistPanelListener(frame, panelAlbum, client, playlist, song);
 
 				} else {
 					JPanel panelToFitGrid = createPanelToFitGrid();
@@ -223,6 +218,20 @@ public class AddSongPlaylist extends JPanel {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Takes the client to the library.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToLibrary(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	/**
@@ -234,25 +243,33 @@ public class AddSongPlaylist extends JPanel {
 	 * @param client   logged client
 	 * @param playlist playlist the choosen playlist
 	 */
-	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlistt,Song songg) {
+	private void createPlaylistPanelListener(JFrame frame, JPanel panel, Client client, Playlist playlist,
+			Song songg) {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ContainManager contMan = new ContainManager();
 				Contain contain = new Contain();
-				Playlist playlist= new Playlist();
 				Song song = new Song();
 				song.setId(songg.getId());
-				playlist.setId(playlistt.getId());
 				contain.setPlaylist(playlist);
 				contain.setSong(song);
 				try {
 					contMan.insert(contain);
 					WindowUtils.confirmationPane("La canción se ha añadido a la lista.", "Confirmación");
+					goToPlaylist(frame, client, playlist);
 				} catch (Exception e1) {
 					WindowUtils.errorPane("No se ha podido añadir a la lista.", "Error");
 				}
 			}
 		});
+	}
+	
+	private void goToPlaylist(JFrame frame, Client client, Playlist playlist) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null,
+				null, null, null, playlist));
+		frame.revalidate();
+		frame.repaint();
 	}
 }
