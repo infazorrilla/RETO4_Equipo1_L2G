@@ -39,6 +39,7 @@ import soundbridge.database.pojos.Song;
 import soundbridge.database.views.managers.AverageStarsManager;
 import soundbridge.database.views.managers.Top20ViewManager;
 import soundbridge.database.views.pojos.AverageStars;
+import soundbridge.utils.WindowUtils;
 import soundbridge.view.components.AutoCompleteTextField;
 
 /**
@@ -633,10 +634,9 @@ public class Controller {
 				song.setId(songs.get(table.getSelectedRow()).getId());
 				contain.setSong(song);
 				controller.insertSongPLayList(contain);
-
+				WindowUtils.confirmationPane("Se ha añadido correctamente", "Canción añadida");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
 			}
 		}
 		if (client instanceof ClientP) {
@@ -654,10 +654,48 @@ public class Controller {
 				song.setId(songs.get(table.getSelectedRow()).getId());
 				contain.setSong(song);
 				controller.insertSongPLayList(contain);
-
+				WindowUtils.confirmationPane("Se ha añadido correctamente", "Canción añadida");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
+			}
+		}
+	}
+	public void addToFavouritesSingleView(Client client, Song songg, JTable table) {
+
+		if (client instanceof ClientPP) {
+			Controller controller = new Controller();
+			Contain contain = new Contain();
+			ArrayList<Playlist> songsById;
+			Playlist playlist = new Playlist();
+			Playlist playlistt = new Playlist();
+			try {
+				songsById = controller.getPlaylistsOfClientPPById(client);
+				playlist = songsById.get(0);
+				playlistt.setId(playlist.getId());
+				contain.setPlaylist(playlistt);
+				contain.setSong(songg);
+				controller.insertSongPLayList(contain);
+				WindowUtils.confirmationPane("Se ha añadido correctamente", "Canción añadida");
+			} catch (Exception e) {
+				WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
+			}
+		}
+		if (client instanceof ClientP) {
+			Controller controller = new Controller();
+			Contain contain = new Contain();
+			ArrayList<Playlist> songsById;
+			Playlist playlist = new Playlist();
+			Playlist playlistt = new Playlist();
+			try {
+				songsById = controller.getPlaylistsOfClientPById(client);
+				playlist = songsById.get(0);
+				playlistt.setId(playlist.getId());
+				contain.setPlaylist(playlistt);
+				contain.setSong(songg);
+				controller.insertSongPLayList(contain);
+				WindowUtils.confirmationPane("Se ha añadido correctamente", "Canción añadida");
+			} catch (Exception e) {
+				WindowUtils.errorPane("No se han encontrado listas de reproducción.", "Error en la base de datos");
 			}
 		}
 	}
@@ -1111,6 +1149,20 @@ public class Controller {
 	 * @throws Exception    if there is a generic error
 	 */
 	public ArrayList<Playlist> getPlaylistsOfClientPP(Client client) throws SQLException, Exception {
+		PlaylistManager playMan = new PlaylistManager();
+
+		return playMan.selectPlaylistOfCLientPP(client);
+
+	}
+	/**
+	 * Gets all the playlists of a client premium plus.
+	 * 
+	 * @param client logged client
+	 * @return list with all the client's playlists
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public ArrayList<Playlist> selectPlaylistsOfClientPPById(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
 
 		return playMan.selectPlaylistOfCLientPP(client);
