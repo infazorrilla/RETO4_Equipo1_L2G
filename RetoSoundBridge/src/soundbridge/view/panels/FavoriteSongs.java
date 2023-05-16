@@ -65,6 +65,10 @@ public class FavoriteSongs extends JPanel {
 	 * @param client logged client
 	 */
 	public FavoriteSongs(JFrame frame, Client client) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+		
 		initialize(frame, client);
 	}
 
@@ -77,10 +81,6 @@ public class FavoriteSongs extends JPanel {
 	private static final long serialVersionUID = -5073547141433278673L;
 
 	public void initialize(JFrame frame, Client client) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		panelPauseIcon = new JPanel();
 		panelPauseIcon.setBounds(115, 115, 100, 100);
 		add(panelPauseIcon);

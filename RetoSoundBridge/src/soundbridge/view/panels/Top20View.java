@@ -60,6 +60,10 @@ public class Top20View extends JPanel {
 	private Controller controller;
 
 	public Top20View(JFrame frame, Client client) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+		
 		initialize(frame, client);
 	}
 
@@ -73,10 +77,6 @@ public class Top20View extends JPanel {
 	 * 
 	 */
 	public void initialize(JFrame frame, Client client) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		panelPauseIcon = new JPanel();
 		panelPauseIcon.setBounds(115, 115, 100, 100);
 		add(panelPauseIcon);
@@ -230,12 +230,7 @@ public class Top20View extends JPanel {
 		panelHomeIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				stop();
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
-						null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToLibrary(frame, client);
 			}
 		});
 		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -246,6 +241,21 @@ public class Top20View extends JPanel {
 
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause_black.png");
+	}
+
+	/**
+	 * Takes the client to the library.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToLibrary(JFrame frame, Client client) {
+		stop();
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	/**
@@ -333,9 +343,9 @@ public class Top20View extends JPanel {
 			controller = new Controller();
 
 		if (indexColumn == 0) {
-			
+
 			controller.addToFavourites(client, top20songs, tableSongsTop20);
-			
+
 		} else if (indexColumn >= 1 && indexColumn <= 5) {
 			if (isPlayerRunning)
 				this.stop();

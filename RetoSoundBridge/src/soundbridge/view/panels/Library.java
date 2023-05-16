@@ -54,6 +54,10 @@ public class Library extends JPanel {
 	 * @param client logged client
 	 */
 	public Library(JFrame frame, Client client) {
+		setBounds(0, 0, 1000, 672);
+		setLayout(null);
+		setBackground(Color.black);
+		
 		initialize(frame, client);
 	}
 
@@ -64,10 +68,6 @@ public class Library extends JPanel {
 	 * @param client logged client
 	 */
 	private void initialize(JFrame frame, Client client) {
-		setBounds(0, 0, 1000, 672);
-		setLayout(null);
-		setBackground(Color.black);
-
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(903, 45, 50, 50);
 		add(panelProfileIcon);
@@ -76,11 +76,7 @@ public class Library extends JPanel {
 		panelProfileIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null,
-						null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToProfile(frame, client);
 			}
 		});
 		panelProfileIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -129,11 +125,7 @@ public class Library extends JPanel {
 		panelTop20.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.TOP20VIEW, frame, client, null, null,
-						null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToTop20(frame, client);
 			}
 		});
 		panelTop20.setBounds(90, 170, 115, 115);
@@ -178,11 +170,7 @@ public class Library extends JPanel {
 		panelAddPlaylist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CREATE_PLAYLIST, frame, client, null,
-						null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToCreationOfPlaylist(frame, client);
 			}
 		});
 		add(panelAddPlaylist);
@@ -220,10 +208,51 @@ public class Library extends JPanel {
 		try {
 			addImagesToAlbums(frame, client);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			WindowUtils.errorPane("No se han podido añadir las listas de reproducción.", "Error");
 		}
 
+	}
+
+	/**
+	 * Takes the client to the playlist creation.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToCreationOfPlaylist(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.CREATE_PLAYLIST, frame, client, null, null, null,
+				null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the client to the top 20 songs playlist.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToTop20(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.TOP20VIEW, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * Takes the client to the profile.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToProfile(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.PROFILE, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	/**

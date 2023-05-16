@@ -65,7 +65,10 @@ public class SignUp extends JPanel {
 	 * @param frame frame where the panel is added
 	 */
 	public SignUp(JFrame frame) {
-
+		setBounds(0, 0, 1000, 672);
+		setBackground(Color.black);
+		setLayout(null);
+		
 		initialize(frame);
 
 	}
@@ -77,10 +80,6 @@ public class SignUp extends JPanel {
 	 */
 
 	private void initialize(JFrame frame) {
-		setBounds(0, 0, 1000, 672);
-		setBackground(Color.black);
-		setLayout(null);
-
 		JPanel panelProfileIcon = new JPanel();
 		panelProfileIcon.setBounds(30, 30, 150, 150);
 		panelProfileIcon.setOpaque(false);
@@ -391,13 +390,11 @@ public class SignUp extends JPanel {
 		panelHomeIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(
-						PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToLogin(frame);
 			}
 		});
+		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelHomeIcon.setToolTipText("Volver al login.");
 
 		JLabel lblHomeIcon = new JLabel("");
 		panelHomeIcon.add(lblHomeIcon, BorderLayout.CENTER);
@@ -513,6 +510,14 @@ public class SignUp extends JPanel {
 		btnGroup.add(rdbtnPremium);
 		btnGroup.add(rdbtnPremiumPlus);
 		btnGroup.add(rdbtnBasic);
+	}
+	
+	private void goToLogin(JFrame frame) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(
+				PanelFactory.getJPanel(PanelFactory.LOGIN, frame, null, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	/**
