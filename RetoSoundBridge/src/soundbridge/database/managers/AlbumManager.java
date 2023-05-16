@@ -99,7 +99,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 	}
 
 	/**
-	 * Inserts an instance album into database.
+	 * Inserts an instance of album into database.
 	 * 
 	 * @param album album to be inserted
 	 * @throws SQLException if there is an error on database
@@ -360,7 +360,7 @@ public class AlbumManager extends ManagerAbstract<Album> {
 	}
 
 	/**
-	 * Returns the instance of an album by id.
+	 * Returns an instance of an album by id.
 	 * 
 	 * @param idAlbum id of album
 	 * @return album with the given id

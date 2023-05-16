@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Manages the creation of files. Also manages how to write and read files.
+ * Defines a manager of files which contains methods for its creation, write and
+ * read.
  */
 public class FileManager {
 

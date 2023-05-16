@@ -39,6 +39,10 @@ import soundbridge.database.views.managers.Top20ViewManager;
 import soundbridge.database.views.pojos.AverageStars;
 import soundbridge.view.components.AutoCompleteTextField;
 
+/**
+ * Describes the engine which contains methods for accessing database which are
+ * called by the view.
+ */
 public class Controller {
 
 	private ClientManager clientManager = null;
@@ -50,6 +54,16 @@ public class Controller {
 	private ArtistManager artistManager = null;
 	private ArtGroupManager artGroupManager = null;
 
+	/**
+	 * Checks if the logged user is an employee.
+	 * 
+	 * @param textFieldUserLogIn field containing username
+	 * @param passwordFieldLogIn field containing password
+	 * @return true if the instance of the employee exists on database, otherwise
+	 *         false
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public boolean isEmployee(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn)
 			throws SQLException, Exception {
 		String username = textFieldUserLogIn.getText();
@@ -61,6 +75,16 @@ public class Controller {
 		return employeeManager.askForEmployeeUsingIdAndPasswd(username, passwd);
 	}
 
+	/**
+	 * Checks if the logged user is a client.
+	 * 
+	 * @param textFieldUserLogIn field containing username
+	 * @param passwordFieldLogIn field containing password
+	 * @return true if the instance of the client exists on database, otherwise
+	 *         false
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public boolean isClient(JTextField textFieldUserLogIn, JTextField passwordFieldLogIn)
 			throws SQLException, Exception {
 		String username = textFieldUserLogIn.getText();
@@ -72,6 +96,14 @@ public class Controller {
 		return clientManager.askForClientUsingIdAndPasswd(username, passwd);
 	}
 
+	/**
+	 * Returns a client with given username on database.
+	 * 
+	 * @param username given username of client
+	 * @return client with given username
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Client clientByUsername(String username) throws SQLException, Exception {
 		if (null == clientManager)
 			clientManager = new ClientManager();
@@ -79,13 +111,28 @@ public class Controller {
 		return clientManager.getClientByUsername(username);
 	}
 
+	/**
+	 * Returns an employee with given username on database.
+	 * 
+	 * @param username given username of employee
+	 * @return employee with given username
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Employee employeeByUsername(String username) throws SQLException, Exception {
 		if (null == employeeManager)
 			employeeManager = new EmployeeManager();
 
-		return employeeManager.doSelectAllUsingUsername(username);
+		return employeeManager.getEmployeeByUsername(username);
 	}
 
+	/**
+	 * Deletes the account of the logged client.
+	 * 
+	 * @param client logged client
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void deleteAccount(Client client) throws SQLException, Exception {
 		if (null == clientManager)
 			clientManager = new ClientManager();
@@ -93,6 +140,14 @@ public class Controller {
 		clientManager.delete(client);
 	}
 
+	/**
+	 * Adds artists' and groups' names on database to the search bar autocomplete
+	 * possibilities.
+	 * 
+	 * @param text autocomplete field
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void addPossibilitiesToSearchBar(AutoCompleteTextField text) throws SQLException, Exception {
 		ArtistManager artistManager = new ArtistManager();
 		ArtGroupManager artGroupManager = new ArtGroupManager();
@@ -118,6 +173,21 @@ public class Controller {
 
 	}
 
+	/**
+	 * Updates a client's personal information on database.
+	 * 
+	 * @param client     logged client
+	 * @param combo      combo box of genders
+	 * @param textNation field containing nationality
+	 * @param textBirth  field containing birth date
+	 * @param textAddr   field containing address
+	 * @param textPhone  field containing phone number
+	 * @param textEmail  field containing email
+	 * @param textBank   field containing bank number
+	 * @throws ParseException if unexpected error while parsing
+	 * @throws SQLException   if there is an error on database
+	 * @throws Exception      if there is a generic error
+	 */
 	public void updateClient(Client client, JComboBox<String> combo, JTextField textNation, JTextField textBirth,
 			JTextArea textAddr, JTextField textPhone, JTextField textEmail, JTextField textBank)
 			throws ParseException, SQLException, Exception {
@@ -150,6 +220,15 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Updates the logged client's password on database.
+	 * 
+	 * @param client  logged client
+	 * @param passwd1 field containing password
+	 * @param passwd2 field containing password
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void changePasswdClient(Client client, JPasswordField passwd1, JPasswordField passwd2)
 			throws SQLException, Exception {
 		if (null == clientManager)
@@ -160,6 +239,15 @@ public class Controller {
 		clientManager.update(client);
 	}
 
+	/**
+	 * Updates the logged employee's password on database.
+	 * 
+	 * @param employee logged employee
+	 * @param passwd1  field containing password
+	 * @param passwd2  field containing password
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void changePasswdEmployee(Employee employee, JPasswordField passwd1, JPasswordField passwd2)
 			throws SQLException, Exception {
 		if (null == employeeManager)
@@ -170,16 +258,39 @@ public class Controller {
 		employeeManager.update(employee);
 	}
 
+	/**
+	 * Inserts a reproduction of a song on database.
+	 * 
+	 * @param play play to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void insertPlay(Play play) throws SQLException, Exception {
 		PlayManager playManager = new PlayManager();
 		playManager.insert(play);
 	}
 
+	/**
+	 * Returns the average stars of a given album.
+	 * 
+	 * @param album given album
+	 * @return average stars of the album
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public AverageStars getAverageStars(Album album) throws SQLException, Exception {
 		AverageStarsManager averageStarsManager = new AverageStarsManager();
 		return averageStarsManager.getAverageStarsByAlbum(album);
 	}
 
+	/**
+	 * Returns all the albums of an artist.
+	 * 
+	 * @param artist artist owner of albums
+	 * @return albums of the artist
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Album> getAlbumsByArtist(Artist artist) throws SQLException, Exception {
 		if (null == albumManager)
 			albumManager = new AlbumManager();
@@ -187,6 +298,15 @@ public class Controller {
 		return (ArrayList<Album>) albumManager.albumsByArtist(artist);
 	}
 
+	/**
+	 * Returns all the songs of an album that belongs to a certain artist.
+	 * 
+	 * @param album  album to which songs belong
+	 * @param artist artist owner of the album
+	 * @return array list of songs included on the album
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getSongsByAlbumAndArtist(Album album, Artist artist) throws SQLException, Exception {
 		if (null == songManager)
 			songManager = new SongManager();
@@ -194,6 +314,14 @@ public class Controller {
 		return songManager.getSongsByAlbumWithArtist(album, artist);
 	}
 
+	/**
+	 * Returns all songs not included in any album that belong to a certain artist.
+	 * 
+	 * @param artist artist owner of the songs
+	 * @return songs not included in any album of the artist
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getSinglesByArtist(Artist artist) throws SQLException, Exception {
 		if (null == songManager)
 			songManager = new SongManager();
@@ -201,6 +329,14 @@ public class Controller {
 		return (ArrayList<Song>) songManager.getSinglesByArtist(artist);
 	}
 
+	/**
+	 * Returns all the albums of an art group.
+	 * 
+	 * @param artGroup art group owner of albums
+	 * @return albums of the art group
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Album> getAlbumsByGroup(ArtGroup artGroup) throws SQLException, Exception {
 		if (null == albumManager)
 			albumManager = new AlbumManager();
@@ -208,6 +344,15 @@ public class Controller {
 		return (ArrayList<Album>) albumManager.albumsByArtGroup(artGroup);
 	}
 
+	/**
+	 * Returns all the songs of an album that belongs to a certain art group.
+	 * 
+	 * @param album    album to which songs belong
+	 * @param artGroup art group owner of the album
+	 * @return array list of songs included on the album
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getSongsByAlbumAndGroup(Album album, ArtGroup artGroup) throws SQLException, Exception {
 		if (null == songManager)
 			songManager = new SongManager();
@@ -215,6 +360,15 @@ public class Controller {
 		return songManager.getSongsByAlbumWithGroup(album, artGroup);
 	}
 
+	/**
+	 * Returns all songs not included in any album that belong to a certain art
+	 * group.
+	 * 
+	 * @param artGroup art group owner of the songs
+	 * @return songs not included in any album of the art group
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getSinglesByGroup(ArtGroup artGroup) throws SQLException, Exception {
 		if (null == songManager)
 			songManager = new SongManager();
@@ -222,6 +376,15 @@ public class Controller {
 		return (ArrayList<Song>) songManager.getSinglesByGroup(artGroup);
 	}
 
+	/**
+	 * Changes logged client's subscription.
+	 * 
+	 * @param client          logged client
+	 * @param bankNumber      bank number if subscription is paid, otherwise null
+	 * @param newSubscription name of new subscription
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void changeClientSubscription(Client client, String bankNumber, String newSubscription)
 			throws SQLException, Exception {
 		if (null == clientManager)
@@ -445,7 +608,7 @@ public class Controller {
 
 		return ret;
 	}
-	
+
 	public boolean isLengthCorrectNumericSeconds(JTextField textField, int minLength) {
 		boolean ret = true;
 		String str = textField.getText();
@@ -574,10 +737,10 @@ public class Controller {
 				allArtists.add(group);
 			}
 		}
-		
+
 		return allArtists;
 	}
-	
+
 	public void insertSong(Song song) throws SQLException, Exception {
 		if (songManager == null)
 			songManager = new SongManager();

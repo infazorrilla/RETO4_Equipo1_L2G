@@ -332,8 +332,8 @@ public class InsertSong extends JPanel {
 	/**
 	 * Gets all artists and groups from database.
 	 * 
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void getAllArtists() throws SQLException, Exception {
 		if (null == controller)
@@ -345,8 +345,8 @@ public class InsertSong extends JPanel {
 	/**
 	 * Gets all albums of the selected artist.
 	 * 
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void getAlbumsByArtist() throws SQLException, Exception {
 		if (null == controller)
@@ -358,8 +358,8 @@ public class InsertSong extends JPanel {
 	/**
 	 * Gets all albums of the selected art group.
 	 * 
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void getAlbumsByGroup() throws SQLException, Exception {
 		if (null == controller)
@@ -542,8 +542,8 @@ public class InsertSong extends JPanel {
 	/**
 	 * Inserts a new song into the database.
 	 * 
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void insertNewSong() throws SQLException, Exception {
 		Song song = new Song();

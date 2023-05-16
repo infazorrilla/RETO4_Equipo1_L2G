@@ -1,5 +1,8 @@
 package soundbridge.database.exception;
 
+/**
+ * Defines a generic exception.
+ */
 public abstract class GenericDataBaseExceptionAbstract extends Exception {
 
 	private static final long serialVersionUID = -4870718908739209739L;

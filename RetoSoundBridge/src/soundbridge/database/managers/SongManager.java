@@ -19,7 +19,19 @@ import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Song table on database.
+ */
 public class SongManager extends ManagerAbstract<Song> {
+
+	/**
+	 * Returns all instances of songs in database or null if there are not songs.
+	 * 
+	 * @return list of songs or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<Song> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Song> ret = (ArrayList<Song>) doSelectAll();
@@ -29,6 +41,13 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of songs in database or null if there are not songs.
+	 * 
+	 * @return list of songs or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Song> doSelectAll() throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 		String sql = "SELECT * FROM Song";
@@ -110,6 +129,13 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of song into database.
+	 * 
+	 * @param song song to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Song song) throws SQLException, Exception {
 		Connection connection = null;
@@ -167,6 +193,13 @@ public class SongManager extends ManagerAbstract<Song> {
 
 	}
 
+	/**
+	 * Updates an instance of song on database by id.
+	 * 
+	 * @param song song to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Song song) throws SQLException, Exception {
 		Connection connection = null;
@@ -207,6 +240,13 @@ public class SongManager extends ManagerAbstract<Song> {
 		}
 	}
 
+	/**
+	 * Deletes an instance of song from database by id.
+	 * 
+	 * @param song song to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Song song) throws SQLException, Exception {
 		Connection connection = null;
@@ -238,6 +278,14 @@ public class SongManager extends ManagerAbstract<Song> {
 		}
 	}
 
+	/**
+	 * Returns an instance of song on database by id.
+	 * 
+	 * @param idSong id of song
+	 * @return song with given id
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Song getSongById(int idSong) throws SQLException, Exception {
 		Song ret = null;
 
@@ -251,6 +299,15 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of songs on database by artist which are not included
+	 * in any album.
+	 * 
+	 * @param artist artist owner of songs
+	 * @return array list of songs belonging to the artist not included in any album
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getSinglesByArtist(Artist artist) throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 
@@ -269,6 +326,16 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of songs on database by art group which are not
+	 * included in any album.
+	 * 
+	 * @param artGroup art group owner of songs
+	 * @return array list of songs belonging to the art group not included in any
+	 *         album
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getSinglesByGroup(ArtGroup artGroup) throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 
@@ -287,6 +354,15 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of songs on database by album and artist.
+	 * 
+	 * @param album  album to which songs belong
+	 * @param artist artist owner of songs
+	 * @return array list of all songs of the artist and album
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getSongsByAlbumWithArtist(Album album, Artist artist) throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 
@@ -305,6 +381,15 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of songs on database by album and art group.
+	 * 
+	 * @param album    album to which songs belong
+	 * @param artGroup art group owner of songs
+	 * @return array list of all songs of the art group and album
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> getSongsByAlbumWithGroup(Album album, ArtGroup artGroup) throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 
@@ -323,6 +408,9 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	/**
+	 * TODO (no tiene sentido este select porque es un select normal)
+	 */
 	public List<Song> selectFavouriteSongs() throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 		String sql = "SELECT * FROM Song";
@@ -334,7 +422,7 @@ public class SongManager extends ManagerAbstract<Song> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
-			
+
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new ArrayList<Song>();
@@ -405,6 +493,15 @@ public class SongManager extends ManagerAbstract<Song> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of songs on database by premium plus client that are
+	 * included in his favorite named playlist.
+	 * 
+	 * @param client client owner of playlist
+	 * @return array list of all songs included in the playlist
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> selectFavouriteSongOfClientPP(Client client) throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 		String sql = "select s.id,s.name,s.duration,s.source,s.genre,s.lang,s.idartist,s.idalbum,s.idGroup "
@@ -419,7 +516,7 @@ public class SongManager extends ManagerAbstract<Song> {
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, client.getId());
 			resultSet = preparedStatement.executeQuery();
-			
+
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new ArrayList<Song>();
@@ -482,7 +579,16 @@ public class SongManager extends ManagerAbstract<Song> {
 
 		return ret;
 	}
-	
+
+	/**
+	 * Returns all instances of songs on database by premium client that are
+	 * included in his favorite named playlist.
+	 * 
+	 * @param client client owner of playlist
+	 * @return array list of all songs included in the playlist
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> selectFavouriteSongOfClientP(Client client) throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 		String sql = "select s.id,s.name,s.duration,s.source,s.genre,s.lang,s.idartist,s.idalbum,s.idGroup "
@@ -497,7 +603,7 @@ public class SongManager extends ManagerAbstract<Song> {
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, client.getId());
 			resultSet = preparedStatement.executeQuery();
-			
+
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new ArrayList<Song>();
@@ -560,11 +666,19 @@ public class SongManager extends ManagerAbstract<Song> {
 
 		return ret;
 	}
+
+	/**
+	 * Returns all instances of songs on database by playlist.
+	 * 
+	 * @param playlist playlist containing the songs
+	 * @return array list of songs included on the playlist
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> selectSongsOfPlaylist(Playlist playlist) throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 		String sql = "select s.id,s.name,s.releaseYear,s.duration,s.cover,s.source,s.genre,s.lang,s.idAlbum,s.idartist,s.idgroup\r\n"
-				+ "from song s join contain c on s.id=c.songid\r\n"
-				+ "where playlistid=?;";
+				+ "from song s join contain c on s.id=c.songid\r\n" + "where playlistid=?;";
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -574,7 +688,7 @@ public class SongManager extends ManagerAbstract<Song> {
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, playlist.getId());
 			resultSet = preparedStatement.executeQuery();
-			
+
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new ArrayList<Song>();
@@ -637,6 +751,5 @@ public class SongManager extends ManagerAbstract<Song> {
 
 		return ret;
 	}
-	
 
 }

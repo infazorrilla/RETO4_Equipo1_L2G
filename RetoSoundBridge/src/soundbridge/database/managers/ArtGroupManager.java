@@ -19,12 +19,13 @@ import soundbridge.utils.DBUtils;
 public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 
 	/**
-	 * Selects all art groups of the database and throws the NotFoundException.
+	 * Returns all instances of art groups in database or null if there are not art
+	 * groups.
 	 * 
-	 * @return list of all the art groups
-	 * @throws SQLException
-	 * @throws NotFoundException
-	 * @throws Exception
+	 * @return list of art groups or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
 	 */
 	@Override
 	public List<ArtGroup> selectAll() throws SQLException, NotFoundException, Exception {
@@ -32,18 +33,19 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 		ArrayList<ArtGroup> ret = (ArrayList<ArtGroup>) doSelectAll();
 
 		if (null == ret) {
-			throw new NotFoundException("There are no Group of artists");
+			throw new NotFoundException("There are no group of artists");
 		}
 
 		return ret;
 	}
 
 	/**
-	 * Selects all art groups of the database.
+	 * Returns all instances of art groups in database or null if there are not art
+	 * groups.
 	 * 
-	 * @return list of all the art groups
-	 * @throws SQLException
-	 * @throws Exception
+	 * @return list of art groups or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	public List<ArtGroup> doSelectAll() throws SQLException, Exception {
 		ArrayList<ArtGroup> ret = null;
@@ -113,11 +115,11 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 	}
 
 	/**
-	 * Inserts an art group into the database.
+	 * Inserts an instance of art group into database.
 	 * 
 	 * @param artGroup art group to be inserted
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	@Override
 	public void insert(ArtGroup artGroup) throws SQLException, Exception {
@@ -156,11 +158,11 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 	}
 
 	/**
-	 * Updates an art group by id in the database.
+	 * Updates an instance of art group on database by id.
 	 * 
 	 * @param artGroup art group to be updated
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	@Override
 	public void update(ArtGroup artGroup) throws SQLException, Exception {
@@ -205,11 +207,11 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 	}
 
 	/**
-	 * Deletes an art group from the database.
+	 * Deletes an instance of art group from database by id.
 	 * 
 	 * @param artGroup art group to be deleted
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	@Override
 	public void delete(ArtGroup artGroup) throws SQLException, Exception {
@@ -249,12 +251,12 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 	}
 
 	/**
-	 * Selects an art group by the name.
+	 * Returns an instance of art group by the name.
 	 * 
 	 * @param nameOfGroup name of the art group
 	 * @return art group with the given name
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	public ArtGroup getArtGroupByName(String nameOfGroup) throws SQLException, Exception {
 		ArtGroup ret = null;
@@ -274,12 +276,12 @@ public class ArtGroupManager extends ManagerAbstract<ArtGroup> {
 	}
 
 	/**
-	 * Selects an art group by id.
+	 * Returns an instance of art group by id.
 	 * 
 	 * @param id given id of the art group
 	 * @return art group with the given id
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	public ArtGroup selectGroupById(int id) throws SQLException, Exception {
 		ArtGroup ret = null;

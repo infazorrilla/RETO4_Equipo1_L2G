@@ -2,6 +2,10 @@ package soundbridge.database.views.pojos;
 
 import java.util.Objects;
 
+/**
+ * Describes the AverageStars view on database, which contains the average stars
+ * of albums.
+ */
 public class AverageStars {
 
 	private int id = 0;

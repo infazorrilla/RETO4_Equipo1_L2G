@@ -440,8 +440,8 @@ public class ChangeSubscription extends JPanel {
 	 * @param lblPremiumIcon       label corresponding to the premium subscription
 	 * @param panelBasicIcon       panel corresponding to the basic subscription
 	 * @param lblBasicIcon         label corresponding to the basic subscription
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void changeClientSubscription(Client client, JPanel panelPremiumPlusIcon, JLabel lblPremiumPlusIcon,
 			JPanel panelPremiumIcon, JLabel lblPremiumIcon, JPanel panelBasicIcon, JLabel lblBasicIcon)

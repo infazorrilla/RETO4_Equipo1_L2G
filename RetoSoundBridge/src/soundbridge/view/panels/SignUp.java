@@ -37,10 +37,10 @@ import java.awt.BorderLayout;
 import javax.swing.JRadioButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 /**
- * This is a panel that allows the client to sign up in
- * the application. It validates all the fields and 
- * there are different types of subscriptions.
+ * This is a panel that allows the client to sign up in the application. It
+ * validates all the fields and there are different types of subscriptions.
  */
 public class SignUp extends JPanel {
 	private JTextField textFieldName;
@@ -62,7 +62,7 @@ public class SignUp extends JPanel {
 	/**
 	 * Initializes the panel.
 	 * 
-	 * @param frame		frame where the panel is added
+	 * @param frame frame where the panel is added
 	 */
 	public SignUp(JFrame frame) {
 
@@ -73,7 +73,7 @@ public class SignUp extends JPanel {
 	/**
 	 * Initializes the components of the panel.
 	 * 
-	 * @param frame		frame where the panel is added
+	 * @param frame frame where the panel is added
 	 */
 
 	private void initialize(JFrame frame) {
@@ -516,10 +516,9 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Sign up the client asking him for the bank account 
-	 * if it is necessary.
+	 * Sign up the client asking him for the bank account if it is necessary.
 	 * 
-	 * @param frame		frame where the panel is added
+	 * @param frame frame where the panel is added
 	 */
 	private void registerUser(JFrame frame) {
 		Client client = null;
@@ -585,7 +584,7 @@ public class SignUp extends JPanel {
 	/**
 	 * Signs up the premium clients.
 	 * 
-	 * @param frame		frame where the panel is added
+	 * @param frame frame where the panel is added
 	 */
 	private void registerUserP(JFrame frame) {
 		if (null == controller)
@@ -614,7 +613,7 @@ public class SignUp extends JPanel {
 	/**
 	 * Signs up the premium plus clients.
 	 * 
-	 * @param frame		frame where the panel is added
+	 * @param frame frame where the panel is added
 	 */
 	private void registerUserPP(JFrame frame) {
 		ClientPP clientpp = new ClientPP();
@@ -641,9 +640,9 @@ public class SignUp extends JPanel {
 	/**
 	 * Changes a String into Date type.
 	 * 
-	 * @param date		date that you want to retype.		
-	 * @return			the date in Date type.
-	 * @throws ParseException
+	 * @param date date that you want to retype.
+	 * @return the date in Date type.
+	 * @throws ParseException if unexpected error while parsing
 	 */
 	private Date stringToDate(String date) throws ParseException {
 		String pattern = "dd/MM/yyyy";
@@ -665,7 +664,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the last name field setting green if it is correct and red if it is not.
+	 * Validates the last name field setting green if it is correct and red if it is
+	 * not.
 	 */
 	private void validateLastNameField() {
 		if (controller == null)
@@ -678,7 +678,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the username field setting green if it is correct and red if it is not.
+	 * Validates the username field setting green if it is correct and red if it is
+	 * not.
 	 */
 	private void validateUserField() {
 		if (controller == null)
@@ -691,7 +692,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the password field setting green if it is correct and red if it is not.
+	 * Validates the password field setting green if it is correct and red if it is
+	 * not.
 	 */
 	private void validatePasswdField() {
 		if (controller == null)
@@ -704,7 +706,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the personalId field setting green if it is correct and red if it is not.
+	 * Validates the personalId field setting green if it is correct and red if it
+	 * is not.
 	 */
 	private void validatePersonalIdField() {
 		if (controller == null)
@@ -716,7 +719,9 @@ public class SignUp extends JPanel {
 			textFieldPersonalId.setBorder(new LineBorder(new Color(255, 40, 40), 2));
 	}
 
-	/**Validates the gender field setting green if it is correct and red if it is not.
+	/**
+	 * Validates the gender field setting green if it is correct and red if it is
+	 * not.
 	 */
 	private void validateGenderField() {
 		if (controller == null)
@@ -729,7 +734,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the nationality field setting green if it is correct and red if it is not.
+	 * Validates the nationality field setting green if it is correct and red if it
+	 * is not.
 	 */
 	private void validateNationalityField() {
 		if (controller == null)
@@ -742,7 +748,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the birth date field setting green if it is correct and red if it is not.
+	 * Validates the birth date field setting green if it is correct and red if it
+	 * is not.
 	 */
 	private void validateBirthDateField() {
 		if (controller == null)
@@ -755,7 +762,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the address field setting green if it is correct and red if it is not.
+	 * Validates the address field setting green if it is correct and red if it is
+	 * not.
 	 */
 	private void validateAddressField() {
 		if (controller == null)
@@ -768,7 +776,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the telephone field setting green if it is correct and red if it is not.
+	 * Validates the telephone field setting green if it is correct and red if it is
+	 * not.
 	 */
 	private void validatePhoneField() {
 		if (controller == null)
@@ -781,7 +790,8 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Validates the email field setting green if it is correct and red if it is not.
+	 * Validates the email field setting green if it is correct and red if it is
+	 * not.
 	 */
 	private void validateEmailField() {
 		if (controller == null)
@@ -813,7 +823,7 @@ public class SignUp extends JPanel {
 	/**
 	 * Validates all the fields.
 	 * 
-	 * @return		true if all are correct and false if they are not.
+	 * @return true if all are correct and false if they are not.
 	 */
 	private boolean areAllFieldsCorrect() {
 		boolean ret = false;
@@ -833,10 +843,10 @@ public class SignUp extends JPanel {
 	}
 
 	/**
-	 * Takes the information of "areAllFieldsCorrect" and if it is true sign up the user,
-	 * if it is not, show an error message.
+	 * Takes the information of "areAllFieldsCorrect" and if it is true sign up the
+	 * user, if it is not, show an error message.
 	 * 
-	 * @param frame		the frame where the panel is added
+	 * @param frame the frame where the panel is added
 	 */
 	private void checkAllFields(JFrame frame) {
 		if (areAllFieldsCorrect()) {

@@ -42,8 +42,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import javazoom.jl.player.Player;
+
 /**
- * Panel that shows the normal playlist, with the title,description and songs dynamically.
+ * Panel that shows the normal playlist, with the title,description and songs
+ * dynamically.
  */
 public class PlayList extends JPanel {
 
@@ -55,38 +57,40 @@ public class PlayList extends JPanel {
 	private Controller controller;
 	private int indexx = 0;
 	private boolean isPlayerRunning = false;
+
 	/**
 	 * Initializes the panel.
 	 * 
-	 * @param frame  frame where the panel is added
-	 * @param client logged client
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
 	 * @param playlist selected playlist
 	 */
 	public PlayList(JFrame frame, Client client, Playlist playlist) {
 		initialize(frame, client, playlist);
 	}
+
 	/**
 	 * Initializes the components of the panel.
 	 * 
-	 * @param frame  frame where the panel is added
-	 * @param client logged client
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
 	 * @param playlist selected playlist
 	 */
 	public void initialize(JFrame frame, Client client, Playlist playlist) {
 		setBounds(0, 0, 1000, 672);
 		setBackground(Color.black);
 		setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel(playlist.getName());
 		lblNewLabel.setBounds(252, 65, 91, 14);
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		add(lblNewLabel);
-		
+
 		JLabel lblNewLabel_1 = new JLabel(playlist.getDescription());
 		lblNewLabel_1.setBounds(252, 130, 148, 46);
 		lblNewLabel_1.setForeground(new Color(255, 255, 255));
 		add(lblNewLabel_1);
-		
+
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -96,21 +100,20 @@ public class PlayList extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
-				frame.getContentPane()
-						.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
+						null, null, null));
 				frame.revalidate();
 				frame.repaint();
 			}
 		});
-		
-		
+
 		panelBackIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBackIcon.setToolTipText("Volver a mi perfil.");
-		
+
 		JLabel lblBackIcon = new JLabel("");
 		panelBackIcon.add(lblBackIcon, BorderLayout.CENTER);
 		WindowUtils.addImage(panelBackIcon, lblBackIcon, "img/icon/arrow.png");
-		
+
 		JScrollPane scrollPanePlaylist = new JScrollPane();
 		scrollPanePlaylist.setBounds(44, 320, 867, 289);
 		add(scrollPanePlaylist);
@@ -203,9 +206,10 @@ public class PlayList extends JPanel {
 		modelSongsPlaylist.setColumnIdentifiers(columnsSongs);
 		tableSongsPlaylist.setModel(modelSongsPlaylist);
 		adjustColumnsWidth(tableSongsPlaylist);
-		addSongsToTable(modelSongsPlaylist,playlist);
-		
+		addSongsToTable(modelSongsPlaylist, playlist);
+
 	}
+
 	private void playSelectedSong(Client client, JFrame frame) {
 
 		indexx = tableSongsPlaylist.getSelectedColumn();
@@ -285,6 +289,7 @@ public class PlayList extends JPanel {
 
 		isPlayerRunning = false;
 	}
+
 	private void adjustColumnsWidth(JTable table) {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -294,11 +299,12 @@ public class PlayList extends JPanel {
 		table.getColumnModel().getColumn(4).setMinWidth(200);
 		table.getColumnModel().getColumn(5).setMinWidth(160);
 	}
-	private void addSongsToTable(DefaultTableModel model,Playlist playlist) {
+
+	private void addSongsToTable(DefaultTableModel model, Playlist playlist) {
 
 		if (null == controller)
 			controller = new Controller();
-SongManager sonMan = new SongManager();
+		SongManager sonMan = new SongManager();
 		try {
 			playlistSongs = sonMan.selectSongsOfPlaylist(playlist);
 		} catch (SQLException e) {
@@ -346,6 +352,7 @@ SongManager sonMan = new SongManager();
 			}
 		}
 	}
+
 	/**
 	 * Goes to an other panel to add song to a playlist.
 	 * 

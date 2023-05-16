@@ -2,6 +2,10 @@ package soundbridge.database.views.pojos;
 
 import java.util.Objects;
 
+/**
+ * Describes the Top20 view on database, which contains the 20 most listened
+ * songs.
+ */
 public class Top20 {
 
 	private int id = 0;

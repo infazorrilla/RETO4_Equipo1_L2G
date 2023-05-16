@@ -187,8 +187,8 @@ public class GroupProfile extends JPanel {
 	 * 
 	 * @param artGroup art group whose profile is shown
 	 * @return albums of the art group
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private ArrayList<Album> getAlbums(ArtGroup artGroup) throws SQLException, Exception {
 		if (null == controller)
@@ -203,8 +203,8 @@ public class GroupProfile extends JPanel {
 	 * @param album    album that contains the songs
 	 * @param artGroup art group whose profile is shown
 	 * @return songs of the album
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private ArrayList<Song> getSongsOfAlbum(Album album, ArtGroup artGroup) throws SQLException, Exception {
 		if (null == controller)
@@ -219,8 +219,8 @@ public class GroupProfile extends JPanel {
 	 * @param frame    frame where the panel is added
 	 * @param client   logged client
 	 * @param artGroup art group whose profile is shown
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void createFunctionalAlbumPanels(JFrame frame, Client client, ArtGroup artGroup)
 			throws SQLException, Exception {
@@ -325,8 +325,8 @@ public class GroupProfile extends JPanel {
 	 * 
 	 * @param artGroup art group whose profile is shown
 	 * @return songs that have no related album
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private ArrayList<Song> getSingles(ArtGroup artGroup) throws SQLException, Exception {
 		if (null == controller)
@@ -364,8 +364,8 @@ public class GroupProfile extends JPanel {
 	 * @param frame    frame where the panel is added
 	 * @param client   logged client
 	 * @param artGroup art group whose profile is shown
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void createFunctionalSinglePanels(JFrame frame, Client client, ArtGroup artGroup)
 			throws SQLException, Exception {

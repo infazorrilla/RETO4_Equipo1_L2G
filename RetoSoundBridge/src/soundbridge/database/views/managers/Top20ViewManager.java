@@ -14,8 +14,19 @@ import soundbridge.database.pojos.Artist;
 import soundbridge.database.pojos.Song;
 import soundbridge.database.views.pojos.Top20;
 
+/**
+ * Defines access methods for the Top20 view on database which contains the 20
+ * most listened songs.
+ */
 public class Top20ViewManager {
 
+	/**
+	 * Returns all instances of top20 in database or null if there are not top20.
+	 * 
+	 * @return array list of top20 or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Top20> selectView() throws SQLException, Exception {
 		ArrayList<Top20> ret = null;
 		String sql = "SELECT * FROM soundBridge.top20";
@@ -71,6 +82,13 @@ public class Top20ViewManager {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of songs on database included on the top20.
+	 * 
+	 * @return array list of songs on the top20
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Song> selectViewTop20AndSongs() throws SQLException, Exception {
 		ArrayList<Song> ret = null;
 		String sql = "SELECT * FROM soundBridge.top20 JOIN song ON soundBridge.top20.name=song.name ORDER BY plays DESC";

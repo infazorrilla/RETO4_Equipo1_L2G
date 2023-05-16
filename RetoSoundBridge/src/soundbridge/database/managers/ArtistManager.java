@@ -21,12 +21,12 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 
 	/**
 	 * Returns all instances of artists in database or null if there are not
-	 * artists. Throws the NotFoundException.
+	 * artists.
 	 * 
 	 * @return list of artists or null
-	 * @throws SQLException if there is an error on database
+	 * @throws SQLException      if there is an error on database
 	 * @throws NotFoundException if list is null
-	 * @throws Exception if there is a generic error
+	 * @throws Exception         if there is a generic error
 	 */
 	@Override
 	public List<Artist> selectAll() throws SQLException, NotFoundException, Exception {
@@ -41,11 +41,12 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 	}
 
 	/**
-	 * Selects all artists of the database.
+	 * Returns all instances of artists in database or null if there are not
+	 * artists.
 	 * 
-	 * @return list of all the artists
-	 * @throws SQLException
-	 * @throws Exception
+	 * @return list of artists or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	public List<Artist> doSelectAll() throws SQLException, Exception {
 		ArrayList<Artist> ret = null;
@@ -136,11 +137,11 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 	}
 
 	/**
-	 * Inserts an artist into the database.
+	 * Inserts an instance of artist into database.
 	 * 
 	 * @param artist artist to be inserted
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	@Override
 	public void insert(Artist artist) throws SQLException, Exception {
@@ -180,11 +181,11 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 	}
 
 	/**
-	 * Updates an artist by id in the database.
+	 * Updates an instance of artist on database by id.
 	 * 
 	 * @param artist artist to be updated
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	@Override
 	public void update(Artist artist) throws SQLException, Exception {
@@ -230,11 +231,11 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 	}
 
 	/**
-	 * Deletes an artist from the database.
+	 * Deletes an instance of artist from database by id.
 	 * 
 	 * @param artist artist to be deleted
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	@Override
 	public void delete(Artist artist) throws SQLException, Exception {
@@ -274,12 +275,12 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 	}
 
 	/**
-	 * Selects an artist by the name.
+	 * Returns an instance of artist by the name.
 	 * 
-	 * @param nameOfArtist given name of the artist
+	 * @param nameOfGroup name of the artist
 	 * @return artist with the given name
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	public Artist getArtistByName(String nameOfArtist) throws SQLException, Exception {
 		Artist ret = null;
@@ -299,12 +300,12 @@ public class ArtistManager extends ManagerAbstract<Artist> {
 	}
 
 	/**
-	 * Selects an artist by id.
+	 * Returns an instance of artist by id.
 	 * 
-	 * @param id given id for the artist
+	 * @param id given id of the artist
 	 * @return artist with the given id
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	public Artist selectArtistById(int id) throws SQLException, Exception {
 		Artist ret = null;

@@ -259,8 +259,8 @@ public class EmployeeReviews extends JPanel {
 	/**
 	 * Updates the selected reviews to be validated in the database.
 	 * 
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void validateSelectedReviews() throws SQLException, Exception {
 		if (selectedReviews != null) {
@@ -301,8 +301,8 @@ public class EmployeeReviews extends JPanel {
 	/**
 	 * Removes the selected reviews from the database.
 	 * 
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void deleteSelectedReviews() throws SQLException, Exception {
 		ReviewManager reviewManager = new ReviewManager();

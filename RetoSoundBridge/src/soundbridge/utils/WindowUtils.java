@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 /**
- * Class to create a specified JOptionPane with a custom icon.
+ * Defines a class to create a specified JOptionPane with a custom icon.
  */
 public class WindowUtils {
 

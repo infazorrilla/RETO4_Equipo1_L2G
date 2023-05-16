@@ -16,8 +16,20 @@ import soundbridge.database.pojos.ClientPP;
 import soundbridge.database.pojos.Review;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Review table on database.
+ */
 public class ReviewManager extends ManagerAbstract<Review> {
 
+	/**
+	 * Returns all instances of reviews in database or null if there are not
+	 * reviews.
+	 * 
+	 * @return list of reviews or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<Review> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Review> ret = (ArrayList<Review>) doSelectAll();
@@ -29,6 +41,14 @@ public class ReviewManager extends ManagerAbstract<Review> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of reviews in database or null if there are not
+	 * reviews.
+	 * 
+	 * @return list of reviews or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Review> doSelectAll() throws SQLException, Exception {
 		ArrayList<Review> ret = null;
 		String sql = "SELECT * FROM Review";
@@ -106,6 +126,13 @@ public class ReviewManager extends ManagerAbstract<Review> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of review into database.
+	 * 
+	 * @param review review to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Review review) throws SQLException, Exception {
 		Connection connection = null;
@@ -143,6 +170,13 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 	}
 
+	/**
+	 * Updates an instance of review on database by id.
+	 * 
+	 * @param review review to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Review review) throws SQLException, Exception {
 		Connection connection = null;
@@ -189,6 +223,13 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 	}
 
+	/**
+	 * Deletes an instance of review from database by id.
+	 * 
+	 * @param review review to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Review review) throws SQLException, Exception {
 		Connection connection = null;
@@ -226,7 +267,14 @@ public class ReviewManager extends ManagerAbstract<Review> {
 		}
 
 	}
-	
+
+	/**
+	 * Returns all instances of non validated reviews on database.
+	 * 
+	 * @return array list of all non validated reviews
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Review> nonValidatedReviews() throws SQLException, Exception {
 		ArrayList<Review> ret = null;
 		String sql = "SELECT * FROM Review WHERE isValidated = false ORDER BY reviewDate";
@@ -303,7 +351,15 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 		return ret;
 	}
-	
+
+	/**
+	 * Returns all instances of validated reviews on database by album.
+	 * 
+	 * @param album album reviewed
+	 * @return array list of all validated reviews
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Review> validatedReviewsByAlbum(Album album) throws SQLException, Exception {
 		ArrayList<Review> ret = null;
 		String sql = "SELECT * FROM Review WHERE isValidated = true && idAlbum = ? ORDER BY reviewDate DESC";
@@ -381,31 +437,48 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 		return ret;
 	}
-	
-	public ArrayList<Review> nonValidatedReviewsWithAllInformation() throws SQLException, Exception{
+
+	/**
+	 * Returns all instances of non validated reviews on database with corresponding
+	 * album and client.
+	 * 
+	 * @return array list of all non validated reviews
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public ArrayList<Review> nonValidatedReviewsWithAllInformation() throws SQLException, Exception {
 		ArrayList<Review> ret = nonValidatedReviews();
-		
+
 		AlbumManager albumManager = new AlbumManager();
 		ClientManager clientManager = new ClientManager();
-		
+
 		if (ret != null) {
 			for (Review review : ret) {
 				Album album = albumManager.albumById(review.getAlbum().getId());
 				review.setAlbum(album);
-				
+
 				Client client = clientManager.clientById(review.getClientPP().getId());
 				review.setClientPP((ClientPP) client);
 			}
 		}
-		
+
 		return ret;
 	}
-	
-	public ArrayList<Review> validatedReviewsWithAllInformation(Album album) throws SQLException, Exception{
+
+	/**
+	 * Returns all instances of validated reviews on database by album with
+	 * corresponding client.
+	 * 
+	 * @param album album reviewed
+	 * @return array list of all validated reviews
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public ArrayList<Review> validatedReviewsWithAllInformation(Album album) throws SQLException, Exception {
 		ArrayList<Review> ret = validatedReviewsByAlbum(album);
-		
+
 		ClientManager clientManager = new ClientManager();
-		
+
 		if (ret != null) {
 			for (Review review : ret) {
 				Client client = clientManager.clientById(review.getClientPP().getId());
@@ -413,10 +486,19 @@ public class ReviewManager extends ManagerAbstract<Review> {
 				review.setAlbum(album);
 			}
 		}
-		
+
 		return ret;
 	}
-	
+
+	/**
+	 * Returns an instance of review on database by premium plus client and album
+	 * 
+	 * @param clientPP premium plus client that has written the review
+	 * @param album    reviewed album
+	 * @return review of given client and album
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Review getReviewByClientPPAndAlbum(ClientPP clientPP, Album album) throws SQLException, Exception {
 		Review ret = null;
 		String sql = "SELECT * FROM Review WHERE idClientPP = ? && idAlbum = ?";
@@ -440,7 +522,7 @@ public class ReviewManager extends ManagerAbstract<Review> {
 
 				if (null == ret)
 					ret = new Review();
-				
+
 				int stars = resultSet.getInt("stars");
 				String title = resultSet.getString("title");
 				String opinion = resultSet.getString("opinion");

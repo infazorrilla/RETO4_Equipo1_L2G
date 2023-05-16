@@ -22,12 +22,12 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	/**
 	 * Returns all instances of clients in database or null if there are not
-	 * artists.
+	 * clients. Clients are returned with their corresponding type.
 	 * 
 	 * @return list of clients or null
-	 * @throws SQLException if there is an error on database
+	 * @throws SQLException      if there is an error on database
 	 * @throws NotFoundException if list is null
-	 * @throws Exception if there is a generic error
+	 * @throws Exception         if there is a generic error
 	 */
 	@Override
 	public List<Client> selectAll() throws SQLException, NotFoundException, Exception {
@@ -42,11 +42,11 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	/**
 	 * Returns all instances of clients in database or null if there are not
-	 * artists.
+	 * clients. Clients are returned with their corresponding type.
 	 * 
 	 * @return list of clients or null
 	 * @throws SQLException if there is an error on database
-	 * @throws Exception if there is a generic error
+	 * @throws Exception    if there is a generic error
 	 */
 	public List<Client> doSelectAll() throws SQLException, Exception {
 		ArrayList<Client> ret = null;
@@ -162,6 +162,13 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of client into database.
+	 * 
+	 * @param client client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Client client) throws SQLException, Exception {
 		Connection connection = null;
@@ -171,9 +178,9 @@ public class ClientManager extends ManagerAbstract<Client> {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
-			
+
 			String type = null;
-			
+
 			if (client instanceof ClientP) {
 				type = "Premium";
 			} else if (client instanceof ClientPP) {
@@ -186,7 +193,8 @@ public class ClientManager extends ManagerAbstract<Client> {
 					+ client.getName() + "', '" + client.getLastName() + "', '" + client.getNationality() + "', '"
 					+ client.getGender() + "', '" + new java.sql.Date((client.getBirthDate()).getTime()) + "', '"
 					+ client.getPersonalId() + "', '" + client.getTelephone() + "', '" + client.getEmail() + "', '"
-					+ client.getAddress() + "', '" + client.getUsername() + "', '" + client.getPasswd() + "', '" + type + "')";
+					+ client.getAddress() + "', '" + client.getUsername() + "', '" + client.getPasswd() + "', '" + type
+					+ "')";
 
 			statement.executeUpdate(sql);
 
@@ -214,6 +222,13 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	}
 
+	/**
+	 * Updates an instance of client on database by id.
+	 * 
+	 * @param client client to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Client client) throws SQLException, Exception {
 		Connection connection = null;
@@ -274,6 +289,13 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	}
 
+	/**
+	 * Deletes an instance of client from database by id.
+	 * 
+	 * @param client client to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Client client) throws SQLException, Exception {
 		Connection connection = null;
@@ -311,6 +333,16 @@ public class ClientManager extends ManagerAbstract<Client> {
 
 	}
 
+	/**
+	 * Checks if an instance of client exists on database with given username and
+	 * password.
+	 * 
+	 * @param username given username for the client
+	 * @param passwd   given username for the client
+	 * @return true if instance exists, otherwise false
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public boolean askForClientUsingIdAndPasswd(String username, String passwd) throws SQLException, Exception {
 
 		String sql = "select * from client where username=? and passwd=?";
@@ -367,6 +399,14 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return false;
 	}
 
+	/**
+	 * Returns an instance of client on database with given username.
+	 * 
+	 * @param username given username for the client
+	 * @return client with the given username
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Client getClientByUsername(String username) throws SQLException, Exception {
 		Client ret = null;
 		ArrayList<Client> clients = (ArrayList<Client>) doSelectAll();
@@ -380,6 +420,17 @@ public class ClientManager extends ManagerAbstract<Client> {
 		return ret;
 	}
 
+	/**
+	 * Calls changeSubscription procedure from database which updates a client's
+	 * subscription.
+	 * 
+	 * @param clientId        id of client
+	 * @param bankNumber      bank number of client if new subscription is paid,
+	 *                        otherwise null
+	 * @param newSubscription name of new subscription
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void changeSubscription(int clientId, String bankNumber, String newSubscription)
 			throws SQLException, Exception {
 		Connection connection = null;
@@ -420,7 +471,15 @@ public class ClientManager extends ManagerAbstract<Client> {
 		}
 
 	}
-	
+
+	/**
+	 * Returns an instance of client on database by id.
+	 * 
+	 * @param idClient given id of client
+	 * @return client with given id
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public Client clientById(int idClient) throws SQLException, Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -437,7 +496,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 			preparedStatement.setInt(1, idClient);
 
 			resultSet = preparedStatement.executeQuery();
-			
+
 			while (resultSet.next()) {
 
 				if (null == ret)
@@ -518,7 +577,7 @@ public class ClientManager extends ManagerAbstract<Client> {
 			}
 			;
 		}
-		
+
 		return ret;
 
 	}

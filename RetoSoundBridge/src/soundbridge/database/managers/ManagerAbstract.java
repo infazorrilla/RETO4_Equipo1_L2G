@@ -5,6 +5,12 @@ import java.util.List;
 
 import soundbridge.database.exception.NotFoundException;
 
+/**
+ * Defines a manager used for structural purposes that holds the CRUD access
+ * methods for tables on database.
+ * 
+ * @param <T> type of object
+ */
 public abstract class ManagerAbstract<T> implements ManagerInterface<T> {
 
 	@Override

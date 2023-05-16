@@ -1,7 +1,7 @@
 package soundbridge.utils;
 
 /**
- * Class to connect with the database.
+ * Defines the connection with the database.
  */
 public class DBUtils {
 

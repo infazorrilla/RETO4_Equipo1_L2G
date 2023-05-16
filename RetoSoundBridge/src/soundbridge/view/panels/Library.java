@@ -390,8 +390,8 @@ public class Library extends JPanel {
 	 * 
 	 * @param client logged client
 	 * @return list with all the client's playlists
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private ArrayList<Playlist> getPlaylistsOfClientPP(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
@@ -447,8 +447,8 @@ public class Library extends JPanel {
 	 * 
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void addImagesToAlbums(JFrame frame, Client client) throws SQLException, Exception {
 

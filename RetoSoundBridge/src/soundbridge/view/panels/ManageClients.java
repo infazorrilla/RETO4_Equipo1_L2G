@@ -37,11 +37,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
-/**
- * Panel that allows to the employee to manage the client. The employee is able to see 
- * the list of the clients, all the clients that are signed in the application. The employee
- * can also lock and unlock the clients and see the list of locked clients.
 
+/**
+ * Panel that allows to the employee to manage the client. The employee is able
+ * to see the list of the clients, all the clients that are signed in the
+ * application. The employee can also lock and unlock the clients and see the
+ * list of locked clients.
+ * 
  */
 public class ManageClients extends JPanel {
 
@@ -53,7 +55,7 @@ public class ManageClients extends JPanel {
 	/**
 	 * Initializes the panel.
 	 * 
-	 * @param frame  frame where the panel is added
+	 * @param frame    frame where the panel is added
 	 * @param employee logged employee
 	 */
 	public ManageClients(JFrame frame, Employee employee) {
@@ -65,7 +67,7 @@ public class ManageClients extends JPanel {
 	/**
 	 * Initializes the components of the panel.
 	 * 
-	 * @param frame  frame where the panel is added
+	 * @param frame    frame where the panel is added
 	 * @param employee logged employee
 	 */
 	private void initialize(JFrame frame, Employee employee) {
@@ -79,7 +81,7 @@ public class ManageClients extends JPanel {
 		lblTitle.setFont(new Font("Dialog", Font.BOLD, 22));
 		lblTitle.setBounds(380, 44, 250, 36);
 		add(lblTitle);
-	
+
 		JPanel panelBackIcon = new JPanel();
 		panelBackIcon.setBounds(900, 45, 50, 50);
 		add(panelBackIcon);
@@ -298,10 +300,11 @@ public class ManageClients extends JPanel {
 		btnDesBlockClient.setOpaque(true);
 		btnDesBlockClient.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
-/**
- * Removes all the rows of the table and insert the new ones, is inserted the information of 
- * all the clients.
- */
+
+	/**
+	 * Removes all the rows of the table and insert the new ones, is inserted the
+	 * information of all the clients.
+	 */
 	private void showClients() {
 		if (null == controller)
 			controller = new Controller();
@@ -330,22 +333,25 @@ public class ManageClients extends JPanel {
 		}
 
 	}
-/**
- * Takes the employee back to the employee menu.
- * 
- * @param frame  frame where the panel is added
+
+	/**
+	 * Takes the employee back to the employee menu.
+	 * 
+	 * @param frame    frame where the panel is added
 	 * @param employee logged employee
- */
+	 */
 	private void goBack(JFrame frame, Employee employee) {
 		frame.getContentPane().removeAll();
-		frame.getContentPane()
-				.add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null, null, null, null));
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.EMPLOYEE_MENU, frame, null, employee, null, null,
+				null, null, null));
 		frame.revalidate();
 		frame.repaint();
 	}
-/**
- * Locks the selected client in the table. The locked clients can not log in in the application.
- */
+
+	/**
+	 * Locks the selected client in the table. The locked clients can not log in in
+	 * the application.
+	 */
 	private void blockUser() {
 
 		if (null == controller)

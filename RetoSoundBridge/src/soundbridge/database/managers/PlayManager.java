@@ -15,8 +15,19 @@ import soundbridge.database.pojos.Play;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Play table on database.
+ */
 public class PlayManager extends ManagerAbstract<Play> {
 
+	/**
+	 * Returns all instances of plays in database or null if there are not plays.
+	 * 
+	 * @return list of plays or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<Play> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Play> ret = (ArrayList<Play>) doSelectAll();
@@ -27,7 +38,14 @@ public class PlayManager extends ManagerAbstract<Play> {
 
 		return ret;
 	}
-	
+
+	/**
+	 * Returns all instances of plays in database or null if there are not plays.
+	 * 
+	 * @return list of plays or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Play> doSelectAll() throws SQLException, Exception {
 		ArrayList<Play> ret = null;
 		String sql = "SELECT * FROM Play";
@@ -56,10 +74,10 @@ public class PlayManager extends ManagerAbstract<Play> {
 
 				java.sql.Timestamp sqlPlayDate = resultSet.getTimestamp("playDate");
 				java.util.Date playDate = new java.util.Date(sqlPlayDate.getTime());
-				
-				int idClient = resultSet.getInt("idClient");				
+
+				int idClient = resultSet.getInt("idClient");
 				int idSong = resultSet.getInt("idSong");
-				
+
 				play.setId(id);
 				play.setPlayDate(playDate);
 				play.setClient(new Client());
@@ -100,6 +118,13 @@ public class PlayManager extends ManagerAbstract<Play> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of play into database.
+	 * 
+	 * @param play play to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Play play) throws SQLException, Exception {
 		Connection connection = null;
@@ -110,8 +135,8 @@ public class PlayManager extends ManagerAbstract<Play> {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.createStatement();
 
-			String sql = "INSERT INTO Play (idClient, idSong) VALUES ("
-					+ play.getClient().getId() + ", " + play.getSong().getId() + ")";
+			String sql = "INSERT INTO Play (idClient, idSong) VALUES (" + play.getClient().getId() + ", "
+					+ play.getSong().getId() + ")";
 
 			statement.executeUpdate(sql);
 
@@ -133,9 +158,16 @@ public class PlayManager extends ManagerAbstract<Play> {
 			}
 			;
 		}
-		
+
 	}
 
+	/**
+	 * Updates an instance of play on database by id.
+	 * 
+	 * @param play play to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Play play) throws SQLException, Exception {
 		Connection connection = null;
@@ -176,9 +208,15 @@ public class PlayManager extends ManagerAbstract<Play> {
 			;
 		}
 
-		
 	}
 
+	/**
+	 * Deletes an instance of play from database by id.
+	 * 
+	 * @param play play to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Play play) throws SQLException, Exception {
 		Connection connection = null;

@@ -20,8 +20,20 @@ import soundbridge.database.pojos.Playlist;
 import soundbridge.database.pojos.Song;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the Playlist table on database.
+ */
 public class PlaylistManager extends ManagerAbstract<Playlist> {
 
+	/**
+	 * Returns all instances of playlists in database or null if there are not
+	 * playlists.
+	 * 
+	 * @return list of playlists or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<Playlist> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<Playlist> ret = (ArrayList<Playlist>) doSelectAll();
@@ -33,6 +45,14 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of playlists in database or null if there are not
+	 * playlists.
+	 * 
+	 * @return list of playlists or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<Playlist> doSelectAll() throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
 		String sql = "SELECT * FROM Playlist";
@@ -108,6 +128,13 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of playlist into database.
+	 * 
+	 * @param playlist playlist to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(Playlist playlist) throws SQLException, Exception {
 		Connection connection = null;
@@ -145,6 +172,13 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 	}
 
+	/**
+	 * Updates an instance of playlist on database by id.
+	 * 
+	 * @param playlist playlist to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(Playlist playlist) throws SQLException, Exception {
 		Connection connection = null;
@@ -188,6 +222,13 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 	}
 
+	/**
+	 * Deletes an instance of playlist from database by id.
+	 * 
+	 * @param playlist playlist to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(Playlist playlist) throws SQLException, Exception {
 		Connection connection = null;
@@ -225,6 +266,15 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 	}
 
+	/**
+	 * Returns all instances of favorite playlists on database by premium plus
+	 * client with all containing songs.
+	 * 
+	 * @param client client owner of playlist
+	 * @return array list of playlists belonging to the client
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Playlist> getPlaylistsOfClientPPById(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
 		ArrayList<Playlist> playlists = (ArrayList<Playlist>) doSelectAll();
@@ -236,7 +286,8 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		if (playlists != null) {
 			ret = new ArrayList<Playlist>();
 			for (Playlist playlist : playlists) {
-				if (playlist.getClientPP().getId() == client.getId() && playlist.getName().equalsIgnoreCase("Favoritos")) {
+				if (playlist.getClientPP().getId() == client.getId()
+						&& playlist.getName().equalsIgnoreCase("Favoritos")) {
 
 					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
 					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
@@ -259,6 +310,16 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 		return ret;
 	}
+
+	/**
+	 * Returns all instances of favorite playlists on database by premium client
+	 * with all containing songs.
+	 * 
+	 * @param client client owner of playlist
+	 * @return array list of playlists belonging to the client
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Playlist> selectPlaylistsOfClientPPById(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
 		ArrayList<Playlist> playlists = (ArrayList<Playlist>) doSelectAll();
@@ -270,7 +331,8 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		if (playlists != null) {
 			ret = new ArrayList<Playlist>();
 			for (Playlist playlist : playlists) {
-				if (playlist.getClientPP().getId() == client.getId() && (!playlist.getName().equalsIgnoreCase("Favoritos"))) {
+				if (playlist.getClientPP().getId() == client.getId()
+						&& (!playlist.getName().equalsIgnoreCase("Favoritos"))) {
 
 					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
 					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
@@ -293,6 +355,7 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 		return ret;
 	}
+
 	public ArrayList<Playlist> selectPlaylistsOfClientPById(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
 		ArrayList<Playlist> playlists = (ArrayList<Playlist>) doSelectAll();
@@ -304,7 +367,8 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		if (playlists != null) {
 			ret = new ArrayList<Playlist>();
 			for (Playlist playlist : playlists) {
-				if (playlist.getClientP().getId() == client.getId() && (!playlist.getName().equalsIgnoreCase("Favoritos"))) {
+				if (playlist.getClientP().getId() == client.getId()
+						&& (!playlist.getName().equalsIgnoreCase("Favoritos"))) {
 
 					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
 					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
@@ -327,7 +391,6 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 		return ret;
 	}
-
 
 	public ArrayList<Playlist> getPlaylistsOfClientPById(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
@@ -340,7 +403,8 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		if (playlists != null) {
 			ret = new ArrayList<Playlist>();
 			for (Playlist playlist : playlists) {
-				if (playlist.getClientP().getId() == client.getId() && playlist.getName().equalsIgnoreCase("Favoritos")) {
+				if (playlist.getClientP().getId() == client.getId()
+						&& playlist.getName().equalsIgnoreCase("Favoritos")) {
 
 					ArrayList<Song> songs = (ArrayList<Song>) songManager.doSelectAll();
 					ArrayList<Contain> contains = (ArrayList<Contain>) containManager.doSelectAll();
@@ -364,7 +428,14 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 		return ret;
 	}
 
-	public void insertPlaylistClienP(Playlist playlist) throws SQLException, Exception {
+	/**
+	 * Inserts an instance of playlist into database owned by a premium client.
+	 * 
+	 * @param playlist playlist to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
+	public void insertPlaylistClientP(Playlist playlist) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -399,6 +470,13 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 	}
 
+	/**
+	 * Inserts an instance of playlist into database owned by a premium plus client.
+	 * 
+	 * @param playlist playlist to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void insertPlaylistClienPP(Playlist playlist) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
@@ -434,6 +512,15 @@ public class PlaylistManager extends ManagerAbstract<Playlist> {
 
 	}
 
+	/**
+	 * Returns all non favorites playlist instances on database by a premium plus
+	 * client.
+	 * 
+	 * @param client client owner of playlist
+	 * @return array list of all playlists
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ArrayList<Playlist> selectPlaylistOfCLientPP(Client client) throws SQLException, Exception {
 		ArrayList<Playlist> ret = null;
 		String sql = "select * from playlist where idClientPP=? and name !='Favoritos'";

@@ -115,11 +115,11 @@ public class AddSongPlaylist extends JPanel {
 	/**
 	 * Gets all the playlist of a client.
 	 * 
-	 * @param client the client to take the playlists.
+	 * @param client the client to take the playlists
 	 * 
-	 * @return returns a list of playlists.
-	 * @throws SQLException
-	 * @throws Exception
+	 * @return a list of playlists
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private ArrayList<Playlist> getPlaylistsOfClientPP(Client client) throws SQLException, Exception {
 		PlaylistManager playMan = new PlaylistManager();
@@ -177,8 +177,8 @@ public class AddSongPlaylist extends JPanel {
 	 * 
 	 * @param frame  frame where the panel is added
 	 * @param client logged client
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
 	 */
 	private void addImagesToAlbums(JFrame frame, Client client,Song song) throws SQLException, Exception {
 

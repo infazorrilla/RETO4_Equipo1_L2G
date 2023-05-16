@@ -16,8 +16,20 @@ import soundbridge.database.pojos.ClientP;
 import soundbridge.database.pojos.Playlist;
 import soundbridge.utils.DBUtils;
 
+/**
+ * Defines access methods for the ClientP table on database.
+ */
 public class ClientPManager extends ManagerAbstract<ClientP> {
 
+	/**
+	 * Returns all instances of premium clients in database or null if there are not
+	 * premium clients.
+	 * 
+	 * @return list of premium clients or null
+	 * @throws SQLException      if there is an error on database
+	 * @throws NotFoundException if list is null
+	 * @throws Exception         if there is a generic error
+	 */
 	@Override
 	public List<ClientP> selectAll() throws SQLException, NotFoundException, Exception {
 		ArrayList<ClientP> ret = (ArrayList<ClientP>) doSelectAll();
@@ -29,6 +41,14 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 		return ret;
 	}
 
+	/**
+	 * Returns all instances of premium clients in database or null if there are not
+	 * premium clients.
+	 * 
+	 * @return list of premium clients or null
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public List<ClientP> doSelectAll() throws SQLException, Exception {
 		ArrayList<ClientP> ret = null;
 		String sql = "SELECT * FROM ClientP";
@@ -96,6 +116,14 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of premium client into database, when a client already
+	 * exists in client table.
+	 * 
+	 * @param clientp premium client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void insert(ClientP clientp) throws SQLException, Exception {
 		Connection connection = null;
@@ -145,6 +173,13 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 	}
 
+	/**
+	 * Updates an instance of premium client on database by id.
+	 * 
+	 * @param clientp premium client to be updated
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void update(ClientP clientp) throws SQLException, Exception {
 		Connection connection = null;
@@ -184,6 +219,13 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 	}
 
+	/**
+	 * Deletes an instance of premium client from database by id.
+	 * 
+	 * @param clientp premium client to be deleted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	@Override
 	public void delete(ClientP clientp) throws SQLException, Exception {
 		Connection connection = null;
@@ -221,6 +263,14 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 
 	}
 
+	/**
+	 * Returns an instance of premium client on database by id.
+	 * 
+	 * @param idClient given id of client
+	 * @return premium client with given id
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public ClientP getClientPById(int idClient) throws SQLException, Exception {
 		ClientP ret = null;
 
@@ -237,6 +287,13 @@ public class ClientPManager extends ManagerAbstract<ClientP> {
 		return ret;
 	}
 
+	/**
+	 * Inserts an instance of premium client into database.
+	 * 
+	 * @param clientp premium client to be inserted
+	 * @throws SQLException if there is an error on database
+	 * @throws Exception    if there is a generic error
+	 */
 	public void insertReal(ClientP clientp) throws SQLException, Exception {
 		Connection connection = null;
 		Statement statement = null;
