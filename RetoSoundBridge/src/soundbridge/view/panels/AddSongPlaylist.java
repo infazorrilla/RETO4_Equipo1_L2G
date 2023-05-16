@@ -255,6 +255,13 @@ public class AddSongPlaylist extends JPanel {
 		});
 	}
 
+	/**
+	 * Takes the client to the playlist.
+	 * 
+	 * @param frame    frame where the panel is added
+	 * @param client   logged client
+	 * @param playlist selected playlist
+	 */
 	private void goToPlaylist(JFrame frame, Client client, Playlist playlist) {
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(

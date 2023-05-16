@@ -391,6 +391,7 @@ public class SingleView extends JPanel {
 	}
 
 	private void goToAddSong(JFrame frame, Client client, Song song) {
+		stop();
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
 				null, song, null));

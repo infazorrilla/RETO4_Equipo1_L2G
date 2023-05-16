@@ -143,11 +143,7 @@ public class CreatePlaylist extends JPanel {
 		panelBackIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
-						null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToLibrary(frame, client);
 			}
 		});
 
@@ -161,28 +157,7 @@ public class CreatePlaylist extends JPanel {
 		JButton btnCreatePlaylist = new JButton("CREAR LISTA DE REPRODUCCIÓN");
 		btnCreatePlaylist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Playlist playlist = new Playlist();
-				PlaylistManager playMan = new PlaylistManager();
-				ClientPP clientPP = new ClientPP();
-				playlist.setName(textFieldName.getText());
-				playlist.setDescription(textAreaDescription.getText());
-
-				if (client instanceof ClientPP) {
-					clientPP.setId(client.getId());
-					playlist.setClientPP(clientPP);
-					try {
-						playMan.insertPlaylistClienPP(playlist);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null,
-						null, null, null, playlist));
-				frame.revalidate();
-				frame.repaint();
+				createPlaylist(frame, client);
 			}
 
 		});
@@ -204,6 +179,50 @@ public class CreatePlaylist extends JPanel {
 		panelBackground.add(lblBackground, BorderLayout.CENTER);
 
 		WindowUtils.addImage(panelBackground, lblBackground, "img/panel/create_playlist_bg.jpeg");
+	}
+
+	/**
+	 * Creates a new playlist.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void createPlaylist(JFrame frame, Client client) {
+		Playlist playlist = new Playlist();
+		PlaylistManager playMan = new PlaylistManager();
+		ClientPP clientPP = new ClientPP();
+		playlist.setName(textFieldName.getText());
+		playlist.setDescription(textAreaDescription.getText());
+
+		if (client instanceof ClientPP) {
+			clientPP.setId(client.getId());
+			playlist.setClientPP(clientPP);
+			try {
+				playMan.insertPlaylistClienPP(playlist);
+				WindowUtils.confirmationPane("La lista se ha creado correctamente.", "Confirmación");
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.PLAYLIST, frame, client, null, null,
+						null, null, null, playlist));
+				frame.revalidate();
+				frame.repaint();
+			} catch (Exception e1) {
+				WindowUtils.errorPane("No se ha podido crear la lista.", "Error");
+			}
+		}
+	}
+	
+	/**
+	 * Takes the client to the library.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToLibrary(JFrame frame, Client client) {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
+				null, null, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 
 }

@@ -500,6 +500,7 @@ public class PlayList extends JPanel {
 	 * @param song   to be added
 	 */
 	private void goToAddSong(JFrame frame, Client client, Song song) {
+		stop();
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
 				null, song, null));
@@ -525,6 +526,7 @@ public class PlayList extends JPanel {
 	 * @param client logged client
 	 */
 	private void goToLibrary(JFrame frame, Client client) {
+		stop();
 		frame.getContentPane().removeAll();
 		frame.getContentPane()
 				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));

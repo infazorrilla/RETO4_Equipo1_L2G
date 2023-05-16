@@ -233,12 +233,7 @@ public class FavoriteSongs extends JPanel {
 		panelHomeIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				stop();
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null,
-						null, null, null));
-				frame.revalidate();
-				frame.repaint();
+				goToLibrary(frame, client);
 			}
 		});
 		panelHomeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -249,6 +244,21 @@ public class FavoriteSongs extends JPanel {
 
 		WindowUtils.addImage(panelHomeIcon, lblHomeIcon, "img/icon/home.png");
 		WindowUtils.addImage(panelPauseIcon, lblPauseIcon, "img/icon/pause_black.png");
+	}
+
+	/**
+	 * Takes the client to the library.
+	 * 
+	 * @param frame  frame where the panel is added
+	 * @param client logged client
+	 */
+	private void goToLibrary(JFrame frame, Client client) {
+		stop();
+		frame.getContentPane().removeAll();
+		frame.getContentPane()
+				.add(PanelFactory.getJPanel(PanelFactory.LIBRARY, frame, client, null, null, null, null, null, null));
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	/**
@@ -336,6 +346,7 @@ public class FavoriteSongs extends JPanel {
 	 * @param client logged client
 	 */
 	private void goToAddSong(JFrame frame, Client client, Song song) {
+		stop();
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(PanelFactory.getJPanel(PanelFactory.ADDSONGPLAYLIST, frame, client, null, null, null,
 				null, song, null));
